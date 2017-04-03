@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": null,
-    "database": "todos-dev",
+    "database": "99saves-dev",
     "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres"
@@ -10,7 +10,7 @@
   "test": {
     "username": "postgres",
     "password": null,
-    "database": "todos-test",
+    "database": "99saves-test",
     "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres"
@@ -18,7 +18,7 @@
   "production": {
     "username": "postgres",
     "password": null,
-    "database": "todos-prod",
+    "database": "99saves-prod",
     "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres"
