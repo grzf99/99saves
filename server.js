@@ -5,15 +5,15 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 
 const apiRoutes = require('./server/routes');
-const passportStrategy = require('./server/strategies');
+const passportStrategies = require('./server/strategies');
 // const renderAndCache = require('./utils').renderAndCache;
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dir: '.', dev });
 const handle = app.getRequestHandler();
 
-Object.keys(passportStrategy).forEach((strategy) => {
-  passport.use(strategy);
+Object.keys(passportStrategies).forEach((strategy) => {
+  passport.use(strategy, passportStrategies[strategy]);
 });
 
 passport.serializeUser((user, cb) => {

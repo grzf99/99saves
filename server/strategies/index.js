@@ -1,5 +1,5 @@
 const facebook = require('./facebook');
 
 module.exports = {
-  facebook,
+  'facebook-token': facebook,
 };
