@@ -3,9 +3,14 @@ const passport = require('passport');
 
 const router = express.Router();
 
-router.post('/facebook', passport.authenticate('facebook'));
-router.get('/facebook/return', passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect('/');
+router.get('/facebook', passport.authenticate('facebook-token'), (req, res) => {
+  if (req.user) {
+    res.status(200).send({
+      user: req.user,
+    });
+  } else {
+    res.sendStatus(401);
+  }
 });
 
 module.exports = router;
