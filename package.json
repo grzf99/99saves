@@ -24,6 +24,8 @@
     "lru-cache": "^4.0.2",
     "morgan": "^1.8.1",
     "next": "^2.0.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
     "polished": "^1.0.1",
