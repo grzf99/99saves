@@ -21,7 +21,7 @@ If you plan to **integrate** this project to Heroku, you'll need:
 
 * `$ git clone https://github.com/Helabs/99saves.git` - Clone the project
 * `$ cd 99saves` - Go into the project's folder
-* `$ yarn global add sequelize-cli`
+* `$ yarn add global sequelize-cli`
 * `$ createdb 99saves-dev`
 * `$ yarn install` - Installs the project's dependencies
 * `$ yarn run build` - Installs the project's dependencies
