@@ -1,14 +1,16 @@
+const PORT = process.env.PORT || 3000;
+const HEROKU_URL = process.env.HEROKU_URL || '/';
 const API_URL = (function apiUrl(env) {
   switch (env) {
     case 'production':
-      return 'http://localhost:3000/api';
     case 'staging':
-      return 'http://localhost:3000/api';
+      return `${HEROKU_URL}api`;
     default:
-      return 'http://localhost:3000/api';
+      return `http://localhost:${PORT}/api`;
   }
 }(process.env.NODE_ENV));
 
 module.exports = {
   API_URL,
+  PORT,
 };
