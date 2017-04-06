@@ -12,12 +12,12 @@ import Card from '../components/card';
 
 const ModalContent = styled.div`
   > * + * {
-    margin-top: 25px;
+    margin-top: 25px !important;
   }
 `;
 
 const ModalHeading = styled(Heading)`
-    margin: 16px 5px 0;
+  margin: 16px 5px 0;
 `;
 
 const ModalText = styled(Text)`
