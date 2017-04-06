@@ -4,7 +4,7 @@ module.exports = {
   create(req, res) {
     return Save
       .create(req.body)
-      .then(todo => res.status(201).send(todo))
+      .then(saves => res.status(201).send(saves))
       .catch(error => res.status(400).send(error));
   },
 
