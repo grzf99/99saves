@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
+import SwipeableViews from 'react-swipeable-views';
 import 'isomorphic-fetch';
 
 import config from '../config';
@@ -9,6 +10,8 @@ import { Heading, Text } from '../components/common/typography';
 import Button from '../components/common/button';
 import Toolbar from '../components/toolbar';
 import Card from '../components/card';
+import Tabs from '../components/common/tabs';
+import Tab from '../components/common/tab';
 
 const ModalContent = styled.div`
   > * + * {
@@ -58,11 +61,12 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { user: {}, logged: false, modalIsOpen: false };
+    this.state = { user: {}, logged: false, modalIsOpen: false, activeTab: 0 };
 
     this.handleLogin = this.handleLogin.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleChangeIndex = this.handleChangeIndex.bind(this);
   }
 
   handleLogin() {
@@ -84,22 +88,45 @@ export default class extends React.Component {
     this.setState({ modalIsOpen: false });
   }
 
+  handleChangeIndex(tabIndex) {
+    this.setState({ activeTab: tabIndex });
+  }
+
   render() {
     // console.log();
     return (
       <div>
         <Toolbar login={this.handleLogin} logged={this.state.logged} />
         {
-          this.props.saves.rows.map(
-            save =>
-              <Card
-                {...save}
-                key={save.id}
-                logged={this.state.logged}
-                openLoginModal={this.openModal}
-              />
+          this.state.logged && (
+            <Tabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
+              <Tab>Todos</Tab>
+              <Tab>Acompanhando</Tab>
+            </Tabs>
           )
         }
+        <SwipeableViews
+          disabled={!this.state.logged}
+          index={this.state.activeTab}
+          onChangeIndex={this.handleChangeIndex}
+        >
+          <div>
+            {
+              this.props.saves.rows.map(
+                save =>
+                  <Card
+                    {...save}
+                    key={save.id}
+                    logged={this.state.logged}
+                    openLoginModal={this.openModal}
+                  />
+              )
+            }
+          </div>
+          <div>
+            <h1>Teste</h1>
+          </div>
+        </SwipeableViews>
         <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
