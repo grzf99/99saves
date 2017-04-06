@@ -1,5 +1,9 @@
 import Document, { Head, Main, NextScript } from 'next/document';
+import { injectGlobal } from 'styled-components';
 import styleSheet from 'styled-components/lib/models/StyleSheet';
+import reset from '../components/common/reset';
+
+injectGlobal`${reset}`;
 
 export default class MyDocument extends Document {
   static async getInitialProps({ renderPage }) {
@@ -14,7 +18,10 @@ export default class MyDocument extends Document {
     return (
       <html lang="pt-BR">
         <Head>
-          <title>My page</title>
+          <title>99saves</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/css?family=Oswald:400,500" rel="stylesheet" />
         </Head>
         <body>
           <Main />
