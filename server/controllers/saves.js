@@ -1,12 +1,21 @@
 const Save = require('../models').Save;
 
 module.exports = {
+  create(req, res) {
+    return Save
+      .create(req.body)
+      .then(todo => res.status(201).send(todo))
+      .catch(error => res.status(400).send(error));
+  },
+
   list(req, res) {
     return Save
-      .findAll({
+      .findAndCountAll({
         order: [
-          ['createdAt', 'DESC']
-        ]
+          ['date_end', 'ASC']
+        ],
+        offset: req.query.offset,
+        limit: req.query.limit
       })
       .then(saves => res.status(200).send(saves))
       .catch(error => res.status(400).send(error));
