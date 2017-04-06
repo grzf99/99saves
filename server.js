@@ -25,12 +25,27 @@ passport.deserializeUser((obj, cb) => {
   cb(null, obj);
 });
 
+Object.keys(passportStrategies).forEach((strategy) => {
+  passport.use(strategy, passportStrategies[strategy]);
+});
+
+passport.serializeUser((user, cb) => {
+  cb(null, user);
+});
+
+passport.deserializeUser((obj, cb) => {
+  cb(null, obj);
+});
+
 app.prepare()
 .then(() => {
   const server = express();
   server.use(logger('dev'));
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: true }));
+
+  server.use(passport.initialize());
+  server.use(passport.session());
 
   server.use(passport.initialize());
   server.use(passport.session());
