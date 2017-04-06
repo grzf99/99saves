@@ -14,6 +14,7 @@ const Card = styled.div`
 const Header = styled.div`
   background: ${colors.white};
   padding-top: 24px;
+  min-height: 258px;
 `;
 
 const Gradient = styled.div`
