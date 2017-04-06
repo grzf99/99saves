@@ -24,6 +24,7 @@ const Button = styled.a`
   border-radius: 2px;
   color: ${colors.white};
   font-family: Roboto, sans-serif;
+  font-weight: 500;
   font-size: 12px;
   text-align: center;
   text-transform: uppercase;
