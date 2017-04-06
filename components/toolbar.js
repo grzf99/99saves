@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import srcSet from '../utils/srcSet';
 import { colors } from './styles/variables';
 import Button from './common/button';
 
@@ -17,7 +18,7 @@ const Logo = styled.img`
 
 export default () => (
   <Toolbar>
-    <Logo src="http://placehold.it/90x30" alt="99saves" />
+    <Logo src="/static/images/logo-99-saves.png" srcSet={srcSet('logo-99-saves.png')} alt="99saves" />
     <Button small outline>login</Button>
   </Toolbar>
 );
