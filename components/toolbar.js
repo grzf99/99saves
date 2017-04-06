@@ -16,9 +16,11 @@ const Logo = styled.img`
   margin-left: 5px;
 `;
 
-export default () => (
+export default props => (
   <Toolbar>
     <Logo src="/static/images/logo-99-saves.png" srcSet={srcSet('logo-99-saves.png')} alt="99saves" />
-    <Button small outline>login</Button>
+    {
+      !props.logged && <Button small outline onClick={props.login}>login</Button>
+    }
   </Toolbar>
 );
