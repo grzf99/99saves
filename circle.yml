@@ -2,6 +2,6 @@ deployment:
   staging:
     branch: master
     commands:
+      - "[[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow"
       - heroku pg:backups capture --app saves99
-      - git push git@heroku.com:saves99.git $CIRCLE_SHA1:master
-      - heroku run sequelize db:migrate --app saves99
+      - git push git@heroku.com:saves99.git $CIRCLE_SHA1:refs/heads/master
