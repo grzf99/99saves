@@ -1,12 +1,12 @@
+import React from 'react';
 import styled from 'styled-components';
 import { colors } from './styles/variables';
 import Button from './common/button';
 import Image from './common/image';
-import { Heading, Paragraph } from './common/typography';
+import { Heading, Text, SmallText } from './common/typography';
 
 const Card = styled.div`
   background: ${colors.black};
-  min-height: 350px;
   padding-bottom: 24px;
   text-align: center;
 `;
@@ -14,7 +14,6 @@ const Card = styled.div`
 const Header = styled.div`
   background: ${colors.white};
   padding-top: 24px;
-  min-height: 258px;
 `;
 
 const Gradient = styled.div`
@@ -34,18 +33,32 @@ const Info = styled.div`
   }
 `;
 
-export default (props) => (
-  <Card>
-    <Header>
-      <Image src={props.image_default} alt={props.title} />
-      <Gradient>
-        <Paragraph small>imagem meramente ilustrativa</Paragraph>
-        <Heading>{props.title}</Heading>
-      </Gradient>
-    </Header>
-    <Info>
-      <Paragraph>{props.description}</Paragraph>
-      <Button block>Negocie isto pra mim</Button>
-    </Info>
-  </Card>
-);
+export default class extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleSave = this.handleSave.bind(this);
+  }
+
+  handleSave() {
+    if (!this.props.logged) this.props.openLoginModal();
+  }
+
+  render() {
+    return (
+      <Card>
+        <Header>
+          <Image src={this.props.image_default} alt={this.props.title} />
+          <Gradient>
+            <SmallText>imagem meramente ilustrativa</SmallText>
+            <Heading white>{this.props.title}</Heading>
+          </Gradient>
+        </Header>
+        <Info>
+          <Text white>{this.props.description}</Text>
+          <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>
+        </Info>
+      </Card>
+    );
+  }
+}
