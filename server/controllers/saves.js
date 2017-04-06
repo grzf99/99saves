@@ -8,6 +8,17 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
+  update(req, res) {
+    return Save
+      .update(req.body, {
+        where: {
+          id: req.params.id
+        }
+      })
+      .then(save => res.status(200).send(save))
+      .catch(error => res.status(400).send(error));
+  },
+
   list(req, res) {
     return Save
       .findAndCountAll({
