@@ -1,0 +1,7 @@
+deployment:
+  staging:
+    branch: master
+    commands:
+      - heroku pg:backups capture --app saves99
+      - git push git@heroku.com:saves99.git $CIRCLE_SHA1:master
+      - heroku run sequelize db:migrate --app saves99
