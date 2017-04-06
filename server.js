@@ -6,6 +6,7 @@ const passport = require('passport');
 
 const apiRoutes = require('./server/routes');
 const passportStrategies = require('./server/strategies');
+const User = require('./server/models').User;
 // const renderAndCache = require('./utils').renderAndCache;
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -17,24 +18,14 @@ Object.keys(passportStrategies).forEach((strategy) => {
   passport.use(strategy, passportStrategies[strategy]);
 });
 
-passport.serializeUser((user, cb) => {
-  cb(null, user);
+passport.serializeUser((user, done) => {
+  done(null, user.id);
 });
 
-passport.deserializeUser((obj, cb) => {
-  cb(null, obj);
-});
-
-Object.keys(passportStrategies).forEach((strategy) => {
-  passport.use(strategy, passportStrategies[strategy]);
-});
-
-passport.serializeUser((user, cb) => {
-  cb(null, user);
-});
-
-passport.deserializeUser((obj, cb) => {
-  cb(null, obj);
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
 });
 
 app.prepare()
