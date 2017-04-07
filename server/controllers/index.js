@@ -1,9 +1,9 @@
-const todos = require('./todos');
 const saves = require('./saves');
 const users = require('./users');
+const subscriptions = require('./subscriptions');
 
 module.exports = {
-  todos,
   saves,
-  users
+  users,
+  subscriptions
 };

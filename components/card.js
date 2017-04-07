@@ -42,6 +42,7 @@ export default class extends React.Component {
 
   handleSave() {
     if (!this.props.logged) this.props.openLoginModal();
+    else this.props.handleSubscribe();
   }
 
   render() {
@@ -56,7 +57,11 @@ export default class extends React.Component {
         </Header>
         <Info>
           <Text white>{this.props.description}</Text>
-          <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>
+          {
+            this.props.hasSubscribed
+              ? <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>
+              : <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>
+          }
         </Info>
       </Card>
     );
