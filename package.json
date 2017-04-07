@@ -40,6 +40,7 @@
     "react-addons-test-utils": "^15.4.2",
     "react-bootstrap": "^0.30.8",
     "react-dom": "^15.4.2",
+    "react-maskedinput": "^3.3.4",
     "react-no-ssr": "^1.1.0",
     "react-test-renderer": "^15.4.2",
     "sequelize": "^3.30.4",
