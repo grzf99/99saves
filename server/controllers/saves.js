@@ -1,6 +1,6 @@
 const sequelize = require('sequelize');
 const Save = require('../models').Save;
-// const Subscription = require('../models').Subscription;
+const Subscription = require('../models').Subscription;
 
 module.exports = {
   create(req, res) {
@@ -11,32 +11,39 @@ module.exports = {
   },
 
   list(req, res) {
-    const attributes = [
-      ...Object.keys(Save.attributes),
-      ...(
-        req.user ? [[
-          sequelize.literal(`(
-            SELECT
-              COUNT("Subscriptions"."id")
-              FROM "Subscriptions"
-              WHERE "Subscriptions"."SaveId" = "Save"."id"
-              AND "Subscriptions"."UserId" = ${req.user.id}
-          )`),
-          'hasSubscribed'
-        ]] : []
-      )
-    ];
+    const query = {
+      order: [
+        ['date_end', 'ASC']
+      ],
+      offset: req.query.offset,
+      limit: req.query.limit
+    };
+
+    if (req.user) {
+      query.include = [{
+        model: Subscription,
+        where: {
+          UserId: req.user.id
+        },
+        required: !!req.query.hasSubscribed
+      }];
+    }
 
     return Save
-      .findAndCountAll({
-        order: [
-          ['date_end', 'ASC']
-        ],
-        offset: req.query.offset,
-        limit: req.query.limit,
-        attributes
+      .findAndCountAll(query)
+      .then(({ count, rows }) => {
+        const saves = {
+          count,
+          rows: rows.map((row) => {
+            const save = row.toJSON();
+            if (req.user) save.hasSubscribed = save.Subscriptions.length > 0;
+            delete save.Subscriptions;
+            return save;
+          })
+        };
+
+        res.status(200).send(saves);
       })
-      .then(saves => res.status(200).send(saves))
       .catch(error => res.status(400).send(error));
   }
 };

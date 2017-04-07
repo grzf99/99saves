@@ -6,7 +6,8 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        Subscription.belongsTo(models.Save);
+        Subscription.belongsTo(models.User);
       }
     }
   });

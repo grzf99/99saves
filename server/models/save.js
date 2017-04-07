@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: (models) => {
-        Save.belongsToMany(models.User, { through: 'Subscription' });
+        Save.hasMany(models.Subscription);
       }
     }
   });
