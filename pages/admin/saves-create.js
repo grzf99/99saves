@@ -29,13 +29,6 @@ export default class extends React.Component {
     };
   }
 
-  static async getInitialProps() {
-    // eslint-disable-next-line no-undef
-    const res = await fetch(`${config.API_URL}/todos`);
-    const json = await res.json();
-    return { json};
-  }
-
   handleSave = (event) => {
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
@@ -89,12 +82,10 @@ export default class extends React.Component {
         const rest = axios.post(`${config.API_URL}/saves`, values)
         .then(function (response) {
           console.log(response);
-          Router.push('/admin');
+          Router.push('/admin/saves');
         })
         .catch(function (error) {
           console.log(error);
-          //redirect page
-          Router.push('/admin');
         });
         
       }}

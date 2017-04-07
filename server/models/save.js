@@ -7,6 +7,13 @@ module.exports = (sequelize, DataTypes) => {
     image3: DataTypes.STRING,
     date_start: DataTypes.DATE,
     date_end: DataTypes.DATE
+  }, {
+    classMethods: {
+      associate: (models) => {
+        Save.hasMany(models.Subscription);
+      }
+    }
   });
+
   return Save;
 };

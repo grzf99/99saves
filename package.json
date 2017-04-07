@@ -32,7 +32,9 @@
     "logger": "^0.0.1",
     "lru-cache": "^4.0.2",
     "morgan": "^1.8.1",
-    "next": "2.0.0",
+    "next": "^2.0.0",
+    "passport": "^0.3.2",
+    "passport-facebook-token": "^3.3.0",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
     "polished": "^1.0.1",
@@ -46,11 +48,12 @@
     "sequelize": "^3.30.4",
     "sequelize-cli": "^2.7.0",
     "styled-components": "^1.4.4",
-    "superagent": "^3.5.2"
-  },
-  "devDependencies": {
+    "superagent": "^3.5.2",
     "axios": "^0.16.0",
     "nodemon": "^1.11.0",
-    "react-form": "^1.2.6"
-  }
+    "react-form": "^1.2.6",
+    "react-modal": "^1.7.3",
+    "react-swipeable-views": "^0.11.2"
+  },
+  "devDependencies": {}
 }

@@ -19,6 +19,11 @@ const blockStyles = css`
   padding: 10px 24px;
 `;
 
+const disabledStyles = css`
+  background: ${colors.darkGreen};
+  color: ${colors.gray};
+`;
+
 const Button = styled.a`
   background: ${colors.green};
   border-radius: 2px;
@@ -32,6 +37,7 @@ const Button = styled.a`
   ${props => props.block ? blockStyles : ''}
   ${props => props.small ? smallStyles : ''}
   ${props => props.outline ? outlineStyles : ''}
+  ${props => props.disabled ? disabledStyles: ''}
 `;
 
 export default Button;
