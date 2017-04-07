@@ -52,7 +52,6 @@ const modalStyles = {
 
 export default class extends React.Component {
   static async getInitialProps() {
-    // eslint-disable-next-line no-undef
     const res = await fetch(`${config.API_URL}/saves`);
     const saves = await res.json();
     return { saves };
@@ -71,7 +70,8 @@ export default class extends React.Component {
         count: 0,
         rows: []
       },
-      accessToken: ''
+      accessToken: '',
+      subscribeTo: 0
     };
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -79,27 +79,45 @@ export default class extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.reloadSaves = this.reloadSaves.bind(this);
+    this.handleSubscribe = this.handleSubscribe.bind(this);
   }
 
-  handleLogin() {
+  handleLogin(subscribeTo) {
     FB.login((res) => {
-      // eslint-disable-next-line no-undef
       fetch(`${config.API_URL}/auth/facebook?access_token=${res.authResponse.accessToken}`)
         .then(user => user.json())
+        .then((user) => {
+          return (subscribeTo ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken) : Promise.resolve()).then(() => user)
+        })
         .then(({ user }) => {
           this.setState({
             user,
             logged: true,
             modalIsOpen: false,
-            accessToken: res.authResponse.accessToken
+            accessToken: res.authResponse.accessToken,
+            subscribeTo: 0
           });
           this.reloadSaves();
         });
     }, { scope: 'email' });
   }
 
-  openModal() {
-    this.setState({ modalIsOpen: true });
+  handleSubscribe(subscribeTo, accessToken) {
+    return fetch(
+      `${config.API_URL}/saves/${subscribeTo}/subscriptions?access_token=${accessToken || this.state.accessToken}`,
+      { method: 'POST' }
+    ).then(() => {
+      const rows = [...this.state.saves.rows].map((row) => {
+        const save = row;
+        if (save.id === subscribeTo) save.hasSubscribed = true;
+        return save;
+      });
+      this.setState({ saves: { count: rows.length, rows } });
+    });
+  }
+
+  openModal(subscribeTo) {
+    this.setState({ modalIsOpen: true, subscribeTo });
   }
 
   closeModal() {
@@ -111,17 +129,11 @@ export default class extends React.Component {
   }
 
   reloadSaves() {
-    // eslint-disable-next-line no-undef
     fetch(`${config.API_URL}/saves?access_token=${this.state.accessToken}`)
         .then(saves => saves.json())
         .then((saves) => {
-          const subscriptions = saves.rows.filter(save => save.hasSubscribed);
           this.setState({
-            saves,
-            subscriptions: {
-              count: subscriptions.length,
-              rows: subscriptions
-            }
+            saves
           });
         });
   }
@@ -129,7 +141,7 @@ export default class extends React.Component {
   render() {
     return (
       <div>
-        <Toolbar login={this.handleLogin} logged={this.state.logged} />
+        <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
         {
           this.state.logged && (
             <Tabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
@@ -152,7 +164,8 @@ export default class extends React.Component {
                     {...save}
                     key={save.id}
                     logged={this.state.logged}
-                    openLoginModal={this.openModal}
+                    openLoginModal={() => this.openModal(save.id)}
+                    handleSubscribe={() => this.handleSubscribe(save.id)}
                   />
               )
             }
@@ -160,13 +173,14 @@ export default class extends React.Component {
 
           <div>
             {
-              this.state.subscriptions.rows && this.state.subscriptions.rows.map(
+              this.state.saves.rows && this.state.saves.rows.filter(save => save.hasSubscribed).map(
                 save =>
                   <Card
                     {...save}
                     key={save.id}
                     logged={this.state.logged}
-                    openLoginModal={this.openModal}
+                    openLoginModal={() => this.openModal(save.id)}
+                    handleSubscribe={() => this.handleSubscribe(save.id)}
                   />
               )
             }
@@ -184,7 +198,7 @@ export default class extends React.Component {
             <ModalText>
               Entre com o Facebook e receba as atualizações das negociações desse produto.
             </ModalText>
-            <FacebookButton block onClick={this.handleLogin}>Entrar com o Facebook</FacebookButton>
+            <FacebookButton block onClick={() => this.handleLogin(this.state.subscribeTo)}>Entrar com o Facebook</FacebookButton>
           </ModalContent>
         </Modal>
       </div>
