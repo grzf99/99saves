@@ -82,24 +82,46 @@ export default class extends React.Component {
     this.handleSubscribe = this.handleSubscribe.bind(this);
   }
 
-  handleLogin(subscribeTo) {
-    FB.login((res) => {
-      fetch(`${config.API_URL}/auth/facebook?access_token=${res.authResponse.accessToken}`)
-        .then(user => user.json())
-        .then((user) => {
-          return (subscribeTo ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken) : Promise.resolve()).then(() => user)
-        })
-        .then(({ user }) => {
-          this.setState({
-            user,
-            logged: true,
-            modalIsOpen: false,
-            accessToken: res.authResponse.accessToken,
-            subscribeTo: 0
-          });
-          this.reloadSaves();
+  componentDidMount() {
+    const accessToken = window.localStorage.getItem('accessToken');
+    if (accessToken) this.authenticate(accessToken);
+  }
+
+  loginWithFacebook() {
+    return new Promise((resolve) => {
+      FB.login((res) => {
+        window.localStorage.setItem('accessToken', res.authResponse.accessToken);
+        resolve(res);
+      }, { scope: 'email' });
+    });
+  }
+
+  authenticate(accessToken, subscribeTo) {
+    fetch(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
+      .then(user => user.json())
+      .then((user) => {
+        const handleSubscribeIfNecessary = subscribeTo
+          ? this.handleSubscribe(subscribeTo, accessToken)
+          : Promise.resolve();
+        return handleSubscribeIfNecessary.then(() => user);
+      })
+      .then(({ user }) => {
+        this.setState({
+          user,
+          logged: true,
+          modalIsOpen: false,
+          subscribeTo: 0,
+          accessToken
         });
-    }, { scope: 'email' });
+        this.reloadSaves();
+      });
+  }
+
+  handleLogin(subscribeTo) {
+    this.loginWithFacebook()
+      .then((res) => {
+        this.authenticate(res.authResponse.accessToken, subscribeTo);
+      });
   }
 
   handleSubscribe(subscribeTo, accessToken) {
