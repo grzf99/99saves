@@ -10,6 +10,7 @@ import { Form, Text, Textarea } from 'react-form';
 import MaskedInput from 'react-maskedinput';
 import axios from 'axios';
 import request from 'superagent';
+import Router from 'next/router';
 
 const Title = styled.h1`
   color: red;
@@ -74,7 +75,7 @@ export default class extends React.Component {
 
   myForm = (
     <Form
-      onSubmit={(values) => {
+      onSubmit={(values, redirectPage) => {
         console.log(this.state);
         if(this.state.image_default) values.image_default = this.state.image_default;
         var dt_end = this.state.date_start.split("/");
@@ -85,12 +86,15 @@ export default class extends React.Component {
         if(this.state.date_end) values.date_end = [dt_end[1], dt_end[0], dt_end[2]].join('-');
         console.log(values);
 
-        const rest = axios.post(`${config.API_URL}/saves`, values)
+        const rest = axios.post(`${config.API_URL}/saves`, values);
         .then(function (response) {
           console.log(response);
+          Router.push('/admin');
         })
         .catch(function (error) {
           console.log(error);
+          //redirect page
+          Router.push('/admin');
         });
         
       }}
