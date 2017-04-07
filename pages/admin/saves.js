@@ -8,7 +8,6 @@ import Layout from '../../components/admin/layout';
 
 import { Form, Text, Textarea } from 'react-form';
 import MaskedInput from 'react-maskedinput';
-import moment from 'moment';
 import axios from 'axios';
 
 const Title = styled.h1`
@@ -62,7 +61,7 @@ export default class extends React.Component {
 
         if(this.state.date_end) values.date_end = [dt_end[1], dt_end[0], dt_end[2]].join('-');
         console.log(values);
-        
+
         const rest = axios.post(`${config.API_URL}/saves`, values)
         .then(function (response) {
           console.log(response);
