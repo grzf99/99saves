@@ -61,12 +61,24 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { user: {}, logged: false, modalIsOpen: false, activeTab: 0 };
+    this.state = {
+      user: {},
+      logged: false,
+      modalIsOpen: false,
+      activeTab: 0,
+      saves: props.saves,
+      subscriptions: {
+        count: 0,
+        rows: []
+      },
+      accessToken: ''
+    };
 
     this.handleLogin = this.handleLogin.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
+    this.reloadSaves = this.reloadSaves.bind(this);
   }
 
   handleLogin() {
@@ -75,7 +87,13 @@ export default class extends React.Component {
       fetch(`${config.API_URL}/auth/facebook?access_token=${res.authResponse.accessToken}`)
         .then(user => user.json())
         .then(({ user }) => {
-          this.setState({ user, logged: true, modalIsOpen: false });
+          this.setState({
+            user,
+            logged: true,
+            modalIsOpen: false,
+            accessToken: res.authResponse.accessToken
+          });
+          this.reloadSaves();
         });
     }, { scope: 'email' });
   }
@@ -92,8 +110,23 @@ export default class extends React.Component {
     this.setState({ activeTab: tabIndex });
   }
 
+  reloadSaves() {
+    // eslint-disable-next-line no-undef
+    fetch(`${config.API_URL}/saves?access_token=${this.state.accessToken}`)
+        .then(saves => saves.json())
+        .then((saves) => {
+          const subscriptions = saves.rows.filter(save => save.hasSubscribed);
+          this.setState({
+            saves,
+            subscriptions: {
+              count: subscriptions.length,
+              rows: subscriptions
+            }
+          });
+        });
+  }
+
   render() {
-    // console.log();
     return (
       <div>
         <Toolbar login={this.handleLogin} logged={this.state.logged} />
@@ -105,6 +138,7 @@ export default class extends React.Component {
             </Tabs>
           )
         }
+
         <SwipeableViews
           disabled={!this.state.logged}
           index={this.state.activeTab}
@@ -112,7 +146,7 @@ export default class extends React.Component {
         >
           <div>
             {
-              this.props.saves.rows.map(
+              this.state.saves.rows.map(
                 save =>
                   <Card
                     {...save}
@@ -123,10 +157,22 @@ export default class extends React.Component {
               )
             }
           </div>
+
           <div>
-            <h1>Teste</h1>
+            {
+              this.state.subscriptions.rows && this.state.subscriptions.rows.map(
+                save =>
+                  <Card
+                    {...save}
+                    key={save.id}
+                    logged={this.state.logged}
+                    openLoginModal={this.openModal}
+                  />
+              )
+            }
           </div>
         </SwipeableViews>
+
         <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
