@@ -6,7 +6,10 @@ const subscriptionsController = require('../controllers').subscriptions;
 const router = express.Router();
 
 router.post('/', savesController.create);
-router.get('/', savesController.list);
+router.get('/', (req, res, next) => {
+  if (req.query.access_token) passport.authenticate('facebook-token')(req, res, next);
+  else next();
+}, savesController.list);
 router.post('/:saveId/subscriptions', passport.authenticate('facebook-token'), subscriptionsController.create);
 
 module.exports = router;
