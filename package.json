@@ -45,7 +45,8 @@
     "react-test-renderer": "^15.4.2",
     "sequelize": "^3.30.4",
     "sequelize-cli": "^2.7.0",
-    "styled-components": "^1.4.4"
+    "styled-components": "^1.4.4",
+    "superagent": "^3.5.2"
   },
   "devDependencies": {
     "axios": "^0.16.0",
