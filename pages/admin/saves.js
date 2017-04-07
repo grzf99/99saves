@@ -9,11 +9,15 @@ import Layout from '../../components/admin/layout';
 import { Form, Text, Textarea } from 'react-form';
 import MaskedInput from 'react-maskedinput';
 import axios from 'axios';
+import request from 'superagent';
 
 const Title = styled.h1`
   color: red;
   font-size: ${modularScale(1)};
 `;
+
+const CLOUDINARY_UPLOAD_PRESET = 'k0xbougu';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/kevinsoul/upload';
 
 export default class extends React.Component {
   constructor(props) {
@@ -32,9 +36,7 @@ export default class extends React.Component {
   }
 
   handleSave = (event) => {
-    event.preventDefault();
-    const img = event.target.files[0].name || '';
-    this.setState({image_default: img})
+    this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
   handleDateChange = (date) => {
@@ -47,6 +49,27 @@ export default class extends React.Component {
     var stateChange = {}
     stateChange[e.target.name] = e.target.value;
     this.setState(stateChange);
+  }
+
+  handleImageUpload(file, name) {
+    var imageChange = {};
+    let upload = request.post(CLOUDINARY_UPLOAD_URL)
+                     .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+                     .field('file', file);
+
+    upload.end((err, response) => {
+      if (err) {
+        console.error(err);
+      }
+
+      if (response.body.secure_url !== '') {
+        console.log(name);
+        console.log(response.body.secure_url);
+        imageChange[name] = response.body.secure_url;
+        this.setState(imageChange);
+        console.log(this.state);
+      }
+    });
   }
 
   myForm = (
@@ -112,7 +135,7 @@ export default class extends React.Component {
             <div className="form-group has-feedback  col-sm-12">
               <label className="control-label">Imagem de destaque</label>
               <div className="controls">
-                <input type='file' name='default_image' className="form-control" onChange={this.handleSave} />
+                <input type='file' name='image_default' className="form-control" onChange={this.handleSave} />
               </div>
             </div>
 
