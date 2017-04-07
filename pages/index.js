@@ -82,24 +82,41 @@ export default class extends React.Component {
     this.handleSubscribe = this.handleSubscribe.bind(this);
   }
 
-  handleLogin(subscribeTo) {
-    FB.login((res) => {
-      fetch(`${config.API_URL}/auth/facebook?access_token=${res.authResponse.accessToken}`)
-        .then(user => user.json())
-        .then((user) => {
-          return (subscribeTo ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken) : Promise.resolve()).then(() => user)
-        })
-        .then(({ user }) => {
-          this.setState({
-            user,
-            logged: true,
-            modalIsOpen: false,
-            accessToken: res.authResponse.accessToken,
-            subscribeTo: 0
-          });
-          this.reloadSaves();
+  componentDidMount() {
+    const accessToken = window.localStorage.getItem('accessToken');
+    if (accessToken) this.authenticate(accessToken).then(this.reloadSaves);
+  }
+
+  loginWithFacebook() {
+    return new Promise((resolve) => {
+      FB.login((res) => {
+        window.localStorage.setItem('accessToken', res.authResponse.accessToken);
+        resolve(res);
+      }, { scope: 'email' });
+    });
+  }
+
+  authenticate(accessToken) {
+    return fetch(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
+      .then(user => user.json())
+      .then(({ user }) => {
+        this.setState({
+          user,
+          logged: true,
+          modalIsOpen: false,
+          subscribeTo: 0,
+          accessToken
         });
-    }, { scope: 'email' });
+      });
+  }
+
+  handleLogin(subscribeTo) {
+    this.loginWithFacebook()
+      .then(res => this.authenticate(res.authResponse.accessToken).then(subscribeTo
+        ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken)
+        : Promise.resolve()
+      ))
+      .then(this.reloadSaves);
   }
 
   handleSubscribe(subscribeTo, accessToken) {
