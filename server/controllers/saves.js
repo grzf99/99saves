@@ -30,5 +30,16 @@ module.exports = {
       })
       .then(saves => res.status(200).send(saves))
       .catch(error => res.status(400).send(error));
+  },
+
+  delete(req, res) {
+    return Save
+      .destroy({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then(saves => res.status(200).send(saves))
+      .catch(error => res.status(400).send(error));
   }
 };
