@@ -155,6 +155,7 @@ export default class extends React.Component {
           disabled={!this.state.logged}
           index={this.state.activeTab}
           onChangeIndex={this.handleChangeIndex}
+          animateHeight
         >
           <div>
             {
