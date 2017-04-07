@@ -11,5 +11,7 @@ router.get('/', (req, res, next) => {
   else next();
 }, savesController.list);
 router.post('/:saveId/subscriptions', passport.authenticate('facebook-token'), subscriptionsController.create);
+router.put('/:id', savesController.update);
+router.delete('/:id', savesController.delete);
 
 module.exports = router;

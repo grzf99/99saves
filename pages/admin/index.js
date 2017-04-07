@@ -12,12 +12,6 @@ const Title = styled.h1`
 `;
 
 export default class extends React.Component {
-  static async getInitialProps() {
-    // eslint-disable-next-line no-undef
-    const res = await fetch(`${config.API_URL}/todos`);
-    const json = await res.json();
-    return { json };
-  }
 
   render() {
     console.log(this.props.json);

@@ -5,7 +5,7 @@ export default () => (
         <button type="button" className="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span className="icon-toggle" />
         </button>
-        <a className="navbar-brand" href="#/">Aplication</a>
+        <a className="navbar-brand" href="#/">99saves</a>
       </div>
       <div className="navbar-collapse collapse">
         <ul className="nav navbar-nav navbar-right">
