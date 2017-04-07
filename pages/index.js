@@ -84,7 +84,7 @@ export default class extends React.Component {
 
   componentDidMount() {
     const accessToken = window.localStorage.getItem('accessToken');
-    if (accessToken) this.authenticate(accessToken);
+    if (accessToken) this.authenticate(accessToken).then(this.reloadSaves);
   }
 
   loginWithFacebook() {
@@ -96,15 +96,9 @@ export default class extends React.Component {
     });
   }
 
-  authenticate(accessToken, subscribeTo) {
-    fetch(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
+  authenticate(accessToken) {
+    return fetch(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
       .then(user => user.json())
-      .then((user) => {
-        const handleSubscribeIfNecessary = subscribeTo
-          ? this.handleSubscribe(subscribeTo, accessToken)
-          : Promise.resolve();
-        return handleSubscribeIfNecessary.then(() => user);
-      })
       .then(({ user }) => {
         this.setState({
           user,
@@ -113,15 +107,16 @@ export default class extends React.Component {
           subscribeTo: 0,
           accessToken
         });
-        this.reloadSaves();
       });
   }
 
   handleLogin(subscribeTo) {
     this.loginWithFacebook()
-      .then((res) => {
-        this.authenticate(res.authResponse.accessToken, subscribeTo);
-      });
+      .then(res => this.authenticate(res.authResponse.accessToken).then(subscribeTo
+        ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken)
+        : Promise.resolve()
+      ))
+      .then(this.reloadSaves);
   }
 
   handleSubscribe(subscribeTo, accessToken) {
