@@ -50,7 +50,6 @@
   "devDependencies": {
     "axios": "^0.16.0",
     "nodemon": "^1.11.0",
-    "react-datepicker": "^0.44.0",
     "react-form": "^1.2.6"
   }
 }
