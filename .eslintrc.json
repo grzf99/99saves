@@ -8,6 +8,7 @@
     "react/prop-types": 0
   },
   "globals": {
-    "FB": true
+    "FB": true,
+    "fetch": true
   }
 }
