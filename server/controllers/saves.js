@@ -25,7 +25,7 @@ module.exports = {
         where: {
           UserId: req.user.id
         },
-        required: !!req.query.hasSubscribed
+        required: false
       }];
     }
 
