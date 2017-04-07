@@ -55,9 +55,14 @@ export default class extends React.Component {
       onSubmit={(values) => {
         console.log(this.state);
         if(this.state.image_default) values.image_default = this.state.image_default;
-        if(this.state.date_start) values.date_start = moment().format(this.state.date_start, 'mm-dd-yyyy');
-        if(this.state.end) values.date_end = moment().format(this.state.date_end, 'mm-dd-yyyy');
+        var dt_end = this.state.date_start.split("/");
+
+        if(this.state.date_start) values.date_start = [dt_end[1], dt_end[0], dt_end[2]].join('-')
+        var dt_end = this.state.date_end.split("/");
+
+        if(this.state.date_end) values.date_end = [dt_end[1], dt_end[0], dt_end[2]].join('-');
         console.log(values);
+        
         const rest = axios.post(`${config.API_URL}/saves`, values)
         .then(function (response) {
           console.log(response);
@@ -91,7 +96,7 @@ export default class extends React.Component {
             </div>
 
             <div className="form-group has-feedback col-sm-6">
-              <label className="control-label">Data finalização' do save</label>
+              <label className="control-label">Data finalização do save</label>
               <div className="controls">
                 <div className="controls">
                   <MaskedInput mask="11/11/1111" className="form-control" name="date_end" placeholder="dd/mm/yyyy" onChange={this._onChange}/>
