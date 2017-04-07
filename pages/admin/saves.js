@@ -9,7 +9,6 @@ import Line from '../../components/admin/line';
 import Link from 'next/link';
 
 export default class extends React.Component {
-
   static async getInitialProps() {
     // eslint-disable-next-line no-undef
     const res = await fetch(`${config.API_URL}/saves`);
@@ -29,8 +28,6 @@ export default class extends React.Component {
             <th>Description</th>
             <th>Data Início</th>
             <th>Data Término</th>
-            <th> </th>
-            <th> </th>
           </tr>
         </thead>
         <tbody>
@@ -50,7 +47,7 @@ export default class extends React.Component {
             <div className="panel panel-default">
               <div className="panel-heading">
                 <span className="panel-title">Lista de Saves</span>
-                <Link prefetch href='/admin/saves-create'><a className="btn btn-small btn-primary pull-right">Novo</a></Link>
+                <Link prefetch href='/admin/saves-create'><a className="btn btn-xs btn-primary pull-right">Novo</a></Link>
               </div>
 
               <div className="panel-body">

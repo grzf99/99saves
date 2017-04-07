@@ -9,11 +9,11 @@ export default (props) => (
     <td>{ props.description }</td>
     <td>{ (props.date_start) ? moment(props.date_start).format('DD/MM/YYYY') : ""}</td>
     <td>{ (props.date_end) ?  moment(props.date_end).format('DD/MM/YYYY') : ""}</td>
-    <td>
+    {/*<td>
       <Link prefetch href='/admin/saves-create'><a className="">Editar</a></Link>
     </td>
     <td>
-      <Link prefetch href='/admin/saves-exlcud'><a className="">Excluir</a></Link>
-    </td>
+      <button alt={props.id} className="" onClick={() => props.handleDelete}>Excluir</button>
+    </td>*/}
   </tr>
 );
