@@ -176,7 +176,7 @@ export default class extends React.Component {
         >
           <div>
             {
-              this.state.saves.rows.map(
+              this.state.saves.rows && this.state.saves.rows.map(
                 save =>
                   <Card
                     {...save}
