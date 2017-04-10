@@ -12,6 +12,7 @@ import Toolbar from '../components/toolbar';
 import Card from '../components/card';
 import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
+import Toast from '../components/common/toast';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -88,7 +89,8 @@ export default class extends React.Component {
         rows: []
       },
       accessToken: '',
-      subscribeTo: 0
+      subscribeTo: 0,
+      showToast: false
     };
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -146,7 +148,8 @@ export default class extends React.Component {
         if (save.id === subscribeTo) save.hasSubscribed = true;
         return save;
       });
-      this.setState({ saves: { count: rows.length, rows } });
+      this.setState({ saves: { count: rows.length, rows }, showToast: true });
+      setTimeout(() => this.setState({ showToast: false }), 4000);
     });
   }
 
@@ -193,7 +196,7 @@ export default class extends React.Component {
         >
           <div>
             {
-              this.state.saves.rows.map(
+              this.state.saves.rows && this.state.saves.rows.map(
                 save =>
                   <Card
                     {...save}
@@ -246,6 +249,10 @@ export default class extends React.Component {
             <FacebookButton block onClick={() => this.handleLogin(this.state.subscribeTo)}>Entrar com o Facebook</FacebookButton>
           </ModalContent>
         </Modal>
+
+        <Toast show={this.state.showToast}>
+          Você receberá um email com atualizações sobre esta negociação.
+        </Toast>
       </Page>
     );
   }

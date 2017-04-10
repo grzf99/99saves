@@ -28,7 +28,8 @@ const Button = styled.a`
   border-radius: 2px;
   color: ${colors.white};
   display: inline-block;
-  font-family: Roboto, sans-serif;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
   font-weight: 500;
   font-size: 12px;
   padding: 10px 24px;
