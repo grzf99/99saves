@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import srcSet from '../utils/srcSet';
 import { colors } from './styles/variables';
 import Button from './common/button';
 
@@ -18,7 +17,7 @@ const Logo = styled.img`
 
 export default props => (
   <Toolbar>
-    <Logo src="/static/images/logo-99-saves.png" srcSet={srcSet('logo-99-saves.png')} alt="99saves" />
+    <Logo src="/static/images/logo-99-saves.svg" alt="99saves" />
     {
       !props.logged && <Button small outline onClick={props.login}>login</Button>
     }
