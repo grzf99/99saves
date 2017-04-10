@@ -14,6 +14,23 @@ import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 
+const Page = styled.div`
+  background: ${colors.black};
+`;
+
+const BlankState = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 100px);
+  padding: 60px 30px;
+  text-align: center;
+
+  > h1 {
+    margin: 0 20px;
+  }
+`;
+
 const ModalContent = styled.div`
   > * + * {
     margin-top: 25px !important;
@@ -160,7 +177,7 @@ export default class extends React.Component {
 
   render() {
     return (
-      <div>
+      <Page>
         <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
         {
           this.state.logged && (
@@ -194,16 +211,26 @@ export default class extends React.Component {
 
           <div>
             {
-              this.state.saves.rows && this.state.saves.rows.filter(save => save.hasSubscribed).map(
-                save =>
-                  <Card
-                    {...save}
-                    key={save.id}
-                    logged={this.state.logged}
-                    openLoginModal={() => this.openModal(save.id)}
-                    handleSubscribe={() => this.handleSubscribe(save.id)}
-                  />
-              )
+              !this.state.saves.rows
+                ? this.state.saves.rows.filter(save => save.hasSubscribed).map(
+                    save =>
+                      <Card
+                        {...save}
+                        key={save.id}
+                        logged={this.state.logged}
+                        openLoginModal={() => this.openModal(save.id)}
+                        handleSubscribe={() => this.handleSubscribe(save.id)}
+                      />
+                  )
+                : (
+                  <BlankState>
+                    <Heading white>Ainda não tem nenhum save???</Heading>
+                    <Text white>O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!</Text>
+                    <div>
+                      <Button outline onClick={() => this.handleChangeIndex(0)}>Ver todos os saves</Button>
+                    </div>
+                  </BlankState>
+                )
             }
           </div>
         </SwipeableViews>
@@ -226,7 +253,7 @@ export default class extends React.Component {
         <Toast show={this.state.showToast}>
           Você receberá um email com atualizações sobre esta negociação.
         </Toast>
-      </div>
+      </Page>
     );
   }
 }

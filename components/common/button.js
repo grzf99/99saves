@@ -16,7 +16,6 @@ const smallStyles = css`
 const blockStyles = css`
   display: block;
   font-weight: 500;
-  padding: 10px 24px;
 `;
 
 const disabledStyles = css`
@@ -28,10 +27,12 @@ const Button = styled.a`
   background: ${colors.green};
   border-radius: 2px;
   color: ${colors.white};
+  display: inline-block;
   cursor: pointer;
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
   font-size: 12px;
+  padding: 10px 24px;
   text-align: center;
   text-transform: uppercase;
 
