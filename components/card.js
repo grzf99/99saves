@@ -7,6 +7,7 @@ import { Heading, Text, SmallText } from './common/typography';
 
 const Card = styled.div`
   background: ${colors.black};
+  min-height: 333px;
   padding-bottom: 24px;
   text-align: center;
 `;
