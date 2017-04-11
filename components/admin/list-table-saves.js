@@ -20,7 +20,7 @@ export default (props) => {
         <td>
           <button
             className="btn btn-xs btn-danger"
-            onClick={() => props.handleDelete()}
+            onClick={() => { if (confirm('Tem certeza que deseja excluir?')) { props.handleDelete(item); } }}
           >Excluir</button>
         </td>
       </tr>
