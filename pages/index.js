@@ -211,7 +211,7 @@ export default class extends React.Component {
 
           <div>
             {
-              !this.state.saves.rows
+              this.state.saves.rows
                 ? this.state.saves.rows.filter(save => save.hasSubscribed).map(
                     save =>
                       <Card
