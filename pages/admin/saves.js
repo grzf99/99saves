@@ -16,6 +16,7 @@ export default class extends React.Component {
     };
 
     this.refresh = this.refresh.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentWillMount() {
@@ -32,6 +33,16 @@ export default class extends React.Component {
         });
   }
 
+  handleDelete(save) {
+    axios.delete(`${config.API_URL}/saves/${save.id}`)
+        .then(() => {
+          this.refresh();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }
+
   render() {
     return (
       <Layout>
@@ -40,11 +51,13 @@ export default class extends React.Component {
             <div className="panel panel-default">
               <div className="panel-heading">
                 <span className="panel-title">Lista de Saves</span>
-                <Link prefetch href='/admin/saves-create'><a className="btn btn-xs btn-primary pull-right">Novo</a></Link>
+                <Link prefetch href="/admin/saves-create">
+                  <a className="btn btn-xs btn-primary pull-right">Novo</a>
+                </Link>
               </div>
 
               <div className="panel-body">
-                <ListTable list={this.state.list} />
+                <ListTable list={this.state.list} handleDelete={this.handleDelete} />
               </div>
             </div>
           </div>
