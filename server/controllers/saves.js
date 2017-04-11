@@ -3,6 +3,17 @@ const Save = require('../models').Save;
 const Subscription = require('../models').Subscription;
 
 module.exports = {
+  show(req, res) {
+    return Save
+      .find({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then(save => res.status(200).send(save))
+      .catch(error => res.status(400).send(error));
+  },
+
   create(req, res) {
     return Save
       .create(req.body)
