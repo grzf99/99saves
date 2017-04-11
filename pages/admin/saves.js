@@ -1,43 +1,36 @@
 import React from 'react';
-import styled from 'styled-components';
-import { modularScale } from 'polished';
 import 'isomorphic-fetch';
+import Link from 'next/link';
+import axios from 'axios';
 
 import config from '../../config';
 import Layout from '../../components/admin/layout';
-import Line from '../../components/admin/line';
-import Link from 'next/link';
+import ListTable from '../../components/admin/list-table-saves';
 
 export default class extends React.Component {
-  static async getInitialProps() {
-    // eslint-disable-next-line no-undef
-    const res = await fetch(`${config.API_URL}/saves`);
-    const json = await res.json();
-    return { json };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      list: []
+    };
+
+    this.refresh = this.refresh.bind(this);
   }
 
+  componentWillMount() {
+    this.refresh();
+  }
 
-  myTable = (
-    <div className="table-responsive">
-      <table className="table table-striped table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Imagem</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Data Início</th>
-            <th>Data Término</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            this.props.json.rows.map(save => <Line {...save} key={save.id} />)
-          }
-        </tbody>
-      </table>
-    </div>
-  )
+  refresh() {
+    axios.get(`${config.API_URL}/saves`)
+        .then((response) => {
+          this.setState({ ...this.state, list: response.data.rows });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }
 
   render() {
     return (
@@ -51,7 +44,7 @@ export default class extends React.Component {
               </div>
 
               <div className="panel-body">
-                { this.myTable }
+                <ListTable list={this.state.list} />
               </div>
             </div>
           </div>
