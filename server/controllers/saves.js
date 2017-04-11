@@ -59,13 +59,12 @@ module.exports = {
   },
 
   delete(req, res) {
-    return Save
-      .destroy({
-        where: {
-          id: req.params.id
-        }
-      })
-      .then(saves => res.status(200).send(saves))
-      .catch(error => res.status(400).send(error));
+    Save.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    .then(deletedRecords => res.status(200).json(deletedRecords))
+    .catch(error => res.status(500).json(error));
   }
 };
