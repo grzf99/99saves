@@ -21,6 +21,8 @@ export default class extends React.Component {
     super(props);
     this.state = {
       image_default: '',
+      image2: '',
+      image3: '',
       startDate: '',
       list: [],
       loading: true
@@ -87,6 +89,8 @@ export default class extends React.Component {
   //coisas do novo form
   submitForm = (data) => {
     data.image_default = this.state.image_default;
+    data.image2 = this.state.image3;
+    data.image3 = this.state.image3;
     data.date_start = moment(data.date_start, moment.ISO_8859).format();
     data.date_end = moment(data.date_end, moment.ISO_8859).format();
 
@@ -95,6 +99,8 @@ export default class extends React.Component {
     }
 
     if (!data.image_default) delete data.image_default;
+    if (!data.image2) delete data.image2;
+    if (!data.image3) delete data.image3;
 
     const rest = axios.put(`${config.API_URL}/saves/${data.id}`, data)
         .then(function (response) {
@@ -173,18 +179,18 @@ export default class extends React.Component {
                         <input type='file' name='image_default' onChange={this.handleSave} />
                       </div>
                     </div>
-                    <File
-                      name="image2"
-                      label="Imagem"
-                      multiple
-                      rowClassName="col-sm-12"
-                    />
-                    <File
-                      name="image3"
-                      label="Imagem"
-                      multiple
-                      rowClassName="col-sm-12"
-                    />
+                    <div className="form-group col-sm-12">
+                      <label className="control-label">Outra imagem</label>
+                      <div className="controls">
+                        <input type='file' name='image2' onChange={this.handleSave} />
+                      </div>
+                    </div>
+                    <div className="form-group col-sm-12">
+                      <label className="control-label">Outra imagem</label>
+                      <div className="controls">
+                        <input type='file' name='image3' onChange={this.handleSave} />
+                      </div>
+                    </div>
                     
                     <Row layout={layoutChoice} rowClassName="col-sm-12">
                       <div className="text-left">
