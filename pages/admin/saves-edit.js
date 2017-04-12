@@ -45,12 +45,6 @@ export default class extends React.Component {
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
-  handleDateChange = (date) => {
-    this.setState({
-      startDate: date
-    });
-  }
-
   _onChange = (e)  => {
     var stateChange = {}
     stateChange[e.target.name] = e.target.value;
