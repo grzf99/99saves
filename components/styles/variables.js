@@ -1,6 +1,7 @@
 export const colors = {
   alternateWhite: '#f1f1f1',
   black: '#1d2028',
+  darkBlue: '#253e4f',
   darkGreen: '#33433c',
   facebookBlue: '#3c5193',
   green: '#2ea672',

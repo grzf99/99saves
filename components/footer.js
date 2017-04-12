@@ -6,6 +6,7 @@ const Footer = styled.footer`
   align-items: center;
   background: ${colors.black};
   bottom: 0;
+  box-shadow: inset 0 1px 0 0 ${colors.darkBlue};
   display: flex;
   justify-content: space-between;
   position: absolute;
