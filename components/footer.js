@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { colors } from './styles/variables';
 import { Text } from './common/typography';
+import { Facebook, Instagram, Twitter } from './common/svg';
 
 const Footer = styled.footer`
   align-items: center;
@@ -27,6 +28,10 @@ const SocialMedia = styled.div`
   padding: 25px;
   max-width: 220px;
   width: 100%;
+
+  > a:hover svg path {
+    fill: ${colors.green};
+  }
 `;
 
 export default props => (
@@ -37,13 +42,13 @@ export default props => (
     </CustomText>
     <SocialMedia>
       <a href="https://www.facebook.com/99saves/">
-        <img src="/static/images/post-facebook.svg" alt="Página no Facebook" />
+        <Facebook />
       </a>
       <a href="/">
-        <img src="/static/images/post-twitter.svg" alt="Página no Twitter" />
+        <Instagram />
       </a>
       <a href="/">
-        <img src="/static/images/post-instagram.svg" alt="Página no Instagram" />
+        <Twitter />
       </a>
     </SocialMedia>
   </Footer>
