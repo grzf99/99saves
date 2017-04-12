@@ -4,6 +4,7 @@ import request from 'superagent';
 import Router from 'next/router';
 import moment from 'moment';
 import FRC, { Checkbox, CheckboxGroup, Input, RadioGroup, Row, Select, File, Textarea } from 'formsy-react-components';
+import Loading from 'react-loading';
 
 import config from '../../config';
 import Layout from '../../components/admin/layout';
@@ -36,7 +37,7 @@ export default class extends React.Component {
     axios.get(`${config.API_URL}/saves/${id}`)
         .then((response) => {
           this.setState({
-            ...this.state, list: response.data, loading: true
+            ...this.state, list: response.data
           });
           setTimeout(() => this.setState({ loading: false }), 1500);
         })
@@ -83,8 +84,6 @@ export default class extends React.Component {
     });
   }
 
-
-
   //coisas do novo form
   submitForm = (data) => {
     data.image_default = this.state.image_default;
@@ -118,76 +117,82 @@ export default class extends React.Component {
               </div>
 
               <div className="panel-body">
-                <FRC.Form
-                    onSubmit={this.submitForm}
-                    layout={layoutChoice}
-                    ref={(form) => { myform = form; }}
-                >
-                  <Input
-                    name="id"
-                    value={this.state.list.id || ''}
-                    type="hidden"
-                  />
-                  <Input
-                    name="title"
-                    id="title"
-                    value={this.state.list.title || ''}
-                    label="Título do save"
-                    type="text"
-                    placeholder="Título do save"
-                    required
-                    rowClassName="col-sm-12"
-                  />
-                  <Input
-                    name="date_start"
-                    value={moment(this.state.list.date_start).format('YYYY-MM-DD') || ''}
-                    label="Data início do save"
-                    type="date"
-                    required
-                    rowClassName="col-sm-6"
-                  />
-                  <Input
-                    name="date_end"
-                    value={moment(this.state.list.date_end).format('YYYY-MM-DD') || ''}
-                    label="Data finalização do save"
-                    type="date"
-                    required
-                    rowClassName="col-sm-6"
-                  />
-                  <Textarea
-                    rows={3}
-                    cols={40}
-                    name="description"
-                    value={this.state.list.description || ''}
-                    label="Descrição do save"
-                    placeholder="Descrição"
-                    rowClassName="col-sm-12"
-                  />
-                  <div className="form-group col-sm-12">
-                    <label className="control-label">Imagem de destaque</label>
-                    <div className="controls">
-                      <input type='file' name='image_default' onChange={this.handleSave} />
-                    </div>
+                {this.state.loading ? (
+                  <div className="pull-center">
+                    <Loading type='bars' color='#000000' />
                   </div>
-                  <File
-                    name="image2"
-                    label="Imagem"
-                    multiple
-                    rowClassName="col-sm-12"
-                  />
-                  <File
-                    name="image3"
-                    label="Imagem"
-                    multiple
-                    rowClassName="col-sm-12"
-                  />
-                  
-                  <Row layout={layoutChoice} rowClassName="col-sm-12">
-                    <div className="text-left">
-                      <input className="btn btn-primary" formNoValidate={true} type="submit" defaultValue="Submit" />
+                ) : (
+                  <FRC.Form
+                      onSubmit={this.submitForm}
+                      layout={layoutChoice}
+                      ref={(form) => { myform = form; }}
+                  >
+                    <Input
+                      name="id"
+                      value={this.state.list.id || ''}
+                      type="hidden"
+                    />
+                    <Input
+                      name="title"
+                      id="title"
+                      value={this.state.list.title || ''}
+                      label="Título do save"
+                      type="text"
+                      placeholder="Título do save"
+                      required
+                      rowClassName="col-sm-12"
+                    />
+                    <Input
+                      name="date_start"
+                      value={moment(this.state.list.date_start).format('YYYY-MM-DD') || ''}
+                      label="Data início do save"
+                      type="date"
+                      required
+                      rowClassName="col-sm-6"
+                    />
+                    <Input
+                      name="date_end"
+                      value={moment(this.state.list.date_end).format('YYYY-MM-DD') || ''}
+                      label="Data finalização do save"
+                      type="date"
+                      required
+                      rowClassName="col-sm-6"
+                    />
+                    <Textarea
+                      rows={3}
+                      cols={40}
+                      name="description"
+                      value={this.state.list.description || ''}
+                      label="Descrição do save"
+                      placeholder="Descrição"
+                      rowClassName="col-sm-12"
+                    />
+                    <div className="form-group col-sm-12">
+                      <label className="control-label">Imagem de destaque</label>
+                      <div className="controls">
+                        <input type='file' name='image_default' onChange={this.handleSave} />
+                      </div>
                     </div>
-                  </Row>
-                </FRC.Form>
+                    <File
+                      name="image2"
+                      label="Imagem"
+                      multiple
+                      rowClassName="col-sm-12"
+                    />
+                    <File
+                      name="image3"
+                      label="Imagem"
+                      multiple
+                      rowClassName="col-sm-12"
+                    />
+                    
+                    <Row layout={layoutChoice} rowClassName="col-sm-12">
+                      <div className="text-left">
+                        <input className="btn btn-primary" formNoValidate={true} type="submit" defaultValue="Submit" />
+                      </div>
+                    </Row>
+                  </FRC.Form>
+                )}
               </div>
             </div>
           </div>
