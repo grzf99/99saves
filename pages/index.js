@@ -27,18 +27,27 @@ const CardsList = styled(Container)`
   justify-content: space-between;
   flex-flow: row wrap;
 
-  > * {
-    flex: 1;
-    flex-basis: calc(33.3% - 10px);
-    margin: 36px 5px 0;
-    max-width: calc(33.3% - 10px);
+  @media (min-width: 800px) {
+    > * {
+      flex: 1;
+      flex-basis: calc(50% - 10px);
+      max-width: calc(50% - 10px);
+      margin: 36px 5px 0;
 
-    &:nth-child(3n + 1) {
-      margin-left: 0;
+      &:nth-child(3n + 1) {
+        margin-left: 0;
+      }
+
+      &:nth-child(3n + 3) {
+        margin-right: 0;
+      }
     }
+  }
 
-    &:nth-child(3n + 3) {
-      margin-right: 0;
+  @media (min-width: 960px) {
+    > * {
+      flex-basis: calc(33.3% - 10px);
+      max-width: calc(33.3% - 10px);
     }
   }
 `;
