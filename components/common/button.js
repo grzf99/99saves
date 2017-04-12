@@ -2,11 +2,11 @@ import styled, { css } from 'styled-components';
 import { colors } from '../styles/variables';
 
 const outlineStyles = css`
-  background: transparent;
+  background-color: transparent;
   border: solid 1px ${colors.green};
 
   &:hover {
-    background: ${colors.green};
+    background-color: ${colors.green};
   }
 `;
 
@@ -23,12 +23,12 @@ const blockStyles = css`
 `;
 
 const disabledStyles = css`
-  background: ${colors.darkGreen};
+  background-color: ${colors.darkGreen};
   color: ${colors.gray};
 `;
 
 const Button = styled.a`
-  background: ${colors.green};
+  background-color: ${colors.green};
   border-radius: 2px;
   color: ${colors.white};
   display: inline-block;
@@ -41,8 +41,8 @@ const Button = styled.a`
   text-transform: uppercase;
 
   &:hover {
-    background: ${colors.alternateGreen};
-    transition: .2s ease background;
+    background-color: ${colors.alternateGreen};
+    transition: .2s ease background-color;
   }
 
   ${props => props.block ? blockStyles : ''}

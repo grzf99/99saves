@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { lighten } from 'polished';
 import Modal from 'react-modal';
 import SwipeableViews from 'react-swipeable-views';
 import 'isomorphic-fetch';
@@ -112,11 +113,18 @@ const ModalText = styled(Text)`
 `;
 
 const FacebookButton = styled(Button)`
-  background: url(/static/images/bt-facebook.svg) no-repeat 18px 12px ${colors.facebookBlue};
+  background-color: ${colors.facebookBlue};
+  background-image: url(/static/images/bt-facebook.svg);
+  background-position: 18px 12px;
+  background-repeat: no-repeat;
   font-size: 17px;
   font-weight: 400;
   padding-left: 40px;
   text-transform: inherit;
+
+  &:hover {
+    background-color: ${lighten(0.1, colors.facebookBlue)};
+  }
 `;
 
 const modalStyles = {
