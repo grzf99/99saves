@@ -13,9 +13,34 @@ import Card from '../components/card';
 import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
+import Container from '../components/common/container';
 
 const Page = styled.div`
   background: ${colors.black};
+  width: 100%;
+`;
+
+const CardsList = styled(Container)`
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-flow: row wrap;
+
+  > * {
+    flex: 1;
+    flex-basis: calc(33.3% - 10px);
+    margin: 36px 5px 0;
+    max-width: calc(33.3% - 10px);
+
+    &:nth-child(3n + 1) {
+      margin-left: 0;
+    }
+
+    &:nth-child(3n + 3) {
+      margin-right: 0;
+    }
+  }
 `;
 
 const BlankState = styled.div`
@@ -194,7 +219,7 @@ export default class extends React.Component {
           onChangeIndex={this.handleChangeIndex}
           animateHeight
         >
-          <div>
+          <CardsList>
             {
               this.state.saves.rows && this.state.saves.rows.map(
                 save =>
@@ -207,9 +232,9 @@ export default class extends React.Component {
                   />
               )
             }
-          </div>
+          </CardsList>
 
-          <div>
+          <CardsList>
             {
               this.state.saves.rows
                 ? this.state.saves.rows.filter(save => save.hasSubscribed).map(
@@ -232,7 +257,7 @@ export default class extends React.Component {
                   </BlankState>
                 )
             }
-          </div>
+          </CardsList>
         </SwipeableViews>
 
         <Modal
