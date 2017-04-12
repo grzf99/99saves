@@ -87,19 +87,18 @@ export default class extends React.Component {
 
   //coisas do novo form
   submitForm = (data) => {
-    console.log(data); // eslint-disable-line no-console
     data.image_default = this.state.image_default;
+    data.date_start = moment(data.date_start, moment.ISO_8859).format();
+    data.date_end = moment(data.date_end, moment.ISO_8859).format();
 
     if (!data.title || !data.date_start || !data.date_end) {
       return alert('Preencha todos os campos obrigatórios');
     }
 
     if (!data.image_default) delete data.image_default;
-    
-    console.log(data); // eslint-disable-line no-console
+
     const rest = axios.put(`${config.API_URL}/saves/${data.id}`, data)
         .then(function (response) {
-          //console.log(response);
           Router.push('/admin/saves');
         })
         .catch(function (error) {
