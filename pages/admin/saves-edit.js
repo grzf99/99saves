@@ -172,7 +172,7 @@ export default class extends React.Component {
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Submit" />
+                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
                       </div>
                     </Row>
                   </FRC.Form>
