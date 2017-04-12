@@ -10,6 +10,7 @@ import { Heading, Text } from '../components/common/typography';
 import Button from '../components/common/button';
 import Toolbar from '../components/toolbar';
 import Card from '../components/card';
+import Footer from '../components/footer';
 import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
@@ -18,7 +19,10 @@ import Container from '../components/common/container';
 const Page = styled.div`
   background: ${colors.black};
   min-height: 100vh;
+  position: relative;
   width: 100%;
+
+  ${props => props.hasFooter && 'padding-bottom: 98px'};
 `;
 
 const Headline = styled.div`
@@ -265,7 +269,7 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Page>
+      <Page hasFooter>
         <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
 
         <Headline>
@@ -308,6 +312,8 @@ export default class extends React.Component {
             }
           </CardsList>
         </SwipeableViews>
+
+        <Footer />
 
         <Modal
           isOpen={this.state.modalIsOpen}
