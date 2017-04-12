@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors } from '../styles/variables';
+import Container from './container';
 
 const Tabs = styled.div`
   background: ${colors.black};
@@ -41,9 +42,11 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Tabs>
-        {this.props.children.map(this.labels)}
-      </Tabs>
+      <Container>
+        <Tabs>
+          {this.props.children.map(this.labels)}
+        </Tabs>
+      </Container>
     );
   }
 }
