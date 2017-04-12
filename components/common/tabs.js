@@ -9,8 +9,6 @@ const Tabs = styled.div`
   width: 100%;
 
   @media (min-width: 640px) {
-    border-bottom: 1px solid ${colors.green};
-
     > * {
       max-width: 200px;
     }
