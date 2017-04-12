@@ -135,7 +135,7 @@ export default class extends React.Component {
       user: {},
       logged: false,
       modalIsOpen: false,
-      activeTab: 0,
+      activeTab: 1,
       saves: props.saves,
       subscriptions: {
         count: 0,
@@ -268,8 +268,8 @@ export default class extends React.Component {
         {
           this.state.logged && (
             <Tabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
-              <Tab>Todos</Tab>
               <Tab>Meus Saves</Tab>
+              <Tab>Todos</Tab>
             </Tabs>
           )
         }
@@ -280,6 +280,10 @@ export default class extends React.Component {
           onChangeIndex={this.handleChangeIndex}
           animateHeight
         >
+          <CardsList>
+            { this.renderUserSaves() }
+          </CardsList>
+
           <CardsList>
             {
               this.state.saves.rows && this.state.saves.rows.map(
@@ -293,10 +297,6 @@ export default class extends React.Component {
                   />
               )
             }
-          </CardsList>
-
-          <CardsList>
-            { this.renderUserSaves() }
           </CardsList>
         </SwipeableViews>
 
