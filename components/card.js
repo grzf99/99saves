@@ -49,7 +49,7 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Card>
+      <Card {...this.props}>
         <Header>
           <Image src={this.props.image_default} alt={this.props.title} />
           <Gradient>

@@ -26,29 +26,27 @@ const CardsList = styled(Container)`
   flex-direction: row;
   justify-content: space-between;
   flex-flow: row wrap;
+`;
 
-  @media (min-width: 800px) {
-    > * {
-      flex: 1;
-      flex-basis: calc(50% - 10px);
-      max-width: calc(50% - 10px);
-      margin: 36px 5px 0;
+const StyledCard = styled(Card)`
+  @media (min-width: 480px) {
+    flex: 1;
+    flex-basis: calc(50% - 10px);
+    max-width: calc(50% - 10px);
+    margin: 36px 5px 0;
 
-      &:nth-child(3n + 1) {
-        margin-left: 0;
-      }
+    &:nth-child(3n + 1) {
+      margin-left: 0;
+    }
 
-      &:nth-child(3n + 3) {
-        margin-right: 0;
-      }
+    &:nth-child(3n + 3) {
+      margin-right: 0;
     }
   }
 
   @media (min-width: 960px) {
-    > * {
-      flex-basis: calc(33.3% - 10px);
-      max-width: calc(33.3% - 10px);
-    }
+    flex-basis: calc(33.3% - 10px);
+    max-width: calc(33.3% - 10px);
   }
 `;
 
@@ -56,9 +54,15 @@ const BlankState = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: 0 auto;
   min-height: calc(100vh - 100px);
   padding: 60px 30px;
   text-align: center;
+  max-width: 480px;
+
+  @media (min-width: 640px) {
+    padding: 150px 30px;
+  }
 
   > h1 {
     margin: 0 20px;
@@ -209,6 +213,32 @@ export default class extends React.Component {
         });
   }
 
+  renderUserSaves() {
+    const subscribedSaves = this.state.saves.rows.filter(save => save.hasSubscribed);
+    return (
+      subscribedSaves.length
+        ? subscribedSaves.map(
+            save =>
+              <StyledCard
+                {...save}
+                key={save.id}
+                logged={this.state.logged}
+                openLoginModal={() => this.openModal(save.id)}
+                handleSubscribe={() => this.handleSubscribe(save.id)}
+              />
+          )
+        : (
+          <BlankState>
+            <Heading white>Ainda não tem nenhum save???</Heading>
+            <Text white>O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!</Text>
+            <div>
+              <Button outline onClick={() => this.handleChangeIndex(0)}>Ver todos os saves</Button>
+            </div>
+          </BlankState>
+        )
+    )
+  }
+
   render() {
     return (
       <Page>
@@ -217,7 +247,7 @@ export default class extends React.Component {
           this.state.logged && (
             <Tabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
               <Tab>Todos</Tab>
-              <Tab>Acompanhando</Tab>
+              <Tab>Meus Saves</Tab>
             </Tabs>
           )
         }
@@ -232,7 +262,7 @@ export default class extends React.Component {
             {
               this.state.saves.rows && this.state.saves.rows.map(
                 save =>
-                  <Card
+                  <StyledCard
                     {...save}
                     key={save.id}
                     logged={this.state.logged}
@@ -244,28 +274,7 @@ export default class extends React.Component {
           </CardsList>
 
           <CardsList>
-            {
-              this.state.saves.rows
-                ? this.state.saves.rows.filter(save => save.hasSubscribed).map(
-                    save =>
-                      <Card
-                        {...save}
-                        key={save.id}
-                        logged={this.state.logged}
-                        openLoginModal={() => this.openModal(save.id)}
-                        handleSubscribe={() => this.handleSubscribe(save.id)}
-                      />
-                  )
-                : (
-                  <BlankState>
-                    <Heading white>Ainda não tem nenhum save???</Heading>
-                    <Text white>O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!</Text>
-                    <div>
-                      <Button outline onClick={() => this.handleChangeIndex(0)}>Ver todos os saves</Button>
-                    </div>
-                  </BlankState>
-                )
-            }
+            { this.renderUserSaves() }
           </CardsList>
         </SwipeableViews>
 
