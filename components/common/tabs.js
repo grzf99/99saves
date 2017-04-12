@@ -8,11 +8,11 @@ const Tabs = styled.div`
   display: flex;
   width: 100%;
 
-  @media (min-width: 960px) {
+  @media (min-width: 640px) {
     border-bottom: 1px solid ${colors.green};
 
     > * {
-      max-width: 240px;
+      max-width: 200px;
     }
   }
 `;
