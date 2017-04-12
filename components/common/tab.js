@@ -3,6 +3,7 @@ import { colors } from '../styles/variables';
 
 const Tab = styled.a`
   color: ${props => props.active ? colors.white : colors.lightgray};
+  cursor: pointer;
   flex-grow: 1;
   flex-basis: 0;
   font-family: 'Roboto', sans-serif;
