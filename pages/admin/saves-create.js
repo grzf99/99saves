@@ -17,9 +17,6 @@ const Title = styled.h1`
   font-size: ${modularScale(1)};
 `;
 
-const CLOUDINARY_UPLOAD_PRESET = 'k0xbougu';
-const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/kevinsoul/upload';
-
 export default class extends React.Component {
   constructor(props) {
     super(props);

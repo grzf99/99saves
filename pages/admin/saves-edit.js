@@ -9,9 +9,6 @@ import Loading from 'react-loading';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 
-const CLOUDINARY_UPLOAD_PRESET = 'k0xbougu';
-const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/kevinsoul/upload';
-
 //Estilo do layout no formulario "vertical", "horizontal", "elementOnly"
 const layoutChoice = 'vertical';
 let myform = null;
