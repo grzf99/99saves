@@ -31,6 +31,7 @@ const SocialMedia = styled.div`
 
   > a:hover svg path {
     fill: ${colors.green};
+    transition: .2s ease fill;
   }
 `;
 
