@@ -9,10 +9,6 @@ import Loading from 'react-loading';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 
-//Estilo do layout no formulario "vertical", "horizontal", "elementOnly"
-const layoutChoice = 'vertical';
-let myform = null;
-
 export default class extends React.Component {
   constructor(props) {
     super(props);
@@ -127,8 +123,7 @@ export default class extends React.Component {
                 ) : (
                   <FRC.Form
                       onSubmit={this.submitForm}
-                      layout={layoutChoice}
-                      ref={(form) => { myform = form; }}
+                      layout="vertical"
                   >
                     <Input
                       name="id"
@@ -189,7 +184,7 @@ export default class extends React.Component {
                       </div>
                     </div>
                     
-                    <Row layout={layoutChoice} rowClassName="col-sm-12">
+                    <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
                         <input className="btn btn-primary" formNoValidate={true} type="submit" defaultValue="Submit" />
                       </div>
