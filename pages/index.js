@@ -55,7 +55,7 @@ const StyledCard = styled(Card)`
       margin-left: 0;
     }
 
-    &:nth-child(3n + 3) {
+    &:nth-child(3n + 2) {
       margin-right: 0;
     }
   }
@@ -63,6 +63,14 @@ const StyledCard = styled(Card)`
   @media (min-width: 960px) {
     flex-basis: calc(33.3% - 10px);
     max-width: calc(33.3% - 10px);
+
+    &:nth-child(3n + 2) {
+      margin-right: 5px;
+    }
+
+    &:nth-child(3n + 3) {
+      margin-right: 0;
+    }
   }
 `;
 
