@@ -7,6 +7,14 @@ const Tabs = styled.div`
   background: ${colors.black};
   display: flex;
   width: 100%;
+
+  @media (min-width: 960px) {
+    border-bottom: 1px solid ${colors.green};
+
+    > * {
+      max-width: 240px;
+    }
+  }
 `;
 
 export default class extends React.Component {
