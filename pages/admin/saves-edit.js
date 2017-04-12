@@ -3,7 +3,7 @@ import axios from 'axios';
 import request from 'superagent';
 import Router from 'next/router';
 import moment from 'moment';
-import FRC, { Checkbox, CheckboxGroup, Input, RadioGroup, Row, Select, File, Textarea } from 'formsy-react-components';
+import FRC, { Input, Row, Textarea } from 'formsy-react-components';
 import Loading from 'react-loading';
 
 import config from '../../config';
