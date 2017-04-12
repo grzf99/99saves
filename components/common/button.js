@@ -7,7 +7,6 @@ const outlineStyles = css`
 
   &:hover {
     background: ${colors.green};
-    transition: .2s ease background;
   }
 `;
 
@@ -40,6 +39,11 @@ const Button = styled.a`
   padding: 10px 24px;
   text-align: center;
   text-transform: uppercase;
+
+  &:hover {
+    background: ${colors.alternateGreen};
+    transition: .2s ease background;
+  }
 
   ${props => props.block ? blockStyles : ''}
   ${props => props.small ? smallStyles : ''}
