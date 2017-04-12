@@ -23,6 +23,7 @@ export default class extends React.Component {
     this.getSaves = this.getSaves.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleImageUpload = this.handleImageUpload.bind(this);
   }
 
   componentDidMount() {
@@ -99,7 +100,7 @@ export default class extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Cadastrar Save</span>
+                <span className="panel-title">Alterar Save</span>
               </div>
 
               <div className="panel-body">
