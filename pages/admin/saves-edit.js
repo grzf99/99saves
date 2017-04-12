@@ -55,15 +55,15 @@ export default class extends React.Component {
   handleImageUpload(file, name) {
     var imageChange = {};
     let upload = request.post(CLOUDINARY_UPLOAD_URL)
-                     .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-                     .field('file', file);
+                     .field("upload_preset", CLOUDINARY_UPLOAD_PRESET)
+                     .field("file", file);
 
     upload.end((err, response) => {
       if (err) {
         console.error(err);
       }
 
-      if (response.body.secure_url !== '') {
+      if (response.body.secure_url !== "") {
         console.log(name);
         console.log(response.body.secure_url);
         imageChange[name] = response.body.secure_url;
@@ -82,7 +82,7 @@ export default class extends React.Component {
     data.date_end = moment(data.date_end, moment.ISO_8859).format();
 
     if (!data.title || !data.date_start || !data.date_end) {
-      return alert('Preencha todos os campos obrigatórios');
+      return alert("Preencha todos os campos obrigatórios");
     }
 
     if (!data.image_default) delete data.image_default;
@@ -91,7 +91,7 @@ export default class extends React.Component {
 
     const rest = axios.put(`${config.API_URL}/saves/${data.id}`, data)
         .then(function (response) {
-          Router.push('/admin/saves');
+          Router.push("/admin/saves");
         })
         .catch(function (error) {
           console.log(error);
@@ -112,7 +112,7 @@ export default class extends React.Component {
               <div className="panel-body">
                 {this.state.loading ? (
                   <div className="pull-center">
-                    <Loading type='bars' color='#000000' />
+                    <Loading type="bars" color="#000000" />
                   </div>
                 ) : (
                   <FRC.Form
@@ -121,13 +121,13 @@ export default class extends React.Component {
                   >
                     <Input
                       name="id"
-                      value={this.state.list.id || ''}
+                      value={this.state.list.id || ""}
                       type="hidden"
                     />
                     <Input
                       name="title"
                       id="title"
-                      value={this.state.list.title || ''}
+                      value={this.state.list.title || ""}
                       label="Título do save"
                       type="text"
                       placeholder="Título do save"
@@ -136,7 +136,7 @@ export default class extends React.Component {
                     />
                     <Input
                       name="date_start"
-                      value={moment(this.state.list.date_start).format('YYYY-MM-DD') || ''}
+                      value={moment(this.state.list.date_start).format('YYYY-MM-DD') || ""}
                       label="Data início do save"
                       type="date"
                       required
@@ -144,7 +144,7 @@ export default class extends React.Component {
                     />
                     <Input
                       name="date_end"
-                      value={moment(this.state.list.date_end).format('YYYY-MM-DD') || ''}
+                      value={moment(this.state.list.date_end).format('YYYY-MM-DD') || ""}
                       label="Data finalização do save"
                       type="date"
                       required
@@ -154,7 +154,7 @@ export default class extends React.Component {
                       rows={3}
                       cols={40}
                       name="description"
-                      value={this.state.list.description || ''}
+                      value={this.state.list.description || ""}
                       label="Descrição do save"
                       placeholder="Descrição"
                       rowClassName="col-sm-12"
@@ -162,22 +162,21 @@ export default class extends React.Component {
                     <div className="form-group col-sm-12">
                       <label className="control-label">Imagem de destaque</label>
                       <div className="controls">
-                        <input type='file' name='image_default' onChange={this.handleSave} />
+                        <input type="file" name="image_default" onChange={this.handleSave} />
                       </div>
                     </div>
                     <div className="form-group col-sm-12">
                       <label className="control-label">Outra imagem</label>
                       <div className="controls">
-                        <input type='file' name='image2' onChange={this.handleSave} />
+                        <input type="file" name="image2" onChange={this.handleSave} />
                       </div>
                     </div>
                     <div className="form-group col-sm-12">
                       <label className="control-label">Outra imagem</label>
                       <div className="controls">
-                        <input type='file' name='image3' onChange={this.handleSave} />
+                        <input type="file" name="image3" onChange={this.handleSave} />
                       </div>
                     </div>
-                    
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
                         <input className="btn btn-primary" formNoValidate={true} type="submit" defaultValue="Submit" />
