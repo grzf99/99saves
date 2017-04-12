@@ -17,6 +17,7 @@ import Container from '../components/common/container';
 
 const Page = styled.div`
   background: ${colors.black};
+  min-height: 100vh;
   width: 100%;
 `;
 
