@@ -21,7 +21,6 @@ export default class extends React.Component {
       loading: true
     };
     this.getSaves = this.getSaves.bind(this);
-    this._onChange = this._onChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
   }
@@ -46,13 +45,6 @@ export default class extends React.Component {
   handleSave(event) {
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
-
-  _onChange(e) {
-    var stateChange = {}
-    stateChange[e.target.name] = e.target.value;
-    this.setState(stateChange);
-  }
-  
 
   handleImageUpload(file, name) {
     var imageChange = {};
