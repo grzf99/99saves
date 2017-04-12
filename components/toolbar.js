@@ -11,8 +11,7 @@ const Toolbar = styled.header`
 const CustomContainer = styled(Container)`
   display: flex;
   justify-content: space-between;
-  padding: 11px;
-  height: 52px;
+  padding: 12px;
 `;
 
 const Logo = styled.img`
