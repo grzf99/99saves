@@ -20,6 +20,21 @@ const Page = styled.div`
   width: 100%;
 `;
 
+const Headline = styled.div`
+  background-color: ${colors.alternateWhite};
+  color: ${colors.black};
+  display: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  line-height: 32px;
+  margin: 20px 0;
+  text-align: center;
+
+  @media (min-width: 640px) {
+    display: block;
+  }
+`;
+
 const CardsList = styled(Container)`
   align-items: stretch;
   display: flex;
@@ -243,6 +258,13 @@ export default class extends React.Component {
     return (
       <Page>
         <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
+
+        <Headline>
+          <Container>
+            Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
+          </Container>
+        </Headline>
+
         {
           this.state.logged && (
             <Tabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
