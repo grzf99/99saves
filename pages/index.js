@@ -138,7 +138,9 @@ const modalStyles = {
     bottom: 'auto',
     border: '0',
     transform: 'translateY(-50%)',
-    borderRadius: '0'
+    borderRadius: '0',
+    maxWidth: '480px',
+    margin: '0 auto'
   }
 };
 
