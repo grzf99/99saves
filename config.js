@@ -15,4 +15,6 @@ const API_URL = (function apiUrl(env) {
 module.exports = {
   API_URL,
   PORT,
+  CLOUDINARY_UPLOAD_PRESET,
+  CLOUDINARY_UPLOAD_URL,
 };
