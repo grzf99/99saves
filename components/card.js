@@ -10,6 +10,7 @@ const Card = styled.div`
   min-height: 333px;
   padding-bottom: 24px;
   text-align: center;
+  width: 100%;
 `;
 
 const Header = styled.div`
