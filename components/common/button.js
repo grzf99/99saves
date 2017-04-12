@@ -4,6 +4,11 @@ import { colors } from '../styles/variables';
 const outlineStyles = css`
   background: transparent;
   border: solid 1px ${colors.green};
+
+  &:hover {
+    background: ${colors.green};
+    transition: .2s ease background;
+  }
 `;
 
 const smallStyles = css`
