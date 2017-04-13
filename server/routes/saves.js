@@ -6,6 +6,7 @@ const subscriptionsController = require('../controllers').subscriptions;
 const router = express.Router();
 
 router.post('/', savesController.create);
+router.get('/:id', savesController.show);
 router.get('/', (req, res, next) => {
   if (req.query.access_token) passport.authenticate('facebook-token')(req, res, next);
   else next();

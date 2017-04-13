@@ -24,13 +24,27 @@ export default class extends React.Component {
       messageToast: '',
       typeToast: '',
     };
+    this.getSaves = this.getSaves.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
   }
 
   componentDidMount() {
-    setTimeout(() => this.setState({ loading: false }), 1500);
+    this.getSaves(this.props.url.query.id);
+  }
+
+  getSaves(id) {
+    axios.get(`${config.API_URL}/saves/${id}`)
+        .then((response) => {
+          this.setState({
+            ...this.state, list: response.data
+          });
+          setTimeout(() => this.setState({ loading: false }), 1500);
+        })
+        .catch((error) => {
+          console.log(error); // eslint-disable-line
+        });
   }
 
   handleSave(event) {
@@ -45,8 +59,7 @@ export default class extends React.Component {
 
     upload.end((err, response) => {
       if (err) {
-        this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
-        setTimeout(() => this.setState({ showToast: false }), 2500);
+        console.error(err); // eslint-disable-line
       }
 
       if (response.body.secure_url !== '') {
@@ -65,22 +78,21 @@ export default class extends React.Component {
       date_end: moment(data.date_end, moment.ISO_8859).format()
     });
 
-    if (!values.title || !values.date_start || !values.date_end || !values.image_default) {
-      this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Preencha todos os campos obrigatórios' });
-      setTimeout(() => this.setState({ showToast: false }), 4500);
+    if (!values.title || !values.date_start || !values.date_end) {
+      return alert('Preencha todos os campos obrigatórios');  // eslint-disable-line
     }
 
     if (!values.image_default) delete values.image_default;
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    const rest = axios.post(`${config.API_URL}/saves`, values)
+    const rest = axios.put(`${config.API_URL}/saves/${values.id}`, values)
         .then(() => {
-          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
-          setTimeout(() => Router.push('/admin/saves'), 2000);
+          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
+          setTimeout(() => Router.push('/admin/saves'), 2500);
         })
         .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao inserir o registro' });
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao alterar o registro' });
           setTimeout(() => this.setState({ showToast: false }), 2500);
         });
 
@@ -106,12 +118,13 @@ export default class extends React.Component {
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input
                       name="id"
+                      value={this.state.list.id || ''}
                       type="hidden"
                     />
                     <Input
                       name="title"
-                      value=""
                       id="title"
+                      value={this.state.list.title || ''}
                       label="Título do save"
                       type="text"
                       placeholder="Título do save"
@@ -120,7 +133,7 @@ export default class extends React.Component {
                     />
                     <Input
                       name="date_start"
-                      value=""
+                      value={moment(this.state.list.date_start).format('YYYY-MM-DD') || ''}
                       label="Data início do save"
                       type="date"
                       required
@@ -128,7 +141,7 @@ export default class extends React.Component {
                     />
                     <Input
                       name="date_end"
-                      value=""
+                      value={moment(this.state.list.date_end).format('YYYY-MM-DD') || ''}
                       label="Data finalização do save"
                       type="date"
                       required
@@ -138,7 +151,7 @@ export default class extends React.Component {
                       rows={3}
                       cols={40}
                       name="description"
-                      value=""
+                      value={this.state.list.description || ''}
                       label="Descrição do save"
                       placeholder="Descrição"
                       rowClassName="col-sm-12"
