@@ -1,10 +1,7 @@
-import { colors } from '../styles/variables';
-
 export default `
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: ${colors.black};
     margin: 0;
   }
 
