@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     image2: DataTypes.STRING,
     image3: DataTypes.STRING,
     link_buy: DataTypes.STRING,
-    UserId: DataTypes.INTEGER,
+    SaveId: DataTypes.INTEGER,
     ProviderId: DataTypes.INTEGER
   }, {
     classMethods: {
