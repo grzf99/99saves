@@ -181,6 +181,7 @@ export default class extends React.Component {
     const accessToken = window.localStorage.getItem('accessToken');
     if (accessToken) {
       this.authenticate(accessToken)
+        .then(this.loadSaves)
         .then(this.loadSubscriptions);
     }
   }
@@ -261,8 +262,28 @@ export default class extends React.Component {
   loadSubscriptions() {
     return fetch(`${config.API_URL}/saves?filters[subscribed]=true&access_token=${this.state.accessToken}`)
       .then(res => res.json())
-      .then((subscriptions) => {
-        this.setState({ subscriptions });
+      .then((items) => {
+        const rows = items.rows.map((item) => {
+          const subscription = item;
+          subscription.offers = [{
+            image: 'https://unsplash.it/320/240/?random',
+            title: 'Teste 1',
+            description: 'Lorem Ipsum Dolor Sit Amet'
+          }, {
+            image: 'https://unsplash.it/320/240/?random',
+            title: 'Teste 2',
+            description: 'Lorem Ipsum Dolor Sit Amet'
+          }];
+
+          return subscription;
+        });
+
+        this.setState({
+          subscriptions: {
+            rows,
+            count: rows.length
+          }
+        });
       });
   }
 
