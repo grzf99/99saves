@@ -57,6 +57,14 @@ module.exports = {
         },
         required: false
       }];
+
+      if (req.query.poll) {
+        query.where = {
+          date_end: {
+            $lt: new Date()
+          }
+        };
+      }
     }
 
     return Save
