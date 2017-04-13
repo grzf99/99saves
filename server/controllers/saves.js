@@ -61,7 +61,7 @@ module.exports = {
 
       if (
         req.query.filters &&
-        req.query.filters.votable
+        (req.query.filters.subscribed || req.query.filters.votable)
       ) {
         query.where = {};
 

@@ -146,8 +146,7 @@ const modalStyles = {
 
 export default class extends React.Component {
   static async getInitialProps() {
-    const res = await fetch(`${config.API_URL}/saves`);
-    const saves = await res.json();
+    const saves = await (await fetch(`${config.API_URL}/saves`)).json();
     return { saves };
   }
 
@@ -173,13 +172,17 @@ export default class extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
-    this.reloadSaves = this.reloadSaves.bind(this);
+    this.loadSaves = this.loadSaves.bind(this);
+    this.loadSubscriptions = this.loadSubscriptions.bind(this);
     this.handleSubscribe = this.handleSubscribe.bind(this);
   }
 
   componentDidMount() {
     const accessToken = window.localStorage.getItem('accessToken');
-    if (accessToken) this.authenticate(accessToken).then(this.reloadSaves);
+    if (accessToken) {
+      this.authenticate(accessToken)
+        .then(this.loadSubscriptions);
+    }
   }
 
   loginWithFacebook() {
@@ -211,20 +214,26 @@ export default class extends React.Component {
         ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken)
         : Promise.resolve()
       ))
-      .then(this.reloadSaves);
+      .then(this.loadSaves)
+      .then(this.loadSubscriptions);
   }
 
   handleSubscribe(subscribeTo, accessToken) {
     return fetch(
       `${config.API_URL}/saves/${subscribeTo}/subscriptions?access_token=${accessToken || this.state.accessToken}`,
       { method: 'POST' }
-    ).then(() => {
-      const rows = [...this.state.saves.rows].map((row) => {
-        const save = row;
-        if (save.id === subscribeTo) save.hasSubscribed = true;
-        return save;
+    )
+    .then(() => {
+      const item = this.state.saves.rows.find(save => save.id === subscribeTo);
+      item.hasSubscribed = true;
+
+      const subscriptionsRows = [...this.state.subscriptions.rows, item];
+
+      this.setState({
+        subscriptions: { count: subscriptionsRows.length, rows: subscriptionsRows },
+        showToast: true
       });
-      this.setState({ saves: { count: rows.length, rows }, showToast: true });
+
       setTimeout(() => this.setState({ showToast: false }), 4000);
     });
   }
@@ -241,21 +250,26 @@ export default class extends React.Component {
     this.setState({ activeTab: tabIndex });
   }
 
-  reloadSaves() {
-    fetch(`${config.API_URL}/saves?access_token=${this.state.accessToken}`)
-        .then(saves => saves.json())
-        .then((saves) => {
-          this.setState({
-            saves
-          });
-        });
+  loadSaves() {
+    return fetch(`${config.API_URL}/saves?access_token=${this.state.accessToken}`)
+      .then(saves => saves.json())
+      .then((saves) => {
+        this.setState({ saves });
+      });
+  }
+
+  loadSubscriptions() {
+    return fetch(`${config.API_URL}/saves?filters[subscribed]=true&access_token=${this.state.accessToken}`)
+      .then(res => res.json())
+      .then((subscriptions) => {
+        this.setState({ subscriptions });
+      });
   }
 
   renderUserSaves() {
-    const subscribedSaves = this.state.saves.rows.filter(save => save.hasSubscribed);
     return (
-      subscribedSaves.length
-        ? subscribedSaves.map(
+      this.state.subscriptions.rows
+        ? this.state.subscriptions.rows.map(
             save =>
               <StyledCard
                 {...save}
