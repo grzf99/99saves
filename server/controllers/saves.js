@@ -44,10 +44,11 @@ module.exports = {
         date_start: {
           $lt: new Date()
         }
-      },
-      offset: req.query.offset,
-      limit: req.query.limit
+      }
     };
+
+    if (req.query.offset) query.offset = req.query.offset;
+    if (req.query.limit) query.limit = req.query.limit;
 
     if (req.user) {
       query.include = [{
@@ -55,15 +56,18 @@ module.exports = {
         where: {
           UserId: req.user.id
         },
-        required: false
+        required: !!(req.query.filters && req.query.filters.subscribed === 'true')
       }];
 
-      if (req.query.poll) {
-        query.where = {
-          date_end: {
-            $lt: new Date()
-          }
-        };
+      if (
+        req.query.filters &&
+        req.query.filters.votable
+      ) {
+        query.where = {};
+
+        if (req.query.filters.votable) {
+          query.where.date_end = { $lt: new Date() };
+        }
       }
     }
 
