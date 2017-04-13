@@ -91,7 +91,7 @@ export default class extends React.Component {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
           setTimeout(() => Router.push('/admin/saves'), 2500);
         })
-        .catch((error) => {
+        .catch(() => {
           this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao alterar o registro' });
           setTimeout(() => this.setState({ showToast: false }), 2500);
         });
