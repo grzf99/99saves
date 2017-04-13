@@ -15,45 +15,73 @@ export default class extends React.Component {
     super(props);
     this.state = {
       image_default: '',
-      startDate: ''
+      image2: '',
+      image3: '',
+      startDate: '',
+      list: [],
+      loading: true,
+      showToast: false,
+      messageToast: '',
+      typeToast: '',
     };
+    this.getSaves = this.getSaves.bind(this);
+    this.submitForm = this.submitForm.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.handleImageUpload = this.handleImageUpload.bind(this);
   }
 
-  handleSave = (event) => {
+  handleSave(event) {
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
-  handleDateChange = (date) => {
-    this.setState({
-      startDate: date
-    });
-  }
-
-  _onChange = (e)  => {
-    var stateChange = {}
-    stateChange[e.target.name] = e.target.value;
-    this.setState(stateChange);
-  }
-
   handleImageUpload(file, name) {
-    var imageChange = {};
-    let upload = request.post(CLOUDINARY_UPLOAD_URL)
-                     .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+    const imageChange = {};
+    const upload = request.post(config.CLOUDINARY_UPLOAD_URL)
+                     .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
                      .field('file', file);
 
     upload.end((err, response) => {
       if (err) {
-        console.error(err);
+        this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Problemas ao se comunicar com API: ' + err });
+          setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
       if (response.body.secure_url !== '') {
-        console.log(name);
-        console.log(response.body.secure_url);
         imageChange[name] = response.body.secure_url;
         this.setState(imageChange);
-        console.log(this.state);
       }
     });
+  }
+
+  submitForm(data) {
+    const values = Object.assign(data, {
+      image_default: this.state.image_default,
+      image2: this.state.image2,
+      image3: this.state.image3,
+      date_start: moment(data.date_start, moment.ISO_8859).format(),
+      date_end: moment(data.date_end, moment.ISO_8859).format()
+    });
+
+    if (!values.title || !values.date_start || !values.date_end || !values.image_default) {
+      this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Preencha todos os campos obrigatórios' });
+      setTimeout(() => this.setState({ showToast: false }), 4500);
+    }
+
+    if (!values.image_default) delete values.image_default;
+    if (!values.image2) delete values.image2;
+    if (!values.image3) delete values.image3;
+
+    const rest = axios.post(`${config.API_URL}/saves}`, values)
+        .then(() => {
+          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
+          setTimeout(() => Router.push('/admin/saves'), 2000);
+        })
+        .catch(() => {
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao inserir o registro' });
+          setTimeout(() => this.setState({ showToast: false }), 2500);
+        });
+
+    return rest;
   }
 
   myForm = (
