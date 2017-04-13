@@ -24,10 +24,13 @@ export default class extends React.Component {
       messageToast: '',
       typeToast: '',
     };
-    this.getSaves = this.getSaves.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
+  }
+
+  componentDidMount() {
+    setTimeout(() => this.setState({ loading: false }), 1500);
   }
 
   handleSave(event) {
@@ -42,8 +45,8 @@ export default class extends React.Component {
 
     upload.end((err, response) => {
       if (err) {
-        this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Problemas ao se comunicar com API: ' + err });
-          setTimeout(() => this.setState({ showToast: false }), 2500);
+        this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
       if (response.body.secure_url !== '') {
@@ -71,7 +74,7 @@ export default class extends React.Component {
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    const rest = axios.post(`${config.API_URL}/saves}`, values)
+    const rest = axios.post(`${config.API_URL}/saves`, values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
           setTimeout(() => Router.push('/admin/saves'), 2000);
@@ -84,97 +87,6 @@ export default class extends React.Component {
     return rest;
   }
 
-  myForm = (
-    <Form
-      onSubmit={(values, redirectPage) => {
-        console.log(this.state);
-        if(this.state.image_default) values.image_default = this.state.image_default;
-        var dt_end = this.state.date_start.split("/");
-
-        if(this.state.date_start) values.date_start = [dt_end[1], dt_end[0], dt_end[2]].join('-')
-        var dt_end = this.state.date_end.split("/");
-
-        if(this.state.date_end) values.date_end = [dt_end[1], dt_end[0], dt_end[2]].join('-');
-        console.log(values);
-
-        const rest = axios.post(`${config.API_URL}/saves`, values)
-        .then(function (response) {
-          console.log(response);
-          Router.push('/admin/saves');
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-        
-      }}
-      validate={({ title }) => {
-        return {
-          title: !title ? 'Título é obrigatório' : undefined
-        }
-      }}
-    >
-      {({submitForm}) => {
-        return (
-          <form onSubmit={submitForm}>
-            <div className="form-group has-feedback col-sm-12">
-              <label className="control-label">Título</label>
-              <div className="controls">
-                <Text field='title' className="form-control"/>
-              </div>
-            </div>
-
-            <div className="form-group has-feedback col-sm-6">
-              <label className="control-label">Data início do save</label>
-              <div className="controls">
-                <MaskedInput mask="11/11/1111" className="form-control" name="date_start" placeholder="dd/mm/yyyy" onChange={this._onChange}/>
-              </div>
-            </div>
-
-            <div className="form-group has-feedback col-sm-6">
-              <label className="control-label">Data finalização do save</label>
-              <div className="controls">
-                <div className="controls">
-                  <MaskedInput mask="11/11/1111" className="form-control" name="date_end" placeholder="dd/mm/yyyy" onChange={this._onChange}/>
-                </div>
-              </div>
-            </div>
-
-            <div className="form-group has-feedback  col-sm-12">
-              <label className="control-label">Description</label>
-              <div className="controls">
-                <Textarea field='description' className="form-control"/>
-              </div>
-            </div>
-            <div className="form-group has-feedback  col-sm-12">
-              <label className="control-label">Imagem de destaque</label>
-              <div className="controls">
-                <input type='file' name='image_default' className="form-control" onChange={this.handleSave} />
-              </div>
-            </div>
-
-            <div className="form-group has-feedback  col-sm-12">
-              <label className="control-label">Imagem secundária</label>
-              <div className="controls">
-                <input type='file' name='imagem2' className="form-control" onChange={this.handleSave} />
-              </div>
-            </div>
-
-            <div className="form-group has-feedback col-sm-12">
-              <label className="control-label">Imagem secundária</label>
-              <div className="controls">
-                <input type='file' name='imagem3' className="form-control" onChange={this.handleSave} />
-              </div>
-            </div>
-            
-            <div className="form-group has-feedback col-sm-12">
-              <button type='submit' className="btn btn-default">Salvar</button>
-            </div>
-          </form>
-        )
-      }}
-    </Form>
-  )
-
   render() {
     return (
       <Layout>
@@ -182,15 +94,90 @@ export default class extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Cadastrar Save</span>
+                <span className="panel-title">Alterar Save</span>
               </div>
 
               <div className="panel-body">
-                { this.myForm }
+                {this.state.loading ? (
+                  <div className="pull-center">
+                    <Loading type="bars" color="#000000" />
+                  </div>
+                ) : (
+                  <FRC.Form onSubmit={this.submitForm} layout="vertical">
+                    <Input
+                      name="id"
+                      type="hidden"
+                    />
+                    <Input
+                      name="title"
+                      value=""
+                      id="title"
+                      label="Título do save"
+                      type="text"
+                      placeholder="Título do save"
+                      required
+                      rowClassName="col-sm-12"
+                    />
+                    <Input
+                      name="date_start"
+                      value=""
+                      label="Data início do save"
+                      type="date"
+                      required
+                      rowClassName="col-sm-6"
+                    />
+                    <Input
+                      name="date_end"
+                      value=""
+                      label="Data finalização do save"
+                      type="date"
+                      required
+                      rowClassName="col-sm-6"
+                    />
+                    <Textarea
+                      rows={3}
+                      cols={40}
+                      name="description"
+                      value=""
+                      label="Descrição do save"
+                      placeholder="Descrição"
+                      rowClassName="col-sm-12"
+                    />
+                    <div className="form-group col-sm-12">
+                      <label
+                        className="control-label"
+                        htmlFor="image_default"
+                      >Imagem de destaque</label>
+                      <div className="controls">
+                        <input type="file" name="image_default" onChange={this.handleSave} />
+                      </div>
+                    </div>
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="image2">Outra imagem</label>
+                      <div className="controls">
+                        <input type="file" name="image2" onChange={this.handleSave} />
+                      </div>
+                    </div>
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="image3">Outra imagem</label>
+                      <div className="controls">
+                        <input type="file" name="image3" onChange={this.handleSave} />
+                      </div>
+                    </div>
+                    <Row layout="vertical" rowClassName="col-sm-12">
+                      <div className="text-left">
+                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                      </div>
+                    </Row>
+                  </FRC.Form>
+                )}
               </div>
             </div>
           </div>
         </div>
+        <AlertMessage type={this.state.typeToast} show={this.state.showToast}>
+          { this.state.messageToast }
+        </AlertMessage>
       </Layout>
     );
   }
