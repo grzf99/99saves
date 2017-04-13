@@ -1,21 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
-import { modularScale } from 'polished';
-import 'isomorphic-fetch';
-
-import config from '../../config';
-import Layout from '../../components/admin/layout';
-
-import { Form, Text, Textarea } from 'react-form';
-import MaskedInput from 'react-maskedinput';
 import axios from 'axios';
 import request from 'superagent';
 import Router from 'next/router';
+import moment from 'moment';
+import FRC, { Input, Row, Textarea } from 'formsy-react-components';
+import Loading from 'react-loading';
 
-const Title = styled.h1`
-  color: red;
-  font-size: ${modularScale(1)};
-`;
+import config from '../../config';
+import Layout from '../../components/admin/layout';
+import AlertMessage from '../../components/common/alert-message';
 
 export default class extends React.Component {
   constructor(props) {
