@@ -1,5 +1,4 @@
-const sequelize = require('sequelize');
-const Provider = require('../models').Save;
+const Provider = require('../models').Provider;
 
 module.exports = {
   show(req, res) {
