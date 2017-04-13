@@ -6,13 +6,17 @@ import axios from 'axios';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import ListTable from '../../components/admin/list-table-providers';
+import AlertMessage from '../../components/common/alert-message';
 
 export default class extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      list: []
+      list: [],
+      showToast: false,
+      messageToast: '',
+      typeToast: '',
     };
 
     this.refresh = this.refresh.bind(this);
@@ -33,13 +37,16 @@ export default class extends React.Component {
         });
   }
 
-  handleDelete(save) {
-    axios.delete(`${config.API_URL}/providers/${save.id}`)
+  handleDelete(item) {
+    axios.delete(`${config.API_URL}/providers/${item.id}`)
         .then(() => {
+          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro Excluido com Sucesso' });
+          setTimeout(() => this.setState({ showToast: false }), 1500);
           this.refresh();
         })
         .catch((error) => {
-          console.log(error);
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Erro ao ecluir o registr: ${error}` });
+          setTimeout(() => this.setState({ showToast: false }), 2500);
         });
   }
 
@@ -51,7 +58,7 @@ export default class extends React.Component {
             <div className="panel panel-default">
               <div className="panel-heading">
                 <span className="panel-title">Lista de Fornecedores</span>
-                <Link prefetch href="/admin/saves-create">
+                <Link prefetch href="/admin/providers-create">
                   <a className="btn btn-xs btn-primary pull-right">Novo</a>
                 </Link>
               </div>
@@ -62,6 +69,9 @@ export default class extends React.Component {
             </div>
           </div>
         </div>
+        <AlertMessage type={this.state.typeToast} show={this.state.showToast}>
+          { this.state.messageToast }
+        </AlertMessage>
       </Layout>
     );
   }
