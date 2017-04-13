@@ -37,6 +37,14 @@ module.exports = {
       order: [
         ['date_end', 'ASC']
       ],
+      where: {
+        date_end: {
+          $gt: new Date()
+        },
+        date_start: {
+          $lt: new Date()
+        }
+      },
       offset: req.query.offset,
       limit: req.query.limit
     };
