@@ -41,7 +41,7 @@ module.exports = {
       link_buy: {
         type: Sequelize.STRING
       },
-      UserId: {
+      SaveId: {
         type: Sequelize.INTEGER,
         references: { model: 'Saves', key: 'id' },
         onDelete: 'CASCADE'
