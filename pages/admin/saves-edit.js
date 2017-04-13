@@ -86,7 +86,7 @@ export default class extends React.Component {
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    const rest = axios.put(`${config.API_URL}/saves/${values.id}`, data)
+    const rest = axios.put(`${config.API_URL}/saves/${values.id}`, values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
           setTimeout(() => Router.push('/admin/saves'), 2500);
