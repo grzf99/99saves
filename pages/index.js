@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { lighten } from 'polished';
 import Modal from 'react-modal';
 import SwipeableViews from 'react-swipeable-views';
 import 'isomorphic-fetch';
@@ -10,21 +11,87 @@ import { Heading, Text } from '../components/common/typography';
 import Button from '../components/common/button';
 import Toolbar from '../components/toolbar';
 import Card from '../components/card';
+import Footer from '../components/footer';
 import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
+import Container from '../components/common/container';
 
 const Page = styled.div`
   background: ${colors.black};
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+
+  ${props => props.hasFooter && 'padding-bottom: 98px'};
+`;
+
+const Headline = styled.div`
+  background-color: ${colors.alternateWhite};
+  color: ${colors.black};
+  display: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  line-height: 32px;
+  margin: 20px 0;
+  text-align: center;
+
+  @media (min-width: 640px) {
+    display: block;
+  }
+`;
+
+const CardsList = styled(Container)`
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-flow: row wrap;
+`;
+
+const StyledCard = styled(Card)`
+  @media (min-width: 480px) {
+    flex: 1;
+    flex-basis: calc(50% - 10px);
+    max-width: calc(50% - 10px);
+    margin: 36px 5px 0;
+
+    &:nth-child(3n + 1) {
+      margin-left: 0;
+    }
+
+    &:nth-child(3n + 2) {
+      margin-right: 0;
+    }
+  }
+
+  @media (min-width: 960px) {
+    flex-basis: calc(33.3% - 10px);
+    max-width: calc(33.3% - 10px);
+
+    &:nth-child(3n + 2) {
+      margin-right: 5px;
+    }
+
+    &:nth-child(3n + 3) {
+      margin-right: 0;
+    }
+  }
 `;
 
 const BlankState = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: 0 auto;
   min-height: calc(100vh - 100px);
   padding: 60px 30px;
   text-align: center;
+  max-width: 480px;
+
+  @media (min-width: 640px) {
+    padding: 150px 30px;
+  }
 
   > h1 {
     margin: 0 20px;
@@ -46,11 +113,18 @@ const ModalText = styled(Text)`
 `;
 
 const FacebookButton = styled(Button)`
-  background: url(/static/images/bt-facebook.svg) no-repeat 18px 12px ${colors.facebookBlue};
+  background-color: ${colors.facebookBlue};
+  background-image: url(/static/images/bt-facebook.svg);
+  background-position: 18px 12px;
+  background-repeat: no-repeat;
   font-size: 17px;
   font-weight: 400;
   padding-left: 40px;
   text-transform: inherit;
+
+  &:hover {
+    background-color: ${lighten(0.1, colors.facebookBlue)};
+  }
 `;
 
 const modalStyles = {
@@ -64,7 +138,9 @@ const modalStyles = {
     bottom: 'auto',
     border: '0',
     transform: 'translateY(-50%)',
-    borderRadius: '0'
+    borderRadius: '0',
+    maxWidth: '480px',
+    margin: '0 auto'
   }
 };
 
@@ -82,7 +158,7 @@ export default class extends React.Component {
       user: {},
       logged: false,
       modalIsOpen: false,
-      activeTab: 0,
+      activeTab: 1,
       saves: props.saves,
       subscriptions: {
         count: 0,
@@ -175,15 +251,48 @@ export default class extends React.Component {
         });
   }
 
+  renderUserSaves() {
+    const subscribedSaves = this.state.saves.rows.filter(save => save.hasSubscribed);
+    return (
+      subscribedSaves.length
+        ? subscribedSaves.map(
+            save =>
+              <StyledCard
+                {...save}
+                key={save.id}
+                logged={this.state.logged}
+                openLoginModal={() => this.openModal(save.id)}
+                handleSubscribe={() => this.handleSubscribe(save.id)}
+              />
+          )
+        : (
+          <BlankState>
+            <Heading white>Ainda não tem nenhum save???</Heading>
+            <Text white>O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!</Text>
+            <div>
+              <Button outline onClick={() => this.handleChangeIndex(0)}>Ver todos os saves</Button>
+            </div>
+          </BlankState>
+        )
+    )
+  }
+
   render() {
     return (
-      <Page>
+      <Page hasFooter>
         <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
+
+        <Headline>
+          <Container>
+            Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
+          </Container>
+        </Headline>
+
         {
           this.state.logged && (
             <Tabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
+              <Tab>Meus Saves</Tab>
               <Tab>Todos</Tab>
-              <Tab>Acompanhando</Tab>
             </Tabs>
           )
         }
@@ -194,11 +303,15 @@ export default class extends React.Component {
           onChangeIndex={this.handleChangeIndex}
           animateHeight
         >
-          <div>
+          <CardsList>
+            { this.renderUserSaves() }
+          </CardsList>
+
+          <CardsList>
             {
               this.state.saves.rows && this.state.saves.rows.map(
                 save =>
-                  <Card
+                  <StyledCard
                     {...save}
                     key={save.id}
                     logged={this.state.logged}
@@ -207,33 +320,10 @@ export default class extends React.Component {
                   />
               )
             }
-          </div>
-
-          <div>
-            {
-              this.state.saves.rows
-                ? this.state.saves.rows.filter(save => save.hasSubscribed).map(
-                    save =>
-                      <Card
-                        {...save}
-                        key={save.id}
-                        logged={this.state.logged}
-                        openLoginModal={() => this.openModal(save.id)}
-                        handleSubscribe={() => this.handleSubscribe(save.id)}
-                      />
-                  )
-                : (
-                  <BlankState>
-                    <Heading white>Ainda não tem nenhum save???</Heading>
-                    <Text white>O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!</Text>
-                    <div>
-                      <Button outline onClick={() => this.handleChangeIndex(0)}>Ver todos os saves</Button>
-                    </div>
-                  </BlankState>
-                )
-            }
-          </div>
+          </CardsList>
         </SwipeableViews>
+
+        <Footer />
 
         <Modal
           isOpen={this.state.modalIsOpen}

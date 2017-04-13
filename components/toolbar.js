@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 import { colors } from './styles/variables';
 import Button from './common/button';
+import Container from './common/container';
 
 const Toolbar = styled.header`
   background: ${colors.black};
+  width: 100%;
+`;
+
+const CustomContainer = styled(Container)`
   display: flex;
   justify-content: space-between;
-  padding: 11px;
-  width: 100%;
-  height: 52px;
+  padding: 12px;
 `;
 
 const Logo = styled.img`
@@ -17,9 +20,11 @@ const Logo = styled.img`
 
 export default props => (
   <Toolbar>
-    <Logo src="/static/images/logo-99-saves.svg" alt="99saves" />
-    {
-      !props.logged && <Button small outline onClick={props.login}>login</Button>
-    }
+    <CustomContainer>
+      <Logo src="/static/images/logo-99-saves.svg" alt="99saves" />
+      {
+        !props.logged && <Button small outline onClick={props.login}>login</Button>
+      }
+    </CustomContainer>
   </Toolbar>
 );
