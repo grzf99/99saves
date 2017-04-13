@@ -19,9 +19,15 @@ const Card = styled.div`
   width: 100%;
 `;
 
+const CardImage = styled(Image)`
+  align-self: center;
+`;
+
 const Header = styled.div`
   background: ${colors.white};
+  display: flex;
   height: 250px;
+  justify-content: center;
   padding-top: 24px;
   position: relative;
 `;
@@ -73,7 +79,7 @@ export default class extends React.Component {
     return (
       <Card {...this.props}>
         <Header>
-          <Image src={this.props.image_default} alt={this.props.title} />
+          <CardImage src={this.props.image_default} alt={this.props.title} />
           <Gradient>
             <SmallText>imagem meramente ilustrativa</SmallText>
             <Heading white>{this.props.title}</Heading>
