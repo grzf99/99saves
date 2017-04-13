@@ -8,6 +8,7 @@ import Loading from 'react-loading';
 
 import config from '../../config';
 import Layout from '../../components/admin/layout';
+import AlertMessage from '../../components/common/alert-message';
 
 export default class extends React.Component {
   constructor(props) {
@@ -18,7 +19,10 @@ export default class extends React.Component {
       image3: '',
       startDate: '',
       list: [],
-      loading: true
+      loading: true,
+      showToast: false,
+      messageToast: '',
+      typeToast: '',
     };
     this.getSaves = this.getSaves.bind(this);
     this.submitForm = this.submitForm.bind(this);
@@ -84,10 +88,12 @@ export default class extends React.Component {
 
     const rest = axios.put(`${config.API_URL}/saves/${values.id}`, data)
         .then(() => {
-          Router.push('/admin/saves');
+          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
+          setTimeout(() => Router.push('/admin/saves'), 2500);
         })
         .catch((error) => {
-          console.log(error); // eslint-disable-line
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao alterar o registro' });
+          setTimeout(() => this.setState({ showToast: false }), 2500);
         });
 
     return rest;
@@ -182,6 +188,9 @@ export default class extends React.Component {
             </div>
           </div>
         </div>
+        <AlertMessage type={this.state.typeToast} show={this.state.showToast}>
+          { this.state.messageToast }
+        </AlertMessage>
       </Layout>
     );
   }
