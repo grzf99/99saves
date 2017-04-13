@@ -3,6 +3,17 @@ const Save = require('../models').Save;
 const Subscription = require('../models').Subscription;
 
 module.exports = {
+  show(req, res) {
+    return Save
+      .find({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then(save => res.status(200).send(save))
+      .catch(error => res.status(400).send(error));
+  },
+
   create(req, res) {
     return Save
       .create(req.body)
@@ -59,13 +70,12 @@ module.exports = {
   },
 
   delete(req, res) {
-    return Save
-      .destroy({
-        where: {
-          id: req.params.id
-        }
-      })
-      .then(saves => res.status(200).send(saves))
-      .catch(error => res.status(400).send(error));
+    Save.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    .then(deletedRecords => res.status(200).json(deletedRecords))
+    .catch(error => res.status(500).json(error));
   }
 };
