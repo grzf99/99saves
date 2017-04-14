@@ -68,11 +68,26 @@ export default class extends React.Component {
     super(props);
 
     this.handleSave = this.handleSave.bind(this);
+    this.goToOffers = this.goToOffers.bind(this);
   }
 
   handleSave() {
     if (!this.props.logged) this.props.openLoginModal();
     else this.props.handleSubscribe();
+  }
+
+  goToOffers() {
+    this.props.goToOffers();
+  }
+
+  renderButton() {
+    let button = <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>;
+    if (this.props.hasSubscribed) {
+      button = (this.props.offers && this.props.offers.length)
+        ? <Button block onClick={this.goToOffers}>Participar da votação</Button>
+        : <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>;
+    }
+    return button;
   }
 
   render() {
@@ -87,11 +102,7 @@ export default class extends React.Component {
         </Header>
         <Info>
           <CustomText>{this.props.description}</CustomText>
-          {
-            this.props.hasSubscribed
-              ? <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>
-              : <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>
-          }
+          { this.renderButton() }
         </Info>
       </Card>
     );

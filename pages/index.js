@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from 'next/router';
 import styled from 'styled-components';
 import { lighten } from 'polished';
 import Modal from 'react-modal';
@@ -12,19 +13,11 @@ import Button from '../components/common/button';
 import Toolbar from '../components/toolbar';
 import Card from '../components/card';
 import Footer from '../components/footer';
+import Page from '../components/common/page';
 import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
-
-const Page = styled.div`
-  background: ${colors.black};
-  min-height: 100vh;
-  position: relative;
-  width: 100%;
-
-  ${props => props.hasFooter && 'padding-bottom: 98px'};
-`;
 
 const Headline = styled.div`
   background-color: ${colors.alternateWhite};
@@ -239,6 +232,13 @@ export default class extends React.Component {
     });
   }
 
+  goToOffers(saveId) {
+    Router.push({
+      pathname: 'save',
+      query: { offer: saveId }
+    });
+  }
+
   openModal(subscribeTo) {
     this.setState({ modalIsOpen: true, subscribeTo });
   }
@@ -298,6 +298,7 @@ export default class extends React.Component {
                 logged={this.state.logged}
                 openLoginModal={() => this.openModal(save.id)}
                 handleSubscribe={() => this.handleSubscribe(save.id)}
+                goToOffers={() => this.goToOffers(save.id)}
               />
           )
         : (
