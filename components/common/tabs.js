@@ -4,7 +4,7 @@ import Container from './container';
 import { colors } from '../styles/variables';
 
 const Tabs = styled.div`
-  border-bottom: 1px solid ${colors.darkBlue};
+  border-bottom: ${props => props.withBorder ? `1px solid ${colors.darkBlue}` : '0'};
   display: flex;
   width: 100%;
 
@@ -49,7 +49,7 @@ export default class extends React.Component {
   render() {
     return (
       <Container>
-        <Tabs>
+        <Tabs {...this.props}>
           {this.props.children.map(this.labels)}
         </Tabs>
       </Container>
