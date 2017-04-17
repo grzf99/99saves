@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { colors } from '../styles/variables';
 import Container from './container';
+import { colors } from '../styles/variables';
 
 const Tabs = styled.div`
-  background: ${colors.black};
+  border-bottom: 1px solid ${colors.darkBlue};
   display: flex;
   width: 100%;
 
