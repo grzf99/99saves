@@ -1,6 +1,6 @@
-const sequelize = require('sequelize');
 const Save = require('../models').Save;
 const Subscription = require('../models').Subscription;
+const Product = require('../models').Product;
 
 module.exports = {
   show(req, res) {
@@ -8,7 +8,10 @@ module.exports = {
       .find({
         where: {
           id: req.params.id
-        }
+        },
+        include: [{
+          model: Product
+        }]
       })
       .then(save => res.status(200).send(save))
       .catch(error => res.status(400).send(error));
@@ -37,36 +40,47 @@ module.exports = {
       order: [
         ['date_end', 'ASC']
       ],
-      where: {
-        date_end: {
-          $gt: new Date()
-        },
-        date_start: {
-          $lt: new Date()
-        }
-      }
+      include: [{
+        model: Product
+      }]
     };
 
     if (req.query.offset) query.offset = req.query.offset;
     if (req.query.limit) query.limit = req.query.limit;
 
-    if (req.user) {
-      query.include = [{
-        model: Subscription,
-        where: {
-          UserId: req.user.id
-        },
-        required: !!(req.query.filters && req.query.filters.subscribed === 'true')
-      }];
+    if (req.query.filters) {
+      /**
+       * TODO: O ideal é verificar se o admin tá logado e só exibir os inativos pra ele.
+       */
+      if (req.query.filters.active) {
+        query.where = {
+          date_end: { $gt: new Date() },
+          date_start: { $lt: new Date() }
+        };
+      }
+    }
 
-      if (
-        req.query.filters &&
-        (req.query.filters.subscribed || req.query.filters.votable)
-      ) {
-        query.where = {};
+    if (req.user) {
+      query.include = [
+        ...query.include,
+        {
+          model: Subscription,
+          where: {
+            UserId: req.user.id
+          },
+          required: !!(req.query.filters && req.query.filters.subscribed === 'true')
+        }
+      ];
+
+      if (req.query.filters) {
+        if (req.query.filters.subscribed) {
+          query.where = {};
+        }
 
         if (req.query.filters.votable) {
-          query.where.date_end = { $lt: new Date() };
+          query.where = {
+            date_end: { $lt: new Date() }
+          };
         }
       }
     }
