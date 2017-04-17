@@ -144,6 +144,13 @@ const modalStyles = {
   }
 };
 
+const Banner = styled.div`
+  background: ${colors.black} url(/static/images/img-header@2x.png) no-repeat center center;
+  background-size: cover;
+  margin-top: -53px;
+  min-height: 626px;
+`;
+
 export default class extends React.Component {
   static async getInitialProps() {
     const res = await fetch(`${config.API_URL}/saves`);
@@ -280,48 +287,24 @@ export default class extends React.Component {
   render() {
     return (
       <Page hasFooter>
-        <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
+        <Toolbar login={() => this.handleLogin()} logged={this.state.logged} background />
 
-        <Headline>
-          <Container>
-            Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
-          </Container>
-        </Headline>
+        <Banner />
 
-        {
-          this.state.logged && (
-            <Tabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
-              <Tab>Meus Saves</Tab>
-              <Tab>Todos</Tab>
-            </Tabs>
-          )
-        }
-
-        <SwipeableViews
-          disabled={!this.state.logged}
-          index={this.state.activeTab}
-          onChangeIndex={this.handleChangeIndex}
-          animateHeight
-        >
-          <CardsList>
-            { this.renderUserSaves() }
-          </CardsList>
-
-          <CardsList>
-            {
-              this.state.saves.rows && this.state.saves.rows.map(
-                save =>
-                  <StyledCard
-                    {...save}
-                    key={save.id}
-                    logged={this.state.logged}
-                    openLoginModal={() => this.openModal(save.id)}
-                    handleSubscribe={() => this.handleSubscribe(save.id)}
-                  />
-              )
-            }
-          </CardsList>
-        </SwipeableViews>
+        <CardsList>
+          {
+            this.state.saves.rows && this.state.saves.rows.map(
+              save =>
+                <StyledCard
+                  {...save}
+                  key={save.id}
+                  logged={this.state.logged}
+                  openLoginModal={() => this.openModal(save.id)}
+                  handleSubscribe={() => this.handleSubscribe(save.id)}
+                />
+            )
+          }
+        </CardsList>
 
         <Footer />
 
