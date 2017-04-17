@@ -10,4 +10,13 @@ export const Twitter = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><path fill="#1D2028" fillRule="evenodd" d="M25.2 0H2.8C1.26 0 0 1.26 0 2.8v22.4C0 26.74 1.26 28 2.8 28h22.4c1.54 0 2.8-1.26 2.8-2.8V2.8C28 1.26 26.74 0 25.2 0zm-3.22 10.22c-.14 6.44-4.2 10.92-10.36 11.2-2.52.14-4.34-.7-6.02-1.68 1.82.28 4.2-.42 5.46-1.54-1.82-.14-2.94-1.12-3.5-2.66.56.14 1.12 0 1.54 0-1.68-.56-2.8-1.54-2.94-3.78.42.28.98.42 1.54.42-1.26-.7-2.1-3.36-1.12-5.04 1.82 1.96 4.06 3.64 7.7 3.92-.98-3.92 4.34-6.02 6.44-3.36.98-.14 1.68-.56 2.38-.84-.28.98-.84 1.54-1.54 2.1.7-.14 1.4-.28 1.96-.56-.14.7-.84 1.26-1.54 1.82z" /></svg>
 );
 
-export default { Facebook, Instagram, Twitter };
+export const ArrowBack = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path fill="#28BA64" fillRule="evenodd" d="M3.8 7l5.6-5.6L8 0 0 8l8 8 1.4-1.4L3.8 9H16V7" /></svg>
+);
+
+export default {
+  Facebook,
+  Instagram,
+  Twitter,
+  ArrowBack
+};
