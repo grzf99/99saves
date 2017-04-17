@@ -174,8 +174,10 @@ export default class extends React.Component {
     const accessToken = window.localStorage.getItem('accessToken');
     if (accessToken) {
       this.authenticate(accessToken)
-        .then(this.loadSaves)
-        .then(this.loadSubscriptions);
+        .then(() => Promise.all([
+          this.loadSaves(),
+          this.loadSubscriptions()
+        ]));
     }
   }
 
@@ -208,8 +210,10 @@ export default class extends React.Component {
         ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken)
         : Promise.resolve()
       ))
-      .then(this.loadSaves)
-      .then(this.loadSubscriptions);
+      .then(() => Promise.all([
+        this.loadSaves(),
+        this.loadSubscriptions()
+      ]));
   }
 
   handleSubscribe(subscribeTo, accessToken) {

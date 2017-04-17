@@ -72,8 +72,11 @@ export default class extends React.Component {
   }
 
   handleSave() {
-    if (!this.props.logged) this.props.openLoginModal();
-    else !this.props.hasSubscribed && this.props.handleSubscribe();
+    if (!this.props.logged) {
+      this.props.openLoginModal();
+    } else if (!this.props.hasSubscribed) {
+      this.props.handleSubscribe();
+    }
   }
 
   goToOffers() {
