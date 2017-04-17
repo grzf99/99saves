@@ -27,7 +27,7 @@ export default class MyDocument extends Document {
             dangerouslySetInnerHTML={{ __html: `
               window.fbAsyncInit = function() {
                 FB.init({
-                  appId      : ${process.env.CLIENT_ID},
+                  appId      : ${process.env.FACEBOOK_APP_ID},
                   xfbml      : true,
                   version    : 'v2.8'
                 });
