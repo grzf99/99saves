@@ -15,6 +15,10 @@ const CustomContainer = styled(Container)`
   padding: 12px;
 `;
 
+const LinkLogo = styled.a`
+  display: inline-block;
+  cursor: pointer;`;
+
 const Logo = styled.img`
   margin-left: 5px;
 `;
@@ -48,7 +52,9 @@ const LinkAllSaves = styled.a`
 export default props => (
   <Toolbar>
     <CustomContainer>
-      <Logo src="/static/images/logo-99-saves.svg" alt="99saves" />
+      <LinkLogo href="/">
+        <Logo src="/static/images/logo-99-saves.svg" alt="99saves" />
+      </LinkLogo>
 
       <MenuLinks>
         <LinkAllSaves href="/saves">
