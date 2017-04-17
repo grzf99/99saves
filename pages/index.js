@@ -237,7 +237,7 @@ export default class extends React.Component {
   }
 
   goToOffers(saveId) {
-    window.location.href = `http://localhost:3000/offer/${saveId}`;
+    Router.push(`/save?offer=${saveId}`, `/offer/${saveId}`);
   }
 
   openModal(subscribeTo) {
@@ -307,7 +307,7 @@ export default class extends React.Component {
 
         {
           this.state.logged && (
-            <Tabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
+            <Tabs withBorder index={this.state.activeTab} onChange={this.handleChangeIndex}>
               <Tab>Meus Saves</Tab>
               <Tab>Todos</Tab>
             </Tabs>

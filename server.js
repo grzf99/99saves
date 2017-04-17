@@ -49,7 +49,7 @@ app.prepare()
   server.use('/api', apiRoutes);
 
   server.get('/offer/:id', (req, res) =>
-    app.render(req, res, '/save', Object.assign({ offer: req.params.id }, req.query))
+    app.render(req, res, '/save', Object.assign({}, req.query, { offer: req.params.id }))
   );
 
   server.get('*', (req, res) => handle(req, res));
