@@ -34,14 +34,24 @@ const Section = styled.section`
   ${props => props.white && `background: ${colors.white}`}
 `;
 
+const CustomTabs = styled(Tabs)`
+  flex-flow: row;
+  flex-wrap: wrap;
+`;
+
 const CustomTab = styled(Tab)`
   background-color: ${props => props.active ? colors.green : 'transparent' };
   border: 0;
+  flex: 1;
   height: inherit;
   line-height: 24px;
   padding: 20px 20px 15px;
 
-  ${props => props.active && 'border: 0'}
+  ${props => props.active && 'border: 0'};
+
+  @media (min-width: 640px) {
+    max-width: 100%;
+  }
 
   > h2 {
     color: ${props => props.active ? colors.white : colors.green}
@@ -165,7 +175,7 @@ export default class extends React.Component {
 
         <Section gray>
           <Container>
-            <Tabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
+            <CustomTabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
               {
                 this.state.products.map((product, key) => (
                   <CustomTab key={product.id}>
@@ -174,7 +184,7 @@ export default class extends React.Component {
                   </CustomTab>
                 ))
               }
-            </Tabs>
+            </CustomTabs>
           </Container>
         </Section>
 
