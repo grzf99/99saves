@@ -73,7 +73,7 @@ export default class extends React.Component {
 
   handleSave() {
     if (!this.props.logged) this.props.openLoginModal();
-    else this.props.handleSubscribe();
+    else !this.props.hasSubscribed && this.props.handleSubscribe();
   }
 
   goToOffers() {
@@ -83,7 +83,11 @@ export default class extends React.Component {
   renderButton() {
     let button = <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>;
     if (this.props.hasSubscribed) {
-      button = (this.props.offers && this.props.offers.length)
+      button = (
+        this.props.Products &&
+        this.props.Products.length &&
+        (new Date(this.props.date_end).getTime() + (48 * 60 * 60 * 1000)) < Date.now()
+      )
         ? <Button block onClick={this.goToOffers}>Participar da votação</Button>
         : <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>;
     }

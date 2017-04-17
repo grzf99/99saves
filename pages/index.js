@@ -38,7 +38,7 @@ const CardsList = styled(Container)`
   align-items: stretch;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-flow: row wrap;
 `;
 
@@ -139,7 +139,7 @@ const modalStyles = {
 
 export default class extends React.Component {
   static async getInitialProps() {
-    const saves = await (await fetch(`${config.API_URL}/saves`)).json();
+    const saves = await (await fetch(`${config.API_URL}/saves?filters[active]=true`)).json();
     return { saves };
   }
 
@@ -233,10 +233,7 @@ export default class extends React.Component {
   }
 
   goToOffers(saveId) {
-    Router.push({
-      pathname: 'save',
-      query: { offer: saveId }
-    });
+    window.location.href = `http://localhost:3000/offer/${saveId}`;
   }
 
   openModal(subscribeTo) {
@@ -252,7 +249,7 @@ export default class extends React.Component {
   }
 
   loadSaves() {
-    return fetch(`${config.API_URL}/saves?access_token=${this.state.accessToken}`)
+    return fetch(`${config.API_URL}/saves?filters[active]=true&access_token=${this.state.accessToken}`)
       .then(saves => saves.json())
       .then((saves) => {
         this.setState({ saves });
@@ -262,28 +259,8 @@ export default class extends React.Component {
   loadSubscriptions() {
     return fetch(`${config.API_URL}/saves?filters[subscribed]=true&access_token=${this.state.accessToken}`)
       .then(res => res.json())
-      .then((items) => {
-        const rows = items.rows.map((item) => {
-          const subscription = item;
-          subscription.offers = [{
-            image: 'https://unsplash.it/320/240/?random',
-            title: 'Teste 1',
-            description: 'Lorem Ipsum Dolor Sit Amet'
-          }, {
-            image: 'https://unsplash.it/320/240/?random',
-            title: 'Teste 2',
-            description: 'Lorem Ipsum Dolor Sit Amet'
-          }];
-
-          return subscription;
-        });
-
-        this.setState({
-          subscriptions: {
-            rows,
-            count: rows.length
-          }
-        });
+      .then((subscriptions) => {
+        this.setState({ subscriptions });
       });
   }
 
@@ -310,7 +287,7 @@ export default class extends React.Component {
             </div>
           </BlankState>
         )
-    )
+    );
   }
 
   render() {
@@ -353,6 +330,7 @@ export default class extends React.Component {
                     logged={this.state.logged}
                     openLoginModal={() => this.openModal(save.id)}
                     handleSubscribe={() => this.handleSubscribe(save.id)}
+                    goToOffers={() => this.goToOffers(save.id)}
                   />
               )
             }
