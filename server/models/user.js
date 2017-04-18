@@ -10,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
       associate: (models) => {
         User.hasMany(models.Subscription);
       }
+    },
+    instanceMethods: {
+      toJSON () {
+        delete this.dataValues.passwordHash;
+        return this.dataValues;
+      }
     }
   });
   return User;

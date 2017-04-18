@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../models');
-const { generateToken } = require('../../utils/jwt')
+const { generateToken } = require('../../utils/jwt');
 
 module.exports = {
   list(req, res) {
@@ -28,14 +28,14 @@ module.exports = {
           where: { email: user.email },
           defaults: Object.assign({}, user, { passwordHash })
         })
-        .spread(({ name, email, admin }, created) => {
+        .spread((user, created) => {
           if (created) {
-            const token = generateToken({ email, admin });
-            res.status(201).json({ name, email, admin, token });
+            const token = generateToken(user);
+            res.status(201).json(Object.assign({}, user.toJSON(), { token }));
           } else {
             res.sendStatus(422);
           }
-          resolve()
+          resolve();
         });
       });
     });

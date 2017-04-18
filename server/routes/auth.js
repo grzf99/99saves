@@ -5,7 +5,6 @@ const { auth as authController } = require('../controllers');
 const router = express.Router();
 
 router.get('/login', authController.login);
-router.get('/logout', authController.logout);
 router.get('/facebook', passport.authenticate('facebook-token'), authController.facebook);
 
 module.exports = router;
