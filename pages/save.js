@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
-import 'isomorphic-fetch';
+import axios from 'axios';
 import { numeral } from '../utils';
 
 import config from '../config';
@@ -93,8 +93,9 @@ const Price = styled.div`
 
 export default class extends React.Component {
   static async getInitialProps({ query }) {
-    const save = await (await fetch(`${config.API_URL}/saves/${query.offer}`)).json();
-    return { save };
+    const save = (await axios.get(`${config.API_URL}/saves/${query.offer}`)).data;
+    const vote = (await axios.get(`${config.API_URL}/saves/${save.id}/votes`)).data;
+    return { save, vote };
   }
 
   constructor(props) {
@@ -103,15 +104,28 @@ export default class extends React.Component {
     this.state = {
       activeTab: 0,
       title: props.save.title,
-      products: props.save.Products
+      products: props.save.Products,
+      vote: props.vote ? props.vote.ProductId : 0
     };
 
     this.formatCurrency = this.formatCurrency.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
+    this.handleVoteClick = this.handleVoteClick.bind(this);
   }
 
   handleChangeIndex(tabIndex) {
     this.setState({ activeTab: tabIndex });
+  }
+
+  handleVoteClick(productId) {
+    if (this.state.vote !== productId) {
+      axios.post(`${config.API_URL}/saves/${this.props.save.id}/votes`, {
+        ProductId: productId
+      })
+      .then(({ data }) => {
+        this.setState({ vote: data.ProductId });
+      });
+    }
   }
 
   formatCurrency(value) {
@@ -163,7 +177,17 @@ export default class extends React.Component {
                 <Container>
                   <ItemHeader>
                     <Tag white>Oferta {key + 1}</Tag>
-                    <Button large>Votar nesta oferta</Button>
+                    <Button
+                      large
+                      onClick={() => this.handleVoteClick(product.id)}
+                      disabled={this.state.vote > 0}
+                    >
+                      {
+                        this.state.vote === product.id
+                          ? <span>Oferta escolhida</span>
+                          : <span>Votar nesta oferta</span>
+                      }
+                    </Button>
                   </ItemHeader>
 
                   <Row>
