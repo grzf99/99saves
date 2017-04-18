@@ -158,10 +158,10 @@ const Banner = styled.div`
     right: 0;
     width: 100%;
     height: 30px;
-    background: ${colors.black};
+    background: ${colors.white};
     border-left: 0;
     border-right: 50px solid transparent;
-    border-top: 25px solid ${colors.black};
+    border-top: 25px solid ${colors.white};
     transform: rotate(179deg);
   }
 `;
@@ -225,7 +225,7 @@ const VideoButton = styled(Button)`
 
 const BrandContainer = styled.div`
   align-items: center;
-  background: ${colors.black};
+  background: ${colors.white};
   display: flex;
   flex-direction: column;
   min-height: 336px;
@@ -252,7 +252,7 @@ const BrandContainer = styled.div`
 `;
 
 const BannerTitle = styled.h2`
-  color: ${colors.darkSkyBlue};
+  color: ${colors.battleshipFrey};
   font-family: Oswald;
   font-size: 28px;
   font-weight: 500;
