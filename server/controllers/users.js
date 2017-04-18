@@ -20,7 +20,7 @@ module.exports = {
     const { user } = req.body;
     return User.findOrCreate({
       where: { email: user.email },
-      defaults: user
+      defaults: Object.assign({}, user, { admin: false })
     }).spread((user, created) => {
       if (created) {
         const token = generateToken(user.toJSON());
