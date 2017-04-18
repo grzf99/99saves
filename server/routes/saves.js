@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const savesController = require('../controllers').saves;
 const subscriptionsController = require('../controllers').subscriptions;
+const votesController = require('../controllers').votes;
 
 const router = express.Router();
 
@@ -12,6 +13,7 @@ router.get('/', (req, res, next) => {
   else next();
 }, savesController.list);
 router.post('/:saveId/subscriptions', passport.authenticate('facebook-token'), subscriptionsController.create);
+router.post('/:saveId/votes', passport.authenticate('facebook-token'), votesController.create);
 router.put('/:id', savesController.update);
 router.delete('/:id', savesController.delete);
 
