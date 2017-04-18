@@ -91,6 +91,28 @@ const Price = styled.div`
   }
 `;
 
+const Buscape = styled.div`
+  font-family: 'Roboto', sans-serif;
+  margin: 10px 0;
+  text-align: right;
+
+  > * {
+    display: block;
+    margin: 5px 0;
+  }
+
+  > a {
+    color: ${colors.green};
+    font-size: 12px;
+    text-decoration: underline;
+  }
+
+  > s {
+    color: ${colors.alternateWhite};
+    font-size: 15px;
+  }
+`;
+
 export default class extends React.Component {
   static async getInitialProps({ query }) {
     const save = (await axios.get(`${config.API_URL}/saves/${query.offer}`)).data;
@@ -221,6 +243,19 @@ export default class extends React.Component {
                           }
                         </Heading>
                       </Price>
+                      {
+                        (product.price_buscape && product.link_buscape) && (
+                          <Buscape>
+                            <a href={product.link_buscape}>melhor preço no buscapé</a>
+                            <s>
+                              R$&nbsp;
+                              {
+                                this.formatCurrency(product.price_buscape)
+                              }
+                            </s>
+                          </Buscape>
+                        )
+                      }
                     </Column>
                   </Row>
                 </Container>
