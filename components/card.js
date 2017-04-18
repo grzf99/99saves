@@ -63,6 +63,18 @@ const CustomText = styled(Text)`
   color: ${colors.lightgray};
 `;
 
+const Status = styled.div`
+  background: ${colors.gray};
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  padding: 3px;
+  position: absolute;
+  text-transform: uppercase;
+  top: 0;
+  width: 100%;
+`;
+
 export default class extends React.Component {
   constructor(props) {
     super(props);
@@ -101,6 +113,7 @@ export default class extends React.Component {
     return (
       <Card {...this.props}>
         <Header>
+          { this.props.hasVoted && <Status>Em negociação</Status> }
           <CardImage src={this.props.image_default} alt={this.props.title} />
           <Gradient>
             <SmallText>imagem meramente ilustrativa</SmallText>
@@ -109,7 +122,7 @@ export default class extends React.Component {
         </Header>
         <Info>
           <CustomText>{this.props.description}</CustomText>
-          { this.renderButton() }
+          { !this.props.hasVoted && this.renderButton() }
         </Info>
       </Card>
     );

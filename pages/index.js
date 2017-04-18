@@ -137,9 +137,29 @@ const modalStyles = {
   }
 };
 
+const savesMapper = ({ count, rows }) => {
+  return {
+    count,
+    rows: rows.map((item) => {
+      const save = item;
+
+      if (save.Subscriptions && save.Subscriptions.length > 0) {
+        save.hasSubscribed = true;
+
+        if (save.Subscriptions.some(s => s.Votes.length > 0)) {
+          save.hasVoted = true;
+        }
+      }
+
+      return save;
+    })
+  };
+};
+
 export default class extends React.Component {
   static async getInitialProps() {
-    const saves = await (await fetch(`${config.API_URL}/saves?filters[active]=true`)).json();
+    const items = await (await fetch(`${config.API_URL}/saves?filters[active]=true`)).json();
+    const saves = savesMapper(items);
     return { saves };
   }
 
@@ -255,6 +275,7 @@ export default class extends React.Component {
   loadSaves() {
     return fetch(`${config.API_URL}/saves?filters[active]=true&access_token=${this.state.accessToken}`)
       .then(saves => saves.json())
+      .then(saves => savesMapper(saves))
       .then((saves) => {
         this.setState({ saves });
       });
@@ -263,6 +284,7 @@ export default class extends React.Component {
   loadSubscriptions() {
     return fetch(`${config.API_URL}/saves?filters[subscribed]=true&access_token=${this.state.accessToken}`)
       .then(res => res.json())
+      .then(saves => savesMapper(saves))
       .then((subscriptions) => {
         this.setState({ subscriptions });
       });
