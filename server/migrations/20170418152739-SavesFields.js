@@ -14,5 +14,11 @@ module.exports = {
         Sequelize.DATE
       )
     ]);
+  },
+  down: function (queryInterface, Sequelize) {
+    return Promise.all([
+      queryInterface.removeColumn('Saves', 'votation_end'),
+      queryInterface.removeColumn('Saves', 'checkout_end')
+    ]);
   }
 };
