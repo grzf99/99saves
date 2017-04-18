@@ -181,6 +181,10 @@ const Title = styled.h1`
   font-family: Oswald;
   font-size: 61px;
   font-weight: 500;
+
+  @media (max-width: 500px) {
+    font-size: 47px;
+  }
 `;
 
 const Subtitle = styled.div`
@@ -190,6 +194,25 @@ const Subtitle = styled.div`
   font-weight: 500;
   line-height: 1.67;
   text-align: center;
+  width: 40%;
+
+  @media (max-width: 960px) {
+    width: 100%;
+  }
+`;
+
+const BannerActions = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 500px;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+    height: 130px;
+    width: 100%;
+  }
 `;
 
 const VideoButton = styled(Button)`
@@ -343,14 +366,13 @@ export default class extends React.Component {
           <BannerContainer>
             <Title>Nunca mais negocie sozinho</Title>
             <Subtitle>
-              Junte-se a nós e consiga descontos muito maiores do que os encontrados no mercado.<br />
-              Diretamente com fabricantes.
+              Junte-se a nós e consiga descontos muito maiores do que os encontrados no mercado. Diretamente com fabricantes.
             </Subtitle>
 
-            <div>
+            <BannerActions>
               <Button outline openLoginModal={() => this.openModal()}>participe agora mesmo</Button>
               <VideoButton openVideonModal={() => console.log('abre video')}>entenda como funciona</VideoButton>
-            </div>
+            </BannerActions>
 
           </BannerContainer>
 
