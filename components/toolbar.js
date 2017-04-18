@@ -7,6 +7,10 @@ import Link from 'next/link';
 const Toolbar = styled.header`
   background: ${colors.black};
   width: 100%;
+
+  &.transparent {
+    background: transparent;
+  }
 `;
 
 const CustomContainer = styled(Container)`
@@ -50,7 +54,7 @@ const LinkAllSaves = styled.a`
   }`;
 
 export default props => (
-  <Toolbar>
+  <Toolbar className={props.background} >
     <CustomContainer>
       <LinkLogo href="/">
         <Logo src="/static/images/logo-99-saves.svg" alt="99saves" />
