@@ -23,6 +23,7 @@ If you plan to **integrate** this project to Heroku, you'll need:
 * `$ cd 99saves` - Go into the project's folder
 * `$ yarn add global sequelize-cli`
 * `$ createdb 99saves-dev`
+* Create a `.env` file from the `.evn.sample` example (ask a teammate if you need any variable)
 * `$ yarn install` - Installs the project's dependencies
 * `$ yarn run build` - Installs the project's dependencies
 
