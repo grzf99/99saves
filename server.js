@@ -4,6 +4,9 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
+// loading env variables from .env file
+require('dotenv').config();
+
 const apiRoutes = require('./server/routes');
 const passportStrategies = require('./server/strategies');
 const User = require('./server/models').User;
