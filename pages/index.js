@@ -192,6 +192,14 @@ const Subtitle = styled.div`
   text-align: center;
 `;
 
+const VideoButton = styled(Button)`
+  background-image: url(/static/images/ic-play.svg);
+  background-position: 20px center;
+  background-repeat: no-repeat;
+  font-size: 14px;
+  padding-left: 50px;
+`;
+
 export default class extends React.Component {
   static async getInitialProps() {
     const res = await fetch(`${config.API_URL}/saves`);
@@ -341,7 +349,7 @@ export default class extends React.Component {
 
             <div>
               <Button outline openLoginModal={() => this.openModal()}>participe agora mesmo</Button>
-              <Button openVideonModal={() => console.log('abre video')}>entenda como funciona</Button>
+              <VideoButton openVideonModal={() => console.log('abre video')}>entenda como funciona</VideoButton>
             </div>
 
           </BannerContainer>
