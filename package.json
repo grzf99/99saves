@@ -47,6 +47,7 @@
     "numeral": "^2.0.6",
     "passport": "^0.3.2",
     "passport-facebook-token": "^3.3.0",
+    "passport-jwt": "^2.2.1",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
     "polished": "^1.0.1",

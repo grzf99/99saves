@@ -1,10 +1,10 @@
 const express = require('express');
 const passport = require('passport');
-const { auth as authController } = require('../controllers');
+const { auth } = require('../controllers');
 
 const router = express.Router();
 
-router.get('/login', authController.login);
-router.get('/facebook', passport.authenticate('facebook-token'), authController.facebook);
+router.get('/login', auth.login);
+router.get('/facebook', passport.authenticate('facebook-token'), auth.facebook);
 
 module.exports = router;

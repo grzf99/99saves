@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const apiRoutes = require('./server/routes');
 const passportStrategies = require('./server/strategies');
-const User = require('./server/models').User;
+const { User } = require('./server/models');
 // const renderAndCache = require('./utils').renderAndCache;
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -41,20 +41,15 @@ app.prepare()
   server.use(passport.initialize());
   server.use(passport.session());
 
-  server.use(passport.initialize());
-  server.use(passport.session());
-
   // Use the `renderAndCache` utility defined below to serve pages
   // server.get('/', (req, res) => {
   //   renderAndCache(app, req, res, '/');
   // });
 
   server.use('/api', apiRoutes);
-
   server.get('/offer/:saveId', (req, res) =>
     app.render(req, res, '/offer', Object.assign({}, req.query, { saveId: req.params.saveId }))
   );
-
   server.get('*', (req, res) => handle(req, res));
 
   server.listen(port, (err) => {
