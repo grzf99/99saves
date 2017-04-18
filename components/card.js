@@ -60,7 +60,11 @@ const Info = styled.div`
 `;
 
 const CustomText = styled(Text)`
+  align-items: center;
   color: ${colors.lightgray};
+  display: flex;
+  height: 56px;
+  justify-content: center;
 `;
 
 const Status = styled.div`
