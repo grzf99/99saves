@@ -1,5 +1,4 @@
 const MockResponse = require('mock-express-response');
-const bcrypt = require('bcrypt');
 const { User } = require('../../models');
 const authController = require('../auth');
 
@@ -18,10 +17,7 @@ describe('login', () => {
     describe('when password is correct', () => {
       it('should return 200 and a user object', () => {
         const res = new MockResponse();
-        return bcrypt.hash(req.body.password, 10)
-          .then((passwordHash) => (
-            User.create(Object.assign({}, req.body, { passwordHash }))
-          ))
+        return User.create(Object.assign({}, req.body))
           .then(() => authController.login(req, res))
           .then(() => {
             expect(res.statusCode).toEqual(200);
@@ -38,11 +34,12 @@ describe('login', () => {
     describe('when password is incorrect', () => {
       it('should return 422', () => {
         const res = new MockResponse();
-        return bcrypt.hash('anyOtherPassword', 10)
-          .then((passwordHash) => (
-            User.create(Object.assign({}, req.body, { passwordHash }))
-          ))
-          .then(() => authController.login(req, res))
+
+        return User.create(Object.assign({}, req.body))
+          .then(() => {
+            req.body.password = 'anyOtherPassword';
+            return authController.login(req, res);
+          })
           .then(() => {
             expect(res.statusCode).toEqual(422);
           });

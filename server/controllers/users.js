@@ -18,26 +18,16 @@ module.exports = {
 
   create (req, res) {
     const { user } = req.body;
-
-    // bcrypt can't be a promise
-    // because it can't chain with sequelize's `.spread`
-    // or this would happen: bcrypt.hash(...).then(...).spread is not a function
-    return new Promise((resolve) => {
-      bcrypt.hash(user.password, 10, (err, passwordHash) => {
-        User.findOrCreate({
-          where: { email: user.email },
-          defaults: Object.assign({}, user, { passwordHash })
-        })
-        .spread((user, created) => {
-          if (created) {
-            const token = generateToken(user);
-            res.status(201).json(Object.assign({}, user.toJSON(), { token }));
-          } else {
-            res.sendStatus(422);
-          }
-          resolve();
-        });
-      });
+    return User.findOrCreate({
+      where: { email: user.email },
+      defaults: user
+    }).spread((user, created) => {
+      if (created) {
+        const token = generateToken(user.toJSON());
+        res.status(201).json(Object.assign({}, user.toJSON(), { token }));
+      } else {
+        res.sendStatus(422);
+      }
     });
   },
 
