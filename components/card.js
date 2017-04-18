@@ -89,7 +89,7 @@ export default class extends React.Component {
       button = (
         this.props.Products &&
         this.props.Products.length &&
-        (new Date(this.props.date_end).getTime() + (48 * 60 * 60 * 1000)) < Date.now()
+        (new Date(this.props.votation_end).getTime()) < Date.now()
       )
         ? <Button block onClick={this.goToOffers}>Participar da votação</Button>
         : <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>;

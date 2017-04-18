@@ -6,7 +6,9 @@ module.exports = (sequelize, DataTypes) => {
     image2: DataTypes.STRING,
     image3: DataTypes.STRING,
     date_start: DataTypes.DATE,
-    date_end: DataTypes.DATE
+    date_end: DataTypes.DATE,
+    checkout_end: DataTypes.DATE,
+    votation_end: DataTypes.DATE
   }, {
     classMethods: {
       associate: (models) => {
