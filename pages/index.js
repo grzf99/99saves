@@ -18,7 +18,7 @@ import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 
 const Page = styled.div`
-  background: ${colors.white};
+  background: ${colors.black};
   min-height: 100vh;
   position: relative;
   width: 100%;
@@ -228,7 +228,7 @@ const BrandContainer = styled.div`
   background: ${colors.white};
   display: flex;
   flex-direction: column;
-  min-height: 336px;
+  min-height: 280px;
   justify-content: flex-start;
   position: relative;
 
@@ -243,7 +243,7 @@ const BrandContainer = styled.div`
     border-left: 0;
     border-right: 50px solid transparent;
     border-top: 5px solid #ffffff;
-    transform: rotate(1.2deg);
+    transform: rotate(1.7deg);
   }
 
   @media (max-width: 728px) {
@@ -264,7 +264,7 @@ const BannerTitle = styled.h2`
   }
 `;
 
-const BrandImagesContainer = styled.div`
+const BrandImagesContainer = styled(Container)`
   align-content: center;
   display: flex;
   flex-direction: row;
