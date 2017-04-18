@@ -18,7 +18,7 @@ import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 
 const Page = styled.div`
-  background: ${colors.black};
+  background: ${colors.white};
   min-height: 100vh;
   position: relative;
   width: 100%;
@@ -154,15 +154,15 @@ const Banner = styled.div`
   &:after {
     content: "";
     position: absolute;
-    bottom: -175px;
+    bottom: -14px;
     right: 0;
     width: 100%;
-    height: 200px;
+    height: 30px;
     background: ${colors.black};
     border-left: 0;
     border-right: 50px solid transparent;
     border-top: 25px solid ${colors.black};
-    transform: rotate(178deg);
+    transform: rotate(179deg);
   }
 `;
 
@@ -221,6 +221,64 @@ const VideoButton = styled(Button)`
   background-repeat: no-repeat;
   font-size: 14px;
   padding-left: 50px;
+`;
+
+const BrandContainer = styled.div`
+  align-items: center;
+  background: ${colors.black};
+  display: flex;
+  flex-direction: column;
+  min-height: 336px;
+  justify-content: flex-start;
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    width: 100%;
+    height: 80px;
+    background: ${colors.white};
+    border-left: 0;
+    border-right: 50px solid transparent;
+    border-top: 5px solid #ffffff;
+    transform: rotate(1.2deg);
+  }
+
+  @media (max-width: 728px) {
+    min-height: 550px;
+  }
+`;
+
+const BannerTitle = styled.h2`
+  color: ${colors.darkSkyBlue};
+  font-family: Oswald;
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+
+  @media (max-width: 500px) {
+    font-size: 22px;
+  }
+`;
+
+const BrandImagesContainer = styled.div`
+  align-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+
+  @media (max-width: 728px) {
+    flex-direction: column;
+    min-height: 250px;
+  }
+`;
+
+const BrandImage = styled.img`
+  align-self: center;
 `;
 
 export default class extends React.Component {
@@ -377,6 +435,15 @@ export default class extends React.Component {
           </BannerContainer>
 
         </Banner>
+
+        <BrandContainer>
+          <BannerTitle>negociamos com as marcas que você confia</BannerTitle>
+          <BrandImagesContainer>
+            <BrandImage src="/static/images/logo-kitchen-aid.svg" alt="kitchen-aid" />
+            <BrandImage src="/static/images/logo-brastemp.svg" alt="Brastemp" />
+            <BrandImage src="/static/images/logo-consul.svg" alt="Consult" />
+          </BrandImagesContainer>
+        </BrandContainer>
 
         <CardsList>
           {
