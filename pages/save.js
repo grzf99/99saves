@@ -18,7 +18,7 @@ import Tab from '../components/common/tab';
 import { Row, Column } from '../components/common/grid';
 import Panel from '../components/common/panel';
 import Section from '../components/common/section';
-import { ArrowBack } from '../components/common/svg';
+import { ArrowBack, ChevronLeft, ChevronRight } from '../components/common/svg';
 import Image from '../components/common/image';
 import Gallery from '../components/gallery';
 
@@ -111,6 +111,58 @@ const Buscape = styled.div`
     color: ${colors.alternateWhite};
     font-size: 15px;
   }
+`;
+
+const Icon = styled.i`
+  height: 40px;
+  flex: 0 0 40px;
+  position: relative;
+  width: 40px;
+
+  > svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+  }
+`;
+
+const Control = styled.div`
+  background: ${colors.green};
+  color: ${colors.white};
+  cursor: pointer;
+  display: flex;
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  height: 40px;
+  justify-content: space-between;
+  overflow: hidden;
+  position: absolute;
+  text-transform: uppercase;
+  transform: translateY(-20px);
+  transition: .2s ease width;
+  top: 346px;
+  width: 40px;
+
+  &:hover {
+    width: 144px;
+  }
+
+  > span {
+    margin: 0 10px;
+    overflow: hidden;
+  }
+`;
+
+const PrevArrow = styled(Control)`
+  left: 0;
+`;
+
+const RightArrow = styled(Control)`
+  flex-direction: row-reverse;
+  right: 0;
 `;
 
 export default class extends React.Component {
@@ -263,6 +315,24 @@ export default class extends React.Component {
             ))
           }
         </SwipeableViews>
+
+        {
+          this.state.activeTab !== 0 && (
+            <PrevArrow onClick={() => this.handleChangeIndex(this.state.activeTab - 1)}>
+              <Icon><ChevronLeft /></Icon>
+              <span>Oferta {this.state.activeTab}</span>
+            </PrevArrow>
+          )
+        }
+
+        {
+          this.state.activeTab !== (this.state.products.length - 1) && (
+            <RightArrow onClick={() => this.handleChangeIndex(this.state.activeTab + 1)}>
+              <Icon><ChevronRight /></Icon>
+              <span>Oferta {this.state.activeTab + 2}</span>
+            </RightArrow>
+          )
+        }
 
         <Footer />
       </Page>

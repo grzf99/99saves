@@ -14,9 +14,19 @@ export const ArrowBack = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path fill="#28BA64" fillRule="evenodd" d="M3.8 7l5.6-5.6L8 0 0 8l8 8 1.4-1.4L3.8 9H16V7" /></svg>
 );
 
+export const ChevronLeft = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12"><path fill="#FFF" fillRule="evenodd" d="M7.4 1.4L6 0 0 6l6 6 1.4-1.4L2.8 6" /></svg>
+);
+
+export const ChevronRight = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12"><path fill="#FFF" fillRule="evenodd" d="M2 0L.6 1.4 5.2 6 .6 10.6 2 12l6-6" /></svg>
+);
+
 export default {
   Facebook,
   Instagram,
   Twitter,
-  ArrowBack
+  ArrowBack,
+  ChevronLeft,
+  ChevronRight
 };
