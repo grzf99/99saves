@@ -147,8 +147,49 @@ const modalStyles = {
 const Banner = styled.div`
   background: ${colors.black} url(/static/images/img-header@2x.png) no-repeat center center;
   background-size: cover;
-  margin-top: -53px;
+  margin-top: 0;
   min-height: 626px;
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -175px;
+    right: 0;
+    width: 100%;
+    height: 200px;
+    background: ${colors.black};
+    border-left: 0;
+    border-right: 50px solid transparent;
+    border-top: 25px solid ${colors.black};
+    transform: rotate(178deg);
+  }
+`;
+
+const BannerContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+  justify-content: space-around;
+  margin-top: 30px;
+`;
+
+const Title = styled.h1`
+  color: ${colors.white};
+  text-align: center;
+  font-family: Oswald;
+  font-size: 61px;
+  font-weight: 500;
+`;
+
+const Subtitle = styled.div`
+  color: ${colors.white};
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.67;
+  text-align: center;
 `;
 
 export default class extends React.Component {
@@ -281,15 +322,31 @@ export default class extends React.Component {
             </div>
           </BlankState>
         )
-    )
+    );
   }
 
   render() {
     return (
       <Page hasFooter>
-        <Toolbar login={() => this.handleLogin()} logged={this.state.logged} background />
 
-        <Banner />
+        <Banner>
+          <Toolbar login={() => this.handleLogin()} logged={this.state.logged} background="transparent" />
+
+          <BannerContainer>
+            <Title>Nunca mais negocie sozinho</Title>
+            <Subtitle>
+              Junte-se a nós e consiga descontos muito maiores do que os encontrados no mercado.<br />
+              Diretamente com fabricantes.
+            </Subtitle>
+
+            <div>
+              <Button outline openLoginModal={() => this.openModal()}>participe agora mesmo</Button>
+              <Button openVideonModal={() => console.log('abre video')}>entenda como funciona</Button>
+            </div>
+
+          </BannerContainer>
+
+        </Banner>
 
         <CardsList>
           {
