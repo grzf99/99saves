@@ -2,6 +2,7 @@ const addDays = require('date-fns/add_days');
 const Save = require('../models').Save;
 const Subscription = require('../models').Subscription;
 const Product = require('../models').Product;
+const Vote = require('../models').Vote;
 
 module.exports = {
   show(req, res) {
@@ -72,6 +73,7 @@ module.exports = {
         ...query.include,
         {
           model: Subscription,
+          include: [Vote],
           where: {
             UserId: req.user.id
           },
@@ -94,19 +96,7 @@ module.exports = {
 
     return Save
       .findAndCountAll(query)
-      .then(({ count, rows }) => {
-        const saves = {
-          count,
-          rows: rows.map((row) => {
-            const save = row.toJSON();
-            if (req.user) save.hasSubscribed = save.Subscriptions.length > 0;
-            delete save.Subscriptions;
-            return save;
-          })
-        };
-
-        res.status(200).send(saves);
-      })
+      .then(saves => res.status(200).send(saves))
       .catch(error => res.status(400).send(error));
   },
 
