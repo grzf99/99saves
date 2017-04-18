@@ -179,8 +179,9 @@ const Title = styled.h1`
   color: ${colors.white};
   text-align: center;
   font-family: Oswald;
-  font-size: 61px;
+  font-size: 72px;
   font-weight: 500;
+  text-transform: uppercase;
 
   @media (max-width: 500px) {
     font-size: 47px;
@@ -422,7 +423,7 @@ export default class extends React.Component {
           <Toolbar login={() => this.handleLogin()} logged={this.state.logged} background="transparent" />
 
           <BannerContainer>
-            <Title>Nunca mais negocie sozinho</Title>
+            <Title>Juntos pelo melhor preço</Title>
             <Subtitle>
               Junte-se a nós e consiga descontos muito maiores do que os encontrados no mercado. Diretamente com fabricantes.
             </Subtitle>
