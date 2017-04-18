@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "engines": {
-    "node": "7.7.4"
+    "node": "7.9.0"
   },
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,9 @@
     "dev": "nodemon -w server server.js",
     "lint": "eslint .",
     "start": "NODE_ENV=production node server.js",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest --watch",
+    "test-ci": "NODE_ENV=test-ci jest",
+    "sequelize": "sequelize"
   },
   "author": "",
   "license": "ISC",

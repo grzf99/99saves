@@ -45,7 +45,7 @@ describe('create', () => {
         }
       };
 
-      return User.create({ ...req.body.user })
+      return User.create(Object.assign({}, req.body.user))
         .then(() => usersController.create(req, res))
         .then(() => User.count())
         .then((count) => {

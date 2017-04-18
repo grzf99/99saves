@@ -26,7 +26,7 @@ module.exports = {
       bcrypt.hash(user.password, 10, (err, passwordHash) => {
         User.findOrCreate({
           where: { email: user.email },
-          defaults: { ...user, passwordHash }
+          defaults: Object.assign({}, user, { passwordHash })
         })
         .spread(({ name, email, admin }, created) => {
           if (created) {
