@@ -1,3 +1,4 @@
+const addDays = require('date-fns/add_days');
 const Save = require('../models').Save;
 const Subscription = require('../models').Subscription;
 const Product = require('../models').Product;
@@ -18,8 +19,14 @@ module.exports = {
   },
 
   create(req, res) {
+    const dateEnd = new Date(req.body.date_end || new Date());
+    const autoDates = {
+      checkout_end: addDays(dateEnd, 2).toISOString(),
+      votation_end: addDays(dateEnd, 3).toISOString()
+    };
+
     return Save
-      .create(req.body)
+      .create(Object.assign(autoDates, req.body))
       .then(saves => res.status(201).send(saves))
       .catch(error => res.status(400).send(error));
   },
