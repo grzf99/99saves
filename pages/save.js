@@ -15,8 +15,12 @@ import { Heading, Heading2, Text } from '../components/common/typography';
 import Button from '../components/common/button';
 import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
+import { Row, Column } from '../components/common/grid';
+import Panel from '../components/common/panel';
+import Section from '../components/common/section';
 import { ArrowBack } from '../components/common/svg';
 import Image from '../components/common/image';
+import Gallery from '../components/gallery';
 
 const Header = styled(Container)`
   display: flex;
@@ -25,13 +29,6 @@ const Header = styled(Container)`
   a {
     padding: 0 20px;
   }
-`;
-
-const Section = styled.section`
-  width: 100%;
-
-  ${props => props.gray && `background: ${colors.alternateWhite}`}
-  ${props => props.white && `background: ${colors.white}`}
 `;
 
 const CustomTabs = styled(Tabs)`
@@ -62,13 +59,6 @@ const CustomTab = styled(Tab)`
   }
 `;
 
-const Gallery = styled(Container)`
-  display: flex;
-  height: 320px;
-  justify-content: center;
-  padding: 20px 0;
-`;
-
 const ItemHeader = styled.div`
   align-items: center;
   border-bottom: solid 1px ${colors.darkBlue};
@@ -88,38 +78,6 @@ const Tag = styled(Heading2)`
   font-size: 24px;
   padding: 2px 10px;
   text-transform: uppercase;
-`;
-
-const Row = styled.section`
-  display: flex;
-  flex-flow: row;
-  flex-wrap: wrap;
-
-  > div:first-of-type {
-    flex: 0 0 67%;
-  }
-`;
-
-const Column = styled.div`
-  flex: 1;
-`;
-
-const WhiteBox = styled.div`
-  background: ${colors.white};
-  color: ${colors.black};
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-  line-height: 1.29;
-  margin: 20px 0;
-  padding: 15px 30px;
-
-  h3 {
-    color: ${colors.lightgray};
-    font-size: 12px;
-    line-height: 2;
-    margin: 0;
-    text-transform: uppercase;
-  }
 `;
 
 const Price = styled.div`
@@ -211,7 +169,7 @@ export default class extends React.Component {
                   <Row>
                     <Column>
                       <Heading white>{product.title}</Heading>
-                      <WhiteBox>
+                      <Panel>
                         {
                           product.description && (
                             <div>
@@ -228,9 +186,9 @@ export default class extends React.Component {
                             </div>
                           )
                         }
-                      </WhiteBox>
+                      </Panel>
                     </Column>
-                    <Column>
+                    <Column third>
                       <Price>
                         <Text white>R$</Text>
                         <Heading white large>
