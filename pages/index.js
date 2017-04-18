@@ -194,8 +194,9 @@ const Subtitle = styled.div`
   font-size: 18px;
   font-weight: 500;
   line-height: 1.67;
+  max-width: 670px;
   text-align: center;
-  width: 40%;
+  width: 100%;
 
   @media (max-width: 960px) {
     width: 100%;
@@ -425,7 +426,7 @@ export default class extends React.Component {
           <BannerContainer>
             <Title>Juntos pelo melhor preço</Title>
             <Subtitle>
-              Junte-se a nós e consiga descontos muito maiores do que os encontrados no mercado. Diretamente com fabricantes.
+              Conectamos consumidores, ganhamos força e brigamos pelos melhores produtos e preços diretamente com a fábrica. Sem intermediários!
             </Subtitle>
 
             <BannerActions>
