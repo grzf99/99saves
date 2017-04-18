@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         Subscription.belongsTo(models.Save);
         Subscription.belongsTo(models.User);
+        Subscription.hasMany(models.Vote);
       }
     }
   });
