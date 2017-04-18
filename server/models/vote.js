@@ -1,8 +1,8 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Vote = sequelize.define('Vote', {
-    subscriptionId: DataTypes.INTEGER,
-    productId: DataTypes.INTEGER
+    SubscriptionId: DataTypes.INTEGER,
+    ProductId: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
