@@ -283,6 +283,47 @@ const BrandImage = styled.img`
   align-self: center;
 `;
 
+const WeAreNotContainer = styled(Container)`
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 50px;
+
+  @media (max-width: 728px) {
+  }
+`;
+
+const WeAreNot = styled.div`
+  text-align: center;
+  position: relative;
+`;
+
+const WeAreNotSubtitle = styled.span`
+  background: ${colors.green};
+  bottom: -25px;
+  color: ${colors.white};
+  font-family: Oswald;
+  font-size: 36px;
+  font-weight: bold;
+  padding: 5px 22px;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
+`;
+
+const WeAreNotTitle = styled.h5`
+  color: ${colors.darkGreyBlue};
+  font-family: Oswald;
+  font-size: 72px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
 export default class extends React.Component {
   static async getInitialProps() {
     const res = await fetch(`${config.API_URL}/saves`);
@@ -447,7 +488,16 @@ export default class extends React.Component {
           </BrandImagesContainer>
         </BrandContainer>
 
-        <CardsList>
+        <WeAreNotContainer>
+          <WeAreNot>
+            <WeAreNotSubtitle>nãããão somos</WeAreNotSubtitle>
+            <WeAreNotTitle>compra coletiva</WeAreNotTitle>
+          </WeAreNot>
+          
+          <p>Entenda <span>como funciona</span> o passo a passo da negociação de cada Save até o momento da compra</p>
+        </WeAreNotContainer>
+
+        {/*<CardsList>
           {
             this.state.saves.rows && this.state.saves.rows.map(
               save =>
@@ -460,7 +510,7 @@ export default class extends React.Component {
                 />
             )
           }
-        </CardsList>
+        </CardsList>*/}
 
         <Footer />
 
