@@ -242,8 +242,8 @@ export default class extends React.Component {
     });
   }
 
-  goToOffers(saveId) {
-    Router.push(`/offer?saveId=${saveId}`, `/offer/${saveId}`);
+  goToOffers(slug) {
+    Router.push(`/offer?saveId=${slug}`, `/offer/${slug}`);
   }
 
   openModal(subscribeTo) {
@@ -287,7 +287,7 @@ export default class extends React.Component {
                 logged={this.state.logged}
                 openLoginModal={() => this.openModal(save.id)}
                 handleSubscribe={() => this.handleSubscribe(save.id)}
-                goToOffers={() => this.goToOffers(save.id)}
+                goToOffers={() => this.goToOffers(save.slug)}
               />
           )
         : (
@@ -340,7 +340,7 @@ export default class extends React.Component {
                     logged={this.state.logged}
                     openLoginModal={() => this.openModal(save.id)}
                     handleSubscribe={() => this.handleSubscribe(save.id)}
-                    goToOffers={() => this.goToOffers(save.id)}
+                    goToOffers={() => this.goToOffers(save.slug)}
                   />
               )
             }
