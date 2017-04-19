@@ -167,7 +167,7 @@ const RightArrow = styled(Control)`
 
 export default class extends React.Component {
   static async getInitialProps({ query }) {
-    const save = (await axios.get(`${config.API_URL}/saves/${query.offer}`)).data;
+    const save = (await axios.get(`${config.API_URL}/saves/${query.saveId}`)).data;
     const vote = (await axios.get(`${config.API_URL}/saves/${save.id}/votes`)).data;
     return { save, vote };
   }

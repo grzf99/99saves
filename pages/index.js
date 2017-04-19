@@ -257,7 +257,7 @@ export default class extends React.Component {
   }
 
   goToOffers(saveId) {
-    Router.push(`/save?offer=${saveId}`, `/offer/${saveId}`);
+    Router.push(`/offer?saveId=${saveId}`, `/offer/${saveId}`);
   }
 
   openModal(subscribeTo) {
