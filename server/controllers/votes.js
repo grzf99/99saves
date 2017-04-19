@@ -9,11 +9,14 @@ module.exports = {
         UserId: req.user ? req.user.id : 1 // TODO: remover esse mock quando a auth estiver OK
       }
     })
-    .then(subscription => Vote.findOne({
-      where: {
-        SubscriptionId: parseInt(subscription.id, 10)
-      }
-    }))
+    .then((subscription) => {
+      if (subscription === null) return;
+      return Vote.findOne({
+        where: {
+          SubscriptionId: parseInt(subscription.id, 10)
+        }
+      });
+    })
     .then(save => res.status(200).send(save))
     .catch(error => res.status(400).send(error));
   },
