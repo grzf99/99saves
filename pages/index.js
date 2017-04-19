@@ -349,10 +349,11 @@ const ItWorkSection = styled(Container)`
 
 const ItWorkContainer = styled.div`
   align-content: center;
+  align-items: flex-start;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin: 20px;
+  margin: 80px 0;
   width: 100%;
 
   &.reverse {
@@ -361,7 +362,7 @@ const ItWorkContainer = styled.div`
 `;
 
 const ItWorkImage = styled.img`
-  align-self: center;
+  align-self: flex-start;
 `;
 
 const ItWorkInfos = styled.div`
@@ -561,10 +562,18 @@ export default class extends React.Component {
 
         <ItWorkSection>
           <ItWorkContainer>
-            <ItWorkImage src="/static/images/img-how-it-works-1.svg" alt="kitchen-aid" />
+            <ItWorkImage src="/static/images/img-how-it-works-1.svg" alt="Passo 1 - Interesse" />
             <ItWorkInfos>
               <ItWorktTitle>interesse</ItWorktTitle>
               <ItWorkDescription>Você, assim como centenas de outras pessoas, aplica a um save, demonstrando seu interesse em um determinado produto (o tempo máximo que um save fica aberto para entrada de consumidores é de 10 dias).</ItWorkDescription>
+            </ItWorkInfos>
+          </ItWorkContainer>
+
+          <ItWorkContainer className="reverse">
+            <ItWorkImage src="/static/images/img-how-it-works-2.svg" alt="Passo 2 - Concorrência entre fabricantes" />
+            <ItWorkInfos>
+              <ItWorktTitle>CONCORRÊNCIA ENTRE FABRICANTES</ItWorktTitle>
+              <ItWorkDescription>Fechado o save (ninguém mais entra), o sistema libera uma única ordem para que os mais conceituados fabricantes daquele produto(já cadastrados no 99saves.com) enviem sua melhor oferta para atender aquela quantidade de pessoas (como se fossemos um grande varejista).</ItWorkDescription>
             </ItWorkInfos>
           </ItWorkContainer>
 
