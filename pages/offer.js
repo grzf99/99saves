@@ -189,7 +189,7 @@ export default class extends React.Component {
     const checkoutOpen = now > votationEnd && now < checkoutEnd;
 
     // TODO: Consultar base de dados para checar qual o vencedor
-    const winnerIndex = Math.floor(Math.random() * save.Products.length) + 1;
+    const winnerIndex = Math.floor(Math.random() * save.Products.length);
 
     return { save, vote, votationOpen, checkoutOpen, winnerIndex };
   }
@@ -201,7 +201,7 @@ export default class extends React.Component {
       activeTab: props.winnerIndex !== -1 ? props.winnerIndex : 0,
       products: props.save.Products,
       vote: props.vote ? props.vote.ProductId : 0,
-      countdown: props.checkoutOpen ? this.getCountdown(props.save.checkout_end) : 0
+      countdown: '...'
     };
 
     this.formatCurrency = this.formatCurrency.bind(this);
