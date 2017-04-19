@@ -18,21 +18,7 @@ import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
-
-const Headline = styled.div`
-  background-color: ${colors.alternateWhite};
-  color: ${colors.black};
-  display: none;
-  font-family: 'Oswald', sans-serif;
-  font-size: 16px;
-  line-height: 32px;
-  margin: 20px 0;
-  text-align: center;
-
-  @media (min-width: 640px) {
-    display: block;
-  }
-`;
+import Headline from '../components/common/headline';
 
 const CardsList = styled(Container)`
   align-items: stretch;
@@ -322,9 +308,7 @@ export default class extends React.Component {
         <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
 
         <Headline>
-          <Container>
-            Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
-          </Container>
+          Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
         </Headline>
 
         {
