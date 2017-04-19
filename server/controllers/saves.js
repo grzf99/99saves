@@ -10,7 +10,7 @@ module.exports = {
     return Save
       .find({
         where: {
-          id: req.params.id
+          [isNaN(req.params.id) ? 'slug' : 'id']: req.params.id
         },
         include: [{
           model: Product
