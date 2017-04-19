@@ -1,4 +1,4 @@
-import numeral from 'numeral';
+const numeral = require('numeral');
 
 if (!numeral.locales['pt-br']) {
   numeral.register('locale', 'pt-BR', {
