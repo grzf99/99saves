@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
 import axios from 'axios';
+import differenceInMinutes from 'date-fns/difference_in_minutes';
 import { numeral } from '../utils';
 
 import config from '../config';
@@ -21,6 +22,7 @@ import Section from '../components/common/section';
 import { ArrowBack, ChevronLeft, ChevronRight } from '../components/common/svg';
 import Image from '../components/common/image';
 import Gallery from '../components/gallery';
+import Headline from '../components/common/headline';
 
 const Header = styled(Container)`
   display: flex;
@@ -198,7 +200,8 @@ export default class extends React.Component {
     this.state = {
       activeTab: props.winnerIndex !== -1 ? props.winnerIndex : 0,
       products: props.save.Products,
-      vote: props.vote ? props.vote.ProductId : 0
+      vote: props.vote ? props.vote.ProductId : 0,
+      countdown: props.checkoutOpen ? this.getCountdown(props.save.checkout_end) : 0
     };
 
     this.formatCurrency = this.formatCurrency.bind(this);
@@ -207,6 +210,21 @@ export default class extends React.Component {
     this.handleCheckout = this.handleCheckout.bind(this);
     this.renderVotationButton = this.renderVotationButton.bind(this);
     this.renderCheckoutButton = this.renderCheckoutButton.bind(this);
+    this.getCountdown = this.getCountdown.bind(this);
+
+    this.timer = null;
+  }
+
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      this.setState({
+        countdown: this.getCountdown(this.props.save.checkout_end)
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   handleChangeIndex(tabIndex) {
@@ -263,6 +281,11 @@ export default class extends React.Component {
     );
   }
 
+  getCountdown(end) {
+    const diffInMinutes = differenceInMinutes(new Date(end), new Date());
+    return `${Math.floor(diffInMinutes / 60)}h ${diffInMinutes % 60}m`;
+  }
+
   render() {
     return (
       <Page hasFooter>
@@ -292,6 +315,14 @@ export default class extends React.Component {
                 </CustomTabs>
               </Container>
             </Section>
+          )
+        }
+
+        {
+          this.props.checkoutOpen && (
+            <Headline spotlight>
+              A oferta acaba em <b>{this.state.countdown}</b>
+            </Headline>
           )
         }
 
