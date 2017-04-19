@@ -91,6 +91,14 @@ const Price = styled.div`
   }
 `;
 
+const AlignRight = styled.div`
+  text-align: right;
+
+  > a {
+    margin: 20px 0;
+  }
+`;
+
 const Buscape = styled.div`
   font-family: 'Roboto', sans-serif;
   margin: 10px 0;
@@ -169,29 +177,43 @@ export default class extends React.Component {
   static async getInitialProps({ query }) {
     const save = (await axios.get(`${config.API_URL}/saves/${query.saveId}`)).data;
     const vote = (await axios.get(`${config.API_URL}/saves/${save.id}/votes`)).data;
-    return { save, vote };
+
+    const now = Date.now();
+    const dateEnd = new Date(save.date_end).getTime();
+    const votationEnd = new Date(save.votation_end).getTime();
+    const checkoutEnd = new Date(save.checkout_end).getTime();
+
+    const votationOpen = now > dateEnd && now <= votationEnd;
+    const checkoutOpen = now > votationEnd && now < checkoutEnd;
+
+    // TODO: Consultar base de dados para checar qual o vencedor
+    const winnerIndex = Math.floor(Math.random() * save.Products.length) + 1;
+
+    return { save, vote, votationOpen, checkoutOpen, winnerIndex };
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      activeTab: 0,
-      title: props.save.title,
+      activeTab: props.winnerIndex !== -1 ? props.winnerIndex : 0,
       products: props.save.Products,
       vote: props.vote ? props.vote.ProductId : 0
     };
 
     this.formatCurrency = this.formatCurrency.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
-    this.handleVoteClick = this.handleVoteClick.bind(this);
+    this.handleVote = this.handleVote.bind(this);
+    this.handleCheckout = this.handleCheckout.bind(this);
+    this.renderVotationButton = this.renderVotationButton.bind(this);
+    this.renderCheckoutButton = this.renderCheckoutButton.bind(this);
   }
 
   handleChangeIndex(tabIndex) {
     this.setState({ activeTab: tabIndex });
   }
 
-  handleVoteClick(productId) {
+  handleVote(productId) {
     if (this.state.vote !== productId) {
       axios.post(`${config.API_URL}/saves/${this.props.save.id}/votes`, {
         ProductId: productId
@@ -202,8 +224,43 @@ export default class extends React.Component {
     }
   }
 
+  handleCheckout(product) {
+    console.log(product);
+  }
+
   formatCurrency(value) {
     return numeral(value).format('0,0[.]00');
+  }
+
+  renderVotationButton(product) {
+    let ButtonText;
+
+    if (this.state.vote === product.id) {
+      ButtonText = 'Oferta escolhida';
+    } else {
+      ButtonText = 'Votar nesta oferta';
+    }
+
+    return (
+      <Button
+        large
+        onClick={() => this.handleVote(product.id)}
+        disabled={this.state.vote > 0}
+      >
+        {ButtonText}
+      </Button>
+    );
+  }
+
+  renderCheckoutButton(product) {
+    return (
+      <Button
+        large
+        onClick={() => this.handleCheckout(product)}
+      >
+        Comprar agora
+      </Button>
+    );
   }
 
   render() {
@@ -219,20 +276,24 @@ export default class extends React.Component {
           </div>
         </Header>
 
-        <Section gray>
-          <Container>
-            <CustomTabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
-              {
-                this.state.products.map((product, key) => (
-                  <CustomTab key={product.id}>
-                    <Heading2 white>Oferta {key + 1}</Heading2>
-                    <Text white>R$ {this.formatCurrency(product.price)}</Text>
-                  </CustomTab>
-                ))
-              }
-            </CustomTabs>
-          </Container>
-        </Section>
+        {
+          this.props.votationOpen && (
+            <Section gray>
+              <Container>
+                <CustomTabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
+                  {
+                    this.state.products.map((product, key) => (
+                      <CustomTab key={product.id}>
+                        <Heading2 white>Oferta {key + 1}</Heading2>
+                        <Text white>R$ {this.formatCurrency(product.price)}</Text>
+                      </CustomTab>
+                    ))
+                  }
+                </CustomTabs>
+              </Container>
+            </Section>
+          )
+        }
 
         <SwipeableViews
           index={this.state.activeTab}
@@ -250,18 +311,12 @@ export default class extends React.Component {
 
                 <Container>
                   <ItemHeader>
-                    <Tag white>Oferta {key + 1}</Tag>
-                    <Button
-                      large
-                      onClick={() => this.handleVoteClick(product.id)}
-                      disabled={this.state.vote > 0}
-                    >
-                      {
-                        this.state.vote === product.id
-                          ? <span>Oferta escolhida</span>
-                          : <span>Votar nesta oferta</span>
-                      }
-                    </Button>
+                    {
+                      this.props.votationOpen && <Tag white>Oferta {key + 1}</Tag>
+                    }
+                    {
+                      this.props.votationOpen && this.renderVotationButton(product)
+                    }
                   </ItemHeader>
 
                   <Row>
@@ -287,27 +342,32 @@ export default class extends React.Component {
                       </Panel>
                     </Column>
                     <Column third>
-                      <Price>
-                        <Text white>R$</Text>
-                        <Heading white large>
-                          {
-                            this.formatCurrency(product.price)
-                          }
-                        </Heading>
-                      </Price>
-                      {
-                        (product.price_buscape && product.link_buscape) && (
-                          <Buscape>
-                            <a href={product.link_buscape}>melhor preço no buscapé</a>
-                            <s>
-                              R$&nbsp;
-                              {
-                                this.formatCurrency(product.price_buscape)
-                              }
-                            </s>
-                          </Buscape>
-                        )
-                      }
+                      <AlignRight>
+                        <Price>
+                          <Text white>R$</Text>
+                          <Heading white large>
+                            {
+                              this.formatCurrency(product.price)
+                            }
+                          </Heading>
+                        </Price>
+                        {
+                          this.props.checkoutOpen && this.renderCheckoutButton(product)
+                        }
+                        {
+                          (product.price_buscape && product.link_buscape) && (
+                            <Buscape>
+                              <a href={product.link_buscape}>melhor preço no buscapé</a>
+                              <s>
+                                R$&nbsp;
+                                {
+                                  this.formatCurrency(product.price_buscape)
+                                }
+                              </s>
+                            </Buscape>
+                          )
+                        }
+                      </AlignRight>
                     </Column>
                   </Row>
                 </Container>
@@ -317,7 +377,7 @@ export default class extends React.Component {
         </SwipeableViews>
 
         {
-          this.state.activeTab !== 0 && (
+          this.props.votationOpen && this.state.activeTab !== 0 && (
             <PrevArrow onClick={() => this.handleChangeIndex(this.state.activeTab - 1)}>
               <Icon><ChevronLeft /></Icon>
               <span>Oferta {this.state.activeTab}</span>
@@ -326,7 +386,7 @@ export default class extends React.Component {
         }
 
         {
-          this.state.activeTab !== (this.state.products.length - 1) && (
+          this.props.votationOpen && this.state.activeTab !== (this.state.products.length - 1) && (
             <RightArrow onClick={() => this.handleChangeIndex(this.state.activeTab + 1)}>
               <Icon><ChevronRight /></Icon>
               <span>Oferta {this.state.activeTab + 2}</span>
