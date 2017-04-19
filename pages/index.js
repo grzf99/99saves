@@ -340,6 +340,52 @@ const WeAreNotDescription = styled.p`
   }
 `;
 
+const ItWorkSection = styled(Container)`
+  margin-top: 50px;
+
+  @media (max-width: 728px) {
+  }
+`;
+
+const ItWorkContainer = styled.div`
+  align-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 20px;
+  width: 100%;
+
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+`;
+
+const ItWorkImage = styled.img`
+  align-self: center;
+`;
+
+const ItWorkInfos = styled.div`
+  max-width: 380px;
+`;
+
+const ItWorktTitle = styled.h4`
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+  text-align: left;
+  text-transform: uppercase;
+`;
+
+const ItWorkDescription = styled.p`
+  color: ${colors.battleshipFrey};
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  line-height: 1.56;
+  text-align: left;
+`;
+
 export default class extends React.Component {
   static async getInitialProps() {
     const res = await fetch(`${config.API_URL}/saves`);
@@ -513,7 +559,18 @@ export default class extends React.Component {
           <WeAreNotDescription>Entenda <span>como funciona</span> o passo a passo da negociação de cada Save até o momento da compra</WeAreNotDescription>
         </WeAreNotContainer>
 
-        {/*<CardsList>
+        <ItWorkSection>
+          <ItWorkContainer>
+            <ItWorkImage src="/static/images/img-how-it-works-1.svg" alt="kitchen-aid" />
+            <ItWorkInfos>
+              <ItWorktTitle>interesse</ItWorktTitle>
+              <ItWorkDescription>Você, assim como centenas de outras pessoas, aplica a um save, demonstrando seu interesse em um determinado produto (o tempo máximo que um save fica aberto para entrada de consumidores é de 10 dias).</ItWorkDescription>
+            </ItWorkInfos>
+          </ItWorkContainer>
+
+        </ItWorkSection>
+
+        <CardsList>
           {
             this.state.saves.rows && this.state.saves.rows.map(
               save =>
@@ -526,7 +583,7 @@ export default class extends React.Component {
                 />
             )
           }
-        </CardsList>*/}
+        </CardsList>
 
         <Footer />
 
