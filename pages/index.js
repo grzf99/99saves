@@ -359,6 +359,11 @@ const ItWorkContainer = styled.div`
   &.reverse {
     flex-direction: row-reverse;
   }
+
+  &.center {
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const ItWorkImage = styled.img`
@@ -572,9 +577,46 @@ export default class extends React.Component {
           <ItWorkContainer className="reverse">
             <ItWorkImage src="/static/images/img-how-it-works-2.svg" alt="Passo 2 - Concorrência entre fabricantes" />
             <ItWorkInfos>
-              <ItWorktTitle>CONCORRÊNCIA ENTRE FABRICANTES</ItWorktTitle>
+              <ItWorktTitle>Concorrência entre fabricantes</ItWorktTitle>
               <ItWorkDescription>Fechado o save (ninguém mais entra), o sistema libera uma única ordem para que os mais conceituados fabricantes daquele produto(já cadastrados no 99saves.com) enviem sua melhor oferta para atender aquela quantidade de pessoas (como se fossemos um grande varejista).</ItWorkDescription>
             </ItWorkInfos>
+          </ItWorkContainer>
+
+          <ItWorkContainer>
+            <ItWorkImage src="/static/images/img-how-it-works-3.svg" alt="Passo 3 - Você dá sua opinião" />
+            <ItWorkInfos>
+              <ItWorktTitle>Você dá sua opinião</ItWorktTitle>
+              <ItWorkDescription>A equipe de compras do 99saves.com analisa os melhores fornecedores e ofertas, seleciona as melhores (até 3) e disponibiliza para votação. A votação não é obrigatória e encerra-se automaticamente após 24 horas da sua abertura (cada participante tem direito a um voto).</ItWorkDescription>
+            </ItWorkInfos>
+          </ItWorkContainer>
+
+          <ItWorkContainer className="reverse">
+            <ItWorkImage src="/static/images/img-how-it-works-4.svg" alt="Passo 4 - A oferta vencedora fica disponível para compra" />
+            <ItWorkInfos>
+              <ItWorktTitle>A oferta vencedora fica disponível para compra</ItWorktTitle>
+              <ItWorkDescription>Encerrada a pesquisa, automaticamente a oferta que teve o maior número de votos é liberada para compra através de um link em sua área do usuário, dentro do 99saves.com. </ItWorkDescription>
+            </ItWorkInfos>
+          </ItWorkContainer>
+
+          <ItWorkContainer>
+            <ItWorkImage src="/static/images/img-how-it-works-5.svg" alt="Passo 5 - A venda e a entrega será feita diretamente pelo fabricante" />
+            <ItWorkInfos>
+              <ItWorktTitle>A venda e a entrega será feita diretamente pelo fabricante</ItWorktTitle>
+              <ItWorkDescription>Você acessa o link de compra em sua área do usuário no 99saves.com, é redirecionado para a compra dentro do site do fabricante pelo preço exclusivo que negociamos e ele realizará a entrega(nós estaremos de olho neste processo, apoiando no que for preciso). Lembre-se, você terá 48 horas para finalizar a compra ou seu link será inativado. </ItWorkDescription>
+            </ItWorkInfos>
+          </ItWorkContainer>
+
+          <ItWorkContainer className="reverse">
+            <ItWorkImage src="/static/images/img-how-it-works-6.svg" alt="Passo 6 - Você avalia a sua compra" />
+            <ItWorkInfos>
+              <ItWorktTitle>Você avalia a sua compra</ItWorktTitle>
+              <ItWorkDescription>O 99saves.com só trabalha com os melhores. É por isso que você avaliará a sua satisfação com o fabricante, a entrega e o seu produto. Fabricantes que tiverem menos de 75% de satisfação dos usuários, serão automaticamente descadastrados da plataforma. Juntos, somos mais fortes, certo?
+              </ItWorkDescription>
+            </ItWorkInfos>
+          </ItWorkContainer>
+
+          <ItWorkContainer className="center">
+            <Button outline openLoginModal={() => this.openModal()}>participe agora mesmo</Button>
           </ItWorkContainer>
 
         </ItWorkSection>
