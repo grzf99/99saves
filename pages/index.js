@@ -394,7 +394,7 @@ const ItWorkDescription = styled.p`
 
 export default class extends React.Component {
   static async getInitialProps() {
-    const res = await fetch(`${config.API_URL}/saves`);
+    const res = await fetch(`${config.API_URL}/saves?limit=3`);
     const saves = await res.json();
     return { saves };
   }
@@ -620,6 +620,8 @@ export default class extends React.Component {
           </ItWorkContainer>
 
         </ItWorkSection>
+
+
 
         <CardsList>
           {
