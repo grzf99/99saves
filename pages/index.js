@@ -21,6 +21,7 @@ const Page = styled.div`
   background: ${colors.black};
   min-height: 100vh;
   position: relative;
+  overflow: hidden;
   width: 100%;
 
   ${props => props.hasFooter && 'padding-bottom: 98px'};
