@@ -303,7 +303,7 @@ const WeAreNotSubtitle = styled.span`
   background: ${colors.green};
   bottom: -25px;
   color: ${colors.white};
-  font-family: Oswald;
+  font-family: 'Oswald', sans-serif;
   font-size: 36px;
   font-weight: bold;
   padding: 5px 22px;
@@ -314,7 +314,7 @@ const WeAreNotSubtitle = styled.span`
 
 const WeAreNotTitle = styled.h5`
   color: ${colors.darkGreyBlue};
-  font-family: Oswald;
+  font-family: 'Oswald', sans-serif;
   font-size: 72px;
   font-weight: bold;
   letter-spacing: 5px;
@@ -322,6 +322,22 @@ const WeAreNotTitle = styled.h5`
   padding: 0;
   text-align: center;
   text-transform: uppercase;
+`;
+
+const WeAreNotDescription = styled.p`
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  margin: 1em auto;
+  max-width: 770px;
+  text-align: center;
+  text-transform: uppercase;
+
+  > span {
+    background: ${colors.green};
+    padding: 0 4px;
+  }
 `;
 
 export default class extends React.Component {
@@ -494,7 +510,7 @@ export default class extends React.Component {
             <WeAreNotTitle>compra coletiva</WeAreNotTitle>
           </WeAreNot>
           
-          <p>Entenda <span>como funciona</span> o passo a passo da negociação de cada Save até o momento da compra</p>
+          <WeAreNotDescription>Entenda <span>como funciona</span> o passo a passo da negociação de cada Save até o momento da compra</WeAreNotDescription>
         </WeAreNotContainer>
 
         {/*<CardsList>
