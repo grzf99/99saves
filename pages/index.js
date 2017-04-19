@@ -392,6 +392,85 @@ const ItWorkDescription = styled.p`
   text-align: left;
 `;
 
+const SaveSection = styled.section`
+  background: ${colors.darkSkyBlue2};
+  margin-top: 130px;
+  min-height: 200px;
+  position: relative;
+  width: 100%;
+  z-index: 0;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: -46px;
+    right: 0;
+    width: 100%;
+    height: 83px;
+    background: ${colors.darkSkyBlue2};
+    border-left: 0;
+    border-right: 1366px solid transparent;
+    border-top: 30px solid ${colors.darkSkyBlue2};
+    transform: rotate(-2.7deg);
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+    width: 100%;
+    height: 50px;
+    background: ${colors.darkSkyBlue2};
+    border-left: 0;
+    border-right: 50px solid transparent;
+    border-top: 79px solid ${colors.darkSkyBlue2};
+    transform: rotate(-2.2deg);
+  }
+`;
+
+const SaveContainer = styled(Container)`
+  text-align: center;
+  position: relative;
+  width: 100%;
+  z-index: 9;
+`;
+
+const SaveTitle = styled.h3`
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 72px;
+  font-weight: bold;
+  letter-spacing: 11.2px;
+  margin: 0 0 -6px;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
+const SaveSubtitle = styled.p`
+  background: ${colors.darkBlue};
+  color: ${colors.white};
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1.21;
+  margin-top: -14px;
+  padding: 10px 20px;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
+const SaveInfo = styled.span`
+  color: ${colors.white};
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-sttyle: italic;
+  margin-top: 0px;
+  text-align: center;
+`;
+
 export default class extends React.Component {
   static async getInitialProps() {
     const res = await fetch(`${config.API_URL}/saves?limit=3`);
@@ -621,7 +700,13 @@ export default class extends React.Component {
 
         </ItWorkSection>
 
-
+        <SaveSection>
+          <SaveContainer>
+            <SaveTitle>Saves</SaveTitle>
+            <SaveSubtitle>Escolha o produto que te interessa e participe do save</SaveSubtitle>
+            <SaveInfo>Lembre-se: aplique somente para aqueles que tiver real interesse de compra</SaveInfo>
+          </SaveContainer>
+        </SaveSection>
 
         <CardsList>
           {
@@ -637,6 +722,10 @@ export default class extends React.Component {
             )
           }
         </CardsList>
+
+        <ItWorkContainer className="center">
+          <Button outline href="/saves">veja todos os saves</Button>
+        </ItWorkContainer>
 
         <Footer />
 
