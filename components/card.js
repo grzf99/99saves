@@ -83,6 +83,19 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
 
+    const now = Date.now();
+    const dateEnd = new Date(props.date_end).getTime();
+    const votationEnd = new Date(props.votation_end).getTime();
+    const checkoutEnd = new Date(props.checkout_end).getTime();
+
+    const votationOpen = now > dateEnd && now <= votationEnd;
+    const checkoutOpen = now > votationEnd && now < checkoutEnd;
+
+    this.state = {
+      votationOpen,
+      checkoutOpen
+    };
+
     this.handleSave = this.handleSave.bind(this);
     this.goToOffers = this.goToOffers.bind(this);
   }
@@ -100,24 +113,22 @@ export default class extends React.Component {
   }
 
   renderButton() {
-    let button = <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>;
-    if (this.props.hasSubscribed) {
-      button = (
-        this.props.Products &&
-        this.props.Products.length &&
-        (new Date(this.props.votation_end).getTime()) < Date.now()
-      )
-        ? <Button block onClick={this.goToOffers}>Participar da votação</Button>
-        : <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>;
+    if (!this.props.hasSubscribed) {
+      return <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>;
+    } else if (this.state.votationOpen) {
+      return <Button block onClick={this.goToOffers}>Participar da votação</Button>;
+    } else if (this.state.checkoutOpen) {
+      return <Button block onClick={this.goToOffers}>Comprar agora</Button>;
     }
-    return button;
+
+    return <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>;
   }
 
   render() {
     return (
       <Card {...this.props}>
         <Header>
-          { this.props.hasVoted && <Status>Em negociação</Status> }
+          { this.state.votationOpen && this.props.hasVoted && <Status>Em negociação</Status> }
           <CardImage src={this.props.image_default} alt={this.props.title} />
           <Gradient>
             <SmallText>imagem meramente ilustrativa</SmallText>
