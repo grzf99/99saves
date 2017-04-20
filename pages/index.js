@@ -96,12 +96,391 @@ const ModalContent = styled.div`
   }
 `;
 
+const ModalVideoContent = styled.div`
+  > * + * {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+    height: 0;
+    margin-top: 25px !important;
+  }
+
+  > iframe {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 const ModalHeading = styled(Heading)`
   margin: 16px 5px 0;
 `;
 
 const ModalText = styled(Text)`
   font-size: 14px;
+`;
+
+const modalStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+  content: {
+    top: '50%',
+    left: '20px',
+    right: '20px',
+    bottom: 'auto',
+    border: '0',
+    transform: 'translateY(-50%)',
+    borderRadius: '0',
+    maxWidth: '480px',
+    margin: '0 auto'
+  }
+};
+
+const modalVideoStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+  content: {
+    top: '15%',
+    left: '50%',
+    right: '20px',
+    bottom: '0',
+    background: 'transparent',
+    transform: 'translateX(-50%)',
+    border: '0',
+    borderRadius: '0',
+    maxHeight: '400px',
+    maxWidth: '640px',
+    padding: 0,
+    width: '90%'
+  }
+};
+
+const Banner = styled.div`
+  background: ${colors.black} url(/static/images/img-header@2x.png) no-repeat center center;
+  background-size: cover;
+  margin-top: 0;
+  min-height: 626px;
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -14px;
+    right: 0;
+    width: 100%;
+    height: 30px;
+    background: ${colors.white};
+    border-left: 0;
+    border-right: 50px solid transparent;
+    border-top: 25px solid ${colors.white};
+    transform: rotate(179deg);
+  }
+`;
+
+const BannerContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+  justify-content: space-around;
+  margin-top: 30px;
+`;
+
+const Title = styled.h1`
+  color: ${colors.white};
+  text-align: center;
+  font-family: Oswald;
+  font-size: 72px;
+  font-weight: 500;
+  text-transform: uppercase;
+  @media (max-width: 500px) {
+    font-size: 47px;
+  }
+`;
+
+const Subtitle = styled.div`
+  color: ${colors.white};
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.67;
+  max-width: 670px;
+  text-align: center;
+  width: 100%;
+  @media (max-width: 960px) {
+    width: 100%;
+  }
+`;
+
+const BannerActions = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 500px;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    height: 130px;
+    width: 100%;
+  }
+`;
+
+const VideoButton = styled(Button)`
+  background-image: url(/static/images/ic-play.svg);
+  background-position: 20px center;
+  background-repeat: no-repeat;
+  font-size: 14px;
+  padding-left: 50px;
+`;
+
+const BrandContainer = styled.div`
+  align-items: center;
+  background: ${colors.white};
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  justify-content: flex-start;
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    width: 100%;
+    height: 80px;
+    background: ${colors.white};
+    border-left: 0;
+    border-right: 50px solid transparent;
+    border-top: 5px solid #ffffff;
+    transform: rotate(1.7deg);
+  }
+  @media (max-width: 728px) {
+    min-height: 550px;
+  }
+`;
+
+const BannerTitle = styled.h2`
+  color: ${colors.battleshipFrey};
+  font-family: Oswald;
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  @media (max-width: 500px) {
+    font-size: 22px;
+  }
+`;
+
+const BrandImagesContainer = styled(Container)`
+  align-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+  @media (max-width: 728px) {
+    flex-direction: column;
+    min-height: 250px;
+  }
+`;
+
+const BrandImage = styled.img`
+  align-self: center;
+`;
+
+const WeAreNotContainer = styled(Container)`
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 50px;
+  @media (max-width: 728px) {
+  }
+`;
+
+const WeAreNot = styled.div`
+  text-align: center;
+  position: relative;
+`;
+
+const WeAreNotSubtitle = styled.span`
+  background: ${colors.green};
+  bottom: -25px;
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  padding: 5px 22px;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
+`;
+
+const WeAreNotTitle = styled.h5`
+  color: ${colors.darkGreyBlue};
+  font-family: 'Oswald', sans-serif;
+  font-size: 72px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
+const WeAreNotDescription = styled.p`
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  margin: 1em auto;
+  max-width: 770px;
+  text-align: center;
+  text-transform: uppercase;
+  > span {
+    background: ${colors.green};
+    padding: 0 4px;
+  }
+`;
+
+const ItWorkSection = styled(Container)`
+  margin-top: 50px;
+  @media (max-width: 728px) {
+  }
+`;
+
+const ItWorkContainer = styled.div`
+  align-content: center;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 80px 0;
+  width: 100%;
+  &.reverse {
+    flex-direction: row-reverse;
+    @media (max-width: 500px) {
+      margin-left: 10px;
+    }
+  }
+  &.center {
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+const ItWorkImage = styled.img`
+  align-self: flex-start;
+
+  @media (max-width: 500px) {
+    width: 40%;
+    margin-right: 20px;
+  }
+  
+`;
+
+const ItWorkInfos = styled.div`
+  max-width: 380px;
+`;
+
+const ItWorktTitle = styled.h4`
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+  text-align: left;
+  text-transform: uppercase;
+`;
+
+const ItWorkDescription = styled.p`
+  color: ${colors.battleshipFrey};
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  line-height: 1.56;
+  text-align: left;
+`;
+
+const SaveSection = styled.section`
+  background: ${colors.darkSkyBlue2};
+  margin-top: 130px;
+  min-height: 200px;
+  position: relative;
+  width: 100%;
+  z-index: 0;
+  &:before {
+    content: "";
+    position: absolute;
+    top: -46px;
+    right: 0;
+    width: 100%;
+    height: 83px;
+    background: ${colors.darkSkyBlue2};
+    border-left: 0;
+    border-right: 1366px solid transparent;
+    border-top: 30px solid ${colors.darkSkyBlue2};
+    transform: rotate(-2.7deg);
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+    width: 100%;
+    height: 50px;
+    background: ${colors.darkSkyBlue2};
+    border-left: 0;
+    border-right: 50px solid transparent;
+    border-top: 79px solid ${colors.darkSkyBlue2};
+    transform: rotate(-2.2deg);
+  }
+`;
+
+const SaveContainer = styled(Container)`
+  text-align: center;
+  position: relative;
+  width: 100%;
+  z-index: 9;
+`;
+
+const SaveTitle = styled.h3`
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 72px;
+  font-weight: bold;
+  letter-spacing: 11.2px;
+  margin: 0 0 -6px;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
+const SaveSubtitle = styled.p`
+  background: ${colors.darkBlue};
+  color: ${colors.white};
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1.21;
+  margin-top: -14px;
+  padding: 10px 20px;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
+const SaveInfo = styled.span`
+  color: ${colors.white};
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-sttyle: italic;
+  margin-top: 0px;
+  text-align: center;
 `;
 
 export default class extends React.Component {
@@ -118,6 +497,7 @@ export default class extends React.Component {
       user: {},
       logged: false,
       modalIsOpen: false,
+      modalVideoIsOpen: false,
       activeTab: 1,
       saves: props.saves,
       subscriptions: {
@@ -131,6 +511,7 @@ export default class extends React.Component {
 
     this.handleLogin = this.handleLogin.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.openVideoModal = this.openVideoModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.reloadSaves = this.reloadSaves.bind(this);
@@ -193,8 +574,12 @@ export default class extends React.Component {
     this.setState({ modalIsOpen: true, subscribeTo });
   }
 
+  openVideoModal() {
+    this.setState({ modalVideoIsOpen: true });
+  }
+
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.setState({ modalIsOpen: false, modalVideoIsOpen: false });
   }
 
   handleChangeIndex(tabIndex) {
@@ -252,7 +637,7 @@ export default class extends React.Component {
 
             <BannerActions>
               <Button outline openLoginModal={() => this.openModal()}>participe agora mesmo</Button>
-              <VideoButton openVideonModal={() => console.log('abre video')}>entenda como funciona</VideoButton>
+              <VideoButton onClick={() => this.openVideoModal()}>entenda como funciona</VideoButton>
             </BannerActions>
 
           </BannerContainer>
@@ -375,6 +760,18 @@ export default class extends React.Component {
             </ModalText>
             <FacebookButton block onClick={() => this.handleLogin(this.state.subscribeTo)}>Entrar com o Facebook</FacebookButton>
           </ModalContent>
+        </Modal>
+
+        <Modal
+          isOpen={this.state.modalVideoIsOpen}
+          onClose={this.closeModal}
+          onRequestClose={this.closeModal}
+          contentLabel="Video promocional"
+          style={modalVideoStyles}
+        >
+          <ModalVideoContent>
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1"></iframe>
+          </ModalVideoContent>
         </Modal>
 
         <Toast show={this.state.showToast}>
