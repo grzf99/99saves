@@ -5,6 +5,8 @@ database:
   override:
     - NODE_ENV=test-ci npm run sequelize db:migrate
 test:
+  pre:
+    - mv .env.sample .env
   override:
     - npm run test-ci
 deployment:
