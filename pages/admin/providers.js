@@ -3,12 +3,13 @@ import 'isomorphic-fetch';
 import Link from 'next/link';
 import axios from 'axios';
 
+import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import ListTable from '../../components/admin/list-table-providers';
 import AlertMessage from '../../components/common/alert-message';
 
-export default class extends React.Component {
+class Providers extends React.Component {
   constructor(props) {
     super(props);
 
@@ -76,3 +77,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withAuth({ admin: true })(Providers);

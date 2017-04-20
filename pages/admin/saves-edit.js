@@ -6,11 +6,12 @@ import moment from 'moment';
 import FRC, { Input, Row, Textarea } from 'formsy-react-components';
 import Loading from 'react-loading';
 
+import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
 
-export default class extends React.Component {
+class SavesEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -195,3 +196,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withAuth({ admin: true })(SavesEdit);

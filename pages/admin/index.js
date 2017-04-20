@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { modularScale } from 'polished';
 import 'isomorphic-fetch';
 
+import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 
@@ -11,8 +12,7 @@ const Title = styled.h1`
   font-size: ${modularScale(1)};
 `;
 
-export default class extends React.Component {
-
+class Admin extends React.Component {
   render() {
     console.log(this.props.json);
     return (
@@ -22,3 +22,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withAuth({ admin: true })(Admin);

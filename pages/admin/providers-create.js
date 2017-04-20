@@ -5,11 +5,12 @@ import Router from 'next/router';
 import FRC, { Input, Row } from 'formsy-react-components';
 import Loading from 'react-loading';
 
+import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
 
-export default class extends React.Component {
+class ProvidersCreate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -172,3 +173,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withAuth({ admin: true })(ProvidersCreate);
