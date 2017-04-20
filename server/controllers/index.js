@@ -4,6 +4,7 @@ const subscriptions = require('./subscriptions');
 const products = require('./products');
 const providers = require('./providers');
 const votes = require('./votes');
+const auth = require('./auth');
 
 module.exports = {
   saves,
@@ -11,5 +12,6 @@ module.exports = {
   subscriptions,
   products,
   providers,
-  votes
+  votes,
+  auth
 };

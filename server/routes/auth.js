@@ -1,16 +1,11 @@
 const express = require('express');
 const passport = require('passport');
+const { auth } = require('../controllers');
 
 const router = express.Router();
 
-router.get('/facebook', passport.authenticate('facebook-token'), (req, res) => {
-  if (req.user) {
-    res.status(200).send({
-      user: req.user,
-    });
-  } else {
-    res.sendStatus(401);
-  }
-});
+router.post('/login', auth.clientLogin);
+router.post('/login/admin', auth.adminLogin);
+router.get('/facebook', passport.authenticate('facebook-token'), auth.facebook);
 
 module.exports = router;

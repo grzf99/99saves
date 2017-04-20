@@ -2,6 +2,7 @@ const express = require('express');
 const next = require('next');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const passport = require('passport');
 
 // loading env variables from .env file
@@ -9,7 +10,7 @@ require('dotenv').config();
 
 const apiRoutes = require('./server/routes');
 const passportStrategies = require('./server/strategies');
-const User = require('./server/models').User;
+const { User } = require('./server/models');
 // const renderAndCache = require('./utils').renderAndCache;
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -37,9 +38,7 @@ app.prepare()
   server.use(logger('dev'));
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: true }));
-
-  server.use(passport.initialize());
-  server.use(passport.session());
+  server.use(cookieParser());
 
   server.use(passport.initialize());
   server.use(passport.session());
@@ -50,11 +49,9 @@ app.prepare()
   // });
 
   server.use('/api', apiRoutes);
-
   server.get('/offer/:saveId', (req, res) =>
     app.render(req, res, '/offer', Object.assign({}, req.query, { saveId: req.params.saveId }))
   );
-
   server.get('*', (req, res) => handle(req, res));
 
   server.listen(port, (err) => {

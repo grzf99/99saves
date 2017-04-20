@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { lighten } from 'polished';
-import Modal from 'react-modal';
 import SwipeableViews from 'react-swipeable-views';
 import 'isomorphic-fetch';
 
@@ -16,6 +14,8 @@ import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
+import FacebookButton from '../components/common/facebook-button';
+import Modal from '../components/common/modal';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -123,20 +123,6 @@ const ModalHeading = styled(Heading)`
 
 const ModalText = styled(Text)`
   font-size: 14px;
-`;
-
-const FacebookButton = styled(Button)`
-  background-color: ${colors.facebookBlue};
-  background-image: url(/static/images/bt-facebook.svg);
-  background-position: 18px 12px;
-  background-repeat: no-repeat;
-  font-size: 17px;
-  font-weight: 400;
-  padding-left: 40px;
-  text-transform: inherit;
-  &:hover {
-    background-color: ${lighten(0.1, colors.facebookBlue)};
-  }
 `;
 
 const modalStyles = {
@@ -672,7 +658,7 @@ export default class extends React.Component {
             <WeAreNotSubtitle>nãããão somos</WeAreNotSubtitle>
             <WeAreNotTitle>compra coletiva</WeAreNotTitle>
           </WeAreNot>
-          
+
           <WeAreNotDescription>Entenda <span>como funciona</span> o passo a passo da negociação de cada Save até o momento da compra</WeAreNotDescription>
         </WeAreNotContainer>
 
@@ -763,9 +749,9 @@ export default class extends React.Component {
 
         <Modal
           isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
+          onClose={this.closeModal}
+          width="480px"
           contentLabel="Login modal"
-          style={modalStyles}
         >
           <ModalContent>
             <ModalHeading uppercase large>Agora falta só o login ;)</ModalHeading>
@@ -778,8 +764,9 @@ export default class extends React.Component {
 
         <Modal
           isOpen={this.state.modalVideoIsOpen}
+          onClose={this.closeModal}
           onRequestClose={this.closeModal}
-          contentLabel="Video"
+          contentLabel="Video promocional"
           style={modalVideoStyles}
         >
           <ModalVideoContent>
