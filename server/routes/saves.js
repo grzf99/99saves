@@ -15,7 +15,7 @@ router.delete('/:id', saves.delete);
 
 router.post('/:saveId/subscriptions', passport.authenticate('facebook-token'), subscriptions.create);
 // TODO: Adicionar autênticação
-router.get('/:saveId/votes', /* passport.authenticate('facebook-token'), */votes.show);
-router.post('/:saveId/votes', /* passport.authenticate('facebook-token'), */votes.create);
+router.get('/:saveId/votes', passport.authenticate('facebook-token'), votes.show);
+router.post('/:saveId/votes', passport.authenticate('facebook-token'), votes.create);
 
 module.exports = router;
