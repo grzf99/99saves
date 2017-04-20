@@ -1,13 +1,10 @@
 import React from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
-import axios from 'axios';
-import { lighten } from 'polished';
-import Modal from 'react-modal';
 import SwipeableViews from 'react-swipeable-views';
 
 import config from '../config';
-import { colors } from '../components/styles/variables';
+import withApi from '../components/hoc/withApi';
 import { Heading, Text } from '../components/common/typography';
 import Button from '../components/common/button';
 import Toolbar from '../components/toolbar';
@@ -19,6 +16,7 @@ import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 import Headline from '../components/common/headline';
+import LoginModal from '../components/auth/login-modal';
 
 const CardsList = styled(Container)`
   align-items: stretch;
@@ -77,52 +75,6 @@ const BlankState = styled.div`
   }
 `;
 
-const ModalContent = styled.div`
-  > * + * {
-    margin-top: 25px !important;
-  }
-`;
-
-const ModalHeading = styled(Heading)`
-  margin: 16px 5px 0;
-`;
-
-const ModalText = styled(Text)`
-  font-size: 14px;
-`;
-
-const FacebookButton = styled(Button)`
-  background-color: ${colors.facebookBlue};
-  background-image: url(/static/images/bt-facebook.svg);
-  background-position: 18px 12px;
-  background-repeat: no-repeat;
-  font-size: 17px;
-  font-weight: 400;
-  padding-left: 40px;
-  text-transform: inherit;
-
-  &:hover {
-    background-color: ${lighten(0.1, colors.facebookBlue)};
-  }
-`;
-
-const modalStyles = {
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.8)'
-  },
-  content: {
-    top: '50%',
-    left: '20px',
-    right: '20px',
-    bottom: 'auto',
-    border: '0',
-    transform: 'translateY(-50%)',
-    borderRadius: '0',
-    maxWidth: '480px',
-    margin: '0 auto'
-  }
-};
-
 const savesMapper = ({ count, rows }) => {
   return {
     count,
@@ -142,9 +94,9 @@ const savesMapper = ({ count, rows }) => {
   };
 };
 
-export default class extends React.Component {
-  static async getInitialProps() {
-    const items = await axios.get(`${config.API_URL}/saves?filters[active]=true`);
+class Saves extends React.Component {
+  static async getInitialProps(ctx) {
+    const items = await ctx.api.get(`${config.API_URL}/saves?filters[active]=true`);
     const saves = savesMapper(items.data);
     return { saves };
   }
@@ -154,7 +106,7 @@ export default class extends React.Component {
 
     this.state = {
       user: {},
-      logged: false,
+      logged: props.isSignedIn,
       modalIsOpen: false,
       activeTab: 1,
       saves: props.saves,
@@ -162,12 +114,10 @@ export default class extends React.Component {
         count: 0,
         rows: []
       },
-      accessToken: '',
       subscribeTo: 0,
       showToast: false
     };
 
-    this.handleLogin = this.handleLogin.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
@@ -177,53 +127,22 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    const accessToken = window.localStorage.getItem('accessToken');
-    if (accessToken) {
-      this.authenticate(accessToken)
-        .then(() => Promise.all([
-          this.loadSaves(),
-          this.loadSubscriptions()
-        ]));
+    if (this.props.isSignedIn) {
+      this.loadSaves();
+      this.loadSubscriptions();
     }
   }
 
-  loginWithFacebook() {
-    return new Promise((resolve) => {
-      FB.login((res) => {
-        window.localStorage.setItem('accessToken', res.authResponse.accessToken);
-        resolve(res);
-      }, { scope: 'email' });
-    });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isSignedIn) {
+      this.loadSaves();
+      this.loadSubscriptions();
+      this.closeModal();
+    }
   }
 
-  authenticate(accessToken) {
-    return axios.get(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
-      .then(res => res.data)
-      .then(({ user }) => {
-        this.setState({
-          user,
-          logged: true,
-          modalIsOpen: false,
-          subscribeTo: 0,
-          accessToken
-        });
-      });
-  }
-
-  handleLogin(subscribeTo) {
-    this.loginWithFacebook()
-      .then(res => this.authenticate(res.authResponse.accessToken).then(subscribeTo
-        ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken)
-        : Promise.resolve()
-      ))
-      .then(() => Promise.all([
-        this.loadSaves(),
-        this.loadSubscriptions()
-      ]));
-  }
-
-  handleSubscribe(subscribeTo, accessToken) {
-    return axios.post(`${config.API_URL}/saves/${subscribeTo}/subscriptions?access_token=${accessToken || this.state.accessToken}`)
+  handleSubscribe(subscribeTo) {
+    return this.props.api.post(`${config.API_URL}/saves/${subscribeTo}/subscriptions`)
     .then(() => {
       const item = this.state.saves.rows.find(save => save.id === subscribeTo);
       item.hasSubscribed = true;
@@ -243,20 +162,12 @@ export default class extends React.Component {
     Router.push(`/offer?saveId=${slug}`, `/offer/${slug}`);
   }
 
-  openModal(subscribeTo) {
-    this.setState({ modalIsOpen: true, subscribeTo });
-  }
-
-  closeModal() {
-    this.setState({ modalIsOpen: false });
-  }
-
   handleChangeIndex(tabIndex) {
     this.setState({ activeTab: tabIndex });
   }
 
   loadSaves() {
-    return axios.get(`${config.API_URL}/saves?filters[active]=true&access_token=${this.state.accessToken}`)
+    return this.props.api.get(`${config.API_URL}/saves?filters[active]=true`)
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((saves) => {
@@ -265,12 +176,20 @@ export default class extends React.Component {
   }
 
   loadSubscriptions() {
-    return axios.get(`${config.API_URL}/saves?filters[subscribed]=true&access_token=${this.state.accessToken}`)
+    return this.props.api.get(`${config.API_URL}/saves?filters[subscribed]=true`)
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((subscriptions) => {
         this.setState({ subscriptions });
       });
+  }
+
+  openModal(subscribeTo) {
+    this.setState({ modalIsOpen: true, subscribeTo });
+  }
+
+  closeModal() {
+    this.setState({ modalIsOpen: false });
   }
 
   renderUserSaves() {
@@ -302,7 +221,7 @@ export default class extends React.Component {
   render() {
     return (
       <Page hasFooter>
-        <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
+        <Toolbar logged={this.state.logged} />
 
         <Headline>
           Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
@@ -346,20 +265,7 @@ export default class extends React.Component {
 
         <Footer />
 
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          contentLabel="Login modal"
-          style={modalStyles}
-        >
-          <ModalContent>
-            <ModalHeading uppercase large>Agora falta só o login ;)</ModalHeading>
-            <ModalText>
-              Entre com o Facebook e receba as atualizações das negociações desse produto.
-            </ModalText>
-            <FacebookButton block onClick={() => this.handleLogin(this.state.subscribeTo)}>Entrar com o Facebook</FacebookButton>
-          </ModalContent>
-        </Modal>
+        <LoginModal isOpen={this.state.modalIsOpen} close={() => this.closeModal()} />
 
         <Toast show={this.state.showToast}>
           Você receberá um email com atualizações sobre esta negociação.
@@ -368,3 +274,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withApi(Saves);

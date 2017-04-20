@@ -1,20 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import SwipeableViews from 'react-swipeable-views';
-import 'isomorphic-fetch';
+import { lighten } from 'polished';
 
 import config from '../config';
+import { USER_LOCALSTORAGE_KEY } from '../store/auth';
+import withApi from '../components/hoc/withApi';
 import { colors } from '../components/styles/variables';
 import { Heading, Text } from '../components/common/typography';
 import Button from '../components/common/button';
 import Toolbar from '../components/toolbar';
 import Card from '../components/card';
 import Footer from '../components/footer';
-import Tabs from '../components/common/tabs';
-import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
-import FacebookButton from '../components/common/facebook-button';
+import LoginModal from '../components/auth/login-modal';
 import Modal from '../components/common/modal';
 
 const Page = styled.div`
@@ -24,20 +23,6 @@ const Page = styled.div`
   overflow: hidden;
   width: 100%;
   ${props => props.hasFooter && 'padding-bottom: 98px'};
-`;
-
-const Headline = styled.div`
-  background-color: ${colors.alternateWhite};
-  color: ${colors.black};
-  display: none;
-  font-family: 'Oswald', sans-serif;
-  font-size: 16px;
-  line-height: 32px;
-  margin: 20px 0;
-  text-align: center;
-  @media (min-width: 640px) {
-    display: block;
-  }
 `;
 
 const CardsList = styled(Container)`
@@ -73,29 +58,6 @@ const StyledCard = styled(Card)`
   }
 `;
 
-const BlankState = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin: 0 auto;
-  min-height: calc(100vh - 100px);
-  padding: 60px 30px;
-  text-align: center;
-  max-width: 480px;
-  @media (min-width: 640px) {
-    padding: 150px 30px;
-  }
-  > h1 {
-    margin: 0 20px;
-  }
-`;
-
-const ModalContent = styled.div`
-  > * + * {
-    margin-top: 25px !important;
-  }
-`;
-
 const ModalVideoContent = styled.div`
   > * + * {
     position: relative;
@@ -119,10 +81,6 @@ const ModalVideoContent = styled.div`
 
 const ModalHeading = styled(Heading)`
   margin: 16px 5px 0;
-`;
-
-const ModalText = styled(Text)`
-  font-size: 14px;
 `;
 
 const modalStyles = {
@@ -381,7 +339,7 @@ const ItWorkImage = styled.img`
     width: 40%;
     margin-right: 20px;
   }
-  
+
 `;
 
 const ItWorkInfos = styled.div`
@@ -483,10 +441,9 @@ const SaveInfo = styled.span`
   text-align: center;
 `;
 
-export default class extends React.Component {
-  static async getInitialProps() {
-    const res = await fetch(`${config.API_URL}/saves?limit=3`);
-    const saves = await res.json();
+class Index extends React.Component {
+  static async getInitialProps(ctx) {
+    const saves = (await ctx.api.get(`${config.API_URL}/saves?limit=3`)).data;
     return { saves };
   }
 
@@ -494,71 +451,38 @@ export default class extends React.Component {
     super(props);
 
     this.state = {
-      user: {},
-      logged: false,
+      logged: props.isSignedIn,
       modalIsOpen: false,
       modalVideoIsOpen: false,
       activeTab: 1,
       saves: props.saves,
-      subscriptions: {
-        count: 0,
-        rows: []
-      },
-      accessToken: '',
       subscribeTo: 0,
       showToast: false
     };
 
-    this.handleLogin = this.handleLogin.bind(this);
     this.openModal = this.openModal.bind(this);
     this.openVideoModal = this.openVideoModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
-    this.reloadSaves = this.reloadSaves.bind(this);
+    this.loadSaves = this.loadSaves.bind(this);
     this.handleSubscribe = this.handleSubscribe.bind(this);
   }
 
   componentDidMount() {
-    const accessToken = window.localStorage.getItem('accessToken');
-    if (accessToken) this.authenticate(accessToken).then(this.reloadSaves);
+    const accessToken = window.localStorage.getItem(USER_LOCALSTORAGE_KEY);
+    if (accessToken) this.loadSaves();
   }
 
-  loginWithFacebook() {
-    return new Promise((resolve) => {
-      FB.login((res) => {
-        window.localStorage.setItem('accessToken', res.authResponse.accessToken);
-        resolve(res);
-      }, { scope: 'email' });
-    });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isSignedIn) {
+      this.loadSaves();
+      this.closeModal();
+    }
   }
 
-  authenticate(accessToken) {
-    return fetch(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
-      .then(user => user.json())
-      .then(({ user }) => {
-        this.setState({
-          user,
-          logged: true,
-          modalIsOpen: false,
-          subscribeTo: 0,
-          accessToken
-        });
-      });
-  }
-
-  handleLogin(subscribeTo) {
-    this.loginWithFacebook()
-      .then(res => this.authenticate(res.authResponse.accessToken).then(subscribeTo
-        ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken)
-        : Promise.resolve()
-      ))
-      .then(this.reloadSaves);
-  }
-
-  handleSubscribe(subscribeTo, accessToken) {
-    return fetch(
-      `${config.API_URL}/saves/${subscribeTo}/subscriptions?access_token=${accessToken || this.state.accessToken}`,
-      { method: 'POST' }
+  handleSubscribe(subscribeTo) {
+    return this.props.api.post(
+      `${config.API_URL}/saves/${subscribeTo}/subscriptions`,
     ).then(() => {
       const rows = [...this.state.saves.rows].map((row) => {
         const save = row;
@@ -586,9 +510,9 @@ export default class extends React.Component {
     this.setState({ activeTab: tabIndex });
   }
 
-  reloadSaves() {
-    fetch(`${config.API_URL}/saves?access_token=${this.state.accessToken}`)
-        .then(saves => saves.json())
+  loadSaves() {
+    this.props.api.get(`${config.API_URL}/saves`)
+        .then(res => res.data)
         .then((saves) => {
           this.setState({
             saves
@@ -596,38 +520,12 @@ export default class extends React.Component {
         });
   }
 
-  renderUserSaves() {
-    const subscribedSaves = this.state.saves.rows.filter(save => save.hasSubscribed);
-    return (
-      subscribedSaves.length
-        ? subscribedSaves.map(
-            save =>
-              <StyledCard
-                {...save}
-                key={save.id}
-                logged={this.state.logged}
-                openLoginModal={() => this.openModal(save.id)}
-                handleSubscribe={() => this.handleSubscribe(save.id)}
-              />
-          )
-        : (
-          <BlankState>
-            <Heading white>Ainda não tem nenhum save???</Heading>
-            <Text white>O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!</Text>
-            <div>
-              <Button outline onClick={() => this.handleChangeIndex(0)}>Ver todos os saves</Button>
-            </div>
-          </BlankState>
-        )
-    );
-  }
-
   render() {
     return (
       <Page hasFooter>
 
         <Banner>
-          <Toolbar login={() => this.handleLogin()} logged={this.state.logged} background="transparent" />
+          <Toolbar logged={this.props.isSignedIn} background="transparent" />
 
           <BannerContainer>
             <Title>Juntos pelo melhor preço</Title>
@@ -747,20 +645,7 @@ export default class extends React.Component {
 
         <Footer />
 
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onClose={this.closeModal}
-          width="480px"
-          contentLabel="Login modal"
-        >
-          <ModalContent>
-            <ModalHeading uppercase large>Agora falta só o login ;)</ModalHeading>
-            <ModalText>
-              Entre com o Facebook e receba as atualizações das negociações desse produto.
-            </ModalText>
-            <FacebookButton block onClick={() => this.handleLogin(this.state.subscribeTo)}>Entrar com o Facebook</FacebookButton>
-          </ModalContent>
-        </Modal>
+        <LoginModal isOpen={this.state.modalIsOpen} close={() => this.closeModal()} />
 
         <Modal
           isOpen={this.state.modalVideoIsOpen}
@@ -781,3 +666,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withApi(Index);

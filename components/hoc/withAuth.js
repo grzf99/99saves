@@ -7,26 +7,28 @@ import createAPIClient from '../../utils/apiClient';
 import { TOKEN_COOKIE_KEY } from '../../store/auth';
 import { setToken } from '../../store/currentUser';
 
-export default function withAuth({ admin = false }) {
+export default function withAuth({ admin = false } = {}) {
   return (Page) => {
     class Authenticated extends Component {
-      static getInitialProps (ctx) {
+      static getInitialProps(ctx) {
+        let token;
         if (ctx.req !== undefined) {
-          const token = ctx.req.cookies[TOKEN_COOKIE_KEY];
-          const api = createAPIClient(token);
+          token = ctx.req.cookies[TOKEN_COOKIE_KEY];
           ctx.store.dispatch(setToken(token));
         }
+
+        const api = createAPIClient(token);
 
         return Page.getInitialProps && Page.getInitialProps(Object.assign({}, ctx, { api }));
       }
 
-      componentWillMount () {
+      componentWillMount() {
         if (typeof window !== 'undefined' && !this.props.isSignedIn) {
           const url = admin ? '/admin/login' : '/login';
           Router.replace(url);
         }
 
-        this.client = createAPIClient(this.props.token)
+        this.client = createAPIClient(this.props.token);
       }
 
       render() {
@@ -37,7 +39,7 @@ export default function withAuth({ admin = false }) {
               api={this.client}
             />
           </RenderIf>
-        )
+        );
       }
     }
 
@@ -47,6 +49,6 @@ export default function withAuth({ admin = false }) {
         token: currentUser.token,
         isSignedIn: currentUser.token !== undefined
       })
-    )(Authenticated)
-  }
+    )(Authenticated);
+  };
 }

@@ -7,8 +7,8 @@ import { setToken } from '../../store/currentUser';
 
 export default function withApi(Page) {
   class ApiComponent extends Component {
-    static getInitialProps (ctx) {
-      let token
+    static getInitialProps(ctx) {
+      let token;
       if (ctx.req !== undefined) {
         token = ctx.req.cookies[TOKEN_COOKIE_KEY];
         ctx.store.dispatch(setToken(token));
@@ -18,8 +18,8 @@ export default function withApi(Page) {
       return Page.getInitialProps && Page.getInitialProps(Object.assign({}, ctx, { api }));
     }
 
-    componentWillMount () {
-      this.client = createAPIClient(this.props.token)
+    componentWillMount() {
+      this.client = createAPIClient(this.props.token);
     }
 
     render() {
@@ -28,7 +28,7 @@ export default function withApi(Page) {
           {...this.props}
           api={this.client}
         />
-      )
+      );
     }
   }
 
@@ -38,5 +38,5 @@ export default function withApi(Page) {
       token: currentUser.token,
       isSignedIn: currentUser.token !== undefined
     })
-  )(ApiComponent)
+  )(ApiComponent);
 }

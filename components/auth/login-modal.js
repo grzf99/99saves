@@ -51,30 +51,19 @@ const CreateAccountText = styled(Text)`
   text-align: right;
   text-transform: uppercase;
   cursor: pointer;
-`
+`;
 
-export default class extends Component {
-  render () {
-    return (
-      <Modal
-        isOpen={true}
-        width="400px"
-      >
-        <CloseButton>X</CloseButton>
-        <Header>
-          <Title large uppercase>Entre agora</Title>
-          <SubHeading uppercase>Veja os descontos disponíveis no 99saves.com</SubHeading>
-        </Header>
-        <LoginForm />
-        <SeparatorText>ou</SeparatorText>
-        <FacebookButton block>
-          Login com Facebook
-        </FacebookButton>
-        <Footer>
-          <ForgotPasswordText>Esqueci a senha</ForgotPasswordText>
-          <CreateAccountText>Criar nova conta</CreateAccountText>
-        </Footer>
-      </Modal>
-    )
-  }
-}
+export default props => (
+  <Modal
+    {...props}
+    isOpen={props.isOpen}
+    width="400px"
+  >
+    <CloseButton onClick={() => props.close()}>X</CloseButton>
+    <Header>
+      <Title large uppercase>Entre agora</Title>
+      <SubHeading uppercase>Veja os descontos disponíveis no 99saves.com</SubHeading>
+    </Header>
+    <LoginForm />
+  </Modal>
+);
