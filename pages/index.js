@@ -1,12 +1,13 @@
 import React from 'react';
+import Router from 'next/router';
 import styled from 'styled-components';
-import { lighten } from 'polished';
 
 import config from '../config';
+import { savesMapper } from '../utils';
 import { USER_LOCALSTORAGE_KEY } from '../store/auth';
 import withApi from '../components/hoc/withApi';
 import { colors } from '../components/styles/variables';
-import { Heading, Text } from '../components/common/typography';
+import { Heading } from '../components/common/typography';
 import Button from '../components/common/button';
 import Toolbar from '../components/toolbar';
 import Card from '../components/card';
@@ -443,7 +444,8 @@ const SaveInfo = styled.span`
 
 class Index extends React.Component {
   static async getInitialProps(ctx) {
-    const saves = (await ctx.api.get(`${config.API_URL}/saves?limit=3`)).data;
+    const items = (await ctx.api.get(`${config.API_URL}/saves?filters[active]=true&limit=3`));
+    const saves = savesMapper(items.data);
     return { saves };
   }
 
@@ -466,6 +468,7 @@ class Index extends React.Component {
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.loadSaves = this.loadSaves.bind(this);
     this.handleSubscribe = this.handleSubscribe.bind(this);
+    this.goToOffers = this.goToOffers.bind(this);
   }
 
   componentDidMount() {
@@ -510,9 +513,14 @@ class Index extends React.Component {
     this.setState({ activeTab: tabIndex });
   }
 
+  goToOffers(slug) {
+    Router.push(`/offer?saveId=${slug}`, `/offer/${slug}`);
+  }
+
   loadSaves() {
-    this.props.api.get(`${config.API_URL}/saves`)
+    this.props.api.get(`${config.API_URL}/saves?filters[active]=true&limit=3`)
         .then(res => res.data)
+        .then(saves => savesMapper(saves))
         .then((saves) => {
           this.setState({
             saves
@@ -634,6 +642,7 @@ class Index extends React.Component {
                   logged={this.state.logged}
                   openLoginModal={() => this.openModal(save.id)}
                   handleSubscribe={() => this.handleSubscribe(save.id)}
+                  goToOffers={() => this.goToOffers(save.slug)}
                 />
             )
           }

@@ -67,12 +67,16 @@ export default class extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.logged) {
-      this.toggleModal();
+      this.closeModal();
     }
   }
 
-  toggleModal() {
-    this.setState({ modalOpen: !this.state.modalOpen });
+  openModal() {
+    this.setState({ modalOpen: true });
+  }
+
+  closeModal() {
+    this.setState({ modalOpen: false });
   }
 
   render() {
@@ -92,12 +96,12 @@ export default class extends React.Component {
               </LinkAllSaves>
             </Link>
             {
-              !this.props.logged && <Button small outline onClick={() => this.toggleModal()}>login</Button>
+              !this.props.logged && <Button small outline onClick={() => this.openModal()}>login</Button>
             }
           </MenuLinks>
         </CustomContainer>
 
-        <LoginModal isOpen={this.state.modalOpen} close={() => this.toggleModal()} />
+        <LoginModal isOpen={this.state.modalOpen} close={() => this.closeModal()} />
       </Toolbar>
     );
   }

@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
-import axios from 'axios';
 import differenceInMinutes from 'date-fns/difference_in_minutes';
 import { numeral } from '../utils';
 
@@ -179,7 +178,7 @@ const RightArrow = styled(Control)`
 
 class Offer extends React.Component {
   static async getInitialProps({ query }) {
-    const save = (await axios.get(`${config.API_URL}/saves/${query.saveId}`)).data;
+    const save = (await this.props.api.get(`${config.API_URL}/saves/${query.saveId}`)).data;
 
     const now = Date.now();
     const dateEnd = new Date(save.date_end).getTime();
@@ -240,7 +239,7 @@ class Offer extends React.Component {
   }
 
   loadVote() {
-    return axios.get(`${config.API_URL}/saves/${this.state.save.id}/votes`)
+    return this.props.api.get(`${config.API_URL}/saves/${this.state.save.id}/votes`)
       .then(res => res.data)
       .then((vote) => {
         if (vote) this.setState({ vote: vote.ProductId });
@@ -253,7 +252,7 @@ class Offer extends React.Component {
 
   handleVote(productId) {
     if (this.state.vote !== productId) {
-      axios.post(`${config.API_URL}/saves/${this.state.save.id}/votes`, {
+      this.props.api.post(`${config.API_URL}/saves/${this.state.save.id}/votes`, {
         ProductId: productId
       })
       .then(({ data }) => {

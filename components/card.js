@@ -128,7 +128,6 @@ export default class extends React.Component {
     return (
       <Card {...this.props}>
         <Header>
-          { this.state.votationOpen && this.props.hasVoted && <Status>Em negociação</Status> }
           <CardImage src={this.props.image_default} alt={this.props.title} />
           <Gradient>
             <SmallText>imagem meramente ilustrativa</SmallText>
