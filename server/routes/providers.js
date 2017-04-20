@@ -1,12 +1,12 @@
 const express = require('express');
-const providersController = require('../controllers').providers;
+const { providers } = require('../controllers');
 
 const router = express.Router();
 
-router.get('/', providersController.list);
-router.post('/', providersController.create);
-router.get('/:id', providersController.show);
-router.put('/:id', providersController.update);
-router.delete('/:id', providersController.delete);
+router.get('/', providers.list);
+router.post('/', providers.create);
+router.get('/:id', providers.show);
+router.put('/:id', providers.update);
+router.delete('/:id', providers.delete);
 
 module.exports = router;

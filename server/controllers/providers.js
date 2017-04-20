@@ -1,4 +1,4 @@
-const Provider = require('../models').Provider;
+const { Provider } = require('../models');
 
 module.exports = {
   show(req, res) {

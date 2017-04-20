@@ -1,8 +1,5 @@
 const addDays = require('date-fns/add_days');
-const Save = require('../models').Save;
-const Subscription = require('../models').Subscription;
-const Product = require('../models').Product;
-const Vote = require('../models').Vote;
+const { Product, Save, Subscription, Vote } = require('../models');
 const slugify = require('../../utils').slugify;
 
 module.exports = {

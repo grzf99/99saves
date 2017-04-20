@@ -1,6 +1,4 @@
-const Product = require('../models').Product;
-const Save = require('../models').Save;
-const Provider = require('../models').Provider;
+const { Product, Provider, Save } = require('../models');
 
 module.exports = {
   list(req, res) {

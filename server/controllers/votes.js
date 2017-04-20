@@ -1,5 +1,4 @@
-const Vote = require('../models').Vote;
-const Subscription = require('../models').Subscription;
+const { Subscription, Vote } = require('../models');
 
 module.exports = {
   show(req, res) {
