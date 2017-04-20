@@ -10,6 +10,11 @@
       // next/babel does not transpile import/export syntax.
       // So, using es2015 in the beginning will fix that.
       "presets": ["es2015", "next/babel"]
+    },
+    "test-ci": {
+      // next/babel does not transpile import/export syntax.
+      // So, using es2015 in the beginning will fix that.
+      "presets": ["es2015", "next/babel"]
     }
   }
 }
