@@ -14,6 +14,7 @@ import Footer from '../components/footer';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
+import Modal from '../components/common/modal';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -338,7 +339,7 @@ const ItWorkImage = styled.img`
     width: 40%;
     margin-right: 20px;
   }
-  
+
 `;
 
 const ItWorkInfos = styled.div`
