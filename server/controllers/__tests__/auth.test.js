@@ -2,8 +2,10 @@ const MockResponse = require('mock-express-response');
 const { User } = require('../../models');
 const authController = require('../auth');
 
-beforeAll(() => require('dotenv').config())
-beforeEach(() => User.sync({ force: true }))
+beforeAll(() => {
+  require('dotenv').config()
+  return User.sync({ force: true })
+});
 
 describe('clientLogin', () => {
   const req = {
