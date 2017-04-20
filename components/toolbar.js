@@ -65,6 +65,12 @@ export default class extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.logged) {
+      this.toggleModal();
+    }
+  }
+
   toggleModal() {
     this.setState({ modalOpen: !this.state.modalOpen });
   }

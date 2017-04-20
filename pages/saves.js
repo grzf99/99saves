@@ -137,6 +137,7 @@ class Saves extends React.Component {
     if (nextProps.isSignedIn) {
       this.loadSaves();
       this.loadSubscriptions();
+      this.closeModal();
     }
   }
 

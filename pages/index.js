@@ -474,7 +474,10 @@ class Index extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isSignedIn) this.loadSaves();
+    if (nextProps.isSignedIn) {
+      this.loadSaves();
+      this.closeModal();
+    }
   }
 
   handleSubscribe(subscribeTo) {
