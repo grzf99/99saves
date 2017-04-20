@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
 
 import config from '../config';
+import { savesMapper } from '../utils';
 import withApi from '../components/hoc/withApi';
 import { Heading, Text } from '../components/common/typography';
 import Button from '../components/common/button';
@@ -74,25 +75,6 @@ const BlankState = styled.div`
     margin: 0 20px;
   }
 `;
-
-const savesMapper = ({ count, rows }) => {
-  return {
-    count,
-    rows: rows.map((item) => {
-      const save = item;
-
-      if (save.Subscriptions && save.Subscriptions.length > 0) {
-        save.hasSubscribed = true;
-
-        if (save.Subscriptions.some(s => s.Votes.length > 0)) {
-          save.hasVoted = true;
-        }
-      }
-
-      return save;
-    })
-  };
-};
 
 class Saves extends React.Component {
   static async getInitialProps(ctx) {
