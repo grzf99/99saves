@@ -19,12 +19,14 @@ const createModalStyles = (styleProps) => ({
   }
 });
 
-export default ({ children, isOpen, onClose, ...styleProps }) => (
+export default ({ children, isOpen, onClose, contentLabel, style, ...styleProps }) => (
   <Modal
     isOpen={isOpen}
+    onClose={onClose}
     onRequestClose={onClose}
-    style={createModalStyles(styleProps)}
+    style={style || createModalStyles(styleProps)}
+    contentLabel={contentLabel}
   >
     {children}
   </Modal>
-)
+);
