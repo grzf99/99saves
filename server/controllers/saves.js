@@ -32,8 +32,15 @@ module.exports = {
   },
 
   update(req, res) {
+    const dateEnd = new Date(req.body.date_end || new Date());
+    const computedProps = {
+      checkout_end: addDays(dateEnd, 3).toISOString(),
+      votation_end: addDays(dateEnd, 2).toISOString(),
+      slug: slugify(req.body.title)
+    };
+
     return Save
-      .update(req.body, {
+      .update(Object.assign(computedProps, req.body), {
         where: {
           id: req.params.id
         }
