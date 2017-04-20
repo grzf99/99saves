@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { colors } from './styles/variables';
 import Button from './common/button';
 import Container from './common/container';
-import Link from 'next/link';
 
 const Toolbar = styled.header`
   background: ${colors.black};
@@ -64,7 +63,7 @@ export default props => (
         </LinkLogo>
       </Link>
 
-      <MenuLinks> 
+      <MenuLinks>
         <Link prefetch href="/saves">
           <LinkAllSaves>
             todos os saves
