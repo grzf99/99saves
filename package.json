@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "build": "next build",
-    "dev": "nodemon -w server server.js",
+    "dev": "nodemon --watch server --watch server.js server.js",
     "lint": "eslint .",
     "start": "NODE_ENV=production node server.js",
     "test": "NODE_ENV=test jest --watch",
@@ -24,6 +24,7 @@
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
     "bootstrap": "3",
+    "cookie-parser": "^1.4.3",
     "date-fns": "^1.28.3",
     "dotenv": "^4.0.0",
     "enzyme": "^2.8.0",
@@ -35,14 +36,17 @@
     "express": "^4.15.2",
     "formsy-react": "^0.19.2",
     "formsy-react-components": "^0.10.1",
+    "hex-rgb": "^1.0.0",
     "isomorphic-fetch": "^2.2.1",
     "jest-cli": "^19.0.2",
+    "js-cookie": "^2.1.4",
     "jsonwebtoken": "^7.3.0",
     "logger": "^0.0.1",
     "lru-cache": "^4.0.2",
     "moment": "^2.18.1",
     "morgan": "^1.8.1",
     "next": "^2.0.0",
+    "next-redux-wrapper": "^1.0.0",
     "nodemon": "^1.11.0",
     "numeral": "^2.0.6",
     "passport": "^0.3.2",
@@ -60,14 +64,18 @@
     "react-maskedinput": "^3.3.4",
     "react-modal": "^1.7.3",
     "react-no-ssr": "^1.1.0",
+    "react-redux": "^5.0.4",
     "react-swipeable-views": "^0.11.2",
+    "react-tap-event-plugin": "^2.0.1",
     "react-test-renderer": "^15.4.2",
+    "redux": "^3.6.0",
     "sequelize": "^3.30.4",
     "sequelize-cli": "^2.7.0",
     "styled-components": "^1.4.4",
     "superagent": "^3.5.2"
   },
   "devDependencies": {
-    "mock-express-response": "^0.2.0"
+    "mock-express-response": "^0.2.0",
+    "moxios": "^0.4.0"
   }
 }

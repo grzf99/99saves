@@ -5,7 +5,7 @@ const authController = require('../auth');
 beforeAll(() => require('dotenv').config())
 beforeEach(() => User.sync({ force: true }))
 
-describe('login', () => {
+describe('clientLogin', () => {
   const req = {
     body: {
       email: 'jonsnow@winterfell.com',
@@ -18,7 +18,7 @@ describe('login', () => {
       it('should return 200 and a user object', () => {
         const res = new MockResponse();
         return User.create(Object.assign({}, req.body))
-          .then(() => authController.login(req, res))
+          .then(() => authController.clientLogin(req, res))
           .then(() => {
             expect(res.statusCode).toEqual(200);
             expect(res._getJSON()).toEqual(expect.objectContaining({
@@ -38,7 +38,7 @@ describe('login', () => {
         return User.create(Object.assign({}, req.body))
           .then(() => {
             req.body.password = 'anyOtherPassword';
-            return authController.login(req, res);
+            return authController.clientLogin(req, res);
           })
           .then(() => {
             expect(res.statusCode).toEqual(422);
@@ -50,7 +50,7 @@ describe('login', () => {
   describe('when user does not exist', () => {
     it('should return 422', () => {
       const res = new MockResponse();
-      return authController.login(req, res)
+      return authController.clientLogin(req, res)
         .then(() => {
           expect(res.statusCode).toEqual(422);
         });

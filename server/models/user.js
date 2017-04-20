@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         return bcrypt.compare(password, this.dataValues.password)
           .then((isValid) => {
             this.setDataValue('isAuthenticated', isValid);
-            return this.dataValues;
+            return this.toJSON();
           })
       },
       toJSON () {

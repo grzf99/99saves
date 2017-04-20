@@ -2,6 +2,7 @@ const express = require('express');
 const next = require('next');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const passport = require('passport');
 
 // loading env variables from .env file
@@ -37,6 +38,7 @@ app.prepare()
   server.use(logger('dev'));
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: true }));
+  server.use(cookieParser());
 
   server.use(passport.initialize());
   server.use(passport.session());
