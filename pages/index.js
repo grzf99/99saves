@@ -400,6 +400,9 @@ const ItWorkContainer = styled.div`
 
   &.reverse {
     flex-direction: row-reverse;
+    @media (max-width: 500px) {
+      margin-left: 10px;
+    }
   }
 
   &.center {
@@ -410,6 +413,12 @@ const ItWorkContainer = styled.div`
 
 const ItWorkImage = styled.img`
   align-self: flex-start;
+
+  @media (max-width: 500px) {
+    width: 40%;
+    margin-right: 20px;
+  }
+  
 `;
 
 const ItWorkInfos = styled.div`
