@@ -137,7 +137,7 @@ export default class extends React.Component {
         </Header>
         <Info>
           <CustomText>{this.props.description}</CustomText>
-          { !this.props.hasVoted && this.renderButton() }
+          { this.renderButton() }
         </Info>
       </Card>
     );
