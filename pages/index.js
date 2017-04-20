@@ -57,6 +57,68 @@ const StyledCard = styled(Card)`
   }
 `;
 
+const ModalVideoContent = styled.div`
+  > * + * {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+    height: 0;
+    margin-top: 25px !important;
+  }
+
+  > iframe {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const ModalHeading = styled(Heading)`
+  margin: 16px 5px 0;
+`;
+
+const modalStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+  content: {
+    top: '50%',
+    left: '20px',
+    right: '20px',
+    bottom: 'auto',
+    border: '0',
+    transform: 'translateY(-50%)',
+    borderRadius: '0',
+    maxWidth: '480px',
+    margin: '0 auto'
+  }
+};
+
+const modalVideoStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+  content: {
+    top: '15%',
+    left: '50%',
+    right: '20px',
+    bottom: '0',
+    background: 'transparent',
+    transform: 'translateX(-50%)',
+    border: '0',
+    borderRadius: '0',
+    maxHeight: '400px',
+    maxWidth: '640px',
+    padding: 0,
+    width: '90%'
+  }
+};
+
 const Banner = styled.div`
   background: ${colors.black} url(/static/images/img-header@2x.png) no-repeat center center;
   background-size: cover;
@@ -259,6 +321,9 @@ const ItWorkContainer = styled.div`
   width: 100%;
   &.reverse {
     flex-direction: row-reverse;
+    @media (max-width: 500px) {
+      margin-left: 10px;
+    }
   }
   &.center {
     justify-content: center;
@@ -268,6 +333,12 @@ const ItWorkContainer = styled.div`
 
 const ItWorkImage = styled.img`
   align-self: flex-start;
+
+  @media (max-width: 500px) {
+    width: 40%;
+    margin-right: 20px;
+  }
+  
 `;
 
 const ItWorkInfos = styled.div`
@@ -381,6 +452,7 @@ class Index extends React.Component {
     this.state = {
       logged: props.isSignedIn,
       modalIsOpen: false,
+      modalVideoIsOpen: false,
       activeTab: 1,
       saves: props.saves,
       subscribeTo: 0,
@@ -388,6 +460,7 @@ class Index extends React.Component {
     };
 
     this.openModal = this.openModal.bind(this);
+    this.openVideoModal = this.openVideoModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.loadSaves = this.loadSaves.bind(this);
@@ -421,8 +494,12 @@ class Index extends React.Component {
     this.setState({ modalIsOpen: true, subscribeTo });
   }
 
+  openVideoModal() {
+    this.setState({ modalVideoIsOpen: true });
+  }
+
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.setState({ modalIsOpen: false, modalVideoIsOpen: false });
   }
 
   handleChangeIndex(tabIndex) {
@@ -454,7 +531,7 @@ class Index extends React.Component {
 
             <BannerActions>
               <Button outline openLoginModal={() => this.openModal()}>participe agora mesmo</Button>
-              <VideoButton openVideonModal={() => console.log('abre video')}>entenda como funciona</VideoButton>
+              <VideoButton onClick={() => this.openVideoModal()}>entenda como funciona</VideoButton>
             </BannerActions>
 
           </BannerContainer>
@@ -565,6 +642,18 @@ class Index extends React.Component {
         <Footer />
 
         <LoginModal isOpen={this.state.modalIsOpen} close={() => this.closeModal()} />
+
+        <Modal
+          isOpen={this.state.modalVideoIsOpen}
+          onClose={this.closeModal}
+          onRequestClose={this.closeModal}
+          contentLabel="Video promocional"
+          style={modalVideoStyles}
+        >
+          <ModalVideoContent>
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1"></iframe>
+          </ModalVideoContent>
+        </Modal>
 
         <Toast show={this.state.showToast}>
           Você receberá um email com atualizações sobre esta negociação.
