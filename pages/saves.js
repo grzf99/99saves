@@ -1,9 +1,10 @@
 import React from 'react';
+import Router from 'next/router';
 import styled from 'styled-components';
+import axios from 'axios';
 import { lighten } from 'polished';
 import Modal from 'react-modal';
 import SwipeableViews from 'react-swipeable-views';
-import 'isomorphic-fetch';
 
 import config from '../config';
 import { colors } from '../components/styles/variables';
@@ -12,40 +13,18 @@ import Button from '../components/common/button';
 import Toolbar from '../components/toolbar';
 import Card from '../components/card';
 import Footer from '../components/footer';
+import Page from '../components/common/page';
 import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
-
-const Page = styled.div`
-  background: ${colors.black};
-  min-height: 100vh;
-  position: relative;
-  width: 100%;
-
-  ${props => props.hasFooter && 'padding-bottom: 98px'};
-`;
-
-const Headline = styled.div`
-  background-color: ${colors.alternateWhite};
-  color: ${colors.black};
-  display: none;
-  font-family: 'Oswald', sans-serif;
-  font-size: 16px;
-  line-height: 32px;
-  margin: 20px 0;
-  text-align: center;
-
-  @media (min-width: 640px) {
-    display: block;
-  }
-`;
+import Headline from '../components/common/headline';
 
 const CardsList = styled(Container)`
   align-items: stretch;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-flow: row wrap;
 `;
 
@@ -144,10 +123,29 @@ const modalStyles = {
   }
 };
 
+const savesMapper = ({ count, rows }) => {
+  return {
+    count,
+    rows: rows.map((item) => {
+      const save = item;
+
+      if (save.Subscriptions && save.Subscriptions.length > 0) {
+        save.hasSubscribed = true;
+
+        if (save.Subscriptions.some(s => s.Votes.length > 0)) {
+          save.hasVoted = true;
+        }
+      }
+
+      return save;
+    })
+  };
+};
+
 export default class extends React.Component {
   static async getInitialProps() {
-    const res = await fetch(`${config.API_URL}/saves`);
-    const saves = await res.json();
+    const items = await axios.get(`${config.API_URL}/saves?filters[active]=true`);
+    const saves = savesMapper(items.data);
     return { saves };
   }
 
@@ -173,13 +171,20 @@ export default class extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
-    this.reloadSaves = this.reloadSaves.bind(this);
+    this.loadSaves = this.loadSaves.bind(this);
+    this.loadSubscriptions = this.loadSubscriptions.bind(this);
     this.handleSubscribe = this.handleSubscribe.bind(this);
   }
 
   componentDidMount() {
     const accessToken = window.localStorage.getItem('accessToken');
-    if (accessToken) this.authenticate(accessToken).then(this.reloadSaves);
+    if (accessToken) {
+      this.authenticate(accessToken)
+        .then(() => Promise.all([
+          this.loadSaves(),
+          this.loadSubscriptions()
+        ]));
+    }
   }
 
   loginWithFacebook() {
@@ -192,8 +197,8 @@ export default class extends React.Component {
   }
 
   authenticate(accessToken) {
-    return fetch(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
-      .then(user => user.json())
+    return axios.get(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
+      .then(res => res.data)
       .then(({ user }) => {
         this.setState({
           user,
@@ -211,22 +216,31 @@ export default class extends React.Component {
         ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken)
         : Promise.resolve()
       ))
-      .then(this.reloadSaves);
+      .then(() => Promise.all([
+        this.loadSaves(),
+        this.loadSubscriptions()
+      ]));
   }
 
   handleSubscribe(subscribeTo, accessToken) {
-    return fetch(
-      `${config.API_URL}/saves/${subscribeTo}/subscriptions?access_token=${accessToken || this.state.accessToken}`,
-      { method: 'POST' }
-    ).then(() => {
-      const rows = [...this.state.saves.rows].map((row) => {
-        const save = row;
-        if (save.id === subscribeTo) save.hasSubscribed = true;
-        return save;
+    return axios.post(`${config.API_URL}/saves/${subscribeTo}/subscriptions?access_token=${accessToken || this.state.accessToken}`)
+    .then(() => {
+      const item = this.state.saves.rows.find(save => save.id === subscribeTo);
+      item.hasSubscribed = true;
+
+      const subscriptionsRows = [...this.state.subscriptions.rows, item];
+
+      this.setState({
+        subscriptions: { count: subscriptionsRows.length, rows: subscriptionsRows },
+        showToast: true
       });
-      this.setState({ saves: { count: rows.length, rows }, showToast: true });
+
       setTimeout(() => this.setState({ showToast: false }), 4000);
     });
+  }
+
+  goToOffers(slug) {
+    Router.push(`/offer?saveId=${slug}`, `/offer/${slug}`);
   }
 
   openModal(subscribeTo) {
@@ -241,21 +255,28 @@ export default class extends React.Component {
     this.setState({ activeTab: tabIndex });
   }
 
-  reloadSaves() {
-    fetch(`${config.API_URL}/saves?access_token=${this.state.accessToken}`)
-        .then(saves => saves.json())
-        .then((saves) => {
-          this.setState({
-            saves
-          });
-        });
+  loadSaves() {
+    return axios.get(`${config.API_URL}/saves?filters[active]=true&access_token=${this.state.accessToken}`)
+      .then(res => res.data)
+      .then(saves => savesMapper(saves))
+      .then((saves) => {
+        this.setState({ saves });
+      });
+  }
+
+  loadSubscriptions() {
+    return axios.get(`${config.API_URL}/saves?filters[subscribed]=true&access_token=${this.state.accessToken}`)
+      .then(res => res.data)
+      .then(saves => savesMapper(saves))
+      .then((subscriptions) => {
+        this.setState({ subscriptions });
+      });
   }
 
   renderUserSaves() {
-    const subscribedSaves = this.state.saves.rows.filter(save => save.hasSubscribed);
     return (
-      subscribedSaves.length
-        ? subscribedSaves.map(
+      this.state.subscriptions.rows.length > 0
+        ? this.state.subscriptions.rows.map(
             save =>
               <StyledCard
                 {...save}
@@ -263,6 +284,7 @@ export default class extends React.Component {
                 logged={this.state.logged}
                 openLoginModal={() => this.openModal(save.id)}
                 handleSubscribe={() => this.handleSubscribe(save.id)}
+                goToOffers={() => this.goToOffers(save.slug)}
               />
           )
         : (
@@ -274,7 +296,7 @@ export default class extends React.Component {
             </div>
           </BlankState>
         )
-    )
+    );
   }
 
   render() {
@@ -283,14 +305,12 @@ export default class extends React.Component {
         <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
 
         <Headline>
-          <Container>
-            Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
-          </Container>
+          Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
         </Headline>
 
         {
           this.state.logged && (
-            <Tabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
+            <Tabs withBorder index={this.state.activeTab} onChange={this.handleChangeIndex}>
               <Tab>Meus Saves</Tab>
               <Tab>Todos</Tab>
             </Tabs>
@@ -317,6 +337,7 @@ export default class extends React.Component {
                     logged={this.state.logged}
                     openLoginModal={() => this.openModal(save.id)}
                     handleSubscribe={() => this.handleSubscribe(save.id)}
+                    goToOffers={() => this.goToOffers(save.slug)}
                   />
               )
             }

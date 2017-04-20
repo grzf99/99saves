@@ -5,8 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     image_default: DataTypes.STRING,
     image2: DataTypes.STRING,
     image3: DataTypes.STRING,
+    slug: { type: DataTypes.STRING, unique: true },
     date_start: DataTypes.DATE,
-    date_end: DataTypes.DATE
+    date_end: DataTypes.DATE,
+    checkout_end: DataTypes.DATE,
+    votation_end: DataTypes.DATE
   }, {
     classMethods: {
       associate: (models) => {

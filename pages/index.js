@@ -23,7 +23,6 @@ const Page = styled.div`
   position: relative;
   overflow: hidden;
   width: 100%;
-
   ${props => props.hasFooter && 'padding-bottom: 98px'};
 `;
 
@@ -36,7 +35,6 @@ const Headline = styled.div`
   line-height: 32px;
   margin: 20px 0;
   text-align: center;
-
   @media (min-width: 640px) {
     display: block;
   }
@@ -56,24 +54,19 @@ const StyledCard = styled(Card)`
     flex-basis: calc(50% - 10px);
     max-width: calc(50% - 10px);
     margin: 36px 5px 0;
-
     &:nth-child(3n + 1) {
       margin-left: 0;
     }
-
     &:nth-child(3n + 2) {
       margin-right: 0;
     }
   }
-
   @media (min-width: 960px) {
     flex-basis: calc(33.3% - 10px);
     max-width: calc(33.3% - 10px);
-
     &:nth-child(3n + 2) {
       margin-right: 5px;
     }
-
     &:nth-child(3n + 3) {
       margin-right: 0;
     }
@@ -89,11 +82,9 @@ const BlankState = styled.div`
   padding: 60px 30px;
   text-align: center;
   max-width: 480px;
-
   @media (min-width: 640px) {
     padding: 150px 30px;
   }
-
   > h1 {
     margin: 0 20px;
   }
@@ -143,7 +134,6 @@ const FacebookButton = styled(Button)`
   font-weight: 400;
   padding-left: 40px;
   text-transform: inherit;
-
   &:hover {
     background-color: ${lighten(0.1, colors.facebookBlue)};
   }
@@ -192,7 +182,6 @@ const Banner = styled.div`
   margin-top: 0;
   min-height: 626px;
   position: relative;
-
   &:after {
     content: "";
     position: absolute;
@@ -224,7 +213,6 @@ const Title = styled.h1`
   font-size: 72px;
   font-weight: 500;
   text-transform: uppercase;
-
   @media (max-width: 500px) {
     font-size: 47px;
   }
@@ -239,7 +227,6 @@ const Subtitle = styled.div`
   max-width: 670px;
   text-align: center;
   width: 100%;
-
   @media (max-width: 960px) {
     width: 100%;
   }
@@ -251,7 +238,6 @@ const BannerActions = styled.div`
   flex-direction: row;
   justify-content: space-around;
   width: 500px;
-
   @media (max-width: 500px) {
     flex-direction: column;
     height: 130px;
@@ -275,7 +261,6 @@ const BrandContainer = styled.div`
   min-height: 280px;
   justify-content: flex-start;
   position: relative;
-
   &:after {
     content: "";
     position: absolute;
@@ -289,7 +274,6 @@ const BrandContainer = styled.div`
     border-top: 5px solid #ffffff;
     transform: rotate(1.7deg);
   }
-
   @media (max-width: 728px) {
     min-height: 550px;
   }
@@ -302,7 +286,6 @@ const BannerTitle = styled.h2`
   font-weight: 500;
   text-align: center;
   text-transform: uppercase;
-
   @media (max-width: 500px) {
     font-size: 22px;
   }
@@ -314,7 +297,6 @@ const BrandImagesContainer = styled(Container)`
   flex-direction: row;
   justify-content: space-between;
   margin-top: 20px;
-
   @media (max-width: 728px) {
     flex-direction: column;
     min-height: 250px;
@@ -331,7 +313,6 @@ const WeAreNotContainer = styled(Container)`
   flex-direction: column;
   justify-content: center;
   margin-top: 50px;
-
   @media (max-width: 728px) {
   }
 `;
@@ -375,7 +356,6 @@ const WeAreNotDescription = styled.p`
   max-width: 770px;
   text-align: center;
   text-transform: uppercase;
-
   > span {
     background: ${colors.green};
     padding: 0 4px;
@@ -384,7 +364,6 @@ const WeAreNotDescription = styled.p`
 
 const ItWorkSection = styled(Container)`
   margin-top: 50px;
-
   @media (max-width: 728px) {
   }
 `;
@@ -397,14 +376,12 @@ const ItWorkContainer = styled.div`
   justify-content: space-around;
   margin: 80px 0;
   width: 100%;
-
   &.reverse {
     flex-direction: row-reverse;
     @media (max-width: 500px) {
       margin-left: 10px;
     }
   }
-
   &.center {
     justify-content: center;
     align-items: center;
@@ -450,7 +427,6 @@ const SaveSection = styled.section`
   position: relative;
   width: 100%;
   z-index: 0;
-
   &:before {
     content: "";
     position: absolute;
@@ -464,7 +440,6 @@ const SaveSection = styled.section`
     border-top: 30px solid ${colors.darkSkyBlue2};
     transform: rotate(-2.7deg);
   }
-
   &:after {
     content: "";
     position: absolute;

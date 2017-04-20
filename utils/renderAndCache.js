@@ -36,4 +36,4 @@ module.exports = function renderAndCache(app, req, res, pagePath, queryParams) {
     .catch((err) => {
       app.renderError(err, req, res, pagePath, queryParams);
     });
-}
+};
