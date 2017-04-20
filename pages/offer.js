@@ -178,7 +178,6 @@ const RightArrow = styled(Control)`
 export default class extends React.Component {
   static async getInitialProps({ query }) {
     const save = (await axios.get(`${config.API_URL}/saves/${query.saveId}`)).data;
-    const vote = (await axios.get(`${config.API_URL}/saves/${save.id}/votes`)).data;
 
     const now = Date.now();
     const dateEnd = new Date(save.date_end).getTime();
@@ -191,7 +190,7 @@ export default class extends React.Component {
     // TODO: Consultar base de dados para checar qual o vencedor
     const winnerIndex = save.id % 2;
 
-    return { save, vote, votationOpen, checkoutOpen, winnerIndex };
+    return { save, votationOpen, checkoutOpen, winnerIndex };
   }
 
   constructor(props) {
@@ -201,7 +200,7 @@ export default class extends React.Component {
       activeTab: props.winnerIndex !== -1 ? props.winnerIndex : 0,
       save: props.save,
       products: props.save.Products,
-      vote: props.vote ? props.vote.ProductId : 0,
+      vote: 0,
       countdown: '...',
       // TODO: Remover quando mergear a auth
       user: {},
