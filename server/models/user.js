@@ -13,10 +13,14 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks: {
       beforeCreate (user, options) {
-        return bcrypt.hash(user.password, 10)
-          .then((hash) => {
-            user.password = hash;
-          });
+        // TODO: Remove this if when implementing real
+        // facebook authentication
+        if (user.password) {
+          return bcrypt.hash(user.password, 10)
+            .then((hash) => {
+              user.password = hash;
+            });
+        }
       }
     },
     classMethods: {
