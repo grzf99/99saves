@@ -292,7 +292,7 @@ export default class extends React.Component {
         <Toolbar />
 
         <Header>
-          <Link prefetch href="/"><a><ArrowBack /></a></Link>
+          <Link prefetch href="/saves"><a><ArrowBack /></a></Link>
           <div>
             <GrayText>Vote na melhor oferta de</GrayText>
             <Heading white uppercase>{this.props.save.title}</Heading>
