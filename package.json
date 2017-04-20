@@ -76,6 +76,7 @@
   },
   "devDependencies": {
     "mock-express-response": "^0.2.0",
-    "moxios": "^0.4.0"
+    "moxios": "^0.4.0",
+    "regenerator-runtime": "^0.10.3"
   }
 }
