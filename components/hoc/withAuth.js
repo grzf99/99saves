@@ -17,7 +17,7 @@ export default function withAuth({ admin = false } = {}) {
           ctx.store.dispatch(setToken(token));
         }
 
-        const api = createAPIClient(ctx.store);
+        const api = createAPIClient(token);
 
         return Page.getInitialProps && Page.getInitialProps(Object.assign({}, ctx, { api }));
       }
