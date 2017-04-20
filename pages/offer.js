@@ -7,6 +7,8 @@ import differenceInMinutes from 'date-fns/difference_in_minutes';
 import { numeral } from '../utils';
 
 import config from '../config';
+import { USER_LOCALSTORAGE_KEY } from '../store/auth';
+import withAuth from '../components/hoc/withAuth';
 import { colors } from '../components/styles/variables';
 import Toolbar from '../components/toolbar';
 import Page from '../components/common/page';
@@ -175,7 +177,7 @@ const RightArrow = styled(Control)`
   right: 0;
 `;
 
-export default class extends React.Component {
+class Offer extends React.Component {
   static async getInitialProps({ query }) {
     const save = (await axios.get(`${config.API_URL}/saves/${query.saveId}`)).data;
 
@@ -203,9 +205,7 @@ export default class extends React.Component {
       vote: 0,
       countdown: '...',
       // TODO: Remover quando mergear a auth
-      user: {},
-      logged: false,
-      accessToken: ''
+      user: {}
     };
 
     this.formatCurrency = this.formatCurrency.bind(this);
@@ -215,20 +215,14 @@ export default class extends React.Component {
     this.renderCheckoutButton = this.renderCheckoutButton.bind(this);
     this.getCountdown = this.getCountdown.bind(this);
     // TODO: Remover quando mergear a auth
-    this.handleLogin = this.handleLogin.bind(this);
     this.loadVote = this.loadVote.bind(this);
 
     this.timer = null;
   }
 
   componentDidMount() {
-    const accessToken = window.localStorage.getItem('accessToken');
-    if (accessToken) {
-      this.authenticate(accessToken)
-        .then(() => Promise.all([
-          this.loadVote()
-        ]));
-    }
+    const accessToken = window.localStorage.getItem(USER_LOCALSTORAGE_KEY);
+    if (accessToken) this.loadVote();
 
     this.timer = setInterval(() => {
       this.setState({
@@ -237,41 +231,16 @@ export default class extends React.Component {
     }, 1000);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isSignedIn) this.loadVote();
+  }
+
   componentWillUnmount() {
     clearInterval(this.timer);
   }
 
-  loginWithFacebook() {
-    return new Promise((resolve) => {
-      FB.login((res) => {
-        window.localStorage.setItem('accessToken', res.authResponse.accessToken);
-        resolve(res);
-      }, { scope: 'email' });
-    });
-  }
-
-  authenticate(accessToken) {
-    return axios.get(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
-      .then(res => res.data)
-      .then(({ user }) => {
-        this.setState({
-          user,
-          logged: true,
-          accessToken
-        });
-      });
-  }
-
-  handleLogin() {
-    this.loginWithFacebook()
-      .then(res => this.authenticate(res.authResponse.accessToken))
-      .then(() => Promise.all([
-        this.loadVote()
-      ]));
-  }
-
   loadVote() {
-    return axios.get(`${config.API_URL}/saves/${this.state.save.id}/votes?access_token=${this.state.accessToken}`)
+    return axios.get(`${config.API_URL}/saves/${this.state.save.id}/votes`)
       .then(res => res.data)
       .then((vote) => {
         if (vote) this.setState({ vote: vote.ProductId });
@@ -336,7 +305,7 @@ export default class extends React.Component {
   render() {
     return (
       <Page hasFooter>
-        <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
+        <Toolbar logged={this.props.isSignedIn} />
 
         <Header>
           <Link prefetch href="/saves"><a><ArrowBack /></a></Link>
@@ -477,3 +446,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withAuth()(Offer);

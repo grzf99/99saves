@@ -24,7 +24,8 @@ export default ({ children, isOpen, onClose, ...styleProps }) => (
     isOpen={isOpen}
     onRequestClose={onClose}
     style={createModalStyles(styleProps)}
+    contentLabel='Login'
   >
     {children}
   </Modal>
-)
+);

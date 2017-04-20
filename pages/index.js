@@ -1,21 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import SwipeableViews from 'react-swipeable-views';
-import 'isomorphic-fetch';
+import { lighten } from 'polished';
 
 import config from '../config';
+import { USER_LOCALSTORAGE_KEY } from '../store/auth';
+import withApi from '../components/hoc/withApi';
 import { colors } from '../components/styles/variables';
 import { Heading, Text } from '../components/common/typography';
 import Button from '../components/common/button';
 import Toolbar from '../components/toolbar';
 import Card from '../components/card';
 import Footer from '../components/footer';
-import Tabs from '../components/common/tabs';
-import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
-import FacebookButton from '../components/common/facebook-button';
-import Modal from '../components/common/modal';
+import LoginModal from '../components/auth/login-modal';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -24,20 +22,6 @@ const Page = styled.div`
   overflow: hidden;
   width: 100%;
   ${props => props.hasFooter && 'padding-bottom: 98px'};
-`;
-
-const Headline = styled.div`
-  background-color: ${colors.alternateWhite};
-  color: ${colors.black};
-  display: none;
-  font-family: 'Oswald', sans-serif;
-  font-size: 16px;
-  line-height: 32px;
-  margin: 20px 0;
-  text-align: center;
-  @media (min-width: 640px) {
-    display: block;
-  }
 `;
 
 const CardsList = styled(Container)`
@@ -73,41 +57,321 @@ const StyledCard = styled(Card)`
   }
 `;
 
-const BlankState = styled.div`
+const Banner = styled.div`
+  background: ${colors.black} url(/static/images/img-header@2x.png) no-repeat center center;
+  background-size: cover;
+  margin-top: 0;
+  min-height: 626px;
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -14px;
+    right: 0;
+    width: 100%;
+    height: 30px;
+    background: ${colors.white};
+    border-left: 0;
+    border-right: 50px solid transparent;
+    border-top: 25px solid ${colors.white};
+    transform: rotate(179deg);
+  }
+`;
+
+const BannerContainer = styled.div`
+  align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  margin: 0 auto;
-  min-height: calc(100vh - 100px);
-  padding: 60px 30px;
+  height: 450px;
+  justify-content: space-around;
+  margin-top: 30px;
+`;
+
+const Title = styled.h1`
+  color: ${colors.white};
   text-align: center;
-  max-width: 480px;
-  @media (min-width: 640px) {
-    padding: 150px 30px;
-  }
-  > h1 {
-    margin: 0 20px;
-  }
-`;
-
-const ModalContent = styled.div`
-  > * + * {
-    margin-top: 25px !important;
+  font-family: Oswald;
+  font-size: 72px;
+  font-weight: 500;
+  text-transform: uppercase;
+  @media (max-width: 500px) {
+    font-size: 47px;
   }
 `;
 
-const ModalHeading = styled(Heading)`
-  margin: 16px 5px 0;
+const Subtitle = styled.div`
+  color: ${colors.white};
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.67;
+  max-width: 670px;
+  text-align: center;
+  width: 100%;
+  @media (max-width: 960px) {
+    width: 100%;
+  }
 `;
 
-const ModalText = styled(Text)`
+const BannerActions = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 500px;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    height: 130px;
+    width: 100%;
+  }
+`;
+
+const VideoButton = styled(Button)`
+  background-image: url(/static/images/ic-play.svg);
+  background-position: 20px center;
+  background-repeat: no-repeat;
   font-size: 14px;
+  padding-left: 50px;
 `;
 
-export default class extends React.Component {
-  static async getInitialProps() {
-    const res = await fetch(`${config.API_URL}/saves?limit=3`);
-    const saves = await res.json();
+const BrandContainer = styled.div`
+  align-items: center;
+  background: ${colors.white};
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  justify-content: flex-start;
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    width: 100%;
+    height: 80px;
+    background: ${colors.white};
+    border-left: 0;
+    border-right: 50px solid transparent;
+    border-top: 5px solid #ffffff;
+    transform: rotate(1.7deg);
+  }
+  @media (max-width: 728px) {
+    min-height: 550px;
+  }
+`;
+
+const BannerTitle = styled.h2`
+  color: ${colors.battleshipFrey};
+  font-family: Oswald;
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  @media (max-width: 500px) {
+    font-size: 22px;
+  }
+`;
+
+const BrandImagesContainer = styled(Container)`
+  align-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+  @media (max-width: 728px) {
+    flex-direction: column;
+    min-height: 250px;
+  }
+`;
+
+const BrandImage = styled.img`
+  align-self: center;
+`;
+
+const WeAreNotContainer = styled(Container)`
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 50px;
+  @media (max-width: 728px) {
+  }
+`;
+
+const WeAreNot = styled.div`
+  text-align: center;
+  position: relative;
+`;
+
+const WeAreNotSubtitle = styled.span`
+  background: ${colors.green};
+  bottom: -25px;
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  padding: 5px 22px;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
+`;
+
+const WeAreNotTitle = styled.h5`
+  color: ${colors.darkGreyBlue};
+  font-family: 'Oswald', sans-serif;
+  font-size: 72px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
+const WeAreNotDescription = styled.p`
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  margin: 1em auto;
+  max-width: 770px;
+  text-align: center;
+  text-transform: uppercase;
+  > span {
+    background: ${colors.green};
+    padding: 0 4px;
+  }
+`;
+
+const ItWorkSection = styled(Container)`
+  margin-top: 50px;
+  @media (max-width: 728px) {
+  }
+`;
+
+const ItWorkContainer = styled.div`
+  align-content: center;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 80px 0;
+  width: 100%;
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+  &.center {
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+const ItWorkImage = styled.img`
+  align-self: flex-start;
+`;
+
+const ItWorkInfos = styled.div`
+  max-width: 380px;
+`;
+
+const ItWorktTitle = styled.h4`
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+  text-align: left;
+  text-transform: uppercase;
+`;
+
+const ItWorkDescription = styled.p`
+  color: ${colors.battleshipFrey};
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  line-height: 1.56;
+  text-align: left;
+`;
+
+const SaveSection = styled.section`
+  background: ${colors.darkSkyBlue2};
+  margin-top: 130px;
+  min-height: 200px;
+  position: relative;
+  width: 100%;
+  z-index: 0;
+  &:before {
+    content: "";
+    position: absolute;
+    top: -46px;
+    right: 0;
+    width: 100%;
+    height: 83px;
+    background: ${colors.darkSkyBlue2};
+    border-left: 0;
+    border-right: 1366px solid transparent;
+    border-top: 30px solid ${colors.darkSkyBlue2};
+    transform: rotate(-2.7deg);
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+    width: 100%;
+    height: 50px;
+    background: ${colors.darkSkyBlue2};
+    border-left: 0;
+    border-right: 50px solid transparent;
+    border-top: 79px solid ${colors.darkSkyBlue2};
+    transform: rotate(-2.2deg);
+  }
+`;
+
+const SaveContainer = styled(Container)`
+  text-align: center;
+  position: relative;
+  width: 100%;
+  z-index: 9;
+`;
+
+const SaveTitle = styled.h3`
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 72px;
+  font-weight: bold;
+  letter-spacing: 11.2px;
+  margin: 0 0 -6px;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
+const SaveSubtitle = styled.p`
+  background: ${colors.darkBlue};
+  color: ${colors.white};
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1.21;
+  margin-top: -14px;
+  padding: 10px 20px;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
+const SaveInfo = styled.span`
+  color: ${colors.white};
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-sttyle: italic;
+  margin-top: 0px;
+  text-align: center;
+`;
+
+class Index extends React.Component {
+  static async getInitialProps(ctx) {
+    const saves = (await ctx.api.get(`${config.API_URL}/saves?limit=3`)).data;
     return { saves };
   }
 
@@ -115,69 +379,33 @@ export default class extends React.Component {
     super(props);
 
     this.state = {
-      user: {},
-      logged: false,
+      logged: props.isSignedIn,
       modalIsOpen: false,
       activeTab: 1,
       saves: props.saves,
-      subscriptions: {
-        count: 0,
-        rows: []
-      },
-      accessToken: '',
       subscribeTo: 0,
       showToast: false
     };
 
-    this.handleLogin = this.handleLogin.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
-    this.reloadSaves = this.reloadSaves.bind(this);
+    this.loadSaves = this.loadSaves.bind(this);
     this.handleSubscribe = this.handleSubscribe.bind(this);
   }
 
   componentDidMount() {
-    const accessToken = window.localStorage.getItem('accessToken');
-    if (accessToken) this.authenticate(accessToken).then(this.reloadSaves);
+    const accessToken = window.localStorage.getItem(USER_LOCALSTORAGE_KEY);
+    if (accessToken) this.loadSaves();
   }
 
-  loginWithFacebook() {
-    return new Promise((resolve) => {
-      FB.login((res) => {
-        window.localStorage.setItem('accessToken', res.authResponse.accessToken);
-        resolve(res);
-      }, { scope: 'email' });
-    });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isSignedIn) this.loadSaves();
   }
 
-  authenticate(accessToken) {
-    return fetch(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
-      .then(user => user.json())
-      .then(({ user }) => {
-        this.setState({
-          user,
-          logged: true,
-          modalIsOpen: false,
-          subscribeTo: 0,
-          accessToken
-        });
-      });
-  }
-
-  handleLogin(subscribeTo) {
-    this.loginWithFacebook()
-      .then(res => this.authenticate(res.authResponse.accessToken).then(subscribeTo
-        ? this.handleSubscribe(subscribeTo, res.authResponse.accessToken)
-        : Promise.resolve()
-      ))
-      .then(this.reloadSaves);
-  }
-
-  handleSubscribe(subscribeTo, accessToken) {
-    return fetch(
-      `${config.API_URL}/saves/${subscribeTo}/subscriptions?access_token=${accessToken || this.state.accessToken}`,
-      { method: 'POST' }
+  handleSubscribe(subscribeTo) {
+    return this.props.api.post(
+      `${config.API_URL}/saves/${subscribeTo}/subscriptions`,
     ).then(() => {
       const rows = [...this.state.saves.rows].map((row) => {
         const save = row;
@@ -201,9 +429,9 @@ export default class extends React.Component {
     this.setState({ activeTab: tabIndex });
   }
 
-  reloadSaves() {
-    fetch(`${config.API_URL}/saves?access_token=${this.state.accessToken}`)
-        .then(saves => saves.json())
+  loadSaves() {
+    this.props.api.get(`${config.API_URL}/saves`)
+        .then(res => res.data)
         .then((saves) => {
           this.setState({
             saves
@@ -211,38 +439,12 @@ export default class extends React.Component {
         });
   }
 
-  renderUserSaves() {
-    const subscribedSaves = this.state.saves.rows.filter(save => save.hasSubscribed);
-    return (
-      subscribedSaves.length
-        ? subscribedSaves.map(
-            save =>
-              <StyledCard
-                {...save}
-                key={save.id}
-                logged={this.state.logged}
-                openLoginModal={() => this.openModal(save.id)}
-                handleSubscribe={() => this.handleSubscribe(save.id)}
-              />
-          )
-        : (
-          <BlankState>
-            <Heading white>Ainda não tem nenhum save???</Heading>
-            <Text white>O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!</Text>
-            <div>
-              <Button outline onClick={() => this.handleChangeIndex(0)}>Ver todos os saves</Button>
-            </div>
-          </BlankState>
-        )
-    );
-  }
-
   render() {
     return (
       <Page hasFooter>
 
         <Banner>
-          <Toolbar login={() => this.handleLogin()} logged={this.state.logged} background="transparent" />
+          <Toolbar logged={this.props.isSignedIn} background="transparent" />
 
           <BannerContainer>
             <Title>Juntos pelo melhor preço</Title>
@@ -362,20 +564,7 @@ export default class extends React.Component {
 
         <Footer />
 
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onClose={this.closeModal}
-          width="480px"
-          contentLabel="Login modal"
-        >
-          <ModalContent>
-            <ModalHeading uppercase large>Agora falta só o login ;)</ModalHeading>
-            <ModalText>
-              Entre com o Facebook e receba as atualizações das negociações desse produto.
-            </ModalText>
-            <FacebookButton block onClick={() => this.handleLogin(this.state.subscribeTo)}>Entrar com o Facebook</FacebookButton>
-          </ModalContent>
-        </Modal>
+        <LoginModal isOpen={this.state.modalIsOpen} close={() => this.closeModal()} />
 
         <Toast show={this.state.showToast}>
           Você receberá um email com atualizações sobre esta negociação.
@@ -384,3 +573,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withApi(Index);

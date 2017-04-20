@@ -1,8 +1,10 @@
+import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { colors } from './styles/variables';
 import Button from './common/button';
 import Container from './common/container';
+import LoginModal from './auth/login-modal';
 
 const Toolbar = styled.header`
   background: ${colors.black};
@@ -54,25 +56,43 @@ const LinkAllSaves = styled.a`
   }
 `;
 
-export default props => (
-  <Toolbar className={props.background} >
-    <CustomContainer>
-      <Link prefetch href="/">
-        <LinkLogo>
-          <Logo src="/static/images/logo-99-saves.svg" alt="99saves" />
-        </LinkLogo>
-      </Link>
+export default class extends React.Component {
+  constructor(props) {
+    super(props);
 
-      <MenuLinks>
-        <Link prefetch href="/saves">
-          <LinkAllSaves>
-            todos os saves
-          </LinkAllSaves>
-        </Link>
-        {
-          !props.logged && <Button small outline onClick={props.login}>login</Button>
-        }
-      </MenuLinks>
-    </CustomContainer>
-  </Toolbar>
-);
+    this.state = {
+      modalOpen: false
+    };
+  }
+
+  toggleModal() {
+    this.setState({ modalOpen: !this.state.modalOpen });
+  }
+
+  render() {
+    return (
+      <Toolbar className={this.props.background} >
+        <CustomContainer>
+          <Link prefetch href="/">
+            <LinkLogo>
+              <Logo src="/static/images/logo-99-saves.svg" alt="99saves" />
+            </LinkLogo>
+          </Link>
+
+          <MenuLinks>
+            <Link prefetch href="/saves">
+              <LinkAllSaves>
+                todos os saves
+              </LinkAllSaves>
+            </Link>
+            {
+              !this.props.logged && <Button small outline onClick={() => this.toggleModal()}>login</Button>
+            }
+          </MenuLinks>
+        </CustomContainer>
+
+        <LoginModal isOpen={this.state.modalOpen} close={() => this.toggleModal()} />
+      </Toolbar>
+    );
+  }
+}
