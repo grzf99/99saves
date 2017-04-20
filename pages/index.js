@@ -1,10 +1,10 @@
 import React from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
+import axios from 'axios';
 import { lighten } from 'polished';
 import Modal from 'react-modal';
 import SwipeableViews from 'react-swipeable-views';
-import 'isomorphic-fetch';
 
 import config from '../config';
 import { colors } from '../components/styles/variables';
@@ -144,8 +144,8 @@ const savesMapper = ({ count, rows }) => {
 
 export default class extends React.Component {
   static async getInitialProps() {
-    const items = await (await fetch(`${config.API_URL}/saves?filters[active]=true`)).json();
-    const saves = savesMapper(items);
+    const items = await axios.get(`${config.API_URL}/saves?filters[active]=true`);
+    const saves = savesMapper(items.data);
     return { saves };
   }
 
@@ -197,8 +197,8 @@ export default class extends React.Component {
   }
 
   authenticate(accessToken) {
-    return fetch(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
-      .then(user => user.json())
+    return axios.get(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
+      .then(res => res.data)
       .then(({ user }) => {
         this.setState({
           user,
@@ -223,10 +223,7 @@ export default class extends React.Component {
   }
 
   handleSubscribe(subscribeTo, accessToken) {
-    return fetch(
-      `${config.API_URL}/saves/${subscribeTo}/subscriptions?access_token=${accessToken || this.state.accessToken}`,
-      { method: 'POST' }
-    )
+    return axios.post(`${config.API_URL}/saves/${subscribeTo}/subscriptions?access_token=${accessToken || this.state.accessToken}`)
     .then(() => {
       const item = this.state.saves.rows.find(save => save.id === subscribeTo);
       item.hasSubscribed = true;
@@ -259,8 +256,8 @@ export default class extends React.Component {
   }
 
   loadSaves() {
-    return fetch(`${config.API_URL}/saves?filters[active]=true&access_token=${this.state.accessToken}`)
-      .then(saves => saves.json())
+    return axios.get(`${config.API_URL}/saves?filters[active]=true&access_token=${this.state.accessToken}`)
+      .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((saves) => {
         this.setState({ saves });
@@ -268,8 +265,8 @@ export default class extends React.Component {
   }
 
   loadSubscriptions() {
-    return fetch(`${config.API_URL}/saves?filters[subscribed]=true&access_token=${this.state.accessToken}`)
-      .then(res => res.json())
+    return axios.get(`${config.API_URL}/saves?filters[subscribed]=true&access_token=${this.state.accessToken}`)
+      .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((subscriptions) => {
         this.setState({ subscriptions });
