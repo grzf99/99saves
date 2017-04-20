@@ -1,3 +1,14 @@
+machine:
+  node:
+    version: 7.9.0
+database:
+  override:
+    - NODE_ENV=test-ci npm run sequelize db:migrate
+test:
+  pre:
+    - mv .env.sample .env
+  override:
+    - npm run test-ci
 deployment:
   staging:
     branch: master

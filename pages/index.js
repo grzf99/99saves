@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { lighten } from 'polished';
-import Modal from 'react-modal';
 import SwipeableViews from 'react-swipeable-views';
 import 'isomorphic-fetch';
 
@@ -16,6 +14,8 @@ import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
+import FacebookButton from '../components/common/facebook-button';
+import Modal from '../components/common/modal';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -102,349 +102,6 @@ const ModalHeading = styled(Heading)`
 
 const ModalText = styled(Text)`
   font-size: 14px;
-`;
-
-const FacebookButton = styled(Button)`
-  background-color: ${colors.facebookBlue};
-  background-image: url(/static/images/bt-facebook.svg);
-  background-position: 18px 12px;
-  background-repeat: no-repeat;
-  font-size: 17px;
-  font-weight: 400;
-  padding-left: 40px;
-  text-transform: inherit;
-  &:hover {
-    background-color: ${lighten(0.1, colors.facebookBlue)};
-  }
-`;
-
-const modalStyles = {
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.8)'
-  },
-  content: {
-    top: '50%',
-    left: '20px',
-    right: '20px',
-    bottom: 'auto',
-    border: '0',
-    transform: 'translateY(-50%)',
-    borderRadius: '0',
-    maxWidth: '480px',
-    margin: '0 auto'
-  }
-};
-
-const Banner = styled.div`
-  background: ${colors.black} url(/static/images/img-header@2x.png) no-repeat center center;
-  background-size: cover;
-  margin-top: 0;
-  min-height: 626px;
-  position: relative;
-  &:after {
-    content: "";
-    position: absolute;
-    bottom: -14px;
-    right: 0;
-    width: 100%;
-    height: 30px;
-    background: ${colors.white};
-    border-left: 0;
-    border-right: 50px solid transparent;
-    border-top: 25px solid ${colors.white};
-    transform: rotate(179deg);
-  }
-`;
-
-const BannerContainer = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  height: 450px;
-  justify-content: space-around;
-  margin-top: 30px;
-`;
-
-const Title = styled.h1`
-  color: ${colors.white};
-  text-align: center;
-  font-family: Oswald;
-  font-size: 72px;
-  font-weight: 500;
-  text-transform: uppercase;
-  @media (max-width: 500px) {
-    font-size: 47px;
-  }
-`;
-
-const Subtitle = styled.div`
-  color: ${colors.white};
-  font-family: Roboto;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.67;
-  max-width: 670px;
-  text-align: center;
-  width: 100%;
-  @media (max-width: 960px) {
-    width: 100%;
-  }
-`;
-
-const BannerActions = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  width: 500px;
-  @media (max-width: 500px) {
-    flex-direction: column;
-    height: 130px;
-    width: 100%;
-  }
-`;
-
-const VideoButton = styled(Button)`
-  background-image: url(/static/images/ic-play.svg);
-  background-position: 20px center;
-  background-repeat: no-repeat;
-  font-size: 14px;
-  padding-left: 50px;
-`;
-
-const BrandContainer = styled.div`
-  align-items: center;
-  background: ${colors.white};
-  display: flex;
-  flex-direction: column;
-  min-height: 280px;
-  justify-content: flex-start;
-  position: relative;
-  &:after {
-    content: "";
-    position: absolute;
-    bottom: -20px;
-    right: 0;
-    width: 100%;
-    height: 80px;
-    background: ${colors.white};
-    border-left: 0;
-    border-right: 50px solid transparent;
-    border-top: 5px solid #ffffff;
-    transform: rotate(1.7deg);
-  }
-  @media (max-width: 728px) {
-    min-height: 550px;
-  }
-`;
-
-const BannerTitle = styled.h2`
-  color: ${colors.battleshipFrey};
-  font-family: Oswald;
-  font-size: 28px;
-  font-weight: 500;
-  text-align: center;
-  text-transform: uppercase;
-  @media (max-width: 500px) {
-    font-size: 22px;
-  }
-`;
-
-const BrandImagesContainer = styled(Container)`
-  align-content: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 20px;
-  @media (max-width: 728px) {
-    flex-direction: column;
-    min-height: 250px;
-  }
-`;
-
-const BrandImage = styled.img`
-  align-self: center;
-`;
-
-const WeAreNotContainer = styled(Container)`
-  align-content: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 50px;
-  @media (max-width: 728px) {
-  }
-`;
-
-const WeAreNot = styled.div`
-  text-align: center;
-  position: relative;
-`;
-
-const WeAreNotSubtitle = styled.span`
-  background: ${colors.green};
-  bottom: -25px;
-  color: ${colors.white};
-  font-family: 'Oswald', sans-serif;
-  font-size: 36px;
-  font-weight: bold;
-  padding: 5px 22px;
-  text-align: center;
-  text-transform: uppercase;
-  position: relative;
-`;
-
-const WeAreNotTitle = styled.h5`
-  color: ${colors.darkGreyBlue};
-  font-family: 'Oswald', sans-serif;
-  font-size: 72px;
-  font-weight: bold;
-  letter-spacing: 5px;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  text-transform: uppercase;
-`;
-
-const WeAreNotDescription = styled.p`
-  color: ${colors.white};
-  font-family: 'Oswald', sans-serif;
-  font-size: 28px;
-  font-weight: 300;
-  margin: 1em auto;
-  max-width: 770px;
-  text-align: center;
-  text-transform: uppercase;
-  > span {
-    background: ${colors.green};
-    padding: 0 4px;
-  }
-`;
-
-const ItWorkSection = styled(Container)`
-  margin-top: 50px;
-  @media (max-width: 728px) {
-  }
-`;
-
-const ItWorkContainer = styled.div`
-  align-content: center;
-  align-items: flex-start;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin: 80px 0;
-  width: 100%;
-  &.reverse {
-    flex-direction: row-reverse;
-  }
-  &.center {
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
-const ItWorkImage = styled.img`
-  align-self: flex-start;
-`;
-
-const ItWorkInfos = styled.div`
-  max-width: 380px;
-`;
-
-const ItWorktTitle = styled.h4`
-  color: ${colors.white};
-  font-family: 'Oswald', sans-serif;
-  font-size: 28px;
-  font-weight: bold;
-  margin: 0;
-  text-align: left;
-  text-transform: uppercase;
-`;
-
-const ItWorkDescription = styled.p`
-  color: ${colors.battleshipFrey};
-  font-family: 'Roboto', sans-serif;
-  font-size: 18px;
-  line-height: 1.56;
-  text-align: left;
-`;
-
-const SaveSection = styled.section`
-  background: ${colors.darkSkyBlue2};
-  margin-top: 130px;
-  min-height: 200px;
-  position: relative;
-  width: 100%;
-  z-index: 0;
-  &:before {
-    content: "";
-    position: absolute;
-    top: -46px;
-    right: 0;
-    width: 100%;
-    height: 83px;
-    background: ${colors.darkSkyBlue2};
-    border-left: 0;
-    border-right: 1366px solid transparent;
-    border-top: 30px solid ${colors.darkSkyBlue2};
-    transform: rotate(-2.7deg);
-  }
-  &:after {
-    content: "";
-    position: absolute;
-    bottom: -30px;
-    right: 0;
-    width: 100%;
-    height: 50px;
-    background: ${colors.darkSkyBlue2};
-    border-left: 0;
-    border-right: 50px solid transparent;
-    border-top: 79px solid ${colors.darkSkyBlue2};
-    transform: rotate(-2.2deg);
-  }
-`;
-
-const SaveContainer = styled(Container)`
-  text-align: center;
-  position: relative;
-  width: 100%;
-  z-index: 9;
-`;
-
-const SaveTitle = styled.h3`
-  color: ${colors.white};
-  font-family: 'Oswald', sans-serif;
-  font-size: 72px;
-  font-weight: bold;
-  letter-spacing: 11.2px;
-  margin: 0 0 -6px;
-  text-align: center;
-  text-transform: uppercase;
-`;
-
-const SaveSubtitle = styled.p`
-  background: ${colors.darkBlue};
-  color: ${colors.white};
-  display: inline-block;
-  font-family: 'Oswald', sans-serif;
-  font-size: 28px;
-  font-weight: 300;
-  line-height: 1.21;
-  margin-top: -14px;
-  padding: 10px 20px;
-  text-align: center;
-  text-transform: uppercase;
-`;
-
-const SaveInfo = styled.span`
-  color: ${colors.white};
-  display: inline-block;
-  font-family: 'Roboto', sans-serif;
-  font-size: 18px;
-  font-sttyle: italic;
-  margin-top: 0px;
-  text-align: center;
 `;
 
 export default class extends React.Component {
@@ -616,7 +273,7 @@ export default class extends React.Component {
             <WeAreNotSubtitle>nãããão somos</WeAreNotSubtitle>
             <WeAreNotTitle>compra coletiva</WeAreNotTitle>
           </WeAreNot>
-          
+
           <WeAreNotDescription>Entenda <span>como funciona</span> o passo a passo da negociação de cada Save até o momento da compra</WeAreNotDescription>
         </WeAreNotContainer>
 
@@ -707,9 +364,9 @@ export default class extends React.Component {
 
         <Modal
           isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
+          onClose={this.closeModal}
+          width="480px"
           contentLabel="Login modal"
-          style={modalStyles}
         >
           <ModalContent>
             <ModalHeading uppercase large>Agora falta só o login ;)</ModalHeading>

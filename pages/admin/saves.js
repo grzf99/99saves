@@ -1,13 +1,11 @@
 import React from 'react';
-import 'isomorphic-fetch';
 import Link from 'next/link';
-import axios from 'axios';
-
+import withAuth from '../../components/hoc/withAuth'
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import ListTable from '../../components/admin/list-table-saves';
 
-export default class extends React.Component {
+class Saves extends React.Component {
   constructor(props) {
     super(props);
 
@@ -24,7 +22,7 @@ export default class extends React.Component {
   }
 
   refresh() {
-    axios.get(`${config.API_URL}/saves`)
+    this.props.api.get('/saves')
         .then((response) => {
           this.setState({ ...this.state, list: response.data.rows });
         })
@@ -34,7 +32,7 @@ export default class extends React.Component {
   }
 
   handleDelete(save) {
-    axios.delete(`${config.API_URL}/saves/${save.id}`)
+    this.props.api.delete('/saves')
         .then(() => {
           this.refresh();
         })
@@ -66,3 +64,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withAuth({ admin: true })(Saves);
