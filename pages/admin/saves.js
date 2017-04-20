@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+
 import withAuth from '../../components/hoc/withAuth'
 import config from '../../config';
 import Layout from '../../components/admin/layout';
