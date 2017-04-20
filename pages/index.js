@@ -105,6 +105,27 @@ const ModalContent = styled.div`
   }
 `;
 
+const ModalVideoContent = styled.div`
+  > * + * {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+    height: 0;
+    margin-top: 25px !important;
+  }
+
+  > iframe {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 const ModalHeading = styled(Heading)`
   margin: 16px 5px 0;
 `;
@@ -142,6 +163,26 @@ const modalStyles = {
     borderRadius: '0',
     maxWidth: '480px',
     margin: '0 auto'
+  }
+};
+
+const modalVideoStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+  content: {
+    top: '15%',
+    left: '50%',
+    right: '20px',
+    bottom: '0',
+    background: 'transparent',
+    transform: 'translateX(-50%)',
+    border: '0',
+    borderRadius: '0',
+    maxHeight: '400px',
+    maxWidth: '640px',
+    padding: 0,
+    width: '90%'
   }
 };
 
@@ -486,6 +527,7 @@ export default class extends React.Component {
       user: {},
       logged: false,
       modalIsOpen: false,
+      modalVideoIsOpen: false,
       activeTab: 1,
       saves: props.saves,
       subscriptions: {
@@ -499,6 +541,7 @@ export default class extends React.Component {
 
     this.handleLogin = this.handleLogin.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.openVideoModal = this.openVideoModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.reloadSaves = this.reloadSaves.bind(this);
@@ -561,8 +604,12 @@ export default class extends React.Component {
     this.setState({ modalIsOpen: true, subscribeTo });
   }
 
+  openVideoModal() {
+    this.setState({ modalVideoIsOpen: true });
+  }
+
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.setState({ modalIsOpen: false, modalVideoIsOpen: false });
   }
 
   handleChangeIndex(tabIndex) {
@@ -620,7 +667,7 @@ export default class extends React.Component {
 
             <BannerActions>
               <Button outline openLoginModal={() => this.openModal()}>participe agora mesmo</Button>
-              <VideoButton openVideonModal={() => console.log('abre video')}>entenda como funciona</VideoButton>
+              <VideoButton onClick={() => this.openVideoModal()}>entenda como funciona</VideoButton>
             </BannerActions>
 
           </BannerContainer>
@@ -743,6 +790,17 @@ export default class extends React.Component {
             </ModalText>
             <FacebookButton block onClick={() => this.handleLogin(this.state.subscribeTo)}>Entrar com o Facebook</FacebookButton>
           </ModalContent>
+        </Modal>
+
+        <Modal
+          isOpen={this.state.modalVideoIsOpen}
+          onRequestClose={this.closeModal}
+          contentLabel="Video"
+          style={modalVideoStyles}
+        >
+          <ModalVideoContent>
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe>
+          </ModalVideoContent>
         </Modal>
 
         <Toast show={this.state.showToast}>
