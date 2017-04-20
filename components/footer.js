@@ -16,8 +16,12 @@ const Footer = styled.footer`
 
 const CustomText = styled(Text)`
   font-family: 'Oswald', sans-serif;
-  font-size: 16px;
-  margin-left: 20px;
+  font-size: 12px;
+  padding: 0 20px;
+
+  @media (min-width: 640px) {
+    font-size: 16px;
+  }
 `;
 
 const SocialMedia = styled.div`

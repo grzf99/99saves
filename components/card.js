@@ -60,25 +60,75 @@ const Info = styled.div`
 `;
 
 const CustomText = styled(Text)`
+  align-items: center;
   color: ${colors.lightgray};
+  display: flex;
+  height: 56px;
+  justify-content: center;
+`;
+
+const Status = styled.div`
+  background: ${colors.gray};
+  color: ${colors.white};
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  padding: 3px;
+  position: absolute;
+  text-transform: uppercase;
+  top: 0;
+  width: 100%;
 `;
 
 export default class extends React.Component {
   constructor(props) {
     super(props);
 
+    const now = Date.now();
+    const dateEnd = new Date(props.date_end).getTime();
+    const votationEnd = new Date(props.votation_end).getTime();
+    const checkoutEnd = new Date(props.checkout_end).getTime();
+
+    const votationOpen = now > dateEnd && now <= votationEnd;
+    const checkoutOpen = now > votationEnd && now < checkoutEnd;
+
+    this.state = {
+      votationOpen,
+      checkoutOpen
+    };
+
     this.handleSave = this.handleSave.bind(this);
+    this.goToOffers = this.goToOffers.bind(this);
   }
 
   handleSave() {
-    if (!this.props.logged) this.props.openLoginModal();
-    else this.props.handleSubscribe();
+    if (!this.props.logged) {
+      this.props.openLoginModal();
+    } else if (!this.props.hasSubscribed) {
+      this.props.handleSubscribe();
+    }
+  }
+
+  goToOffers() {
+    this.props.goToOffers();
+  }
+
+  renderButton() {
+    if (!this.props.hasSubscribed) {
+      return <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>;
+    } else if (this.state.votationOpen) {
+      return <Button block onClick={this.goToOffers}>Participar da votação</Button>;
+    } else if (this.state.checkoutOpen) {
+      return <Button block onClick={this.goToOffers}>Comprar agora</Button>;
+    }
+
+    return <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>;
   }
 
   render() {
     return (
       <Card {...this.props}>
         <Header>
+          { this.state.votationOpen && this.props.hasVoted && <Status>Em negociação</Status> }
           <CardImage src={this.props.image_default} alt={this.props.title} />
           <Gradient>
             <SmallText>imagem meramente ilustrativa</SmallText>
@@ -87,11 +137,7 @@ export default class extends React.Component {
         </Header>
         <Info>
           <CustomText>{this.props.description}</CustomText>
-          {
-            this.props.hasSubscribed
-              ? <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>
-              : <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>
-          }
+          { !this.props.hasVoted && this.renderButton() }
         </Info>
       </Card>
     );

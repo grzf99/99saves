@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Link from 'next/link';
 import { colors } from './styles/variables';
 import Button from './common/button';
 import Container from './common/container';
@@ -51,19 +52,24 @@ const LinkAllSaves = styled.a`
 
   &:hover {
     color: ${colors.alternateGreen};
-  }`;
+  }
+`;
 
 export default props => (
   <Toolbar className={props.background} >
     <CustomContainer>
-      <LinkLogo href="/">
-        <Logo src="/static/images/logo-99-saves.svg" alt="99saves" />
-      </LinkLogo>
+      <Link prefetch href="/">
+        <LinkLogo>
+          <Logo src="/static/images/logo-99-saves.svg" alt="99saves" />
+        </LinkLogo>
+      </Link>
 
-      <MenuLinks>
-        <LinkAllSaves href="/saves">
-          todos os saves
-        </LinkAllSaves>
+      <MenuLinks> 
+        <Link prefetch href="/saves">
+          <LinkAllSaves>
+            todos os saves
+          </LinkAllSaves>
+        </Link>
         {
           !props.logged && <Button small outline onClick={props.login}>login</Button>
         }

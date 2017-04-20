@@ -50,6 +50,11 @@ app.prepare()
   // });
 
   server.use('/api', apiRoutes);
+
+  server.get('/offer/:saveId', (req, res) =>
+    app.render(req, res, '/offer', Object.assign({}, req.query, { saveId: req.params.saveId }))
+  );
+
   server.get('*', (req, res) => handle(req, res));
 
   server.listen(port, (err) => {

@@ -17,6 +17,11 @@ const smallStyles = css`
   text-transform: lowercase;
 `;
 
+const largeStyles = css`
+  font-size: 16px;
+  padding: 12px 28px;
+`;
+
 const blockStyles = css`
   display: block;
   font-weight: 500;
@@ -25,6 +30,11 @@ const blockStyles = css`
 const disabledStyles = css`
   background-color: ${colors.darkGreen};
   color: ${colors.gray};
+  cursor: default;
+
+  &:hover {
+    background-color: ${colors.darkGreen};
+  }
 `;
 
 const Button = styled.a`
@@ -47,8 +57,9 @@ const Button = styled.a`
 
   ${props => props.block ? blockStyles : ''}
   ${props => props.small ? smallStyles : ''}
+  ${props => props.large ? largeStyles : ''}
   ${props => props.outline ? outlineStyles : ''}
-  ${props => props.disabled ? disabledStyles: ''}
+  ${props => props.disabled ? disabledStyles : ''}
 `;
 
 export default Button;

@@ -10,11 +10,20 @@ export const Heading = styled.h1`
   ${props => props.uppercase && 'text-transform: uppercase'};
 `;
 
+export const Heading2 = styled.h2`
+  color: ${props => props.white ? colors.white : colors.black};
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+`;
+
 export const Text = styled.p`
   color: ${props => props.white ? colors.white : colors.black};
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   margin: 0;
+  ${props => props.uppercase && 'text-transform: uppercase'};
 `;
 
 export const SmallText = styled.p`
@@ -26,6 +35,7 @@ export const SmallText = styled.p`
 
 export default {
   Heading,
+  Heading2,
   Text,
   SmallText
 };

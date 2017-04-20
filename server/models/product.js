@@ -19,6 +19,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         Product.belongsTo(models.Save);
         Product.belongsTo(models.Provider);
+        Product.hasMany(models.Vote);
       }
     }
   });
