@@ -178,7 +178,6 @@ const RightArrow = styled(Control)`
 export default class extends React.Component {
   static async getInitialProps({ query }) {
     const save = (await axios.get(`${config.API_URL}/saves/${query.saveId}`)).data;
-    const vote = (await axios.get(`${config.API_URL}/saves/${save.id}/votes`)).data;
 
     const now = Date.now();
     const dateEnd = new Date(save.date_end).getTime();
@@ -189,9 +188,9 @@ export default class extends React.Component {
     const checkoutOpen = now > votationEnd && now < checkoutEnd;
 
     // TODO: Consultar base de dados para checar qual o vencedor
-    const winnerIndex = Math.floor(Math.random() * save.Products.length);
+    const winnerIndex = save.id % 2;
 
-    return { save, vote, votationOpen, checkoutOpen, winnerIndex };
+    return { save, votationOpen, checkoutOpen, winnerIndex };
   }
 
   constructor(props) {
@@ -199,9 +198,14 @@ export default class extends React.Component {
 
     this.state = {
       activeTab: props.winnerIndex !== -1 ? props.winnerIndex : 0,
+      save: props.save,
       products: props.save.Products,
-      vote: props.vote ? props.vote.ProductId : 0,
-      countdown: '...'
+      vote: 0,
+      countdown: '...',
+      // TODO: Remover quando mergear a auth
+      user: {},
+      logged: false,
+      accessToken: ''
     };
 
     this.formatCurrency = this.formatCurrency.bind(this);
@@ -210,14 +214,25 @@ export default class extends React.Component {
     this.renderVotationButton = this.renderVotationButton.bind(this);
     this.renderCheckoutButton = this.renderCheckoutButton.bind(this);
     this.getCountdown = this.getCountdown.bind(this);
+    // TODO: Remover quando mergear a auth
+    this.handleLogin = this.handleLogin.bind(this);
+    this.loadVote = this.loadVote.bind(this);
 
     this.timer = null;
   }
 
   componentDidMount() {
+    const accessToken = window.localStorage.getItem('accessToken');
+    if (accessToken) {
+      this.authenticate(accessToken)
+        .then(() => Promise.all([
+          this.loadVote()
+        ]));
+    }
+
     this.timer = setInterval(() => {
       this.setState({
-        countdown: this.getCountdown(this.props.save.checkout_end)
+        countdown: this.getCountdown(this.state.save.checkout_end)
       });
     }, 1000);
   }
@@ -226,13 +241,50 @@ export default class extends React.Component {
     clearInterval(this.timer);
   }
 
+  loginWithFacebook() {
+    return new Promise((resolve) => {
+      FB.login((res) => {
+        window.localStorage.setItem('accessToken', res.authResponse.accessToken);
+        resolve(res);
+      }, { scope: 'email' });
+    });
+  }
+
+  authenticate(accessToken) {
+    return axios.get(`${config.API_URL}/auth/facebook?access_token=${accessToken}`)
+      .then(res => res.data)
+      .then(({ user }) => {
+        this.setState({
+          user,
+          logged: true,
+          accessToken
+        });
+      });
+  }
+
+  handleLogin() {
+    this.loginWithFacebook()
+      .then(res => this.authenticate(res.authResponse.accessToken))
+      .then(() => Promise.all([
+        this.loadVote()
+      ]));
+  }
+
+  loadVote() {
+    return axios.get(`${config.API_URL}/saves/${this.state.save.id}/votes?access_token=${this.state.accessToken}`)
+      .then(res => res.data)
+      .then((vote) => {
+        if (vote) this.setState({ vote: vote.ProductId });
+      });
+  }
+
   handleChangeIndex(tabIndex) {
     this.setState({ activeTab: tabIndex });
   }
 
   handleVote(productId) {
     if (this.state.vote !== productId) {
-      axios.post(`${config.API_URL}/saves/${this.props.save.id}/votes`, {
+      axios.post(`${config.API_URL}/saves/${this.state.save.id}/votes`, {
         ProductId: productId
       })
       .then(({ data }) => {
@@ -284,13 +336,13 @@ export default class extends React.Component {
   render() {
     return (
       <Page hasFooter>
-        <Toolbar />
+        <Toolbar login={() => this.handleLogin()} logged={this.state.logged} />
 
         <Header>
           <Link prefetch href="/saves"><a><ArrowBack /></a></Link>
           <div>
             <GrayText>Vote na melhor oferta de</GrayText>
-            <Heading white uppercase>{this.props.save.title}</Heading>
+            <Heading white uppercase>{this.state.save.title}</Heading>
           </div>
         </Header>
 

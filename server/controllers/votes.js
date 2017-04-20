@@ -5,7 +5,7 @@ module.exports = {
     return Subscription.findOne({
       where: {
         SaveId: req.params.saveId,
-        UserId: req.user ? req.user.id : 1 // TODO: remover esse mock quando a auth estiver OK
+        UserId: req.user.id
       }
     })
     .then((subscription) => {
@@ -24,7 +24,7 @@ module.exports = {
     return Subscription.findOne({
       where: {
         SaveId: req.params.saveId,
-        UserId: req.user ? req.user.id : 1 // TODO: remover esse mock quando a auth estiver OK
+        UserId: req.user.id
       }
     })
     .then(subscription => Vote.create({
