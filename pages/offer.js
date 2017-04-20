@@ -207,7 +207,6 @@ export default class extends React.Component {
     this.formatCurrency = this.formatCurrency.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.handleVote = this.handleVote.bind(this);
-    this.handleCheckout = this.handleCheckout.bind(this);
     this.renderVotationButton = this.renderVotationButton.bind(this);
     this.renderCheckoutButton = this.renderCheckoutButton.bind(this);
     this.getCountdown = this.getCountdown.bind(this);
@@ -242,10 +241,6 @@ export default class extends React.Component {
     }
   }
 
-  handleCheckout(product) {
-    console.log(product);
-  }
-
   formatCurrency(value) {
     return numeral(value).format('0,0[.]00');
   }
@@ -274,7 +269,7 @@ export default class extends React.Component {
     return (
       <Button
         large
-        onClick={() => this.handleCheckout(product)}
+        href={product.link_buy}
       >
         Comprar agora
       </Button>
