@@ -275,7 +275,7 @@ export default class extends React.Component {
 
   renderUserSaves() {
     return (
-      this.state.subscriptions.rows
+      this.state.subscriptions.rows.length > 0
         ? this.state.subscriptions.rows.map(
             save =>
               <StyledCard
