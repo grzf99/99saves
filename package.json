@@ -3,22 +3,23 @@
   "version": "1.0.0",
   "description": "",
   "engines": {
-    "node": "6.10.2"
+    "node": "6.9.x"
   },
   "main": "index.js",
   "scripts": {
     "build": "next build",
     "dev": "nodemon --watch server --watch server.js server.js",
     "lint": "eslint .",
-    "postinstall": "npm run build",
     "start": "NODE_ENV=production node server.js",
     "test": "NODE_ENV=test jest --watch",
     "test-ci": "NODE_ENV=test-ci jest",
-    "sequelize": "sequelize"
+    "sequelize": "sequelize",
+    "heroku-postbuild": "heroku-nextjs-build"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mars/heroku-nextjs-build": "^2.0.0",
     "axios": "^0.16.0",
     "babel-jest": "^19.0.0",
     "babel-preset-es2015": "^6.24.0",
