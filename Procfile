@@ -1,1 +1,1 @@
-web: sequelize db:migrate && yarn run build && node server.js
+web: sequelize db:migrate && node server.js
