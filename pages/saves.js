@@ -3,7 +3,6 @@ import Router from 'next/router';
 import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
 
-import config from '../config';
 import { savesMapper } from '../utils';
 import withApi from '../components/hoc/withApi';
 import { Heading, Text } from '../components/common/typography';
@@ -78,7 +77,7 @@ const BlankState = styled.div`
 
 class Saves extends React.Component {
   static async getInitialProps(ctx) {
-    const items = await ctx.api.get(`${config.API_URL}/saves?filters[active]=true`);
+    const items = await ctx.api.get(`/saves?filters[active]=true`);
     const saves = savesMapper(items.data);
     return { saves };
   }
@@ -124,7 +123,7 @@ class Saves extends React.Component {
   }
 
   handleSubscribe(subscribeTo) {
-    return this.props.api.post(`${config.API_URL}/saves/${subscribeTo}/subscriptions`)
+    return this.props.api.post(`/saves/${subscribeTo}/subscriptions`)
     .then(() => {
       const item = this.state.saves.rows.find(save => save.id === subscribeTo);
       item.hasSubscribed = true;
@@ -149,7 +148,7 @@ class Saves extends React.Component {
   }
 
   loadSaves() {
-    return this.props.api.get(`${config.API_URL}/saves?filters[active]=true`)
+    return this.props.api.get(`/saves?filters[active]=true`)
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((saves) => {
@@ -158,7 +157,7 @@ class Saves extends React.Component {
   }
 
   loadSubscriptions() {
-    return this.props.api.get(`${config.API_URL}/saves?filters[subscribed]=true`)
+    return this.props.api.get(`/saves?filters[subscribed]=true`)
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((subscriptions) => {
