@@ -11,6 +11,10 @@ import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
 
 class ProvidersEdit extends React.Component {
+  static getInitialProps({ query }) {
+    return { query };
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +31,7 @@ class ProvidersEdit extends React.Component {
   }
 
   componentDidMount() {
-    this.getSaves(this.props.url.query.id);
+    this.getSaves(this.props.query.id);
   }
 
   getSaves(id) {
