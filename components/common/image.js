@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export default styled.img`
-  max-height: 100%;
-  max-width: 100%;
-  height: auto;
+  max-height: ${props => props.size ? props.size : '100%'};
+  width: auto;
+  height: 100%;
 `;
