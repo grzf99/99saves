@@ -81,7 +81,7 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Toolbar className={this.props.background} >
+      <Toolbar className={this.props.background}>
         <CustomContainer>
           <Link prefetch href="/">
             <LinkLogo>
@@ -95,13 +95,17 @@ export default class extends React.Component {
                 todos os saves
               </LinkAllSaves>
             </Link>
-            {
-              !this.props.logged && <Button small outline onClick={() => this.openModal()}>login</Button>
-            }
+            {!this.props.logged &&
+              <Button small outline onClick={() => this.openModal()}>
+                login
+              </Button>}
           </MenuLinks>
         </CustomContainer>
 
-        <LoginModal isOpen={this.state.modalOpen} close={() => this.closeModal()} />
+        <LoginModal
+          isOpen={this.state.modalOpen}
+          close={() => this.closeModal()}
+        />
       </Toolbar>
     );
   }
