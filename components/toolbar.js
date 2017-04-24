@@ -92,7 +92,6 @@ class Toolbars extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <Toolbar className={this.props.background}>
         <CustomContainer>
