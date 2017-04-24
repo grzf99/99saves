@@ -12,6 +12,8 @@ const Slide = styled.div`
   display: ${props => props.active ? 'block' : 'none'};
   text-align: center;
   width: 100%;
+  max-height: 100%;
+  overflow: hidden;
 `;
 
 const Thumbs = styled.div`
