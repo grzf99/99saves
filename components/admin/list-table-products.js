@@ -7,11 +7,18 @@ export default (props) => {
     return list.map(item => (
       <tr key={item.id}>
         <td>{ item.id }</td>
-        <td>{(item.image_default) ? <img alt={item.title} src={item.image_default} width="40" /> : ''}</td>
+        <td>{ item.Save.title }</td>
+        <td>{ item.Provider.name }</td>
         <td>{ item.title }</td>
-        <td>{ item.description }</td>
+        <td>{ item.price }</td>
+        <td>{(item.image_default) ? <img alt={item.title} src={item.image_default} width="40" /> : ''}</td>
         <td>
-          <Link prefetch href={`/admin/saves-edit?id=${item.id}`}>
+          <Link prefetch href={`/admin/products-show?id=${item.id}`}>
+            <a className="">Ver tudo</a>
+          </Link>
+        </td>
+        <td>
+          <Link prefetch href={`/admin/products-edit?id=${item.id}`}>
             <a className="">Editar</a>
           </Link>
         </td>
@@ -31,9 +38,12 @@ export default (props) => {
         <thead>
           <tr>
             <th>#</th>
+            <th>Save</th>
+            <th>Fabricante</th>
+            <th>Título</th>
+            <th>Preço</th>
             <th>Imagem</th>
-            <th>Title</th>
-            <th>Description</th>
+            <th />
             <th />
             <th />
           </tr>

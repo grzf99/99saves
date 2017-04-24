@@ -1,6 +1,17 @@
 const { Product, Provider, Save } = require('../models');
 
 module.exports = {
+  show(req, res) {
+    return Product
+      .find({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then(resp => res.status(200).send(resp))
+      .catch(error => res.status(400).send(error));
+  },
+
   list(req, res) {
     return Product
       .findAndCountAll({

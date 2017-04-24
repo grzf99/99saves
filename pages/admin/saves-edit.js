@@ -12,6 +12,10 @@ import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
 
 class SavesEdit extends React.Component {
+  static getInitialProps({ query }) {
+    return { query };
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -32,11 +36,11 @@ class SavesEdit extends React.Component {
   }
 
   componentDidMount() {
-    this.getSaves(this.props.url.query.id);
+    this.getSaves(this.props.query.id);
   }
 
   getSaves(id) {
-    axios.get(`${config.API_URL}/saves/${id}`)
+    this.props.api.get(`/saves/${id}`)
         .then((response) => {
           this.setState({
             ...this.state, list: response.data
@@ -87,7 +91,7 @@ class SavesEdit extends React.Component {
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    const rest = axios.put(`${config.API_URL}/saves/${values.id}`, values)
+    const rest = this.props.api.put(`/saves/${values.id}`, values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
           setTimeout(() => Router.push('/admin/saves'), 2500);
