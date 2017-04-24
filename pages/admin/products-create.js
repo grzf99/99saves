@@ -24,12 +24,14 @@ class ProductsCreate extends React.Component {
       showToast: false,
       messageToast: '',
       typeToast: '',
-      selectOptions: []
+      selectOptions: [],
+      selectProvider: []
     };
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
     this.getSaves();
+    this.getProvider();
   }
   
 
@@ -39,7 +41,7 @@ class ProductsCreate extends React.Component {
   }
 
   getSaves() {
-    let list = [];
+    let list = [{ value: '', label: 'Selecione um registro' }];
     this.props.api.get('/saves')
         .then((response) => {
           response.data.rows.map( (item) => {
@@ -49,8 +51,21 @@ class ProductsCreate extends React.Component {
         })
         .catch((error) => {
           console.log(error);
-        });
-    
+        }); 
+  }
+
+  getProvider() {
+    let list = [{ value: '', label: 'Selecione um registro' }];
+    this.props.api.get('/providers')
+        .then((response) => {
+          response.data.rows.map( (item) => {
+            list.push({ value: item.id, label: item.name});
+          });
+          this.setState({ selectProvider: list });
+        })
+        .catch((error) => {
+          console.log(error);
+        }); 
   }
 
   handleSave(event) {
@@ -192,6 +207,15 @@ class ProductsCreate extends React.Component {
                       id="saveid"
                       help="Campo obriagatório"
                       options={this.state.selectOptions}
+                      required
+                      rowClassName="col-sm-12"
+                    />
+                    <Select
+                      name="ProviderId"
+                      label="Fornecedor"
+                      id="providerd"
+                      help="Campo obriagatório"
+                      options={this.state.selectProvider}
                       required
                       rowClassName="col-sm-12"
                     />
