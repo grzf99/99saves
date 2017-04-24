@@ -35,7 +35,6 @@ class SignupStep1 extends Component {
   }
 
   handleChange({ target }) {
-    debugger;
     this.setState({ [target.name]: target.value });
   }
 
