@@ -40,7 +40,7 @@ class SavesEdit extends React.Component {
   }
 
   getSaves(id) {
-    axios.get(`${config.API_URL}/saves/${id}`)
+    this.props.api.get(`/saves/${id}`)
         .then((response) => {
           this.setState({
             ...this.state, list: response.data
@@ -91,7 +91,7 @@ class SavesEdit extends React.Component {
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    const rest = axios.put(`${config.API_URL}/saves/${values.id}`, values)
+    const rest = this.props.api.put(`/saves/${values.id}`, values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
           setTimeout(() => Router.push('/admin/saves'), 2500);
