@@ -107,7 +107,7 @@ class ProductsCreate extends React.Component {
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    const rest = axios.post(`${config.API_URL}/products`, values)
+    const rest = this.props.api.post('/products', values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
           setTimeout(() => Router.push('/admin/products'), 2000);
