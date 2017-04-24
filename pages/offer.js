@@ -176,8 +176,8 @@ const RightArrow = styled(Control)`
 `;
 
 class Offer extends React.Component {
-  static async getInitialProps({ query }) {
-    const save = (await this.props.api.get(`/saves/${query.saveId}`)).data;
+  static async getInitialProps(ctx) {
+    const save = (await ctx.api.get(`/saves/${ctx.query.saveId}`)).data;
 
     const now = Date.now();
     const dateEnd = new Date(save.date_end).getTime();
