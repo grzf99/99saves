@@ -5,5 +5,6 @@ export default () => (
     <li><Link prefetch href="/admin"><a>Dashboard</a></Link></li>
     <li><Link prefetch href="/admin/saves"><a>Saves</a></Link></li>
     <li><Link prefetch href="/admin/providers"><a>Fornecedores</a></Link></li>
+    <li><Link prefetch href="/admin/products"><a>Produtos</a></Link></li>
   </ul>
 );

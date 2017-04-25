@@ -316,7 +316,7 @@ class Offer extends React.Component {
                   {
                     this.state.products.map((product, key) => (
                       <CustomTab key={product.id}>
-                        <Heading2 white>Oferta {key + 1}</Heading2>
+                        <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
                         <Text white>R$ {formatCurrency(product.price)}</Text>
                       </CustomTab>
                     ))

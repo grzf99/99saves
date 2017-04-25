@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
-import Router from 'next/router';
 import styled from 'styled-components';
+import Router from 'next/router';
 import withStore from 'next-redux-wrapper';
 import createStore from '../store';
-import LoginModal from '../components/auth/login-modal';
+import { colors } from '../components/styles/variables';
+import LoginForm from '../components/auth/login-form';
+import AuthPage from '../components/auth/auth-page';
 
-const Page = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Container = styled.div`
-  width: 400px;
+const FormWrapper = styled.div`
   padding: 36px;
+  background: ${colors.white};
 `;
 
 class Login extends Component {
@@ -27,21 +21,15 @@ class Login extends Component {
 
   render() {
     return (
-      <Page>
-        <Container>
-          <LoginModal
-            isOpen
-            submitText="Login"
-          />
-        </Container>
-      </Page>
+      <AuthPage>
+        <FormWrapper>
+          <LoginForm submitText="Login com email" />
+        </FormWrapper>
+      </AuthPage>
     );
   }
 }
 
-export default withStore(
-  createStore,
-  ({ currentUser }) => ({
-    isSignedIn: currentUser.token !== undefined
-  })
-)(Login);
+export default withStore(createStore, ({ currentUser }) => ({
+  isSignedIn: currentUser.token !== undefined
+}))(Login);

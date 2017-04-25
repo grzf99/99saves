@@ -9,4 +9,14 @@ export default styled.div`
   width: 100%;
 
   ${props => props.hasFooter && 'padding-bottom: 98px'};
+  ${props => props.flex && 'display: flex'};
+  ${props => props.centered && `
+    align-items: center;
+    justify-content: center;
+  `}
+  ${props => props.backgroundImage && `
+    background-image: url(${props.backgroundImage});
+    background-size: cover;
+    background-repeat: no-repeat;
+  `}
 `;

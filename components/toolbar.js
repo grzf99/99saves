@@ -5,6 +5,7 @@ import { colors } from './styles/variables';
 import Button from './common/button';
 import Container from './common/container';
 import LoginModal from './auth/login-modal';
+import { connect } from 'react-redux';
 
 const Toolbar = styled.header`
   background: ${colors.black};
@@ -56,7 +57,18 @@ const LinkAllSaves = styled.a`
   }
 `;
 
-export default class extends React.Component {
+const LoggedIn = styled.span`
+  background-color: transparent;
+  color: ${colors.white};
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  margin-left: 30px;
+  text-transform: uppercase;
+`;
+
+class Toolbars extends React.Component {
   constructor(props) {
     super(props);
 
@@ -81,7 +93,7 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Toolbar className={this.props.background} >
+      <Toolbar className={this.props.background}>
         <CustomContainer>
           <Link prefetch href="/">
             <LinkLogo>
@@ -95,14 +107,25 @@ export default class extends React.Component {
                 todos os saves
               </LinkAllSaves>
             </Link>
-            {
-              !this.props.logged && <Button small outline onClick={() => this.openModal()}>login</Button>
-            }
+            {!this.props.logged ? (
+              <Button small outline onClick={() => this.openModal()}>login
+              </Button>
+            ) : (
+              <LoggedIn>{ this.props.current_user.email } </LoggedIn>
+            )}
           </MenuLinks>
         </CustomContainer>
 
-        <LoginModal isOpen={this.state.modalOpen} close={() => this.closeModal()} />
+        <LoginModal
+          isOpen={this.state.modalOpen}
+          close={() => this.closeModal()}
+        />
       </Toolbar>
     );
   }
 }
+
+export default connect(
+  (state) => ({
+    current_user: state.currentUser
+  }))(Toolbars)

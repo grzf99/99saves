@@ -3,7 +3,7 @@ import axios from 'axios';
 import request from 'superagent';
 import Router from 'next/router';
 import moment from 'moment';
-import FRC, { Input, Row, Textarea } from 'formsy-react-components';
+import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
 
 import withAuth from '../../components/hoc/withAuth';
@@ -11,11 +11,7 @@ import config from '../../config';
 import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
 
-class SavesEdit extends React.Component {
-  static getInitialProps({ query }) {
-    return { query };
-  }
-
+class ProductsCreate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,28 +24,48 @@ class SavesEdit extends React.Component {
       showToast: false,
       messageToast: '',
       typeToast: '',
+      selectOptions: [],
+      selectProvider: []
     };
-    this.getSaves = this.getSaves.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
+    this.getSaves();
+    this.getProvider();
   }
+  
 
   componentDidMount() {
-    this.getSaves(this.props.query.id);
+    setTimeout(() => this.setState({ loading: false }), 1500);
+    
   }
 
-  getSaves(id) {
-    this.props.api.get(`/saves/${id}`)
+  getSaves() {
+    let list = [{ value: '', label: 'Selecione um registro' }];
+    this.props.api.get('/saves')
         .then((response) => {
-          this.setState({
-            ...this.state, list: response.data
+          response.data.rows.map( (item) => {
+            list.push({ value: item.id, label: item.title});
           });
-          setTimeout(() => this.setState({ loading: false }), 1500);
+          this.setState({ selectOptions: list });
         })
         .catch((error) => {
-          console.log(error); // eslint-disable-line
-        });
+          console.log(error);
+        }); 
+  }
+
+  getProvider() {
+    let list = [{ value: '', label: 'Selecione um registro' }];
+    this.props.api.get('/providers')
+        .then((response) => {
+          response.data.rows.map( (item) => {
+            list.push({ value: item.id, label: item.name});
+          });
+          this.setState({ selectProvider: list });
+        })
+        .catch((error) => {
+          console.log(error);
+        }); 
   }
 
   handleSave(event) {
@@ -64,7 +80,8 @@ class SavesEdit extends React.Component {
 
     upload.end((err, response) => {
       if (err) {
-        console.error(err); // eslint-disable-line
+        this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
       if (response.body.secure_url !== '') {
@@ -78,26 +95,25 @@ class SavesEdit extends React.Component {
     const values = Object.assign(data, {
       image_default: this.state.image_default,
       image2: this.state.image2,
-      image3: this.state.image3,
-      date_start: moment(data.date_start, moment.ISO_8859).format(),
-      date_end: moment(data.date_end, moment.ISO_8859).format()
+      image3: this.state.image3
     });
 
-    if (!values.title || !values.date_start || !values.date_end) {
-      return alert('Preencha todos os campos obrigatórios');  // eslint-disable-line
+    if (!values.title || !values.image_default) {
+      this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Preencha todos os campos obrigatórios' });
+      setTimeout(() => this.setState({ showToast: false }), 4500);
     }
 
     if (!values.image_default) delete values.image_default;
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    const rest = this.props.api.put(`/saves/${values.id}`, values)
+    const rest = this.props.api.post('/products', values)
         .then(() => {
-          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
-          setTimeout(() => Router.push('/admin/saves'), 2500);
+          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
+          setTimeout(() => Router.push('/admin/products'), 2000);
         })
         .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao alterar o registro' });
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao inserir o registro' });
           setTimeout(() => this.setState({ showToast: false }), 2500);
         });
 
@@ -111,7 +127,7 @@ class SavesEdit extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Alterar Save</span>
+                <span className="panel-title">Cadastrar Produtos</span>
               </div>
 
               <div className="panel-body">
@@ -123,13 +139,12 @@ class SavesEdit extends React.Component {
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input
                       name="id"
-                      value={this.state.list.id || ''}
                       type="hidden"
                     />
                     <Input
                       name="title"
+                      value=""
                       id="title"
-                      value={this.state.list.title || ''}
                       label="Título do save"
                       type="text"
                       placeholder="Título do save"
@@ -137,26 +152,88 @@ class SavesEdit extends React.Component {
                       rowClassName="col-sm-12"
                     />
                     <Input
-                      name="date_start"
-                      value={moment(this.state.list.date_start).format('YYYY-MM-DD') || ''}
-                      label="Data início do save"
-                      type="date"
+                      name="price"
+                      value=""
+                      id="price"
+                      label="Preço"
+                      type="text"
+                      placeholder="Preço"
                       required
-                      rowClassName="col-sm-6"
+                      rowClassName="col-sm-12"
                     />
                     <Input
-                      name="date_end"
-                      value={moment(this.state.list.date_end).format('YYYY-MM-DD') || ''}
-                      label="Data finalização do save"
-                      type="date"
+                      name="method_payment"
+                      value=""
+                      id="method_payment"
+                      label="Formas de pagamentos"
+                      type="text"
+                      placeholder="Formas de pagamentos"
                       required
-                      rowClassName="col-sm-6"
+                      rowClassName="col-sm-12"
+                    />
+                    <Input
+                      name="link_buscape"
+                      value=""
+                      id="link_buscape"
+                      label="Link Buscapé"
+                      type="text"
+                      placeholder="Link Buscapé"
+                      required
+                      rowClassName="col-sm-12"
+                    />
+                    <Input
+                      name="price_buscape"
+                      value=""
+                      id="price_buscape"
+                      label="Menor preço buscapé"
+                      type="text"
+                      placeholder="Menor preço buscapé"
+                      required
+                      rowClassName="col-sm-12"
+                    />
+                    <Input
+                      name="link_buy"
+                      value=""
+                      id="link_buy"
+                      label="Link de compra"
+                      type="text"
+                      placeholder="Link de compra"
+                      required
+                      rowClassName="col-sm-12"
+                    />
+                    <Select
+                      name="SaveId"
+                      label="Save"
+                      id="saveid"
+                      help="Campo obriagatório"
+                      options={this.state.selectOptions}
+                      required
+                      rowClassName="col-sm-12"
+                    />
+                    <Select
+                      name="ProviderId"
+                      label="Fornecedor"
+                      id="providerd"
+                      help="Campo obriagatório"
+                      options={this.state.selectProvider}
+                      required
+                      rowClassName="col-sm-12"
                     />
                     <Textarea
                       rows={3}
                       cols={40}
+                      name="technique_information"
+                      value=""
+                      label="Informações técnicas"
+                      placeholder="Informações técnicas"
+                      rowClassName="col-sm-12"
+                    />
+
+                    <Textarea
+                      rows={3}
+                      cols={40}
                       name="description"
-                      value={this.state.list.description || ''}
+                      value=""
                       label="Descrição do save"
                       placeholder="Descrição"
                       rowClassName="col-sm-12"
@@ -201,4 +278,4 @@ class SavesEdit extends React.Component {
   }
 }
 
-export default withAuth({ admin: true })(SavesEdit);
+export default withAuth({ admin: true })(ProductsCreate)

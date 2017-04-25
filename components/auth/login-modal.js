@@ -1,14 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Modal from '../common/modal';
 import LoginForm from './login-form';
-import FacebookButton from '../common/facebook-button';
 import { colors } from '../styles/variables';
-import { Heading, SubHeading, Text } from '../common/typography';
-
-const Header = styled.div`
-  padding-bottom: 30px;
-`;
+import { Text } from '../common/typography';
 
 const CloseButton = styled(Text)`
   position: absolute;
@@ -19,51 +14,9 @@ const CloseButton = styled(Text)`
   cursor: pointer;
 `;
 
-const Title = styled(Heading)`
-  line-height: 1.47;
-`;
-
-const SeparatorText = styled(Text)`
-  display: block;
-  padding: 11px 0 13px 0;
-  font-size: 17px;
-  text-align: center;
-  color: ${colors.lightgray};
-`;
-
-const Footer = styled.div`
-  display: flex;
-  padding-top: 42px;
-`;
-
-const ForgotPasswordText = styled(Text)`
-  flex: 1;
-  font-size: 14px;
-  color: ${colors.lightgray};
-  text-transform: uppercase;
-  cursor: pointer;
-`;
-
-const CreateAccountText = styled(Text)`
-  flex: 1;
-  font-size: 14px;
-  color: ${colors.green};
-  text-align: right;
-  text-transform: uppercase;
-  cursor: pointer;
-`;
-
 export default props => (
-  <Modal
-    {...props}
-    isOpen={props.isOpen}
-    width="400px"
-  >
+  <Modal {...props} isOpen={props.isOpen} width="400px">
     <CloseButton onClick={() => props.close()}>X</CloseButton>
-    <Header>
-      <Title large uppercase>Entre agora</Title>
-      <SubHeading uppercase>Veja os descontos disponíveis no 99saves.com</SubHeading>
-    </Header>
-    <LoginForm />
+    <LoginForm isAdmin={props.isAdmin} submitText={props.submitText} />
   </Modal>
 );

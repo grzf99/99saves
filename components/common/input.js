@@ -1,20 +1,18 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
-import hexRgb from 'hex-rgb'
+import hexRgb from 'hex-rgb';
 import { colors } from '../styles/variables';
+import { Text } from './typography';
 
 const Container = styled.div`
-  height: 48px;
-  width: ${props => props.block ? '100%' : 'auto'};
+  width: ${props => (props.block ? '100%' : 'auto')};
+  padding: 6px 0;
 `;
 
-const Label = styled.span`
+const Label = styled(Text)`
   color: ${colors.green};
-  font-size: 12px;
   line-height: 16px;
-  text-transform: uppercase;
   font-weight: 500;
-  font-family: 'Roboto', sans-serif;
   display: block;
 `;
 
@@ -31,24 +29,37 @@ const Field = styled.input`
   &::placeholder {
     color: rgba(${r}, ${g}, ${b}, 0.12);
   }
-`
+`;
 
-const Input = ({ onChange, value, label, block, ...rest }) => (
-  <Container block={block}>
-    <Label>{label}</Label>
-    <Field
-      onChange={onChange}
-      value={value}
-      {...rest}
-    />
-  </Container>
-);
+const Hint = styled(Text)`
+  display: block;
+  color: ${colors.lightgray};
+  padding-top: 5px;
+`;
 
-Input.propTypes = {
-  onChange: PropTypes.func,
-  value: PropTypes.any,
-  label: PropTypes.string,
-  block: PropTypes.bool
-};
+class Input extends Component {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    label: PropTypes.string,
+    block: PropTypes.bool
+  };
+
+  static defaultProps = {
+    label: '',
+    block: false
+  };
+
+  render() {
+    const { onChange, value, label, hint, block, ...rest } = this.props;
+    return (
+      <Container block={block}>
+        <Label uppercase>{label}</Label>
+        <Field onChange={onChange} value={value} {...rest} />
+        <Hint>{hint}</Hint>
+      </Container>
+    );
+  }
+}
 
 export default Input;
