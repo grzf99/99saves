@@ -2,34 +2,25 @@ import styled from 'styled-components';
 import { colors } from '../styles/variables';
 
 export const Heading = styled.h1`
-  color: ${props => props.white ? colors.white : colors.black};
+  color: ${props => (props.white ? colors.white : colors.black)};
   font-family: 'Oswald', sans-serif;
-  font-size: ${props => props.large ? '34px' : '26px'};
-  font-weight: ${props => props.large ? '700' : '500'};;
+  font-size: ${props => (props.large ? '34px' : '26px')};
+  font-weight: ${props => (props.large ? '700' : '500')};;
   margin: 0;
   ${props => props.uppercase && 'text-transform: uppercase'};
 `;
 
-// TODO: merge Heading2 and SubHeading
 export const Heading2 = styled.h2`
-  color: ${props => props.white ? colors.white : colors.black};
+  color: ${props => (props.color ? props.color : colors.black)};
   font-family: 'Oswald', sans-serif;
   font-size: 16px;
-  font-weight: 700;
-  margin: 0;
-`;
-
-export const SubHeading = styled.h2`
-  color: ${props => props.white ? colors.white : colors.lightgray};
-  font-family: 'Oswald', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
+  font-weight: ${props => (props.fontWeight ? props.fontWeight : '700')};
   margin: 0;
   ${props => props.uppercase && 'text-transform: uppercase'};
 `;
 
 export const Text = styled.p`
-  color: ${props => props.white ? colors.white : colors.black};
+  color: ${props => (props.white ? colors.white : colors.black)};
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   margin: 0;
@@ -43,10 +34,18 @@ export const SmallText = styled.p`
   margin: 0;
 `;
 
+export const SeparatorText = styled(Text)`
+  display: block;
+  padding: 11px 0 13px 0;
+  font-size: 17px;
+  text-align: center;
+  color: ${colors.lightgray};
+`;
+
 export default {
   Heading,
   Heading2,
-  SubHeading,
   Text,
-  SmallText
+  SmallText,
+  SeparatorText
 };
