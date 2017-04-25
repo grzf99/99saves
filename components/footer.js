@@ -49,13 +49,13 @@ export default props => (
       <a href="https://www.facebook.com/99saves/">
         <Facebook />
       </a>
-      <a href="/">
+      <a href="https://www.youtube.com/channel/UCVaiNqY6WhW9PqJeUbaLwbw">
         <Youtube />
       </a>
-      <a href="/">
+      <a href="https://www.instagram.com/99saves/">
         <Instagram />
       </a>
-      <a href="/">
+      <a href="https://www.linkedin.com/company-beta/16232043/">
         <Linkedin />
       </a>
     </SocialMedia>
