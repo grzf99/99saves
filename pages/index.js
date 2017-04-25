@@ -621,7 +621,9 @@ class Index extends React.Component {
           </ItWorkContainer>
 
           <ItWorkContainer className="center">
-            <Button outline openLoginModal={() => this.openModal()}>participe agora mesmo</Button>
+            {
+              !this.props.isSignedIn && <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
+            }
           </ItWorkContainer>
 
         </ItWorkSection>
