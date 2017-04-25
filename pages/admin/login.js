@@ -15,8 +15,8 @@ const FormWrapper = styled.div`
 
 class Login extends Component {
   componentWillMount() {
-    if (this.props.isSignedIn) {
-      Router.replace('/admin');
+    if (this.props.isSignedIn && this.props.isAdmin) {
+      Router.replace('/admin')
     }
   }
 
@@ -33,6 +33,10 @@ class Login extends Component {
   }
 }
 
-export default withStore(createStore, ({ currentUser }) => ({
-  isSignedIn: currentUser.token !== undefined
-}))(Login);
+export default withStore(
+  createStore,
+  ({ currentUser }) => ({
+    isSignedIn: currentUser.token !== undefined,
+    isAdmin: currentUser.admin
+  })
+)(Login)
