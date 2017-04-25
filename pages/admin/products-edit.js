@@ -116,7 +116,7 @@ class ProductsCreate extends React.Component {
       image3: this.state.image3
     });
 
-    if (!values.title || !values.image_default) {
+    if (!values.title ) {
       this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Preencha todos os campos obrigatórios' });
       setTimeout(() => this.setState({ showToast: false }), 4500);
     }
@@ -125,7 +125,7 @@ class ProductsCreate extends React.Component {
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    const rest = this.props.api.put('/products', values)
+    const rest = this.props.api.put(`/products/${values.id}`, values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
           setTimeout(() => Router.push('/admin/products'), 2000);
