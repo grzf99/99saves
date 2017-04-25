@@ -4,7 +4,9 @@ import { rgba } from 'polished';
 import { colors } from './styles/variables';
 import Button from './common/button';
 import Image from './common/image';
+import Headline from './common/headline';
 import { Heading, Text, SmallText } from './common/typography';
+import { formatCurrency } from '../utils';
 
 const Card = styled.div`
   background: ${colors.black};
@@ -15,12 +17,38 @@ const Card = styled.div`
   justify-content: space-between;
   min-height: 333px;
   padding-bottom: 24px;
+  position: relative;
   text-align: center;
   width: 100%;
 `;
 
+const Tag = styled(Text)`
+  background: ${colors.blue};
+  color: ${colors.white};
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 3px 14px;
+  position: absolute;
+  top: 40px;
+  z-index: 3;
+`;
+
+const ImagesContainer = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const ImageWrapper = styled.div`
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+`;
+
 const CardImage = styled(Image)`
-  align-self: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const Header = styled.div`
@@ -79,6 +107,25 @@ const Status = styled.div`
   width: 100%;
 `;
 
+const Buscape = styled(Text)`
+  color: ${colors.gray};
+  margin-top: -16px;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 10px 0;
+
+  a {
+    width: 100%;
+  }
+
+  a + a {
+    margin-left: 10px;
+  }
+`;
+
 export default class extends React.Component {
   constructor(props) {
     super(props);
@@ -98,6 +145,8 @@ export default class extends React.Component {
 
     this.handleSave = this.handleSave.bind(this);
     this.goToOffers = this.goToOffers.bind(this);
+    this.goToCheckout = this.goToCheckout.bind(this);
+    this.renderImages = this.renderImages.bind(this);
   }
 
   handleSave() {
@@ -112,6 +161,10 @@ export default class extends React.Component {
     this.props.goToOffers();
   }
 
+  goToCheckout() {
+    this.props.goToCheckout();
+  }
+
   renderButton() {
     if (!this.props.hasSubscribed) {
       return <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>;
@@ -124,20 +177,78 @@ export default class extends React.Component {
     return <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>;
   }
 
+  renderImages() {
+    let images;
+
+    if (this.state.votationOpen && this.props.Products.length > 0) {
+      images = this.props.Products.map(product => (
+        <ImageWrapper>
+          <CardImage src={product.image_default} alt={product.title} />
+        </ImageWrapper>
+      ));
+    } else {
+      images = (
+        <ImageWrapper>
+          <CardImage src={this.props.image_default} alt={this.props.title} />
+        </ImageWrapper>
+      );
+    }
+
+    return (
+      <ImagesContainer>
+        {images}
+      </ImagesContainer>
+    )
+  }
+
   render() {
+    const winner = this.props.Products.length > 0 ? this.props.Products[this.props.id % 2] : {};
     return (
       <Card {...this.props}>
+        {
+          this.state.votationOpen && <Tag uppercase>Votação</Tag>
+        }
         <Header>
-          <CardImage src={this.props.image_default} alt={this.props.title} />
+          {this.renderImages()}
           <Gradient>
-            <SmallText>imagem meramente ilustrativa</SmallText>
+            {
+              !this.state.checkoutOpen && (
+                <SmallText>imagem meramente ilustrativa</SmallText>
+              )
+            }
             <Heading white>{this.props.title}</Heading>
           </Gradient>
         </Header>
-        <Info>
-          <CustomText>{this.props.description}</CustomText>
-          { this.renderButton() }
-        </Info>
+        {
+          this.state.checkoutOpen && (
+            <Headline spotlight uppercase withRoboto>
+              Oferta vencedora R$ {formatCurrency(winner.price)}
+            </Headline>
+          )
+        }
+        {
+          this.state.checkoutOpen && (
+            <Buscape>
+              menor preço no Buscapé: R$ {formatCurrency(winner.price_buscape)}*
+            </Buscape>
+          )
+        }
+        {
+          this.state.checkoutOpen && (
+            <ButtonGroup>
+              <Button block outline onClick={this.goToOffers}>Sobre o produto</Button>
+              <Button block href={this.props.linkToBuy}>Comprar agora</Button>
+            </ButtonGroup>
+          )
+        }
+        {
+            !this.state.checkoutOpen && (
+              <Info>
+                <CustomText>{this.props.description}</CustomText>
+                { this.renderButton() }
+              </Info>
+            )
+        }
       </Card>
     );
   }
