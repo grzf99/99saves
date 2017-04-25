@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { colors } from './styles/variables';
 import { Text } from './common/typography';
-import { Facebook, Instagram, Twitter } from './common/svg';
+import { Facebook, Instagram, Youtube } from './common/svg';
 
 const Footer = styled.footer`
   align-items: center;
@@ -50,10 +50,10 @@ export default props => (
         <Facebook />
       </a>
       <a href="/">
-        <Instagram />
+        <Youtube />
       </a>
       <a href="/">
-        <Twitter />
+        <Instagram />
       </a>
     </SocialMedia>
   </Footer>
