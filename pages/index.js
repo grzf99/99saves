@@ -723,7 +723,7 @@ class Index extends React.Component {
             <iframe
               width="100%"
               height="100%"
-              src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1"
+              src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;showinfo=0&amp;autoplay=1"
             />
           </ModalVideoContent>
         </Modal>
