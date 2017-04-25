@@ -240,7 +240,12 @@ export default class extends React.Component {
 
         <RenderIf expr={!this.state.checkoutOpen}>
           <Info>
-            <CustomText>{this.props.description}</CustomText>
+            <RenderIf expr={!this.state.votationOpen}>
+              <CustomText>{this.props.description}</CustomText>
+            </RenderIf>
+            <RenderIf expr={this.state.votationOpen}>
+              <CustomText>Escolha a melhor oferta</CustomText>
+            </RenderIf>
             { this.renderButton() }
           </Info>
         </RenderIf>
