@@ -24,7 +24,7 @@ import Image from '../components/common/image';
 import Gallery from '../components/gallery';
 import Headline from '../components/common/headline';
 
-const Header = styled(Container)`
+const Header = styled(Container) `
   display: flex;
   padding: 8px 0;
 
@@ -33,13 +33,13 @@ const Header = styled(Container)`
   }
 `;
 
-const CustomTabs = styled(Tabs)`
+const CustomTabs = styled(Tabs) `
   flex-flow: row;
   flex-wrap: wrap;
 `;
 
-const CustomTab = styled(Tab)`
-  background-color: ${props => props.active ? colors.green : 'transparent' };
+const CustomTab = styled(Tab) `
+  background-color: ${props => props.active ? colors.green : 'transparent'};
   border: 0;
   flex: 1;
   height: inherit;
@@ -70,12 +70,12 @@ const ItemHeader = styled.div`
   padding: 20px 0;
 `;
 
-const GrayText = styled(Text)`
+const GrayText = styled(Text) `
   color: ${colors.gray};
   font-weight: 500;
 `;
 
-const Tag = styled(Heading2)`
+const Tag = styled(Heading2) `
   background: ${colors.gray};
   font-size: 24px;
   padding: 2px 10px;
@@ -166,11 +166,11 @@ const Control = styled.div`
   }
 `;
 
-const PrevArrow = styled(Control)`
+const PrevArrow = styled(Control) `
   left: 0;
 `;
 
-const RightArrow = styled(Control)`
+const RightArrow = styled(Control) `
   flex-direction: row-reverse;
   right: 0;
 `;
@@ -253,9 +253,9 @@ class Offer extends React.Component {
       this.props.api.post(`/saves/${this.state.save.id}/votes`, {
         ProductId: productId
       })
-      .then(({ data }) => {
-        this.setState({ vote: data.ProductId });
-      });
+        .then(({ data }) => {
+          this.setState({ vote: data.ProductId });
+        });
     }
   }
 
@@ -298,7 +298,7 @@ class Offer extends React.Component {
   render() {
     return (
       <Page hasFooter>
-        <Toolbar logged={this.props.isSignedIn} />
+        <Toolbar logged={this.props.isSignedIn} onLogout={this.props.onLogout} />
 
         <Header>
           <Link prefetch href="/saves"><a><ArrowBack /></a></Link>

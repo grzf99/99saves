@@ -4,10 +4,13 @@ const slugify = require('./slugify');
 const savesMapper = require('./savesMapper');
 const formatCurrency = require('./formatCurrency');
 
+const noop = () => { };
+
 module.exports = {
   renderAndCache,
   numeral,
   slugify,
   savesMapper,
-  formatCurrency
+  formatCurrency,
+  noop
 };
