@@ -29,9 +29,9 @@ const Tag = styled(Text)`
   display: block;
   font-size: 12px;
   font-weight: 400;
-  padding: 3px 14px;
+  padding: 5px 14px;
   position: absolute;
-  top: 40px;
+  top: 15px;
   z-index: 3;
 `;
 
