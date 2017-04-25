@@ -212,7 +212,7 @@ export default class extends React.Component {
         <Header>
           {this.renderImages()}
           <Gradient>
-            <RenderIf expr={!this.state.checkoutOpen}>
+            <RenderIf expr={!this.state.checkoutOpen && !this.state.votationOpen}>
               <SmallText>imagem meramente ilustrativa</SmallText>
             </RenderIf>
             <Heading white>{this.props.title}</Heading>
