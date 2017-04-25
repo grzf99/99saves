@@ -542,7 +542,9 @@ class Index extends React.Component {
             </Subtitle>
 
             <BannerActions>
-              <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
+              {
+                !this.props.isSignedIn && <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
+              }
               <VideoButton onClick={() => this.openVideoModal()}>entenda como funciona</VideoButton>
             </BannerActions>
 
