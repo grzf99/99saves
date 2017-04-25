@@ -3,7 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
 import differenceInMinutes from 'date-fns/difference_in_minutes';
-import { numeral } from '../utils';
+import { formatCurrency } from '../utils';
 
 import { USER_LOCALSTORAGE_KEY } from '../store/auth';
 import withAuth from '../components/hoc/withAuth';
@@ -206,7 +206,6 @@ class Offer extends React.Component {
       user: {}
     };
 
-    this.formatCurrency = this.formatCurrency.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.handleVote = this.handleVote.bind(this);
     this.renderVotationButton = this.renderVotationButton.bind(this);
@@ -258,10 +257,6 @@ class Offer extends React.Component {
         this.setState({ vote: data.ProductId });
       });
     }
-  }
-
-  formatCurrency(value) {
-    return numeral(value).format('0,0[.]00');
   }
 
   renderVotationButton(product) {
@@ -322,7 +317,7 @@ class Offer extends React.Component {
                     this.state.products.map((product, key) => (
                       <CustomTab key={product.id}>
                         <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
-                        <Text white>R$ {this.formatCurrency(product.price)}</Text>
+                        <Text white>R$ {formatCurrency(product.price)}</Text>
                       </CustomTab>
                     ))
                   }
@@ -334,7 +329,7 @@ class Offer extends React.Component {
 
         {
           this.props.checkoutOpen && (
-            <Headline spotlight>
+            <Headline spotlight large>
               A oferta acaba em <b>{this.state.countdown}</b>
             </Headline>
           )
@@ -391,9 +386,7 @@ class Offer extends React.Component {
                         <Price>
                           <Text white>R$</Text>
                           <Heading white large>
-                            {
-                              this.formatCurrency(product.price)
-                            }
+                            {formatCurrency(product.price)}
                           </Heading>
                         </Price>
                         {
@@ -405,9 +398,7 @@ class Offer extends React.Component {
                               <a href={product.link_buscape}>melhor preço no buscapé</a>
                               <s>
                                 R$&nbsp;
-                                {
-                                  this.formatCurrency(product.price_buscape)
-                                }
+                                {formatCurrency(product.price_buscape)}
                               </s>
                             </Buscape>
                           )

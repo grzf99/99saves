@@ -185,6 +185,7 @@ class Saves extends React.Component {
                 openLoginModal={() => this.openModal(save.id)}
                 handleSubscribe={() => this.handleSubscribe(save.id)}
                 goToOffers={() => this.goToOffers(save.slug)}
+                linkToBuy={save.Products && (save.Products[save.id % 2] || {}).link_buy}
               />
           )
         : (

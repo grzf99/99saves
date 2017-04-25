@@ -25,6 +25,7 @@ const largeStyles = css`
 const blockStyles = css`
   display: block;
   font-weight: 500;
+  padding: 10px;
 `;
 
 const disabledStyles = css`
