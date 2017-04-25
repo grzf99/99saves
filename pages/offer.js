@@ -350,7 +350,7 @@ class Offer extends React.Component {
               <div key={product.id}>
                 <Section white>
                   <Gallery>
-                    <Image src={product.image_default} alt={product.title} />
+                    <Image src={product.image_default} size={'240px'} alt={product.title} />
                   </Gallery>
                 </Section>
 
