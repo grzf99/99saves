@@ -5,6 +5,7 @@ import { colors } from './styles/variables';
 import Button from './common/button';
 import Image from './common/image';
 import Headline from './common/headline';
+import RenderIf from './common/render-if';
 import { Heading, Text, SmallText } from './common/typography';
 import { formatCurrency } from '../utils';
 
@@ -198,7 +199,7 @@ export default class extends React.Component {
       <ImagesContainer>
         {images}
       </ImagesContainer>
-    )
+    );
   }
 
   render() {
@@ -211,44 +212,38 @@ export default class extends React.Component {
         <Header>
           {this.renderImages()}
           <Gradient>
-            {
-              !this.state.checkoutOpen && (
-                <SmallText>imagem meramente ilustrativa</SmallText>
-              )
-            }
+            <RenderIf expr={!this.state.checkoutOpen}>
+              <SmallText>imagem meramente ilustrativa</SmallText>
+            </RenderIf>
             <Heading white>{this.props.title}</Heading>
           </Gradient>
         </Header>
-        {
-          this.state.checkoutOpen && (
-            <Headline spotlight uppercase withRoboto>
-              Oferta vencedora R$ {formatCurrency(winner.price)}
-            </Headline>
-          )
-        }
-        {
-          this.state.checkoutOpen && (
-            <Buscape>
-              menor preço no Buscapé: R$ {formatCurrency(winner.price_buscape)}*
-            </Buscape>
-          )
-        }
-        {
-          this.state.checkoutOpen && (
-            <ButtonGroup>
-              <Button block outline onClick={this.goToOffers}>Sobre o produto</Button>
-              <Button block href={this.props.linkToBuy}>Comprar agora</Button>
-            </ButtonGroup>
-          )
-        }
-        {
-            !this.state.checkoutOpen && (
-              <Info>
-                <CustomText>{this.props.description}</CustomText>
-                { this.renderButton() }
-              </Info>
-            )
-        }
+
+        <RenderIf expr={this.state.checkoutOpen}>
+          <Headline spotlight uppercase withRoboto>
+            Oferta vencedora R$ {formatCurrency(winner.price)}
+          </Headline>
+        </RenderIf>
+
+        <RenderIf expr={this.state.checkoutOpen}>
+          <Buscape>
+            menor preço no Buscapé: R$ {formatCurrency(winner.price_buscape)}*
+          </Buscape>
+        </RenderIf>
+
+        <RenderIf expr={this.state.checkoutOpen}>
+          <ButtonGroup>
+            <Button block outline onClick={this.goToOffers}>Sobre o produto</Button>
+            <Button block href={this.props.linkToBuy}>Comprar agora</Button>
+          </ButtonGroup>
+        </RenderIf>
+
+        <RenderIf expr={!this.state.checkoutOpen}>
+          <Info>
+            <CustomText>{this.props.description}</CustomText>
+            { this.renderButton() }
+          </Info>
+        </RenderIf>
       </Card>
     );
   }
