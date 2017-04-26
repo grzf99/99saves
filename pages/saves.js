@@ -88,7 +88,7 @@ class Saves extends React.Component {
       user: {},
       logged: props.isSignedIn,
       modalIsOpen: false,
-      activeTab: 1,
+      activeTab: props.isSignedIn ? 1 : 0,
       saves: props.saves,
       subscriptions: {
         count: 0,
@@ -221,8 +221,8 @@ class Saves extends React.Component {
             index={this.state.activeTab}
             onChange={this.handleChangeIndex}
           >
+            <Tab>Saves Abertos</Tab>
             <Tab>Meus Saves</Tab>
-            <Tab>Todos</Tab>
           </Tabs>}
 
         <SwipeableViews
