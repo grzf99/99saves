@@ -74,7 +74,8 @@
     "sequelize": "^3.30.4",
     "sequelize-cli": "^2.7.0",
     "styled-components": "^1.4.4",
-    "superagent": "^3.5.2"
+    "superagent": "^3.5.2",
+    "validator": "^7.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

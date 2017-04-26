@@ -33,30 +33,57 @@ const Field = styled.input`
 
 const Hint = styled(Text)`
   display: block;
-  color: ${colors.lightgray};
+  color: ${props => (props.red ? colors.red : colors.lightgray)};
   padding-top: 5px;
 `;
 
 class Input extends Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     label: PropTypes.string,
-    block: PropTypes.bool
+    block: PropTypes.bool,
+    validation: PropTypes.func
   };
 
   static defaultProps = {
     label: '',
-    block: false
+    block: false,
+    validation: () => true
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      valid: true,
+      dirty: false,
+      validationMessage: '',
+      value: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    let valid = this.state.valid;
+    this.setState({ dirty: true, value: e.target.value });
+
+    if (this.props.validation && this.state.dirty) {
+      const validationMessage = this.props.validation(e.target.value);
+      valid = !validationMessage;
+      this.setState({ valid, validationMessage });
+    }
+
+    e.target.value = valid ? e.target.value : '';
+    this.props.onChange(e);
+  }
+
   render() {
-    const { onChange, value, label, hint, block, ...rest } = this.props;
+    const { label, hint, block, ...rest } = this.props;
+    const { value, valid, validationMessage } = this.state;
     return (
       <Container block={block}>
         <Label uppercase>{label}</Label>
-        <Field onChange={onChange} value={value} {...rest} />
-        <Hint>{hint}</Hint>
+        <Field {...rest} onChange={this.handleChange} value={value} />
+        <Hint red={!valid}>{valid ? hint : validationMessage}</Hint>
       </Container>
     );
   }
