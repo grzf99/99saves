@@ -232,11 +232,13 @@ class Offer extends React.Component {
   }
 
   getWinnerProductIndex(save) {
-    return save.Products.reduce(
-      (acc, product, index) =>
-        (product.id === save.winnerProduct.id ? index : acc),
-      0
-    );
+    return !save.winnerProduct
+      ? 0
+      : save.Products.reduce(
+          (acc, product, index) =>
+            (product.id === save.winnerProduct.id ? index : acc),
+          0
+        );
   }
 
   loadVote() {
