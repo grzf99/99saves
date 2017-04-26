@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
 import Page from '../common/page';
 import Container from '../common/container';
@@ -24,7 +25,9 @@ export default ({ children }) => (
   >
     <Container maxWidth="400px">
       <Header>
-        <LocalLogo />
+        <Link prefetch href="/">
+          <a><LocalLogo /></a>
+        </Link>
       </Header>
       {children}
     </Container>
