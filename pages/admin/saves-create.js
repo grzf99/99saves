@@ -184,4 +184,4 @@ class SavesCreate extends React.Component {
   }
 }
 
-export default withAuth({ admin: true })(SavesCreate)
+export default withAuth({ isAdminPage: true })(SavesCreate)
