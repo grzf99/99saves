@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Container from './common/container';
 import { colors } from './styles/variables';
+import RenderIf from './common/render-if';
+import Image from '../components/common/image';
 
 const Gallery = styled(Container)`
   height: ${props => props.hasMultipleChildrens ? '344px' : '280px'};
@@ -41,7 +43,6 @@ export default class extends React.Component {
 
     this.state = {
       active: 0,
-      images: React.Children.toArray(props.children)
     };
 
     this.setActive = this.setActive.bind(this);
@@ -53,38 +54,49 @@ export default class extends React.Component {
     this.setState({ active: index });
   }
 
-  renderImages(child, index) {
+  renderImages(image, index) {
     return (
-      <Slide key={index} active={index === this.state.active}>
-        {child}
-      </Slide>
+      <RenderIf expr={image}>
+        <Slide key={index} active={index === this.state.active}>
+          <Image
+            src={image}
+            size={'240px'}
+            alt={this.props.alt}
+          />
+        </Slide>
+      </RenderIf>
     );
   }
 
-  renderThumbs(child, index) {
+  renderThumbs(image, index) {
     return (
-      <Thumb
-        key={index}
-        active={index === this.state.active}
-        onClick={() => this.setActive(index)}
-      >
-        {child}
-      </Thumb>
+      <RenderIf expr={image}>
+        <Thumb
+          key={index}
+          active={index === this.state.active}
+          onClick={() => this.setActive(index)}
+        >
+          <Image
+            src={image}
+            size={'44px'}
+            alt={this.props.alt}
+          />
+        </Thumb>
+      </RenderIf>
     );
   }
 
   render() {
+    const activeImages = this.props.images.filter(i => i);
     return (
-      <Gallery {...this.props} hasMultipleChildrens={this.state.images.length > 1}>
-        {this.state.images.map(this.renderImages)}
+      <Gallery {...this.props} hasMultipleChildrens={activeImages.length > 1}>
+        {activeImages.map(this.renderImages)}
 
-        {
-          this.state.images.length > 1 && (
-            <Thumbs>
-              {this.state.images.map(this.renderThumbs)}
-            </Thumbs>
-          )
-        }
+        <RenderIf expr={activeImages.length > 1}>
+          <Thumbs>
+            {activeImages.map(this.renderThumbs)}
+          </Thumbs>
+        </RenderIf>
       </Gallery>
     );
   }
