@@ -1,31 +1,8 @@
 {
   "name": "99saves",
-  "addons": [
-    "heroku-postgresql"
-  ],
   "buildpacks": [
     {
       "url": "heroku/nodejs"
     }
-  ],
-  "env": {
-    "HEROKU_APP_NAME": {
-      "required": true
-    },
-    "DATABASE_URL": {
-      "required": true
-    },
-    "FACEBOOK_APP_ID": {
-      "required": true
-    },
-    "FACEBOOK_APP_SECRET": {
-      "required": true
-    },
-    "JWT_SECRET": {
-      "required": true
-    },
-    "INHERIT_THIS_CONFIG_VAR": {
-      "required": true
-    }
-  }
+  ]
 }

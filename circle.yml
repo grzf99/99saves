@@ -10,16 +10,9 @@ test:
   override:
     - echo "true"
 deployment:
-  production:
-    tag: /(V|v)-[0-9]+(\.[0-9]+)*/
-    heroku:
-      appname: saves99
-    commands:
-      - heroku pg:backups capture --app saves99
   staging:
     branch: master
     commands:
       - "[[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow"
-      - heroku pg:backups capture --app saves99-staging
-      - heroku run ./node_modules/.bin/sequelize db:migrate --app saves99-staging
-      - git push git@heroku.com:saves99-staging.git $CIRCLE_SHA1:refs/heads/master
+      - heroku pg:backups capture --app saves99
+      - git push git@heroku.com:saves99.git $CIRCLE_SHA1:refs/heads/master
