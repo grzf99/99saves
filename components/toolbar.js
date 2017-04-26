@@ -112,12 +112,9 @@ class Toolbars extends React.Component {
               </Button>
             </RenderIf>
             <RenderIf expr={this.props.logged}>
-              <div>
-                <LoggedIn>{this.props.current_user.email} </LoggedIn>
-                <Button small outline onClick={this.props.onLogout}>
-                  logout
-                </Button>
-              </div>
+              <Button small outline onClick={this.props.onLogout}>
+                sair
+              </Button>
             </RenderIf>
           </MenuLinks>
         </CustomContainer>

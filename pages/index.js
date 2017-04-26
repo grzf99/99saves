@@ -15,6 +15,7 @@ import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
 import Modal from '../components/common/modal';
+import RenderIf from '../components/common/render-if';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -129,10 +130,10 @@ const Banner = styled.div`
   &:after {
     content: "";
     position: absolute;
-    bottom: -14px;
+    bottom: -17px;
     right: 0;
     width: 100%;
-    height: 30px;
+    height: 35px;
     background: ${colors.white};
     border-left: 0;
     border-right: 50px solid transparent;
@@ -216,7 +217,7 @@ const BrandContainer = styled.div`
     border-left: 0;
     border-right: 50px solid transparent;
     border-top: 5px solid #ffffff;
-    transform: rotate(1.7deg);
+    transform: rotate(1.2deg);
   }
   @media (max-width: 728px) {
     min-height: 550px;
@@ -382,7 +383,7 @@ const SaveSection = styled.section`
     border-left: 0;
     border-right: 1366px solid transparent;
     border-top: 30px solid ${colors.darkSkyBlue2};
-    transform: rotate(-2.7deg);
+    transform: rotate(-2.2deg);
   }
   &:after {
     content: "";
@@ -542,9 +543,9 @@ class Index extends React.Component {
             </Subtitle>
 
             <BannerActions>
-              {
-                !this.props.isSignedIn && <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
-              }
+              <RenderIf expr={!this.props.isSignedIn}>
+                <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
+              </RenderIf>
               <VideoButton onClick={() => this.openVideoModal()}>entenda como funciona</VideoButton>
             </BannerActions>
 
@@ -665,9 +666,9 @@ class Index extends React.Component {
           </ItWorkContainer>
 
           <ItWorkContainer className="center">
-            <Button outline openLoginModal={() => this.openModal()}>
-              participe agora mesmo
-            </Button>
+            <RenderIf expr={!this.props.isSignedIn}>
+              <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
+            </RenderIf>
           </ItWorkContainer>
 
         </ItWorkSection>
@@ -723,7 +724,7 @@ class Index extends React.Component {
             <iframe
               width="100%"
               height="100%"
-              src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1"
+              src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;showinfo=0&amp;autoplay=1"
             />
           </ModalVideoContent>
         </Modal>
