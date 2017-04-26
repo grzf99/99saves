@@ -20,9 +20,9 @@ import { Row, Column } from '../components/common/grid';
 import Panel from '../components/common/panel';
 import Section from '../components/common/section';
 import { ArrowBack, ChevronLeft, ChevronRight } from '../components/common/svg';
-import Image from '../components/common/image';
 import Gallery from '../components/gallery';
 import Headline from '../components/common/headline';
+import RenderIf from '../components/common/render-if';
 
 const Header = styled(Container)`
   display: flex;
@@ -153,7 +153,7 @@ const Control = styled.div`
   text-transform: uppercase;
   transform: translateY(-20px);
   transition: .2s ease width;
-  top: 346px;
+  top: 396px;
   width: 40px;
 
   &:hover {
@@ -173,6 +173,10 @@ const PrevArrow = styled(Control)`
 const RightArrow = styled(Control)`
   flex-direction: row-reverse;
   right: 0;
+`;
+
+const Info = styled.div`
+  margin: 20px 0;
 `;
 
 class Offer extends React.Component {
@@ -314,7 +318,9 @@ class Offer extends React.Component {
         <Header>
           <Link prefetch href="/saves"><a><ArrowBack /></a></Link>
           <div>
-            <GrayText>Vote na melhor oferta de</GrayText>
+            <RenderIf expr={this.props.votationOpen}>
+              <GrayText>Vote na melhor oferta de</GrayText>
+            </RenderIf>
             <Heading white uppercase>{this.state.save.title}</Heading>
           </div>
         </Header>
@@ -354,13 +360,14 @@ class Offer extends React.Component {
           {this.state.products.map((product, key) => (
             <div key={product.id}>
               <Section white>
-                <Gallery>
-                  <Image
-                    src={product.image_default}
-                    size={'240px'}
-                    alt={product.title}
-                  />
-                </Gallery>
+                <Gallery
+                  images={[
+                    product.image_default,
+                    product.image2,
+                    product.image3
+                  ]}
+                  alt={product.title}
+                />
               </Section>
 
               <Container>
@@ -375,15 +382,15 @@ class Offer extends React.Component {
                     <Heading white>{product.title}</Heading>
                     <Panel>
                       {product.description &&
-                        <div>
+                        <Info>
                           <h3>Descrição</h3>
                           {product.description}
-                        </div>}
+                        </Info>}
                       {product.technique_information &&
-                        <div>
+                        <Info>
                           <h3>Informações técnicas do produto</h3>
                           {product.technique_information}
-                        </div>}
+                        </Info>}
                     </Panel>
                   </Column>
                   <Column third>
