@@ -17,7 +17,7 @@ const Toolbar = styled.header`
   }
 `;
 
-const CustomContainer = styled(Container) `
+const CustomContainer = styled(Container)`
   display: flex;
   justify-content: space-between;
   padding: 12px;
@@ -112,12 +112,9 @@ class Toolbars extends React.Component {
               </Button>
             </RenderIf>
             <RenderIf expr={this.props.logged}>
-              <div>
-                <LoggedIn>{this.props.current_user.email} </LoggedIn>
-                <Button small outline onClick={this.props.onLogout}>
-                  logout
-                </Button>
-              </div>
+              <Button small outline onClick={this.props.onLogout}>
+                sair
+              </Button>
             </RenderIf>
           </MenuLinks>
         </CustomContainer>
@@ -128,7 +125,6 @@ class Toolbars extends React.Component {
   }
 }
 
-export default connect(
-  (state) => ({
-    current_user: state.currentUser
-  }))(Toolbars)
+export default connect(state => ({
+  current_user: state.currentUser
+}))(Toolbars);

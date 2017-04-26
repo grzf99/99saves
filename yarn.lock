@@ -948,11 +948,7 @@ babylon@6.14.1:
   version "6.14.1"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.14.1.tgz#956275fab72753ad9b3435d7afe58f8bf0a29815"
 
-babylon@^6.11.0, babylon@^6.13.0, babylon@^6.15.0:
-  version "6.16.1"
-  resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.16.1.tgz#30c5a22f481978a9e7f8cdfdf496b11d94b404d3"
-
-babylon@^6.17.0:
+babylon@^6.11.0, babylon@^6.13.0, babylon@^6.15.0, babylon@^6.17.0:
   version "6.17.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.17.0.tgz#37da948878488b9c4e3c4038893fa3314b3fc932"
 
@@ -4421,9 +4417,9 @@ nested-error-stacks@^1.0.0:
   dependencies:
     inherits "~2.0.1"
 
-next-redux-wrapper@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-1.0.0.tgz#8ddc993f6609ba85958d21afba8f5926339ce7b6"
+next-redux-wrapper@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-1.1.1.tgz#366aaa028f3041829671e62275f94f832c80359d"
 
 next-tick@1:
   version "1.0.0"

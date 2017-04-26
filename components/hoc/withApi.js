@@ -5,7 +5,7 @@ import { noop } from '../../utils';
 import createAPIClient from '../../utils/apiClient';
 import { TOKEN_COOKIE_KEY, logout } from '../../store/auth';
 import { setToken } from '../../store/currentUser';
-import Toast from '../common/toast'
+import Toast from '../common/toast';
 
 export default function withApi(mapStateToProps = noop, mapDispatchToProps) {
   return (Page) => {
@@ -28,7 +28,7 @@ export default function withApi(mapStateToProps = noop, mapDispatchToProps) {
         super(props);
         this.state = {
           showToast: false
-        }
+        };
         this.handleLogout = this.handleLogout.bind(this);
       }
 
@@ -45,8 +45,14 @@ export default function withApi(mapStateToProps = noop, mapDispatchToProps) {
       render() {
         return (
           <div>
-            <Page {...this.props} api={this.client} onLogout={this.handleLogout} />
-            <Toast show={this.state.showToast}>Você foi deslogado com sucesso.</Toast>
+            <Page
+              {...this.props}
+              api={this.client}
+              onLogout={this.handleLogout}
+            />
+            <Toast show={this.state.showToast}>
+              Você foi deslogado com sucesso.
+            </Toast>
           </div>
         );
       }

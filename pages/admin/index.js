@@ -23,4 +23,4 @@ class Admin extends React.Component {
   }
 }
 
-export default withAuth({ admin: true })(Admin);
+export default withAuth({ isAdminPage: true })(Admin);

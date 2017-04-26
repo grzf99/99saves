@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import withAuth from '../../components/hoc/withAuth'
+import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import ListTable from '../../components/admin/list-table-saves';
@@ -23,23 +23,25 @@ class Saves extends React.Component {
   }
 
   refresh() {
-    this.props.api.get('/saves')
-        .then((response) => {
-          this.setState({ ...this.state, list: response.data.rows });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    this.props.api
+      .get('/saves')
+      .then((response) => {
+        this.setState({ ...this.state, list: response.data.rows });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   handleDelete(save) {
-    this.props.api.delete('/saves')
-        .then(() => {
-          this.refresh();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    this.props.api
+      .delete('/saves')
+      .then(() => {
+        this.refresh();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -56,7 +58,10 @@ class Saves extends React.Component {
               </div>
 
               <div className="panel-body">
-                <ListTable list={this.state.list} handleDelete={this.handleDelete} />
+                <ListTable
+                  list={this.state.list}
+                  handleDelete={this.handleDelete}
+                />
               </div>
             </div>
           </div>
@@ -66,4 +71,4 @@ class Saves extends React.Component {
   }
 }
 
-export default withAuth({ admin: true })(Saves);
+export default withAuth({ isAdminPage: true })(Saves);

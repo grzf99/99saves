@@ -1,21 +1,26 @@
 const express = require('express');
-const passport = require('passport');
 const { saves, subscriptions, votes } = require('../controllers');
+const {
+  clientAuthentication,
+  adminAuthentication
+} = require('../middleware/authentication');
 
 const router = express.Router();
 
-router.post('/', saves.create);
-router.get('/:id', saves.show);
-router.get('/', (req, res, next) => {
-  if (req.cookies['99-token'] || req.headers.Authorization) passport.authenticate('client-jwt')(req, res, next);
-  else next();
-}, saves.list);
-router.put('/:id', saves.update);
-router.delete('/:id', saves.delete);
+// client
+router.get('/:id', clientAuthentication(true), saves.show);
+router.get('/', clientAuthentication(true), saves.list);
+router.post(
+  '/:saveId/subscriptions',
+  clientAuthentication(),
+  subscriptions.create
+);
+router.get('/:saveId/votes', clientAuthentication(), votes.show);
+router.post('/:saveId/votes', clientAuthentication(), votes.create);
 
-router.post('/:saveId/subscriptions', passport.authenticate('client-jwt'), subscriptions.create);
-// TODO: Adicionar autênticação
-router.get('/:saveId/votes', passport.authenticate('client-jwt'), votes.show);
-router.post('/:saveId/votes', passport.authenticate('client-jwt'), votes.create);
+// admin
+router.post('/', adminAuthentication(), saves.create);
+router.put('/:id', adminAuthentication(), saves.update);
+router.delete('/:id', adminAuthentication(), saves.delete);
 
 module.exports = router;
