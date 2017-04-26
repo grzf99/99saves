@@ -130,10 +130,10 @@ const Banner = styled.div`
   &:after {
     content: "";
     position: absolute;
-    bottom: -14px;
+    bottom: -17px;
     right: 0;
     width: 100%;
-    height: 30px;
+    height: 35px;
     background: ${colors.white};
     border-left: 0;
     border-right: 50px solid transparent;
@@ -217,7 +217,7 @@ const BrandContainer = styled.div`
     border-left: 0;
     border-right: 50px solid transparent;
     border-top: 5px solid #ffffff;
-    transform: rotate(1.7deg);
+    transform: rotate(1.2deg);
   }
   @media (max-width: 728px) {
     min-height: 550px;
@@ -383,7 +383,7 @@ const SaveSection = styled.section`
     border-left: 0;
     border-right: 1366px solid transparent;
     border-top: 30px solid ${colors.darkSkyBlue2};
-    transform: rotate(-2.7deg);
+    transform: rotate(-2.2deg);
   }
   &:after {
     content: "";
