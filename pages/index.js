@@ -15,6 +15,7 @@ import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
 import Modal from '../components/common/modal';
+import RenderIf from '../components/common/render-if';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -542,9 +543,9 @@ class Index extends React.Component {
             </Subtitle>
 
             <BannerActions>
-              {
-                !this.props.isSignedIn && <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
-              }
+              <RenderIf expr={!this.props.isSignedIn}>
+                <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
+              </RenderIf>
               <VideoButton onClick={() => this.openVideoModal()}>entenda como funciona</VideoButton>
             </BannerActions>
 
@@ -665,9 +666,9 @@ class Index extends React.Component {
           </ItWorkContainer>
 
           <ItWorkContainer className="center">
-            {
-              !this.props.isSignedIn && <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
-            }
+            <RenderIf expr={!this.props.isSignedIn}>
+              <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
+            </RenderIf>
           </ItWorkContainer>
 
         </ItWorkSection>
