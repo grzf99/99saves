@@ -223,7 +223,11 @@ class Offer extends React.Component {
 
     this.timer = setInterval(() => {
       this.setState({
-        countdown: this.getCountdown(this.state.save.checkout_end)
+        countdown: this.getCountdown(
+          this.state.checkoutOpen
+            ? this.state.save.checkout_end
+            : this.state.save.votation_end
+        )
       });
     }, 1000);
   }
@@ -328,7 +332,7 @@ class Offer extends React.Component {
         }
 
         {
-          this.props.checkoutOpen && (
+          (this.props.checkoutOpen || this.props.votationOpen) && (
             <Headline spotlight large>
               A oferta acaba em <b>{this.state.countdown}</b>
             </Headline>
