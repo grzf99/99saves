@@ -223,7 +223,7 @@ class Offer extends React.Component {
     this.timer = setInterval(() => {
       this.setState({
         countdown: this.getCountdown(
-          this.state.checkoutOpen
+          this.props.checkoutOpen
             ? this.state.save.checkout_end
             : this.state.save.votation_end
         )
