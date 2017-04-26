@@ -257,7 +257,7 @@ export default class extends React.Component {
             <Button block outline onClick={this.goToOffers}>
               Sobre o produto
             </Button>
-            <Button block href={this.props.linkToBuy}>Comprar agora</Button>
+            <Button block href={this.props.winnerProduct && this.props.winnerProduct.link_buy}>Comprar agora</Button>
           </ButtonGroup>
         </RenderIf>
 

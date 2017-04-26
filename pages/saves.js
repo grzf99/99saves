@@ -190,7 +190,7 @@ class Saves extends React.Component {
           openLoginModal={() => this.openModal(save.id)}
           handleSubscribe={() => this.handleSubscribe(save.id)}
           goToOffers={() => this.goToOffers(save.slug)}
-          linkToBuy={save.winnerProduct && save.winnerProduct.link_buy}
+          winnerProduct={save.winnerProduct}
         />
         ))
       : <BlankState>
