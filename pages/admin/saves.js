@@ -26,7 +26,7 @@ class Saves extends React.Component {
     this.props.api
       .get('/saves')
       .then((response) => {
-        this.setState({ ...this.state, list: response.data.rows });
+        this.setState({ ...this.state, list: response.data });
       })
       .catch((error) => {
         console.log(error);

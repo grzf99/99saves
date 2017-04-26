@@ -4417,9 +4417,9 @@ nested-error-stacks@^1.0.0:
   dependencies:
     inherits "~2.0.1"
 
-next-redux-wrapper@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-1.1.1.tgz#366aaa028f3041829671e62275f94f832c80359d"
+next-redux-wrapper@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-1.0.0.tgz#8ddc993f6609ba85958d21afba8f5926339ce7b6"
 
 next-tick@1:
   version "1.0.0"
