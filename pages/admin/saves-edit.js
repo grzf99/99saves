@@ -201,4 +201,4 @@ class SavesEdit extends React.Component {
   }
 }
 
-export default withAuth({ admin: true })(SavesEdit);
+export default withAuth({ isAdminPage: true })(SavesEdit);

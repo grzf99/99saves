@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { colors } from './styles/variables';
+import RenderIf from './common/render-if';
 import Button from './common/button';
 import Container from './common/container';
 import LoginModal from './auth/login-modal';
@@ -75,20 +76,18 @@ class Toolbars extends React.Component {
     this.state = {
       modalOpen: false
     };
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.logged) {
-      this.closeModal();
+    if (nextProps.logged && nextProps.logged !== this.props.logged) {
+      this.toggleModal();
     }
   }
 
-  openModal() {
-    this.setState({ modalOpen: true });
-  }
-
-  closeModal() {
-    this.setState({ modalOpen: false });
+  toggleModal() {
+    const { modalOpen } = this.state;
+    this.setState({ modalOpen: !modalOpen });
   }
 
   render() {
@@ -107,25 +106,25 @@ class Toolbars extends React.Component {
                 todos os saves
               </LinkAllSaves>
             </Link>
-            {!this.props.logged ? (
-              <Button small outline onClick={() => this.openModal()}>login
+            <RenderIf expr={!this.props.logged}>
+              <Button small outline onClick={this.toggleModal}>
+                login
               </Button>
-            ) : (
-              <LoggedIn>{ this.props.current_user.email } </LoggedIn>
-            )}
+            </RenderIf>
+            <RenderIf expr={this.props.logged}>
+              <Button small outline onClick={this.props.onLogout}>
+                sair
+              </Button>
+            </RenderIf>
           </MenuLinks>
         </CustomContainer>
 
-        <LoginModal
-          isOpen={this.state.modalOpen}
-          close={() => this.closeModal()}
-        />
+        <LoginModal isOpen={this.state.modalOpen} close={this.toggleModal} />
       </Toolbar>
     );
   }
 }
 
-export default connect(
-  (state) => ({
-    current_user: state.currentUser
-  }))(Toolbars)
+export default connect(state => ({
+  current_user: state.currentUser
+}))(Toolbars);

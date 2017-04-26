@@ -3,11 +3,16 @@ import Router from 'next/router';
 import withStore from 'next-redux-wrapper';
 import RenderIf from '../common/render-if';
 import createStore from '../../store';
+import { noop } from '../../utils';
 import createAPIClient from '../../utils/apiClient';
-import { TOKEN_COOKIE_KEY } from '../../store/auth';
+import { TOKEN_COOKIE_KEY, logout } from '../../store/auth';
 import { setToken } from '../../store/currentUser';
 
-export default function withAuth({ admin = false } = {}) {
+export default function withAuth(
+  { isAdminPage = false } = {},
+  mapStateToProps = noop,
+  mapDispatchToProps
+) {
   return (Page) => {
     class Authenticated extends Component {
       static getInitialProps(ctx) {
@@ -19,24 +24,49 @@ export default function withAuth({ admin = false } = {}) {
 
         const api = createAPIClient(token);
 
-        return Page.getInitialProps && Page.getInitialProps(Object.assign({}, ctx, { api }));
+        return (
+          Page.getInitialProps &&
+          Page.getInitialProps(Object.assign({}, ctx, { api }))
+        );
+      }
+
+      constructor(props) {
+        super(props);
+        this.handleLogout = this.handleLogout.bind(this);
       }
 
       componentWillMount() {
-        if (typeof window !== 'undefined' && !this.props.isSignedIn) {
-          const url = admin ? '/admin/login' : '/login';
-          Router.replace(url);
+        if (typeof window !== 'undefined') {
+          let url;
+          if (!this.props.isSignedIn) {
+            url = isAdminPage ? '/admin/login' : '/login';
+          } else if (isAdminPage && !this.props.isAdmin) {
+            url = '/admin/login';
+          }
+
+          if (url) {
+            Router.replace(url);
+          }
         }
 
         this.client = createAPIClient(this.props.token);
       }
 
+      handleLogout() {
+        const url = isAdminPage ? '/admin/login' : '/';
+        this.props.logout();
+        Router.push(url);
+      }
+
       render() {
+        const { isSignedIn, isAdmin } = this.props;
+        const shouldRender = isAdminPage ? isSignedIn && isAdmin : isSignedIn;
         return (
-          <RenderIf expr={this.props.isSignedIn}>
+          <RenderIf expr={shouldRender}>
             <Page
               {...this.props}
               api={this.client}
+              onLogout={this.handleLogout}
             />
           </RenderIf>
         );
@@ -45,10 +75,13 @@ export default function withAuth({ admin = false } = {}) {
 
     return withStore(
       createStore,
-      ({ currentUser }) => ({
-        token: currentUser.token,
-        isSignedIn: currentUser.token !== undefined
-      })
+      state => ({
+        token: state.currentUser.token,
+        isSignedIn: state.currentUser.token !== undefined,
+        isAdmin: state.currentUser.admin,
+        ...mapStateToProps(state)
+      }),
+      { logout, ...mapDispatchToProps }
     )(Authenticated);
   };
 }

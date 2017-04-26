@@ -38,7 +38,7 @@ class ProductsCreate extends React.Component {
     this.getSaves();
     this.getProvider();
   }
-  
+
 
   componentDidMount() {
     this.getProducts(this.props.query.id);
@@ -70,7 +70,7 @@ class ProductsCreate extends React.Component {
         })
         .catch((error) => {
           console.log(error);
-        }); 
+        });
   }
 
   getProvider() {
@@ -84,7 +84,7 @@ class ProductsCreate extends React.Component {
         })
         .catch((error) => {
           console.log(error);
-        }); 
+        });
   }
 
   handleSave(event) {
@@ -303,7 +303,7 @@ class ProductsCreate extends React.Component {
                         <a className="pull-right btn btn-primary">Editar</a>
                       </Link>
                     </div>
-                    
+
                   </FRC.Form>
                 )}
               </div>
@@ -318,4 +318,4 @@ class ProductsCreate extends React.Component {
   }
 }
 
-export default withAuth({ admin: true })(ProductsCreate)
+export default withAuth({ isAdminPage: true })(ProductsCreate)

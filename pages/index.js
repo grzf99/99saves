@@ -2,7 +2,6 @@ import React from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 
-import config from '../config';
 import { savesMapper } from '../utils';
 import { USER_LOCALSTORAGE_KEY } from '../store/auth';
 import withApi from '../components/hoc/withApi';
@@ -16,6 +15,7 @@ import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
 import Modal from '../components/common/modal';
+import RenderIf from '../components/common/render-if';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -130,10 +130,10 @@ const Banner = styled.div`
   &:after {
     content: "";
     position: absolute;
-    bottom: -14px;
+    bottom: -17px;
     right: 0;
     width: 100%;
-    height: 30px;
+    height: 35px;
     background: ${colors.white};
     border-left: 0;
     border-right: 50px solid transparent;
@@ -217,7 +217,7 @@ const BrandContainer = styled.div`
     border-left: 0;
     border-right: 50px solid transparent;
     border-top: 5px solid #ffffff;
-    transform: rotate(1.7deg);
+    transform: rotate(1.2deg);
   }
   @media (max-width: 728px) {
     min-height: 550px;
@@ -383,7 +383,7 @@ const SaveSection = styled.section`
     border-left: 0;
     border-right: 1366px solid transparent;
     border-top: 30px solid ${colors.darkSkyBlue2};
-    transform: rotate(-2.7deg);
+    transform: rotate(-2.2deg);
   }
   &:after {
     content: "";
@@ -444,7 +444,7 @@ const SaveInfo = styled.span`
 
 class Index extends React.Component {
   static async getInitialProps(ctx) {
-    const items = (await ctx.api.get(`/saves?filters[active]=true&limit=3`));
+    const items = await ctx.api.get('/saves?filters[active]=true&limit=3');
     const saves = savesMapper(items.data);
     return { saves };
   }
@@ -484,17 +484,17 @@ class Index extends React.Component {
   }
 
   handleSubscribe(subscribeTo) {
-    return this.props.api.post(
-      `/saves/${subscribeTo}/subscriptions`,
-    ).then(() => {
-      const rows = [...this.state.saves.rows].map((row) => {
-        const save = row;
-        if (save.id === subscribeTo) save.hasSubscribed = true;
-        return save;
+    return this.props.api
+      .post(`/saves/${subscribeTo}/subscriptions`)
+      .then(() => {
+        const rows = [...this.state.saves.rows].map((row) => {
+          const save = row;
+          if (save.id === subscribeTo) save.hasSubscribed = true;
+          return save;
+        });
+        this.setState({ saves: { count: rows.length, rows }, showToast: true });
+        setTimeout(() => this.setState({ showToast: false }), 4000);
       });
-      this.setState({ saves: { count: rows.length, rows }, showToast: true });
-      setTimeout(() => this.setState({ showToast: false }), 4000);
-    });
   }
 
   openModal(subscribeTo) {
@@ -518,14 +518,15 @@ class Index extends React.Component {
   }
 
   loadSaves() {
-    this.props.api.get(`/saves?filters[active]=true&limit=3`)
-        .then(res => res.data)
-        .then(saves => savesMapper(saves))
-        .then((saves) => {
-          this.setState({
-            saves
-          });
+    this.props.api
+      .get('/saves?filters[active]=true&limit=3')
+      .then(res => res.data)
+      .then(saves => savesMapper(saves))
+      .then((saves) => {
+        this.setState({
+          saves
         });
+      });
   }
 
   render() {
@@ -533,7 +534,11 @@ class Index extends React.Component {
       <Page hasFooter>
 
         <Banner>
-          <Toolbar logged={this.props.isSignedIn} background="transparent" />
+          <Toolbar
+            logged={this.props.isSignedIn}
+            background="transparent"
+            onLogout={this.props.onLogout}
+          />
 
           <BannerContainer>
             <Title>Juntos pelo melhor preço</Title>
@@ -542,10 +547,14 @@ class Index extends React.Component {
             </Subtitle>
 
             <BannerActions>
-              {
-                !this.props.isSignedIn && <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
-              }
-              <VideoButton onClick={() => this.openVideoModal()}>entenda como funciona</VideoButton>
+              <RenderIf expr={!this.props.isSignedIn}>
+                <Button outline onClick={() => this.openModal()}>
+                  participe agora mesmo
+                </Button>
+              </RenderIf>
+              <VideoButton onClick={() => this.openVideoModal()}>
+                entenda como funciona
+              </VideoButton>
             </BannerActions>
 
           </BannerContainer>
@@ -555,7 +564,10 @@ class Index extends React.Component {
         <BrandContainer>
           <BannerTitle>negociamos com as marcas que você confia</BannerTitle>
           <BrandImagesContainer>
-            <BrandImage src="/static/images/logo-kitchen-aid.svg" alt="kitchen-aid" />
+            <BrandImage
+              src="/static/images/logo-kitchen-aid.svg"
+              alt="kitchen-aid"
+            />
             <BrandImage src="/static/images/logo-brastemp.svg" alt="Brastemp" />
             <BrandImage src="/static/images/logo-consul.svg" alt="Consult" />
           </BrandImagesContainer>
@@ -567,61 +579,105 @@ class Index extends React.Component {
             <WeAreNotTitle>compra coletiva</WeAreNotTitle>
           </WeAreNot>
 
-          <WeAreNotDescription>Entenda <span>como funciona</span> o passo a passo da negociação de cada Save até o momento da compra</WeAreNotDescription>
+          <WeAreNotDescription>
+            Entenda
+            {' '}
+            <span>como funciona</span>
+            {' '}
+            o passo a passo da negociação de cada Save até o momento da compra
+          </WeAreNotDescription>
         </WeAreNotContainer>
 
         <ItWorkSection>
           <ItWorkContainer>
-            <ItWorkImage src="/static/images/img-how-it-works-1.svg" alt="Passo 1 - Interesse" />
+            <ItWorkImage
+              src="/static/images/img-how-it-works-1.svg"
+              alt="Passo 1 - Interesse"
+            />
             <ItWorkInfos>
               <ItWorktTitle>interesse</ItWorktTitle>
-              <ItWorkDescription>Você, assim como centenas de outras pessoas, aplica a um save, demonstrando seu interesse em um determinado produto (o tempo máximo que um save fica aberto para entrada de consumidores é de 10 dias).</ItWorkDescription>
+              <ItWorkDescription>
+                Você, assim como centenas de outras pessoas, aplica a um save, demonstrando seu interesse em um determinado produto (o tempo máximo que um save fica aberto para entrada de consumidores é de 10 dias).
+              </ItWorkDescription>
             </ItWorkInfos>
           </ItWorkContainer>
 
           <ItWorkContainer className="reverse">
-            <ItWorkImage src="/static/images/img-how-it-works-2.svg" alt="Passo 2 - Concorrência entre fabricantes" />
+            <ItWorkImage
+              src="/static/images/img-how-it-works-2.svg"
+              alt="Passo 2 - Concorrência entre fabricantes"
+            />
             <ItWorkInfos>
               <ItWorktTitle>Concorrência entre fabricantes</ItWorktTitle>
-              <ItWorkDescription>Fechado o save (ninguém mais entra), o sistema libera uma única ordem para que os mais conceituados fabricantes daquele produto(já cadastrados no 99saves.com) enviem sua melhor oferta para atender aquela quantidade de pessoas (como se fossemos um grande varejista).</ItWorkDescription>
+              <ItWorkDescription>
+                Fechado o save (ninguém mais entra), o sistema libera uma única ordem para que os mais conceituados fabricantes daquele produto(já cadastrados no 99saves.com) enviem sua melhor oferta para atender aquela quantidade de pessoas (como se fossemos um grande varejista).
+              </ItWorkDescription>
             </ItWorkInfos>
           </ItWorkContainer>
 
           <ItWorkContainer>
-            <ItWorkImage src="/static/images/img-how-it-works-3.svg" alt="Passo 3 - Você dá sua opinião" />
+            <ItWorkImage
+              src="/static/images/img-how-it-works-3.svg"
+              alt="Passo 3 - Você dá sua opinião"
+            />
             <ItWorkInfos>
               <ItWorktTitle>Você dá sua opinião</ItWorktTitle>
-              <ItWorkDescription>A equipe de compras do 99saves.com analisa os melhores fornecedores e ofertas, seleciona as melhores (até 3) e disponibiliza para votação. A votação não é obrigatória e encerra-se automaticamente após 24 horas da sua abertura (cada participante tem direito a um voto).</ItWorkDescription>
+              <ItWorkDescription>
+                A equipe de compras do 99saves.com analisa os melhores fornecedores e ofertas, seleciona as melhores (até 3) e disponibiliza para votação. A votação não é obrigatória e encerra-se automaticamente após 24 horas da sua abertura (cada participante tem direito a um voto).
+              </ItWorkDescription>
             </ItWorkInfos>
           </ItWorkContainer>
 
           <ItWorkContainer className="reverse">
-            <ItWorkImage src="/static/images/img-how-it-works-4.svg" alt="Passo 4 - A oferta vencedora fica disponível para compra" />
+            <ItWorkImage
+              src="/static/images/img-how-it-works-4.svg"
+              alt="Passo 4 - A oferta vencedora fica disponível para compra"
+            />
             <ItWorkInfos>
-              <ItWorktTitle>A oferta vencedora fica disponível para compra</ItWorktTitle>
-              <ItWorkDescription>Encerrada a pesquisa, automaticamente a oferta que teve o maior número de votos é liberada para compra através de um link em sua área do usuário, dentro do 99saves.com. </ItWorkDescription>
+              <ItWorktTitle>
+                A oferta vencedora fica disponível para compra
+              </ItWorktTitle>
+              <ItWorkDescription>
+                Encerrada a pesquisa, automaticamente a oferta que teve o maior número de votos é liberada para compra através de um link em sua área do usuário, dentro do 99saves.com.
+                {' '}
+              </ItWorkDescription>
             </ItWorkInfos>
           </ItWorkContainer>
 
           <ItWorkContainer>
-            <ItWorkImage src="/static/images/img-how-it-works-5.svg" alt="Passo 5 - A venda e a entrega será feita diretamente pelo fabricante" />
+            <ItWorkImage
+              src="/static/images/img-how-it-works-5.svg"
+              alt="Passo 5 - A venda e a entrega será feita diretamente pelo fabricante"
+            />
             <ItWorkInfos>
-              <ItWorktTitle>A venda e a entrega será feita diretamente pelo fabricante</ItWorktTitle>
-              <ItWorkDescription>Você acessa o link de compra em sua área do usuário no 99saves.com, é redirecionado para a compra dentro do site do fabricante pelo preço exclusivo que negociamos e ele realizará a entrega(nós estaremos de olho neste processo, apoiando no que for preciso). Lembre-se, você terá 48 horas para finalizar a compra ou seu link será inativado. </ItWorkDescription>
+              <ItWorktTitle>
+                A venda e a entrega será feita diretamente pelo fabricante
+              </ItWorktTitle>
+              <ItWorkDescription>
+                Você acessa o link de compra em sua área do usuário no 99saves.com, é redirecionado para a compra dentro do site do fabricante pelo preço exclusivo que negociamos e ele realizará a entrega(nós estaremos de olho neste processo, apoiando no que for preciso). Lembre-se, você terá 48 horas para finalizar a compra ou seu link será inativado.
+              </ItWorkDescription>
             </ItWorkInfos>
           </ItWorkContainer>
 
           <ItWorkContainer className="reverse">
-            <ItWorkImage src="/static/images/img-how-it-works-6.svg" alt="Passo 6 - Você avalia a sua compra" />
+            <ItWorkImage
+              src="/static/images/img-how-it-works-6.svg"
+              alt="Passo 6 - Você avalia a sua compra"
+            />
             <ItWorkInfos>
               <ItWorktTitle>Você avalia a sua compra</ItWorktTitle>
-              <ItWorkDescription>O 99saves.com só trabalha com os melhores. É por isso que você avaliará a sua satisfação com o fabricante, a entrega e o seu produto. Fabricantes que tiverem menos de 75% de satisfação dos usuários, serão automaticamente descadastrados da plataforma. Juntos, somos mais fortes, certo?
+              <ItWorkDescription>
+                O 99saves.com só trabalha com os melhores. É por isso que você avaliará a sua satisfação com o fabricante, a entrega e o seu produto. Fabricantes que tiverem menos de 75% de satisfação dos usuários, serão automaticamente descadastrados da plataforma. Juntos, somos mais fortes, certo?
               </ItWorkDescription>
             </ItWorkInfos>
           </ItWorkContainer>
 
           <ItWorkContainer className="center">
-            <Button outline openLoginModal={() => this.openModal()}>participe agora mesmo</Button>
+            <RenderIf expr={!this.props.isSignedIn}>
+              <Button outline onClick={() => this.openModal()}>
+                participe agora mesmo
+              </Button>
+            </RenderIf>
           </ItWorkContainer>
 
         </ItWorkSection>
@@ -629,26 +685,28 @@ class Index extends React.Component {
         <SaveSection>
           <SaveContainer>
             <SaveTitle>Saves</SaveTitle>
-            <SaveSubtitle>Escolha o produto que te interessa e participe do save</SaveSubtitle>
-            <SaveInfo>Lembre-se: aplique somente para aqueles que tiver real interesse de compra</SaveInfo>
+            <SaveSubtitle>
+              Escolha o produto que te interessa e participe do save
+            </SaveSubtitle>
+            <SaveInfo>
+              Lembre-se: aplique somente para aqueles que tiver real interesse de compra
+            </SaveInfo>
           </SaveContainer>
         </SaveSection>
 
         <CardsList>
-          {
-            this.state.saves.rows && this.state.saves.rows.map(
-              save =>
-                <StyledCard
-                  {...save}
-                  key={save.id}
-                  logged={this.state.logged}
-                  openLoginModal={() => this.openModal(save.id)}
-                  handleSubscribe={() => this.handleSubscribe(save.id)}
-                  goToOffers={() => this.goToOffers(save.slug)}
-                  linkToBuy={save.Products && (save.Products[save.id % 2] || {}).link_buy}
-                />
-            )
-          }
+          {this.state.saves.rows &&
+            this.state.saves.rows.map(save => (
+              <StyledCard
+                {...save}
+                key={save.id}
+                logged={this.state.logged}
+                openLoginModal={() => this.openModal(save.id)}
+                handleSubscribe={() => this.handleSubscribe(save.id)}
+                goToOffers={() => this.goToOffers(save.slug)}
+                linkToBuy={save.winnerProduct && save.winnerProduct.link_buy}
+              />
+            ))}
         </CardsList>
 
         <ItWorkContainer className="center">
@@ -657,7 +715,10 @@ class Index extends React.Component {
 
         <Footer />
 
-        <LoginModal isOpen={this.state.modalIsOpen} close={() => this.closeModal()} />
+        <LoginModal
+          isOpen={this.state.modalIsOpen}
+          close={() => this.closeModal()}
+        />
 
         <Modal
           isOpen={this.state.modalVideoIsOpen}
@@ -667,7 +728,11 @@ class Index extends React.Component {
           style={modalVideoStyles}
         >
           <ModalVideoContent>
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1"></iframe>
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;showinfo=0&amp;autoplay=1"
+            />
           </ModalVideoContent>
         </Modal>
 
@@ -679,4 +744,4 @@ class Index extends React.Component {
   }
 }
 
-export default withApi(Index);
+export default withApi()(Index);
