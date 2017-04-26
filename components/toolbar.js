@@ -17,7 +17,7 @@ const Toolbar = styled.header`
   }
 `;
 
-const CustomContainer = styled(Container) `
+const CustomContainer = styled(Container)`
   display: flex;
   justify-content: space-between;
   padding: 12px;
@@ -125,7 +125,6 @@ class Toolbars extends React.Component {
   }
 }
 
-export default connect(
-  (state) => ({
-    current_user: state.currentUser
-  }))(Toolbars)
+export default connect(state => ({
+  current_user: state.currentUser
+}))(Toolbars);

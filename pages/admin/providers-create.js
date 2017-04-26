@@ -18,7 +18,7 @@ class ProvidersCreate extends React.Component {
       loading: true,
       showToast: false,
       messageToast: '',
-      typeToast: '',
+      typeToast: ''
     };
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -35,13 +35,18 @@ class ProvidersCreate extends React.Component {
 
   handleImageUpload(file, name) {
     const imageChange = {};
-    const upload = request.post(config.CLOUDINARY_UPLOAD_URL)
-                     .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
-                     .field('file', file);
+    const upload = request
+      .post(config.CLOUDINARY_UPLOAD_URL)
+      .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
+      .field('file', file);
 
     upload.end((err, response) => {
       if (err) {
-        this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Problemas ao se comunicar com API: ${err}`
+        });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
@@ -56,21 +61,34 @@ class ProvidersCreate extends React.Component {
     const values = Object.assign(data, { logo: this.state.logo });
 
     if (!values.name || !values.cnpj || !values.phone || !values.email) {
-      this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Preencha todos os campos obrigatórios' });
+      this.setState({
+        showToast: true,
+        typeToast: 'warning',
+        messageToast: 'Preencha todos os campos obrigatórios'
+      });
       setTimeout(() => this.setState({ showToast: false }), 4500);
     }
 
     if (!values.logo) delete values.logo;
 
-    const rest = axios.post(`${config.API_URL}/providers`, values)
-        .then(() => {
-          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
-          setTimeout(() => Router.push('/admin/providers'), 2000);
-        })
-        .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao inserir o registro' });
-          setTimeout(() => this.setState({ showToast: false }), 2500);
+    const rest = axios
+      .post(`${config.API_URL}/providers`, values)
+      .then(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'success',
+          messageToast: 'Registro cadsatrado com Sucesso'
         });
+        setTimeout(() => Router.push('/admin/providers'), 2000);
+      })
+      .catch(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: 'Erro ao inserir o registro'
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
+      });
 
     return rest;
   }
@@ -86,16 +104,12 @@ class ProvidersCreate extends React.Component {
               </div>
 
               <div className="panel-body">
-                {this.state.loading ? (
-                  <div className="pull-center">
+                {this.state.loading
+                  ? <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
-                ) : (
-                  <FRC.Form onSubmit={this.submitForm} layout="vertical">
-                    <Input
-                      name="id"
-                      type="hidden"
-                    />
+                  : <FRC.Form onSubmit={this.submitForm} layout="vertical">
+                    <Input name="id" type="hidden" />
                     <Input
                       name="name"
                       value=""
@@ -147,31 +161,37 @@ class ProvidersCreate extends React.Component {
                     />
 
                     <div className="form-group col-sm-12">
-                      <label
-                        className="control-label"
-                        htmlFor="logo"
-                      >Logo</label>
+                      <label className="control-label" htmlFor="logo">
+                          Logo
+                        </label>
                       <div className="controls">
-                        <input type="file" name="logo" onChange={this.handleSave} />
+                        <input
+                          type="file"
+                          name="logo"
+                          onChange={this.handleSave}
+                        />
                       </div>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                        <input
+                          className="btn btn-primary"
+                          type="submit"
+                          defaultValue="Enviar"
+                        />
                       </div>
                     </Row>
-                  </FRC.Form>
-                )}
+                  </FRC.Form>}
               </div>
             </div>
           </div>
         </div>
         <AlertMessage type={this.state.typeToast} show={this.state.showToast}>
-          { this.state.messageToast }
+          {this.state.messageToast}
         </AlertMessage>
       </Layout>
     );
   }
 }
 
-export default withAuth({ admin: true })(ProvidersCreate);
+export default withAuth({ isAdminPage: true })(ProvidersCreate);

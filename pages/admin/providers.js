@@ -17,7 +17,7 @@ class Providers extends React.Component {
       list: [],
       showToast: false,
       messageToast: '',
-      typeToast: '',
+      typeToast: ''
     };
 
     this.refresh = this.refresh.bind(this);
@@ -29,26 +29,36 @@ class Providers extends React.Component {
   }
 
   refresh() {
-    axios.get(`${config.API_URL}/providers`)
-        .then((response) => {
-          this.setState({ ...this.state, list: response.data.rows });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    axios
+      .get(`${config.API_URL}/providers`)
+      .then((response) => {
+        this.setState({ ...this.state, list: response.data.rows });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   handleDelete(item) {
-    axios.delete(`${config.API_URL}/providers/${item.id}`)
-        .then(() => {
-          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro Excluido com Sucesso' });
-          setTimeout(() => this.setState({ showToast: false }), 1500);
-          this.refresh();
-        })
-        .catch((error) => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Erro ao ecluir o registr: ${error}` });
-          setTimeout(() => this.setState({ showToast: false }), 2500);
+    axios
+      .delete(`${config.API_URL}/providers/${item.id}`)
+      .then(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'success',
+          messageToast: 'Registro Excluido com Sucesso'
         });
+        setTimeout(() => this.setState({ showToast: false }), 1500);
+        this.refresh();
+      })
+      .catch((error) => {
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Erro ao ecluir o registr: ${error}`
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
+      });
   }
 
   render() {
@@ -65,17 +75,20 @@ class Providers extends React.Component {
               </div>
 
               <div className="panel-body">
-                <ListTable list={this.state.list} handleDelete={this.handleDelete} />
+                <ListTable
+                  list={this.state.list}
+                  handleDelete={this.handleDelete}
+                />
               </div>
             </div>
           </div>
         </div>
         <AlertMessage type={this.state.typeToast} show={this.state.showToast}>
-          { this.state.messageToast }
+          {this.state.messageToast}
         </AlertMessage>
       </Layout>
     );
   }
 }
 
-export default withAuth({ admin: true })(Providers);
+export default withAuth({ isAdminPage: true })(Providers);
