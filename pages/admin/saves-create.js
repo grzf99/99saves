@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import request from 'superagent';
 import Router from 'next/router';
 import moment from 'moment';
@@ -75,7 +74,7 @@ class SavesCreate extends React.Component {
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    const rest = axios.post(`${config.API_URL}/saves`, values)
+    const rest = this.props.api.post('/saves', values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
           setTimeout(() => Router.push('/admin/saves'), 2000);

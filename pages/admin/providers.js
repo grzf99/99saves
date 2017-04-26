@@ -1,7 +1,6 @@
 import React from 'react';
 import 'isomorphic-fetch';
 import Link from 'next/link';
-import axios from 'axios';
 
 import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
@@ -29,8 +28,8 @@ class Providers extends React.Component {
   }
 
   refresh() {
-    axios
-      .get(`${config.API_URL}/providers`)
+    this.props.api
+      .get('/providers')
       .then((response) => {
         this.setState({ ...this.state, list: response.data.rows });
       })
@@ -40,8 +39,8 @@ class Providers extends React.Component {
   }
 
   handleDelete(item) {
-    axios
-      .delete(`${config.API_URL}/providers/${item.id}`)
+    this.props.api
+      .delete(`/providers/${item.id}`)
       .then(() => {
         this.setState({
           showToast: true,

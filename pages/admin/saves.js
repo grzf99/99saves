@@ -35,7 +35,7 @@ class Saves extends React.Component {
 
   handleDelete(save) {
     this.props.api
-      .delete('/saves')
+      .delete(`/saves/${save.id}`)
       .then(() => {
         this.refresh();
       })
