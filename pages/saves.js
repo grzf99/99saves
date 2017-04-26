@@ -211,7 +211,7 @@ class Saves extends React.Component {
         {
           this.state.logged && (
             <Tabs withBorder index={this.state.activeTab} onChange={this.handleChangeIndex}>
-              <Tab>Todos</Tab>
+              <Tab>Saves Abertos</Tab>
               <Tab>Meus Saves</Tab>
             </Tabs>
           )
