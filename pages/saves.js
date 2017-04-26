@@ -232,10 +232,6 @@ class Saves extends React.Component {
           animateHeight
         >
           <CardsList>
-            {this.renderUserSaves()}
-          </CardsList>
-
-          <CardsList>
             {this.state.saves.rows &&
               this.state.saves.rows.map(save => (
                 <StyledCard
@@ -247,6 +243,10 @@ class Saves extends React.Component {
                   goToOffers={() => this.goToOffers(save.slug)}
                 />
               ))}
+          </CardsList>
+
+          <CardsList>
+            {this.renderUserSaves()}
           </CardsList>
         </SwipeableViews>
 
