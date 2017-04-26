@@ -37,6 +37,7 @@ const Tag = styled(Text)`
 
 const ImagesContainer = styled.div`
   display: flex;
+  min-height: 100%;
   width: 100%;
 `;
 
@@ -49,12 +50,14 @@ const ImageWrapper = styled.div`
 const CardImage = styled(Image)`
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
 `;
 
 const Header = styled.div`
   background: ${colors.white};
   display: flex;
+  flex-direction: column;
   height: 250px;
   justify-content: center;
   padding-top: 24px;
@@ -91,9 +94,11 @@ const Info = styled.div`
 const CustomText = styled(Text)`
   align-items: center;
   color: ${colors.lightgray};
-  display: flex;
-  height: 56px;
-  justify-content: center;
+  display: -webkit-box;
+  height: 42px;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 `;
 
 const Status = styled.div`
@@ -168,14 +173,14 @@ export default class extends React.Component {
 
   renderButton() {
     if (!this.props.hasSubscribed) {
-      return <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>;
+      return <Button block onClick={this.handleSave}>Participar deste save</Button>;
     } else if (this.state.votationOpen) {
       return <Button block onClick={this.goToOffers}>Participar da votação</Button>;
     } else if (this.state.checkoutOpen) {
       return <Button block onClick={this.goToOffers}>Comprar agora</Button>;
     }
 
-    return <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>;
+    return <Button block disabled onClick={this.handleSave}>Participando: Aguarde o encerramento</Button>;
   }
 
   renderImages() {
