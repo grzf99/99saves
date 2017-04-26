@@ -99,7 +99,7 @@ class LoginForm extends Component {
           <Header>
             <Title large uppercase>Entre agora</Title>
             <Heading2 uppercase fontWeight="500" color={colors.lightgray}>
-              Veja os descontos disponíveis no 99saves.com
+              Compre por preço de custo no 99saves.com
             </Heading2>
           </Header>
         </RenderIf>

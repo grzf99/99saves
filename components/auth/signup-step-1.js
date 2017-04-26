@@ -46,7 +46,7 @@ class SignupStep1 extends Component {
           <FormHeader>
             <Heading large uppercase>Crie sua conta</Heading>
             <Heading2 uppercase fontWeight="500" color={colors.lightgray}>
-              Juntos pelos maiores descontos do mercado
+              Juntos pelos menores preços do mercado
             </Heading2>
           </FormHeader>
           <Form onSubmit={this.props.onSubmit}>
@@ -64,7 +64,7 @@ class SignupStep1 extends Component {
               type="password"
               label="Criar Senha"
               placeholder="crie sua senha"
-              hint="Sua senha deve ter senha ao menos 8 dígitos, além de letras e números"
+              hint="Sua senha deve ter ao menos 8 dígitos, além de letras e números"
               onChange={this.handleChange}
             />
           </Form>
