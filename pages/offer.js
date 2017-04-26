@@ -24,7 +24,7 @@ import Image from '../components/common/image';
 import Gallery from '../components/gallery';
 import Headline from '../components/common/headline';
 
-const Header = styled(Container) `
+const Header = styled(Container)`
   display: flex;
   padding: 8px 0;
 
@@ -33,13 +33,13 @@ const Header = styled(Container) `
   }
 `;
 
-const CustomTabs = styled(Tabs) `
+const CustomTabs = styled(Tabs)`
   flex-flow: row;
   flex-wrap: wrap;
 `;
 
-const CustomTab = styled(Tab) `
-  background-color: ${props => props.active ? colors.green : 'transparent'};
+const CustomTab = styled(Tab)`
+  background-color: ${props => (props.active ? colors.green : 'transparent')};
   border: 0;
   flex: 1;
   height: inherit;
@@ -53,11 +53,11 @@ const CustomTab = styled(Tab) `
   }
 
   > h2 {
-    color: ${props => props.active ? colors.white : colors.green}
+    color: ${props => (props.active ? colors.white : colors.green)}
   }
 
   > p {
-    color: ${props => props.active ? colors.white : colors.gray}
+    color: ${props => (props.active ? colors.white : colors.gray)}
   }
 `;
 
@@ -70,12 +70,12 @@ const ItemHeader = styled.div`
   padding: 20px 0;
 `;
 
-const GrayText = styled(Text) `
+const GrayText = styled(Text)`
   color: ${colors.gray};
   font-weight: 500;
 `;
 
-const Tag = styled(Heading2) `
+const Tag = styled(Heading2)`
   background: ${colors.gray};
   font-size: 24px;
   padding: 2px 10px;
@@ -166,11 +166,11 @@ const Control = styled.div`
   }
 `;
 
-const PrevArrow = styled(Control) `
+const PrevArrow = styled(Control)`
   left: 0;
 `;
 
-const RightArrow = styled(Control) `
+const RightArrow = styled(Control)`
   flex-direction: row-reverse;
   right: 0;
 `;
@@ -187,23 +187,18 @@ class Offer extends React.Component {
     const votationOpen = now > dateEnd && now <= votationEnd;
     const checkoutOpen = now > votationEnd && now < checkoutEnd;
 
-    // TODO: Consultar base de dados para checar qual o vencedor
-    const winnerIndex = save.id % 2;
-
-    return { save, votationOpen, checkoutOpen, winnerIndex };
+    return { save, votationOpen, checkoutOpen };
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      activeTab: props.winnerIndex !== -1 ? props.winnerIndex : 0,
+      activeTab: this.getWinnerProductIndex(props.save),
       save: props.save,
       products: props.save.Products,
       vote: 0,
-      countdown: '...',
-      // TODO: Remover quando mergear a auth
-      user: {}
+      countdown: '...'
     };
 
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
@@ -236,8 +231,19 @@ class Offer extends React.Component {
     clearInterval(this.timer);
   }
 
+  getWinnerProductIndex(save) {
+    return !save.winnerProduct
+      ? 0
+      : save.Products.reduce(
+          (acc, product, index) =>
+            (product.id === save.winnerProduct.id ? index : acc),
+          0
+        );
+  }
+
   loadVote() {
-    return this.props.api.get(`/saves/${this.state.save.id}/votes`)
+    return this.props.api
+      .get(`/saves/${this.state.save.id}/votes`)
       .then(res => res.data)
       .then((vote) => {
         if (vote) this.setState({ vote: vote.ProductId });
@@ -250,9 +256,10 @@ class Offer extends React.Component {
 
   handleVote(productId) {
     if (this.state.vote !== productId) {
-      this.props.api.post(`/saves/${this.state.save.id}/votes`, {
-        ProductId: productId
-      })
+      this.props.api
+        .post(`/saves/${this.state.save.id}/votes`, {
+          ProductId: productId
+        })
         .then(({ data }) => {
           this.setState({ vote: data.ProductId });
         });
@@ -281,10 +288,7 @@ class Offer extends React.Component {
 
   renderCheckoutButton(product) {
     return (
-      <Button
-        large
-        href={product.link_buy}
-      >
+      <Button large href={product.link_buy}>
         Comprar agora
       </Button>
     );
@@ -298,7 +302,10 @@ class Offer extends React.Component {
   render() {
     return (
       <Page hasFooter>
-        <Toolbar logged={this.props.isSignedIn} onLogout={this.props.onLogout} />
+        <Toolbar
+          logged={this.props.isSignedIn}
+          onLogout={this.props.onLogout}
+        />
 
         <Header>
           <Link prefetch href="/saves"><a><ArrowBack /></a></Link>
@@ -308,127 +315,114 @@ class Offer extends React.Component {
           </div>
         </Header>
 
-        {
-          this.props.votationOpen && (
-            <Section gray>
-              <Container>
-                <CustomTabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
-                  {
-                    this.state.products.map((product, key) => (
-                      <CustomTab key={product.id}>
-                        <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
-                        <Text white>R$ {formatCurrency(product.price)}</Text>
-                      </CustomTab>
-                    ))
-                  }
-                </CustomTabs>
-              </Container>
-            </Section>
-          )
-        }
+        {this.props.votationOpen &&
+          <Section gray>
+            <Container>
+              <CustomTabs
+                index={this.state.activeTab}
+                onChange={this.handleChangeIndex}
+              >
+                {this.state.products.map((product, key) => (
+                  <CustomTab key={product.id}>
+                    <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
+                    <Text white>R$ {formatCurrency(product.price)}</Text>
+                  </CustomTab>
+                ))}
+              </CustomTabs>
+            </Container>
+          </Section>}
 
-        {
-          this.props.checkoutOpen && (
-            <Headline spotlight large>
-              A oferta acaba em <b>{this.state.countdown}</b>
-            </Headline>
-          )
-        }
+        {this.props.checkoutOpen &&
+          <Headline spotlight large>
+            A oferta acaba em <b>{this.state.countdown}</b>
+          </Headline>}
 
         <SwipeableViews
           index={this.state.activeTab}
           onChangeIndex={this.handleChangeIndex}
           animateHeight
         >
-          {
-            this.state.products.map((product, key) => (
-              <div key={product.id}>
-                <Section white>
-                  <Gallery>
-                    <Image src={product.image_default} size={'240px'} alt={product.title} />
-                  </Gallery>
-                </Section>
+          {this.state.products.map((product, key) => (
+            <div key={product.id}>
+              <Section white>
+                <Gallery>
+                  <Image
+                    src={product.image_default}
+                    size={'240px'}
+                    alt={product.title}
+                  />
+                </Gallery>
+              </Section>
 
-                <Container>
-                  <ItemHeader>
-                    {
-                      this.props.votationOpen && <Tag white>Oferta {key + 1}</Tag>
-                    }
-                    {
-                      this.props.votationOpen && this.renderVotationButton(product)
-                    }
-                  </ItemHeader>
+              <Container>
+                <ItemHeader>
+                  {this.props.votationOpen && <Tag white>Oferta {key + 1}</Tag>}
+                  {this.props.votationOpen &&
+                    this.renderVotationButton(product)}
+                </ItemHeader>
 
-                  <Row>
-                    <Column>
-                      <Heading white>{product.title}</Heading>
-                      <Panel>
-                        {
-                          product.description && (
-                            <div>
-                              <h3>Descrição</h3>
-                              {product.description}
-                            </div>
-                          )
-                        }
-                        {
-                          product.technique_information && (
-                            <div>
-                              <h3>Informações técnicas do produto</h3>
-                              {product.technique_information}
-                            </div>
-                          )
-                        }
-                      </Panel>
-                    </Column>
-                    <Column third>
-                      <AlignRight>
-                        <Price>
-                          <Text white>R$</Text>
-                          <Heading white large>
-                            {formatCurrency(product.price)}
-                          </Heading>
-                        </Price>
-                        {
-                          this.props.checkoutOpen && this.renderCheckoutButton(product)
-                        }
-                        {
-                          (product.price_buscape && product.link_buscape) && (
-                            <Buscape>
-                              <a href={product.link_buscape}>melhor preço no buscapé</a>
-                              <s>
-                                R$&nbsp;
-                                {formatCurrency(product.price_buscape)}
-                              </s>
-                            </Buscape>
-                          )
-                        }
-                      </AlignRight>
-                    </Column>
-                  </Row>
-                </Container>
-              </div>
-            ))
-          }
+                <Row>
+                  <Column>
+                    <Heading white>{product.title}</Heading>
+                    <Panel>
+                      {product.description &&
+                        <div>
+                          <h3>Descrição</h3>
+                          {product.description}
+                        </div>}
+                      {product.technique_information &&
+                        <div>
+                          <h3>Informações técnicas do produto</h3>
+                          {product.technique_information}
+                        </div>}
+                    </Panel>
+                  </Column>
+                  <Column third>
+                    <AlignRight>
+                      <Price>
+                        <Text white>R$</Text>
+                        <Heading white large>
+                          {formatCurrency(product.price)}
+                        </Heading>
+                      </Price>
+                      {this.props.checkoutOpen &&
+                        this.renderCheckoutButton(product)}
+                      {product.price_buscape &&
+                        product.link_buscape &&
+                        <Buscape>
+                          <a href={product.link_buscape}>
+                            melhor preço no buscapé
+                          </a>
+                          <s>
+                            R$&nbsp;
+                            {formatCurrency(product.price_buscape)}
+                          </s>
+                        </Buscape>}
+                    </AlignRight>
+                  </Column>
+                </Row>
+              </Container>
+            </div>
+          ))}
         </SwipeableViews>
 
-        {
-          this.props.votationOpen && this.state.activeTab !== 0 && (
-            <PrevArrow onClick={() => this.handleChangeIndex(this.state.activeTab - 1)}>
-              <Icon><ChevronLeft /></Icon>
-              <span>Oferta {this.state.activeTab}</span>
-            </PrevArrow>
-          )
-        }
+        {this.props.votationOpen &&
+          this.state.activeTab !== 0 &&
+          <PrevArrow
+            onClick={() => this.handleChangeIndex(this.state.activeTab - 1)}
+          >
+            <Icon><ChevronLeft /></Icon>
+            <span>Oferta {this.state.activeTab}</span>
+          </PrevArrow>}
 
-        {
-          this.props.votationOpen && this.state.activeTab !== (this.state.products.length - 1) && (
-            <RightArrow onClick={() => this.handleChangeIndex(this.state.activeTab + 1)}>
-              <Icon><ChevronRight /></Icon>
-              <span>Oferta {this.state.activeTab + 2}</span>
-            </RightArrow>
-          )
-        }
+        {this.props.votationOpen &&
+          this.state.activeTab !== this.state.products.length - 1 &&
+          <RightArrow
+            onClick={() => this.handleChangeIndex(this.state.activeTab + 1)}
+          >
+            <Icon><ChevronRight /></Icon>
+            <span>Oferta {this.state.activeTab + 2}</span>
+          </RightArrow>}
 
         <Footer />
       </Page>

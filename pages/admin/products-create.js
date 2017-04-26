@@ -278,4 +278,4 @@ class ProductsCreate extends React.Component {
   }
 }
 
-export default withAuth({ admin: true })(ProductsCreate)
+export default withAuth({ isAdminPage: true })(ProductsCreate)

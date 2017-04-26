@@ -17,7 +17,7 @@ import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 import Headline from '../components/common/headline';
 import LoginModal from '../components/auth/login-modal';
-const CardsList = styled(Container) `
+const CardsList = styled(Container)`
   align-items: stretch;
   display: flex;
   flex-direction: row;
@@ -25,7 +25,7 @@ const CardsList = styled(Container) `
   flex-flow: row wrap;
 `;
 
-const StyledCard = styled(Card) `
+const StyledCard = styled(Card)`
   @media (min-width: 480px) {
     flex: 1;
     flex-basis: calc(50% - 10px);
@@ -76,7 +76,7 @@ const BlankState = styled.div`
 
 class Saves extends React.Component {
   static async getInitialProps(ctx) {
-    const items = await ctx.api.get(`/saves?filters[active]=true`);
+    const items = await ctx.api.get('/saves?filters[active]=true');
     const saves = savesMapper(items.data);
     return { saves };
   }
@@ -122,15 +122,21 @@ class Saves extends React.Component {
   }
 
   handleSubscribe(subscribeTo) {
-    return this.props.api.post(`/saves/${subscribeTo}/subscriptions`)
+    return this.props.api
+      .post(`/saves/${subscribeTo}/subscriptions`)
       .then(() => {
-        const item = this.state.saves.rows.find(save => save.id === subscribeTo);
+        const item = this.state.saves.rows.find(
+          save => save.id === subscribeTo
+        );
         item.hasSubscribed = true;
 
         const subscriptionsRows = [...this.state.subscriptions.rows, item];
 
         this.setState({
-          subscriptions: { count: subscriptionsRows.length, rows: subscriptionsRows },
+          subscriptions: {
+            count: subscriptionsRows.length,
+            rows: subscriptionsRows
+          },
           showToast: true
         });
 
@@ -147,7 +153,8 @@ class Saves extends React.Component {
   }
 
   loadSaves() {
-    return this.props.api.get(`/saves?filters[active]=true`)
+    return this.props.api
+      .get('/saves?filters[active]=true')
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((saves) => {
@@ -156,7 +163,8 @@ class Saves extends React.Component {
   }
 
   loadSubscriptions() {
-    return this.props.api.get(`/saves?filters[subscribed]=true`)
+    return this.props.api
+      .get('/saves?filters[subscribed]=true')
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((subscriptions) => {
@@ -173,30 +181,29 @@ class Saves extends React.Component {
   }
 
   renderUserSaves() {
-    return (
-      this.state.subscriptions.rows.length > 0
-        ? this.state.subscriptions.rows.map(
-          save =>
-            <StyledCard
-              {...save}
-              key={save.id}
-              logged={this.state.logged}
-              openLoginModal={() => this.openModal(save.id)}
-              handleSubscribe={() => this.handleSubscribe(save.id)}
-              goToOffers={() => this.goToOffers(save.slug)}
-              linkToBuy={save.Products && (save.Products[save.id % 2] || {}).link_buy}
-            />
-        )
-        : (
-          <BlankState>
-            <Heading white>Ainda não tem nenhum save???</Heading>
-            <Text white>O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!</Text>
-            <div>
-              <Button outline onClick={() => this.handleChangeIndex(0)}>Ver todos os saves</Button>
-            </div>
-          </BlankState>
-        )
-    );
+    return this.state.subscriptions.rows.length > 0
+      ? this.state.subscriptions.rows.map(save => (
+        <StyledCard
+          {...save}
+          key={save.id}
+          logged={this.state.logged}
+          openLoginModal={() => this.openModal(save.id)}
+          handleSubscribe={() => this.handleSubscribe(save.id)}
+          goToOffers={() => this.goToOffers(save.slug)}
+          linkToBuy={save.winnerProduct && save.winnerProduct.link_buy}
+        />
+        ))
+      : <BlankState>
+        <Heading white>Ainda não tem nenhum save???</Heading>
+        <Text white>
+            O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!
+          </Text>
+        <div>
+          <Button outline onClick={() => this.handleChangeIndex(0)}>
+              Ver todos os saves
+            </Button>
+        </div>
+      </BlankState>;
   }
 
   render() {
@@ -208,14 +215,15 @@ class Saves extends React.Component {
           Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
         </Headline>
 
-        {
-          this.state.logged && (
-            <Tabs withBorder index={this.state.activeTab} onChange={this.handleChangeIndex}>
-              <Tab>Saves Abertos</Tab>
-              <Tab>Meus Saves</Tab>
-            </Tabs>
-          )
-        }
+        {this.state.logged &&
+          <Tabs
+            withBorder
+            index={this.state.activeTab}
+            onChange={this.handleChangeIndex}
+          >
+            <Tab>Saves Abertos</Tab>
+            <Tab>Meus Saves</Tab>
+          </Tabs>}
 
         <SwipeableViews
           disabled={!this.state.logged}
@@ -228,25 +236,26 @@ class Saves extends React.Component {
           </CardsList>
 
           <CardsList>
-            {
-              this.state.saves.rows && this.state.saves.rows.map(
-                save =>
-                  <StyledCard
-                    {...save}
-                    key={save.id}
-                    logged={this.state.logged}
-                    openLoginModal={() => this.openModal(save.id)}
-                    handleSubscribe={() => this.handleSubscribe(save.id)}
-                    goToOffers={() => this.goToOffers(save.slug)}
-                  />
-              )
-            }
+            {this.state.saves.rows &&
+              this.state.saves.rows.map(save => (
+                <StyledCard
+                  {...save}
+                  key={save.id}
+                  logged={this.state.logged}
+                  openLoginModal={() => this.openModal(save.id)}
+                  handleSubscribe={() => this.handleSubscribe(save.id)}
+                  goToOffers={() => this.goToOffers(save.slug)}
+                />
+              ))}
           </CardsList>
         </SwipeableViews>
 
         <Footer />
 
-        <LoginModal isOpen={this.state.modalIsOpen} close={() => this.closeModal()} />
+        <LoginModal
+          isOpen={this.state.modalIsOpen}
+          close={() => this.closeModal()}
+        />
 
         <Toast show={this.state.showToast}>
           Você receberá um email com atualizações sobre esta negociação.

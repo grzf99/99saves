@@ -15,6 +15,7 @@ import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
 import Modal from '../components/common/modal';
+import RenderIf from '../components/common/render-if';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -25,7 +26,7 @@ const Page = styled.div`
   ${props => props.hasFooter && 'padding-bottom: 98px'};
 `;
 
-const CardsList = styled(Container) `
+const CardsList = styled(Container)`
   align-items: stretch;
   display: flex;
   flex-direction: row;
@@ -33,7 +34,7 @@ const CardsList = styled(Container) `
   flex-flow: row wrap;
 `;
 
-const StyledCard = styled(Card) `
+const StyledCard = styled(Card)`
   @media (min-width: 480px) {
     flex: 1;
     flex-basis: calc(50% - 10px);
@@ -79,7 +80,7 @@ const ModalVideoContent = styled.div`
   }
 `;
 
-const ModalHeading = styled(Heading) `
+const ModalHeading = styled(Heading)`
   margin: 16px 5px 0;
 `;
 
@@ -129,10 +130,10 @@ const Banner = styled.div`
   &:after {
     content: "";
     position: absolute;
-    bottom: -14px;
+    bottom: -17px;
     right: 0;
     width: 100%;
-    height: 30px;
+    height: 35px;
     background: ${colors.white};
     border-left: 0;
     border-right: 50px solid transparent;
@@ -189,7 +190,7 @@ const BannerActions = styled.div`
   }
 `;
 
-const VideoButton = styled(Button) `
+const VideoButton = styled(Button)`
   background-image: url(/static/images/ic-play.svg);
   background-position: 20px center;
   background-repeat: no-repeat;
@@ -216,7 +217,7 @@ const BrandContainer = styled.div`
     border-left: 0;
     border-right: 50px solid transparent;
     border-top: 5px solid #ffffff;
-    transform: rotate(1.7deg);
+    transform: rotate(1.2deg);
   }
   @media (max-width: 728px) {
     min-height: 550px;
@@ -235,7 +236,7 @@ const BannerTitle = styled.h2`
   }
 `;
 
-const BrandImagesContainer = styled(Container) `
+const BrandImagesContainer = styled(Container)`
   align-content: center;
   display: flex;
   flex-direction: row;
@@ -251,7 +252,7 @@ const BrandImage = styled.img`
   align-self: center;
 `;
 
-const WeAreNotContainer = styled(Container) `
+const WeAreNotContainer = styled(Container)`
   align-content: center;
   display: flex;
   flex-direction: column;
@@ -306,7 +307,7 @@ const WeAreNotDescription = styled.p`
   }
 `;
 
-const ItWorkSection = styled(Container) `
+const ItWorkSection = styled(Container)`
   margin-top: 50px;
   @media (max-width: 728px) {
   }
@@ -382,7 +383,7 @@ const SaveSection = styled.section`
     border-left: 0;
     border-right: 1366px solid transparent;
     border-top: 30px solid ${colors.darkSkyBlue2};
-    transform: rotate(-2.7deg);
+    transform: rotate(-2.2deg);
   }
   &:after {
     content: "";
@@ -399,7 +400,7 @@ const SaveSection = styled.section`
   }
 `;
 
-const SaveContainer = styled(Container) `
+const SaveContainer = styled(Container)`
   text-align: center;
   position: relative;
   width: 100%;
@@ -533,7 +534,11 @@ class Index extends React.Component {
       <Page hasFooter>
 
         <Banner>
-          <Toolbar logged={this.props.isSignedIn} background="transparent" onLogout={this.props.onLogout} />
+          <Toolbar
+            logged={this.props.isSignedIn}
+            background="transparent"
+            onLogout={this.props.onLogout}
+          />
 
           <BannerContainer>
             <Title>Juntos pelo melhor preço</Title>
@@ -542,10 +547,14 @@ class Index extends React.Component {
             </Subtitle>
 
             <BannerActions>
-              {
-                !this.props.isSignedIn && <Button outline onClick={() => this.openModal()}>participe agora mesmo</Button>
-              }
-              <VideoButton onClick={() => this.openVideoModal()}>entenda como funciona</VideoButton>
+              <RenderIf expr={!this.props.isSignedIn}>
+                <Button outline onClick={() => this.openModal()}>
+                  participe agora mesmo
+                </Button>
+              </RenderIf>
+              <VideoButton onClick={() => this.openVideoModal()}>
+                entenda como funciona
+              </VideoButton>
             </BannerActions>
 
           </BannerContainer>
@@ -646,7 +655,6 @@ class Index extends React.Component {
               </ItWorktTitle>
               <ItWorkDescription>
                 Você acessa o link de compra em sua área do usuário no 99saves.com, é redirecionado para a compra dentro do site do fabricante pelo preço exclusivo que negociamos e ele realizará a entrega(nós estaremos de olho neste processo, apoiando no que for preciso). Lembre-se, você terá 48 horas para finalizar a compra ou seu link será inativado.
-                {' '}
               </ItWorkDescription>
             </ItWorkInfos>
           </ItWorkContainer>
@@ -665,9 +673,11 @@ class Index extends React.Component {
           </ItWorkContainer>
 
           <ItWorkContainer className="center">
-            <Button outline openLoginModal={() => this.openModal()}>
-              participe agora mesmo
-            </Button>
+            <RenderIf expr={!this.props.isSignedIn}>
+              <Button outline onClick={() => this.openModal()}>
+                participe agora mesmo
+              </Button>
+            </RenderIf>
           </ItWorkContainer>
 
         </ItWorkSection>
@@ -685,20 +695,18 @@ class Index extends React.Component {
         </SaveSection>
 
         <CardsList>
-          {
-            this.state.saves.rows && this.state.saves.rows.map(
-              save =>
-                <StyledCard
-                  {...save}
-                  key={save.id}
-                  logged={this.state.logged}
-                  openLoginModal={() => this.openModal(save.id)}
-                  handleSubscribe={() => this.handleSubscribe(save.id)}
-                  goToOffers={() => this.goToOffers(save.slug)}
-                  linkToBuy={save.Products && (save.Products[save.id % 2] || {}).link_buy}
-                />
-            )
-          }
+          {this.state.saves.rows &&
+            this.state.saves.rows.map(save => (
+              <StyledCard
+                {...save}
+                key={save.id}
+                logged={this.state.logged}
+                openLoginModal={() => this.openModal(save.id)}
+                handleSubscribe={() => this.handleSubscribe(save.id)}
+                goToOffers={() => this.goToOffers(save.slug)}
+                linkToBuy={save.winnerProduct && save.winnerProduct.link_buy}
+              />
+            ))}
         </CardsList>
 
         <ItWorkContainer className="center">
@@ -723,7 +731,7 @@ class Index extends React.Component {
             <iframe
               width="100%"
               height="100%"
-              src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1"
+              src="https://www.youtube.com/embed/LhmMrQAMqnA?rel=0&amp;showinfo=0&amp;autoplay=1"
             />
           </ModalVideoContent>
         </Modal>

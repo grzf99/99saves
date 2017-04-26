@@ -194,4 +194,4 @@ class ProvidersEdit extends React.Component {
   }
 }
 
-export default withAuth({ admin: true })(ProvidersEdit);
+export default withAuth({ isAdminPage: true })(ProvidersEdit);
