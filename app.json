@@ -1,8 +1,16 @@
 {
   "name": "99saves",
+  "addons": [
+    "heroku-postgresql"
+  ],
   "buildpacks": [
     {
       "url": "heroku/nodejs"
     }
-  ]
+  ],
+  "env": {
+    "INHERIT_THIS_CONFIG_VAR": {
+      "required": true
+    }
+  }
 }
