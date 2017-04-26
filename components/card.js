@@ -168,14 +168,22 @@ export default class extends React.Component {
 
   renderButton() {
     if (!this.props.hasSubscribed) {
-      return <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>;
+      return (
+        <Button block onClick={this.handleSave}>Negocie isto pra mim</Button>
+      );
     } else if (this.state.votationOpen) {
-      return <Button block onClick={this.goToOffers}>Participar da votação</Button>;
+      return (
+        <Button block onClick={this.goToOffers}>Participar da votação</Button>
+      );
     } else if (this.state.checkoutOpen) {
       return <Button block onClick={this.goToOffers}>Comprar agora</Button>;
     }
 
-    return <Button block disabled onClick={this.handleSave}>Acompanhando esta negociação</Button>;
+    return (
+      <Button block disabled onClick={this.handleSave}>
+        Acompanhando esta negociação
+      </Button>
+    );
   }
 
   renderImages() {
@@ -203,16 +211,15 @@ export default class extends React.Component {
   }
 
   render() {
-    const winner = this.props.Products.length > 0 ? this.props.Products[this.props.id % 2] : {};
     return (
       <Card {...this.props}>
-        {
-          this.state.votationOpen && <Tag uppercase>Votação</Tag>
-        }
+        {this.state.votationOpen && <Tag uppercase>Votação</Tag>}
         <Header>
           {this.renderImages()}
           <Gradient>
-            <RenderIf expr={!this.state.checkoutOpen && !this.state.votationOpen}>
+            <RenderIf
+              expr={!this.state.checkoutOpen && !this.state.votationOpen}
+            >
               <SmallText>imagem meramente ilustrativa</SmallText>
             </RenderIf>
             <Heading white>{this.props.title}</Heading>
@@ -221,19 +228,30 @@ export default class extends React.Component {
 
         <RenderIf expr={this.state.checkoutOpen}>
           <Headline spotlight uppercase withRoboto>
-            Oferta vencedora R$ {formatCurrency(winner.price)}
+            Oferta vencedora R$
+            {' '}
+            {formatCurrency(
+              this.props.winnerProduct && this.props.winnerProduct.price
+            )}
           </Headline>
         </RenderIf>
 
         <RenderIf expr={this.state.checkoutOpen}>
           <Buscape>
-            menor preço no Buscapé: R$ {formatCurrency(winner.price_buscape)}*
+            menor preço no Buscapé: R$
+            {' '}
+            {formatCurrency(
+              this.props.winnerProduct && this.props.winnerProduct.price_buscape
+            )}
+            *
           </Buscape>
         </RenderIf>
 
         <RenderIf expr={this.state.checkoutOpen}>
           <ButtonGroup>
-            <Button block outline onClick={this.goToOffers}>Sobre o produto</Button>
+            <Button block outline onClick={this.goToOffers}>
+              Sobre o produto
+            </Button>
             <Button block href={this.props.linkToBuy}>Comprar agora</Button>
           </ButtonGroup>
         </RenderIf>
@@ -246,7 +264,7 @@ export default class extends React.Component {
             <RenderIf expr={this.state.votationOpen}>
               <CustomText>Escolha a melhor oferta</CustomText>
             </RenderIf>
-            { this.renderButton() }
+            {this.renderButton()}
           </Info>
         </RenderIf>
       </Card>
