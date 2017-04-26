@@ -18,7 +18,8 @@ deployment:
       - heroku pg:backups capture --app saves99
   staging:
     branch: master
-    heroku:
-      appname: saves99-staging
     commands:
       - heroku pg:backups capture --app saves99-staging
+      - heroku sequelize db:migrate --app saves99-staging
+    heroku:
+      appname: saves99-staging
