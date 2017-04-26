@@ -71,8 +71,8 @@ class ProvidersCreate extends React.Component {
 
     if (!values.logo) delete values.logo;
 
-    const rest = axios
-      .post(`${config.API_URL}/providers`, values)
+    const rest = this.props.api
+      .post('/providers', values)
       .then(() => {
         this.setState({
           showToast: true,

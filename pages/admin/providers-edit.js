@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import request from 'superagent';
 import Router from 'next/router';
 import FRC, { Input, Row } from 'formsy-react-components';
@@ -35,7 +34,7 @@ class ProvidersEdit extends React.Component {
   }
 
   getSaves(id) {
-    axios.get(`${config.API_URL}/providers/${id}`)
+    this.props.api.get(`/providers/${id}`)
         .then((response) => {
           this.setState({
             ...this.state, list: response.data
@@ -81,7 +80,7 @@ class ProvidersEdit extends React.Component {
 
     if (!values.logo) delete values.logo;
 
-    const rest = axios.put(`${config.API_URL}/providers/${values.id}`, values)
+    const rest = this.props.api.put(`${config.API_URL}/providers/${values.id}`, values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
           setTimeout(() => Router.push('/admin/providers'), 2000);

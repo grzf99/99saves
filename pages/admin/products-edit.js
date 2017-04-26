@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import request from 'superagent';
 import Router from 'next/router';
 import moment from 'moment';
