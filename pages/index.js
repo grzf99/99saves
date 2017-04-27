@@ -717,7 +717,7 @@ class Index extends React.Component {
 
         <LoginModal
           isOpen={this.state.modalIsOpen}
-          close={() => this.closeModal()}
+          onClose={() => this.closeModal()}
         />
 
         <Modal
