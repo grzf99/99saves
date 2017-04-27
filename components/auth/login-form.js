@@ -72,12 +72,16 @@ class LoginForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { isAdmin } = this.props;
+    const { isAdmin, as, pathname, query } = this.props;
     if (nextProps.isSignedIn) {
-      // TODO: Alter this to redirect to the page where the user was before login
-      // Probably using a ?reditectTo query param
-      const url = isAdmin ? '/admin' : '/';
-      Router.replace(url);
+      const defaultUrl = isAdmin ? '/admin' : '/saves';
+      Router.replace(
+        {
+          pathname: pathname || defaultUrl,
+          query: JSON.parse(query) || {}
+        },
+        as
+      );
     }
   }
 

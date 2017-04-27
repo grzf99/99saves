@@ -23,7 +23,7 @@ class SignupPage extends Component {
     if (nextProps.isSignedIn) {
       // TODO: Alter this to redirect to the page where the user was before login
       // Probably using a ?reditectTo query param
-      Router.replace('/');
+      Router.replace('/saves');
     }
   }
 

@@ -13,9 +13,19 @@ const FormWrapper = styled.div`
 `;
 
 class Login extends Component {
+  static async getInitialProps(ctx) {
+    const { as, pathname, query } = ctx.query;
+
+    return {
+      as,
+      pathname,
+      query
+    };
+  }
+
   componentWillMount() {
     if (this.props.isSignedIn) {
-      Router.replace('/');
+      Router.replace('/saves');
     }
   }
 
@@ -23,7 +33,12 @@ class Login extends Component {
     return (
       <AuthPage>
         <FormWrapper>
-          <LoginForm submitText="Login com email" />
+          <LoginForm
+            submitText="Login com email"
+            as={this.props.as}
+            pathname={this.props.pathname}
+            query={this.props.query}
+          />
         </FormWrapper>
       </AuthPage>
     );
