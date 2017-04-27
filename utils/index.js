@@ -3,8 +3,9 @@ const numeral = require('./numeral');
 const slugify = require('./slugify');
 const savesMapper = require('./savesMapper');
 const formatCurrency = require('./formatCurrency');
+const pluralize = require('./pluralize');
 
-const noop = () => { };
+const noop = () => {};
 
 module.exports = {
   renderAndCache,
@@ -12,5 +13,6 @@ module.exports = {
   slugify,
   savesMapper,
   formatCurrency,
-  noop
+  noop,
+  pluralize
 };
