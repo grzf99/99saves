@@ -63,12 +63,6 @@ module.exports = {
       .then(re => res.status(200).send(re))
       .catch(error => res.status(400).send(error));
     }
-    // return User.update(user, {
-    //   where: 
-    //   { id: req.params.id }
-    // })
-    // .then(re => res.status(200).send(re))
-    // .catch(error => res.status(400).send(error));
   },
 
   show(req, res) {
