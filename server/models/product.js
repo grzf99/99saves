@@ -23,7 +23,29 @@ module.exports = (sequelize, DataTypes) => {
           Product.belongsTo(models.Save);
           Product.belongsTo(models.Provider);
           Product.hasMany(models.Vote);
-          Product.hasMany(models.Coupon);
+          Product.hasMany(models.Coupon, { hooks: true });
+        }
+      },
+      instanceMethods: {
+        loadAssociations({ include }) {
+          const { Product } = sequelize.models;
+          return Product.findById(this.id, { include });
+        },
+        mapCouponsToSubscriptions() {
+          const { Save, Subscription, Coupon } = sequelize.models;
+          return this.loadAssociations({
+            include: [
+              { model: Coupon },
+              { model: Save, include: [Subscription] }
+            ]
+          }).then(p =>
+            Promise.all(
+              p.Save.Subscriptions.map((sub, index) => {
+                const coupon = p.Coupons[index];
+                return sub.update({ CouponId: coupon.id });
+              })
+            )
+          );
         }
       }
     }

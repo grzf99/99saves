@@ -22,5 +22,10 @@ router.post('/:saveId/votes', clientAuthentication(), votes.create);
 router.post('/', adminAuthentication(), saves.create);
 router.put('/:id', adminAuthentication(), saves.update);
 router.delete('/:id', adminAuthentication(), saves.delete);
+router.get(
+  '/:saveId/subscriptions',
+  adminAuthentication(),
+  saves.listSubscriptions
+);
 
 module.exports = router;
