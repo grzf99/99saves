@@ -56,8 +56,8 @@ export default class extends React.Component {
 
   renderImages(image, index) {
     return (
-      <RenderIf expr={!!image}>
-        <Slide key={index} active={index === this.state.active}>
+      <RenderIf expr={!!image} key={index}>
+        <Slide active={index === this.state.active}>
           <Image
             src={image}
             size={'240px'}
@@ -70,9 +70,8 @@ export default class extends React.Component {
 
   renderThumbs(image, index) {
     return (
-      <RenderIf expr={!!image}>
+      <RenderIf expr={!!image} key={index}>
         <Thumb
-          key={index}
           active={index === this.state.active}
           onClick={() => this.setActive(index)}
         >
