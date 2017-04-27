@@ -14,9 +14,19 @@ const CloseButton = styled(Text)`
   cursor: pointer;
 `;
 
+const ModalLoginContent = styled.div`
+  > * + * {
+    position: relative;
+    height: auto;
+    width: auto;
+  }
+`;
+
 export default props => (
   <Modal {...props} isOpen={props.isOpen} width="400px">
-    <CloseButton onClick={() => props.close()}>X</CloseButton>
-    <LoginForm isAdmin={props.isAdmin} submitText={props.submitText} />
+    <ModalLoginContent>
+      <CloseButton onClick={() => props.onClose()}>X</CloseButton>
+      <LoginForm isAdmin={props.isAdmin} submitText={props.submitText} />
+    </ModalLoginContent>
   </Modal>
 );
