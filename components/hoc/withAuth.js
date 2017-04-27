@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
 import withStore from 'next-redux-wrapper';
+
 import RenderIf from '../common/render-if';
 import createStore from '../../store';
 import { noop } from '../../utils';
@@ -45,7 +46,9 @@ export default function withAuth(
           }
 
           if (url) {
-            Router.replace(url);
+            Router.replace(
+              `${url}?as=${Router.router.as}&pathname=${Router.router.pathname}&query=${JSON.stringify(Router.router.query)}`
+            );
           }
         }
 
