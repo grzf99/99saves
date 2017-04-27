@@ -31,6 +31,57 @@ module.exports = {
     });
   },
 
+  createAdmin (req, res) {
+    let user = req.body;
+    return bcrypt.hash(user.password, 10)
+      .then((hash) => {
+        user.password = hash;
+        User.create(user)
+        .then(re => res.status(200).send(re))
+        .catch(error => res.status(400).send(error));
+      });
+  },
+
+  update (req, res) {
+    let user = req.body;
+    if(user.password) {
+      return bcrypt.hash(user.password, 10)
+        .then((hash) => {
+          user.password = hash;
+          User.update(user, {
+            where: 
+            { id: req.params.id }
+          })
+          .then(re => res.status(200).send(re))
+          .catch(error => res.status(400).send(error));
+        });
+    } else {
+      return User.update(req.body, {
+        where: 
+        { id: req.params.id }
+      })
+      .then(re => res.status(200).send(re))
+      .catch(error => res.status(400).send(error));
+    }
+    // return User.update(user, {
+    //   where: 
+    //   { id: req.params.id }
+    // })
+    // .then(re => res.status(200).send(re))
+    // .catch(error => res.status(400).send(error));
+  },
+
+  show(req, res) {
+    return User
+      .find({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then(resp => res.status(200).send(resp))
+      .catch(error => res.status(400).send(error));
+  },
+
   findOrCreate(accessToken, profile) {
     return new Promise((resolve) => {
       User.findOrCreate({
