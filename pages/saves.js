@@ -118,6 +118,10 @@ class Saves extends React.Component {
       this.loadSaves();
       this.loadSubscriptions();
       this.closeModal();
+
+      if (nextProps.isSignedIn !== this.props.isSignedIn) {
+        this.handleSubscribe(this.state.subscribeTo);
+      }
     }
   }
 

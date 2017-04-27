@@ -195,8 +195,8 @@ export default class extends React.Component {
     let images;
 
     if (this.state.votationOpen && this.props.Products.length > 0) {
-      images = this.props.Products.map(product => (
-        <ImageWrapper>
+      images = this.props.Products.map((product, key) => (
+        <ImageWrapper key={key}>
           <CardImage src={product.image_default} alt={product.title} />
         </ImageWrapper>
       ));

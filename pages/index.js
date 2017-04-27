@@ -480,6 +480,10 @@ class Index extends React.Component {
     if (nextProps.isSignedIn) {
       this.loadSaves();
       this.closeModal();
+
+      if (nextProps.isSignedIn !== this.props.isSignedIn) {
+        this.handleSubscribe(this.state.subscribeTo);
+      }
     }
   }
 
