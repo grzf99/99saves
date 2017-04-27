@@ -87,6 +87,12 @@ class LoginForm extends Component {
     this.props.login(this.state.email, this.state.password, this.props.isAdmin);
   }
 
+  keyHandle = (e) => {
+    if(e.key === 'Enter') {
+      this.handleSubmit(e);
+    }   
+  }
+
   handleChange({ target }) {
     this.setState({ [target.name]: target.value });
   }
@@ -117,6 +123,7 @@ class LoginForm extends Component {
             label="Email"
             placeholder="exemplo@exemplo.com"
             onChange={this.handleChange}
+            onKeyUp={this.keyHandle}
             validation={email}
           />
           <Input
@@ -126,6 +133,7 @@ class LoginForm extends Component {
             label="Senha"
             placeholder="sua senha"
             onChange={this.handleChange}
+            onKeyUp={this.keyHandle}
             validation={minLength(8)}
           />
         </Form>
@@ -133,6 +141,7 @@ class LoginForm extends Component {
           block
           disabled={this.props.loading || !this.isFormValid()}
           onClick={this.handleSubmit}
+          type="submit"
         >
           {this.props.submitText}
         </SubmitButton>
