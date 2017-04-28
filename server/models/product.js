@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
     method_payment: DataTypes.STRING,
     link_buscape: DataTypes.STRING,
     price_buscape: DataTypes.FLOAT,
+    date_buscape: DataTypes.DATE,
     image_default: DataTypes.STRING,
     image2: DataTypes.STRING,
     image3: DataTypes.STRING,
