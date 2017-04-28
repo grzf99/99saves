@@ -1,4 +1,4 @@
-const { Coupon, Subscription, User, Product } = require('../models');
+const { Coupon, Subscription, User, Save, Product } = require('../models');
 
 module.exports = {
   list(req, res) {
@@ -7,7 +7,7 @@ module.exports = {
         { model: Product },
         {
           model: Subscription,
-          include: [User],
+          include: [User, Save],
           where: { CouponId: { $not: null } }
         }
       ],
