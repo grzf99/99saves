@@ -1,4 +1,4 @@
-const { Product, Provider, Save, Coupon, Subscription } = require('../models');
+const { Product, Provider, Save, Coupon } = require('../models');
 
 module.exports = {
   show(req, res) {
