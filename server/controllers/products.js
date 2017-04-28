@@ -30,15 +30,17 @@ module.exports = {
   },
 
   create(req, res) {
+    const product = Object.assign({ date_buscape: new Date() }, req.body);
     return Product
-      .create(req.body)
+      .create(product)
       .then(resp => res.status(201).send(resp))
       .catch(error => res.status(400).send(error));
   },
 
   update(req, res) {
+    const product = Object.assign({ date_buscape: new Date() }, req.body);
     return Product
-      .update(req.body, {
+      .update(product, {
         where: {
           id: req.params.id
         }
