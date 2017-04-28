@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = (sequelize, DataTypes) => {
   const Save = sequelize.define(
     'Save',
@@ -15,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       winnerProduct: {
         type: DataTypes.VIRTUAL,
         get() {
+          const productWithBestPrice = _.minBy(this.Products, 'price');
           if (this.Products === undefined) {
             return;
           }
@@ -26,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
             return product.Votes && product.Votes.length > acc.Votes.length
               ? product
               : acc;
-          }, undefined);
+          }, productWithBestPrice);
         }
       }
     },
