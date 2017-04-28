@@ -15,8 +15,8 @@ import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
-import Headline from '../components/common/headline';
 import LoginModal from '../components/auth/login-modal';
+
 const CardsList = styled(Container)`
   align-items: stretch;
   display: flex;
@@ -214,10 +214,6 @@ class Saves extends React.Component {
     return (
       <Page hasFooter>
         <Toolbar logged={this.props.isSignedIn} onLogout={this.props.onLogout} />
-
-        <Headline>
-          Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
-        </Headline>
 
         {this.state.logged &&
           <Tabs
