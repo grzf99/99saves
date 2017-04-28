@@ -3,7 +3,7 @@ module.exports = {
     return queryInterface.addColumn('Subscriptions', 'CouponId', {
       type: Sequelize.INTEGER,
       references: { model: 'Coupons', key: 'id' },
-      onDelete: 'CASCADE'
+      onDelete: 'RESTRICT'
     });
   },
 
