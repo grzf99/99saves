@@ -16,6 +16,20 @@ module.exports = {
       .then(response => res.status(200).send(response))
       .catch(error => res.status(500).send(error));
   },
+  show(req, res) {
+    return Coupon.find({
+      include: [
+        { model: Product },
+        {
+          model: Subscription,
+          include: [User, Save],
+        }
+      ],
+      where: { id: req.params.id }
+    })
+      .then(resp => res.status(200).send(resp))
+      .catch(error => res.status(400).send(error));
+  },
   update(req, res) {
     return Coupon.update(req.body, {
       where: {
