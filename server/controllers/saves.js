@@ -51,17 +51,25 @@ module.exports = {
   },
 
   delete(req, res) {
-    Save.destroy({
+    return Save.destroy({
       where: {
         id: req.params.id
       }
     })
       .then(deletedRecords => res.status(200).json(deletedRecords))
       .catch(error => res.status(500).json(error));
+  },
+
+  listSubscriptions(req, res) {
+    return Save.findById(req.params.saveId, {
+      include: [{ model: Subscription }]
+    })
+      .then(save => res.status(200).json({ subscriptions: save.Subscriptions }))
+      .catch(err => res.status(400).json(err));
   }
 };
 
-function createShowQuery(req) {
+function createShowQuery(req, includeVote = true) {
   const idField = isNaN(req.params.id) ? 'slug' : 'id';
   const query = {
     where: {
@@ -74,7 +82,7 @@ function createShowQuery(req) {
     ]
   };
 
-  if (req.user) {
+  if (req.user && includeVote) {
     query.include = [
       {
         model: Product,

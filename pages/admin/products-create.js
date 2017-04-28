@@ -1,10 +1,11 @@
 import React from 'react';
 import request from 'superagent';
 import Router from 'next/router';
-import moment from 'moment';
 import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
 
+import { pluralize } from '../../utils';
+import RenderIf from '../../components/common/render-if';
 import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
@@ -24,62 +25,98 @@ class ProductsCreate extends React.Component {
       messageToast: '',
       typeToast: '',
       selectOptions: [],
-      selectProvider: []
+      selectProvider: [],
+      coupons: []
     };
     this.submitForm = this.submitForm.bind(this);
-    this.handleSave = this.handleSave.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
+    this.handleCouponsChange = this.handleCouponsChange.bind(this);
+    this.handleSaveChange = this.handleSaveChange.bind(this);
     this.getSaves();
     this.getProvider();
   }
-  
 
   componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 1500);
-    
   }
 
   getSaves() {
     let list = [{ value: '', label: 'Selecione um registro' }];
-    this.props.api.get('/saves')
-        .then((response) => {
-          response.data.rows.map( (item) => {
-            list.push({ value: item.id, label: item.title});
-          });
-          this.setState({ selectOptions: list });
-        })
-        .catch((error) => {
-          console.log(error);
-        }); 
+    this.props.api
+      .get('/saves')
+      .then((response) => {
+        response.data.map((item) => {
+          list.push({ value: item.id, label: item.title });
+        });
+        this.setState({ selectOptions: list });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   getProvider() {
     let list = [{ value: '', label: 'Selecione um registro' }];
-    this.props.api.get('/providers')
-        .then((response) => {
-          response.data.rows.map( (item) => {
-            list.push({ value: item.id, label: item.name});
-          });
-          this.setState({ selectProvider: list });
-        })
-        .catch((error) => {
-          console.log(error);
-        }); 
+    this.props.api
+      .get('/providers')
+      .then((response) => {
+        response.data.rows.map((item) => {
+          list.push({ value: item.id, label: item.name });
+        });
+        this.setState({ selectProvider: list });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  handleSave(event) {
+  fetchSubscriptionsCount(saveId, retry = 0, max = 20) {
+    if (retry <= max) {
+      this.props.api
+        .get(`/saves/${saveId}/subscriptions`)
+        .then(({ data }) => {
+          this.setState({ subscriptionCount: data.subscriptions.length });
+        })
+        .catch(() => this.fetchSubscriptionsCount(saveId, retry + 1, max));
+    }
+  }
+
+  handleSaveChange(fieldName, saveId) {
+    this.fetchSubscriptionsCount(saveId);
+  }
+
+  handleCouponsChange(event) {
+    const [file] = event.target.files;
+    const reader = new FileReader();
+    const onLoadFinish = (coupons) => {
+      this.setState({ coupons });
+    };
+
+    reader.onload = function onload() {
+      onLoadFinish(this.result.split('\n'));
+    };
+    reader.readAsText(file);
+  }
+
+  handleImageChange(event) {
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
   handleImageUpload(file, name) {
     const imageChange = {};
-    const upload = request.post(config.CLOUDINARY_UPLOAD_URL)
-                     .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
-                     .field('file', file);
+    const upload = request
+      .post(config.CLOUDINARY_UPLOAD_URL)
+      .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
+      .field('file', file);
 
     upload.end((err, response) => {
       if (err) {
-        this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Problemas ao se comunicar com API: ${err}`
+        });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
@@ -90,31 +127,64 @@ class ProductsCreate extends React.Component {
     });
   }
 
+  isFormValid(values) {
+    return values.title && values.image_default;
+  }
+
   submitForm(data) {
     const values = Object.assign(data, {
       image_default: this.state.image_default,
       image2: this.state.image2,
-      image3: this.state.image3
+      image3: this.state.image3,
+      Coupons: this.state.coupons.map(coupon => ({ key: coupon }))
     });
 
-    if (!values.title || !values.image_default) {
-      this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Preencha todos os campos obrigatórios' });
+    if (!this.isFormValid(values)) {
+      this.setState({
+        showToast: true,
+        typeToast: 'warning',
+        messageToast: 'Preencha todos os campos obrigatórios'
+      });
       setTimeout(() => this.setState({ showToast: false }), 4500);
+      return;
+    }
+
+    const { subscriptionCount } = this.state;
+    if (subscriptionCount > values.Coupons.length) {
+      this.setState({
+        showToast: true,
+        typeToast: 'warning',
+        messageToast: `
+          A quantidade de cupons é menor que a de usuários inscritos.
+          Insira ${subscriptionCount} ${pluralize(subscriptionCount, { 1: 'cupom', 2: 'cupons' })}.
+        `
+      });
+      setTimeout(() => this.setState({ showToast: false }), 4500);
+      return;
     }
 
     if (!values.image_default) delete values.image_default;
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    const rest = this.props.api.post('/products', values)
-        .then(() => {
-          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
-          setTimeout(() => Router.push('/admin/products'), 2000);
-        })
-        .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao inserir o registro' });
-          setTimeout(() => this.setState({ showToast: false }), 2500);
+    const rest = this.props.api
+      .post('/products', values)
+      .then(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'success',
+          messageToast: 'Registro cadsatrado com Sucesso'
         });
+        setTimeout(() => Router.push('/admin/products'), 2000);
+      })
+      .catch(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: 'Erro ao inserir o registro'
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
+      });
 
     return rest;
   }
@@ -130,16 +200,12 @@ class ProductsCreate extends React.Component {
               </div>
 
               <div className="panel-body">
-                {this.state.loading ? (
-                  <div className="pull-center">
+                {this.state.loading
+                  ? <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
-                ) : (
-                  <FRC.Form onSubmit={this.submitForm} layout="vertical">
-                    <Input
-                      name="id"
-                      type="hidden"
-                    />
+                  : <FRC.Form onSubmit={this.submitForm} layout="vertical">
+                    <Input name="id" type="hidden" />
                     <Input
                       name="title"
                       value=""
@@ -208,7 +274,29 @@ class ProductsCreate extends React.Component {
                       options={this.state.selectOptions}
                       required
                       rowClassName="col-sm-12"
+                      onChange={this.handleSaveChange}
                     />
+                    <RenderIf expr={!!this.state.subscriptionCount}>
+                      <div className="form-group col-sm-12">
+                        <div className="alert alert-info">
+                          A quantidade de usuários inscritos nesse save é de {this.state.subscriptionCount}.
+                          Insira a mesma quantidade de cupons.
+                        </div>
+                      </div>
+                    </RenderIf>
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="coupons">
+                          Cupons (um cupom por linha) *
+                        </label>
+                      <div className="controls">
+                        <input
+                          type="file"
+                          accept="text/plain"
+                          name="coupons"
+                          onChange={this.handleCouponsChange}
+                        />
+                      </div>
+                    </div>
                     <Select
                       name="ProviderId"
                       label="Fornecedor"
@@ -227,7 +315,6 @@ class ProductsCreate extends React.Component {
                       placeholder="Informações técnicas"
                       rowClassName="col-sm-12"
                     />
-
                     <Textarea
                       rows={3}
                       cols={40}
@@ -241,40 +328,61 @@ class ProductsCreate extends React.Component {
                       <label
                         className="control-label"
                         htmlFor="image_default"
-                      >Imagem de destaque</label>
+                      >
+                          Imagem de destaque
+                        </label>
                       <div className="controls">
-                        <input type="file" name="image_default" onChange={this.handleSave} />
+                        <input
+                          type="file"
+                          name="image_default"
+                          onChange={this.handleImageChange}
+                        />
                       </div>
                     </div>
                     <div className="form-group col-sm-12">
-                      <label className="control-label" htmlFor="image2">Outra imagem</label>
+                      <label className="control-label" htmlFor="image2">
+                          Outra imagem
+                        </label>
                       <div className="controls">
-                        <input type="file" name="image2" onChange={this.handleSave} />
+                        <input
+                          type="file"
+                          name="image2"
+                          onChange={this.handleImageChange}
+                        />
                       </div>
                     </div>
                     <div className="form-group col-sm-12">
-                      <label className="control-label" htmlFor="image3">Outra imagem</label>
+                      <label className="control-label" htmlFor="image3">
+                          Outra imagem
+                        </label>
                       <div className="controls">
-                        <input type="file" name="image3" onChange={this.handleSave} />
+                        <input
+                          type="file"
+                          name="image3"
+                          onChange={this.handleImageChange}
+                        />
                       </div>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                        <input
+                          className="btn btn-primary"
+                          type="submit"
+                          defaultValue="Enviar"
+                        />
                       </div>
                     </Row>
-                  </FRC.Form>
-                )}
+                  </FRC.Form>}
               </div>
             </div>
           </div>
         </div>
         <AlertMessage type={this.state.typeToast} show={this.state.showToast}>
-          { this.state.messageToast }
+          {this.state.messageToast}
         </AlertMessage>
       </Layout>
     );
   }
 }
 
-export default withAuth({ isAdminPage: true })(ProductsCreate)
+export default withAuth({ isAdminPage: true })(ProductsCreate);

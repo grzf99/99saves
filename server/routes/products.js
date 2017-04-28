@@ -1,12 +1,13 @@
 const express = require('express');
 const { products } = require('../controllers');
+const { adminAuthentication } = require('../middleware/authentication');
 
 const router = express.Router();
 
-router.get('/', products.list);
-router.get('/:id', products.show);
-router.post('/', products.create);
-router.put('/:id', products.update);
-router.delete('/:id', products.delete);
+router.get('/', adminAuthentication(), products.list);
+router.get('/:id', adminAuthentication(), products.show);
+router.post('/', adminAuthentication(), products.create);
+router.put('/:id', adminAuthentication(), products.update);
+router.delete('/:id', adminAuthentication(), products.delete);
 
 module.exports = router;
