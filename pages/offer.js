@@ -321,7 +321,7 @@ class Offer extends React.Component {
 
   renderCheckoutButton(product) {
     return (
-      <Button large href={product.link_buy}>
+      <Button large href={product.link_buy} target="_blank">
         Comprar agora
       </Button>
     );
@@ -437,7 +437,10 @@ class Offer extends React.Component {
                               R$ {formatCurrency(product.price_buscape)}
                             </Heading>
                           </Price>
-                          <BuscapeBadge href={product.link_buscape}>
+                          <BuscapeBadge
+                            href={product.link_buscape}
+                            target="_blank"
+                          >
                             <Text uppercase>
                               Pesquise você no <Buscape />
                             </Text>
