@@ -204,12 +204,6 @@ const Info = styled.div`
   margin: 20px 0;
 `;
 
-const CustomHeadline = styled(Headline)`
-  background-color: ${colors.gray};
-  color: ${colors.white};
-  margin: 0;
-`;
-
 const MarginContainer = styled(Container)`
   margin: 20px auto;
 `;
@@ -368,9 +362,9 @@ class Offer extends React.Component {
         </RenderIf>
 
         <RenderIf expr={this.props.finished}>
-          <CustomHeadline large uppercase>
+          <Headline disabled large uppercase>
             Oferta encerrada
-          </CustomHeadline>
+          </Headline>
         </RenderIf>
 
         <RenderIf expr={this.props.votationOpen}>
