@@ -79,7 +79,7 @@ class LoginForm extends Component {
       Router.replace(
         {
           pathname: pathname || defaultUrl,
-          query: JSON.parse(query) || {}
+          query: query ? JSON.parse(query) : {}
         },
         as
       );
@@ -94,7 +94,7 @@ class LoginForm extends Component {
   keyHandle = (e) => {
     if(e.key === 'Enter') {
       this.handleSubmit(e);
-    }   
+    }
   }
 
   handleChange({ target }) {
