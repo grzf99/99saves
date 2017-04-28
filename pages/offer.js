@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
 import differenceInMinutes from 'date-fns/difference_in_minutes';
+import format from 'date-fns/format';
 import { formatCurrency } from '../utils';
 
 import { USER_LOCALSTORAGE_KEY } from '../store/auth';
@@ -12,14 +13,14 @@ import Toolbar from '../components/toolbar';
 import Page from '../components/common/page';
 import Footer from '../components/footer';
 import Container from '../components/common/container';
-import { Heading, Heading2, Text } from '../components/common/typography';
+import { Heading, Heading2, Text, SmallText } from '../components/common/typography';
 import Button from '../components/common/button';
 import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import { Row, Column } from '../components/common/grid';
 import Panel from '../components/common/panel';
 import Section from '../components/common/section';
-import { ArrowBack, ChevronLeft, ChevronRight } from '../components/common/svg';
+import { ArrowBack, Buscape, ChevronLeft, ChevronRight } from '../components/common/svg';
 import Gallery from '../components/gallery';
 import Headline from '../components/common/headline';
 import RenderIf from '../components/common/render-if';
@@ -101,9 +102,12 @@ const AlignRight = styled.div`
   }
 `;
 
-const Buscape = styled.div`
+const BuscapeBox = styled.div`
+  background: ${colors.darkBlue};
+  display: inline-block;
   font-family: 'Roboto', sans-serif;
   margin: 10px 0;
+  padding: 12px 24px;
   text-align: right;
 
   > * {
@@ -111,16 +115,37 @@ const Buscape = styled.div`
     margin: 5px 0;
   }
 
-  > a {
-    color: ${colors.green};
-    font-size: 12px;
-    text-decoration: underline;
+  p {
+    font-size: 10px;
+    font-weight: 500;
+  }
+`;
+
+const BuscapeBadge = styled.a`
+  background: ${colors.yellow};
+  padding: 5px 10px 3px;
+  text-align: center;
+
+  p {
+    align-items: center;
+    display: flex;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 28px;
   }
 
-  > s {
-    color: ${colors.alternateWhite};
-    font-size: 15px;
+  svg {
+    margin-left: 5px;
+    margin-top: -5px;
   }
+`;
+
+const BuscapeDate = styled(SmallText)`
+  color: ${colors.gray};
+  display: inline-block;
+  padding: 0 30px;
+  text-align: center;
+  width: 214px;
 `;
 
 const Icon = styled.i`
@@ -395,25 +420,36 @@ class Offer extends React.Component {
                   </Column>
                   <Column third>
                     <AlignRight>
+                      <Text uppercase white>Oferta feita para o 99saves</Text>
                       <Price>
                         <Text white>R$</Text>
                         <Heading white large>
                           {formatCurrency(product.price)}
                         </Heading>
                       </Price>
-                      {this.props.checkoutOpen &&
-                        this.renderCheckoutButton(product)}
+                      {this.props.checkoutOpen && this.renderCheckoutButton(product)}
                       {product.price_buscape &&
                         product.link_buscape &&
-                        <Buscape>
-                          <a href={product.link_buscape}>
-                            melhor preço no buscapé
-                          </a>
-                          <s>
-                            R$&nbsp;
-                            {formatCurrency(product.price_buscape)}
-                          </s>
-                        </Buscape>}
+                        <BuscapeBox>
+                          <Text uppercase white>Menor preço no Buscapé</Text>
+                          <Price>
+                            <Heading white>
+                              R$ {formatCurrency(product.price_buscape)}
+                            </Heading>
+                          </Price>
+                          <BuscapeBadge href={product.link_buscape}>
+                            <Text uppercase>
+                              Pesquise você no <Buscape />
+                            </Text>
+                          </BuscapeBadge>
+                        </BuscapeBox>}
+                      {
+                        product.date_buscape && (
+                          <BuscapeDate>
+                            Valor pesquisado pela equipe 99saves em {format(product.date_buscape, 'DD/MM [às] HH:mm')}
+                          </BuscapeDate>
+                        )
+                      }
                     </AlignRight>
                   </Column>
                 </Row>
