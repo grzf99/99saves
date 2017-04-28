@@ -76,18 +76,22 @@ class Toolbars extends React.Component {
     this.state = {
       modalOpen: false
     };
-    this.toggleModal = this.toggleModal.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.logged && nextProps.logged !== this.props.logged) {
-      this.toggleModal();
+      this.closeModal();
     }
   }
 
-  toggleModal() {
-    const { modalOpen } = this.state;
-    this.setState({ modalOpen: !modalOpen });
+  openModal() {
+    this.setState({ modalOpen: true });
+  }
+
+  closeModal() {
+    this.setState({ modalOpen: false });
   }
 
   render() {
@@ -107,7 +111,7 @@ class Toolbars extends React.Component {
               </LinkAllSaves>
             </Link>
             <RenderIf expr={!this.props.logged}>
-              <Button small outline onClick={this.toggleModal}>
+              <Button small outline onClick={this.openModal}>
                 login
               </Button>
             </RenderIf>
@@ -119,7 +123,7 @@ class Toolbars extends React.Component {
           </MenuLinks>
         </CustomContainer>
 
-        <LoginModal isOpen={this.state.modalOpen} close={this.toggleModal} />
+        <LoginModal isOpen={this.state.modalOpen} onClose={this.closeModal} />
       </Toolbar>
     );
   }

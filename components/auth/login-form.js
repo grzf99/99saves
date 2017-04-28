@@ -11,6 +11,7 @@ import Form from '../common/form';
 import RenderIf from '../common/render-if';
 import { colors } from '../styles/variables';
 import { Heading, Heading2, Text, SeparatorText } from '../common/typography';
+import { email, minLength } from '../../utils/validation';
 
 const Header = styled.div`
   padding-bottom: 30px;
@@ -87,13 +88,21 @@ class LoginForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { email, password } = this.state;
-    const { isAdmin } = this.props;
-    this.props.login(email, password, isAdmin);
+    this.props.login(this.state.email, this.state.password, this.props.isAdmin);
+  }
+
+  keyHandle = (e) => {
+    if(e.key === 'Enter') {
+      this.handleSubmit(e);
+    }   
   }
 
   handleChange({ target }) {
     this.setState({ [target.name]: target.value });
+  }
+
+  isFormValid() {
+    return this.state.email !== '' && this.state.password !== '';
   }
 
   render() {
@@ -103,7 +112,7 @@ class LoginForm extends Component {
           <Header>
             <Title large uppercase>Entre agora</Title>
             <Heading2 uppercase fontWeight="500" color={colors.lightgray}>
-              Veja os descontos disponíveis no 99saves.com
+              Compre por preço de custo no 99saves.com
             </Heading2>
           </Header>
         </RenderIf>
@@ -118,6 +127,8 @@ class LoginForm extends Component {
             label="Email"
             placeholder="exemplo@exemplo.com"
             onChange={this.handleChange}
+            onKeyUp={this.keyHandle}
+            validation={email}
           />
           <Input
             block
@@ -126,12 +137,15 @@ class LoginForm extends Component {
             label="Senha"
             placeholder="sua senha"
             onChange={this.handleChange}
+            onKeyUp={this.keyHandle}
+            validation={minLength(8)}
           />
         </Form>
         <SubmitButton
           block
-          disabled={this.props.loading}
+          disabled={this.props.loading || !this.isFormValid()}
           onClick={this.handleSubmit}
+          type="submit"
         >
           {this.props.submitText}
         </SubmitButton>

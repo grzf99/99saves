@@ -213,7 +213,7 @@ class Saves extends React.Component {
   render() {
     return (
       <Page hasFooter>
-        <Toolbar logged={this.state.logged} onLogout={this.props.onLogout} />
+        <Toolbar logged={this.props.isSignedIn} onLogout={this.props.onLogout} />
 
         <Headline>
           Participe dos saves que você tem interesse e acompanhe toda a negociação até o melhor desconto.
