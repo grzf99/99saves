@@ -361,25 +361,6 @@ class Offer extends React.Component {
           </div>
         </Header>
 
-        {
-          this.props.votationOpen && (
-            <Section gray>
-              <Container>
-                <CustomTabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
-                  {
-                    this.state.products.map((product, key) => (
-                      <CustomTab key={product.id}>
-                        <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
-                        <Text white>R$ {formatCurrency(product.price)}</Text>
-                      </CustomTab>
-                    ))
-                  }
-                </CustomTabs>
-              </Container>
-            </Section>
-          )
-        }
-
         <RenderIf expr={this.props.checkoutOpen || this.props.votationOpen}>
           <Headline spotlight large>
             A { this.props.checkoutOpen ? 'oferta' : 'votação'} acaba em <b>{this.state.countdown}</b>
@@ -390,6 +371,23 @@ class Offer extends React.Component {
           <CustomHeadline large uppercase>
             Oferta encerrada
           </CustomHeadline>
+        </RenderIf>
+
+        <RenderIf expr={this.props.votationOpen}>
+          <Section gray>
+            <Container>
+              <CustomTabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
+                {
+                  this.state.products.map((product, key) => (
+                    <CustomTab key={product.id}>
+                      <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
+                      <Text white>R$ {formatCurrency(product.price)}</Text>
+                    </CustomTab>
+                  ))
+                }
+              </CustomTabs>
+            </Container>
+          </Section>
         </RenderIf>
 
         <SwipeableViews
