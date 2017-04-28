@@ -150,7 +150,7 @@ class ProductsCreate extends React.Component {
     }
 
     const { subscriptionCount } = this.state;
-    if (subscriptionCount > values.coupons.length) {
+    if (subscriptionCount > values.Coupons.length) {
       this.setState({
         showToast: true,
         typeToast: 'warning',
