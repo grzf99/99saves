@@ -95,7 +95,7 @@ const CustomText = styled(Text)`
   align-items: center;
   color: ${colors.lightgray};
   display: -webkit-box;
-  height: 42px;
+  height: 50px;
   overflow: hidden;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -111,6 +111,7 @@ const Status = styled.div`
   text-transform: uppercase;
   top: 0;
   width: 100%;
+  z-index: 3;
 `;
 
 const Buscape = styled(Text)`
@@ -143,10 +144,12 @@ export default class extends React.Component {
 
     const votationOpen = now > dateEnd && now <= votationEnd;
     const checkoutOpen = now > votationEnd && now < checkoutEnd;
+    const finished = now > checkoutEnd;
 
     this.state = {
       votationOpen,
-      checkoutOpen
+      checkoutOpen,
+      finished
     };
 
     this.handleSave = this.handleSave.bind(this);
@@ -181,7 +184,13 @@ export default class extends React.Component {
         <Button block onClick={this.goToOffers}>Participar da votação</Button>
       );
     } else if (this.state.checkoutOpen) {
-      return <Button block onClick={this.goToOffers}>Comprar agora</Button>;
+      return (
+        <Button block onClick={this.goToOffers}>Comprar agora</Button>
+      );
+    } else if (this.state.finished) {
+      return (
+        <Button block outline onClick={this.goToOffers}>Sobre o produto</Button>
+      );
     }
 
     return (
@@ -224,7 +233,12 @@ export default class extends React.Component {
   render() {
     return (
       <Card {...this.props}>
-        {this.state.votationOpen && <Tag uppercase>Votação</Tag>}
+        <RenderIf expr={this.state.finished}>
+          <Status>Oferta encerrada</Status>
+        </RenderIf>
+        <RenderIf expr={this.state.votationOpen}>
+          <Tag uppercase>Votação</Tag>
+        </RenderIf>
         <Header>
           {this.renderImages()}
           <Gradient>
@@ -237,8 +251,8 @@ export default class extends React.Component {
           </Gradient>
         </Header>
 
-        <RenderIf expr={this.state.checkoutOpen}>
-          <Headline spotlight uppercase withRoboto>
+        <RenderIf expr={this.state.checkoutOpen || this.state.finished}>
+          <Headline spotlight={!this.state.finished} disabled={this.state.finished} uppercase withRoboto>
             Oferta vencedora R$
             {' '}
             {formatCurrency(

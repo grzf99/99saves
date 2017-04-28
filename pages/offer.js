@@ -204,6 +204,10 @@ const Info = styled.div`
   margin: 20px 0;
 `;
 
+const MarginContainer = styled(Container)`
+  margin: 20px auto;
+`;
+
 class Offer extends React.Component {
   static async getInitialProps(ctx) {
     const save = (await ctx.api.get(`/saves/${ctx.query.saveId}`)).data;
@@ -214,9 +218,10 @@ class Offer extends React.Component {
     const checkoutEnd = new Date(save.checkout_end).getTime();
 
     const votationOpen = now > dateEnd && now <= votationEnd;
-    const checkoutOpen = now > votationEnd && now < checkoutEnd;
+    const checkoutOpen = now > votationEnd && now <= checkoutEnd;
+    const finished = now > checkoutEnd;
 
-    return { save, votationOpen, checkoutOpen };
+    return { save, votationOpen, checkoutOpen, finished };
   }
 
   constructor(props) {
@@ -350,32 +355,34 @@ class Offer extends React.Component {
           </div>
         </Header>
 
-        {
-          this.props.votationOpen && (
-            <Section gray>
-              <Container>
-                <CustomTabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
-                  {
-                    this.state.products.map((product, key) => (
-                      <CustomTab key={product.id}>
-                        <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
-                        <Text white>R$ {formatCurrency(product.price)}</Text>
-                      </CustomTab>
-                    ))
-                  }
-                </CustomTabs>
-              </Container>
-            </Section>
-          )
-        }
+        <RenderIf expr={this.props.checkoutOpen || this.props.votationOpen}>
+          <Headline spotlight large>
+            A { this.props.checkoutOpen ? 'oferta' : 'votação'} acaba em <b>{this.state.countdown}</b>
+          </Headline>
+        </RenderIf>
 
-        {
-          (this.props.checkoutOpen || this.props.votationOpen) && (
-            <Headline spotlight large>
-              A oferta acaba em <b>{this.state.countdown}</b>
-            </Headline>
-          )
-        }
+        <RenderIf expr={this.props.finished}>
+          <Headline disabled large uppercase>
+            Oferta encerrada
+          </Headline>
+        </RenderIf>
+
+        <RenderIf expr={this.props.votationOpen}>
+          <Section gray>
+            <Container>
+              <CustomTabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
+                {
+                  this.state.products.map((product, key) => (
+                    <CustomTab key={product.id}>
+                      <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
+                      <Text white>R$ {formatCurrency(product.price)}</Text>
+                    </CustomTab>
+                  ))
+                }
+              </CustomTabs>
+            </Container>
+          </Section>
+        </RenderIf>
 
         <SwipeableViews
           index={this.state.activeTab}
@@ -395,27 +402,31 @@ class Offer extends React.Component {
                 />
               </Section>
 
-              <Container>
-                <ItemHeader>
-                  {this.props.votationOpen && <Tag white>Oferta {key + 1}</Tag>}
-                  {this.props.votationOpen &&
-                    this.renderVotationButton(product)}
-                </ItemHeader>
+              <MarginContainer>
+                <RenderIf expr={this.props.votationOpen}>
+                  <ItemHeader>
+                    <Tag white>Oferta {key + 1}</Tag>
+                    {this.renderVotationButton(product)}
+                  </ItemHeader>
+                </RenderIf>
 
                 <Row>
                   <Column>
                     <Heading white>{product.title}</Heading>
                     <Panel>
-                      {product.description &&
+                      <RenderIf expr={!!product.description}>
                         <Info>
                           <h3>Descrição</h3>
                           {product.description}
-                        </Info>}
-                      {product.technique_information &&
+                        </Info>
+                      </RenderIf>
+
+                      <RenderIf expr={!!product.technique_information}>
                         <Info>
                           <h3>Informações técnicas do produto</h3>
                           {product.technique_information}
-                        </Info>}
+                        </Info>
+                      </RenderIf>
                     </Panel>
                   </Column>
                   <Column third>
@@ -427,9 +438,12 @@ class Offer extends React.Component {
                           {formatCurrency(product.price)}
                         </Heading>
                       </Price>
-                      {this.props.checkoutOpen && this.renderCheckoutButton(product)}
-                      {product.price_buscape &&
-                        product.link_buscape &&
+
+                      <RenderIf expr={this.props.checkoutOpen}>
+                        {this.renderCheckoutButton(product)}
+                      </RenderIf>
+
+                      <RenderIf expr={!!(product.price_buscape && product.link_buscape)}>
                         <BuscapeBox>
                           <Text uppercase white>Menor preço no Buscapé</Text>
                           <Price>
@@ -442,39 +456,35 @@ class Offer extends React.Component {
                               Pesquise você no <Buscape />
                             </Text>
                           </BuscapeBadge>
-                        </BuscapeBox>}
-                      {
-                        product.date_buscape && (
-                          <BuscapeDate>
-                            Valor pesquisado pela equipe 99saves em {format(product.date_buscape, 'DD/MM [às] HH:mm')}
-                          </BuscapeDate>
-                        )
-                      }
+                        </BuscapeBox>
+                      </RenderIf>
+
+                      <RenderIf expr={!!(product.price_buscape && product.link_buscape && product.date_buscape)}>
+                        <BuscapeDate>
+                          Valor pesquisado pela equipe 99saves em {format(product.date_buscape, 'DD/MM [às] HH:mm')}
+                        </BuscapeDate>
+                      </RenderIf>
                     </AlignRight>
                   </Column>
                 </Row>
-              </Container>
+              </MarginContainer>
             </div>
           ))}
         </SwipeableViews>
 
-        {this.props.votationOpen &&
-          this.state.activeTab !== 0 &&
-          <PrevArrow
-            onClick={() => this.handleChangeIndex(this.state.activeTab - 1)}
-          >
+        <RenderIf expr={this.props.votationOpen && this.state.activeTab !== 0}>
+          <PrevArrow onClick={() => this.handleChangeIndex(this.state.activeTab - 1)}>
             <Icon><ChevronLeft /></Icon>
             <span>Oferta {this.state.activeTab}</span>
-          </PrevArrow>}
+          </PrevArrow>
+        </RenderIf>
 
-        {this.props.votationOpen &&
-          this.state.activeTab !== this.state.products.length - 1 &&
-          <RightArrow
-            onClick={() => this.handleChangeIndex(this.state.activeTab + 1)}
-          >
+        <RenderIf expr={this.props.votationOpen && this.state.activeTab !== this.state.products.length - 1}>
+          <RightArrow onClick={() => this.handleChangeIndex(this.state.activeTab + 1)}>
             <Icon><ChevronRight /></Icon>
             <span>Oferta {this.state.activeTab + 2}</span>
-          </RightArrow>}
+          </RightArrow>
+        </RenderIf>
 
         <Footer />
       </Page>
