@@ -33,13 +33,16 @@ module.exports = {
 
   createAdmin (req, res) {
     let user = req.body;
-    return bcrypt.hash(user.password, 10)
-      .then((hash) => {
-        user.password = hash;
-        User.create(user)
-        .then(re => res.status(200).send(re))
-        .catch(error => res.status(400).send(error));
-      });
+    return User.findOrCreate({
+      where: { email: user.email },
+      defaults: Object.assign({}, user, { admin: false })
+    }).spread((user, created) => {
+      if (created) {
+        res.sendStatus(201);
+      } else {
+        res.sendStatus(422);
+      }
+    });
   },
 
   update (req, res) {
