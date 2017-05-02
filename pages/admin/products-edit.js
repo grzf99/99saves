@@ -61,7 +61,7 @@ class ProductsCreate extends React.Component {
     let list = [{ value: '', label: 'Selecione um registro' }];
     this.props.api.get('/saves')
         .then((response) => {
-          response.data.rows.map( (item) => {
+          response.data.map( (item) => {
             list.push({ value: item.id, label: item.title});
           });
           this.setState({ selectOptions: list });
