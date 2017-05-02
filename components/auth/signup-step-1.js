@@ -32,14 +32,21 @@ class SignupStep1 extends Component {
       password: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange({ target }) {
     this.setState({ [target.name]: target.value });
   }
 
+  handleSubmit() {
+    this.props.onSubmit({
+      email: this.state.email,
+      password: this.state.password
+    });
+  }
+
   render() {
-    const { email, password } = this.state;
     return (
       <div>
         <FormContainer>
@@ -68,10 +75,7 @@ class SignupStep1 extends Component {
               onChange={this.handleChange}
             />
           </Form>
-          <SubmitButton
-            block
-            onClick={() => this.props.onSubmit({ email, password })}
-          >
+          <SubmitButton block onClick={this.handleSubmit}>
             Criar conta com email
           </SubmitButton>
           <RenderIf expr={false}>

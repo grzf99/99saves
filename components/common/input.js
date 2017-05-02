@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import hexRgb from 'hex-rgb';
 import { colors } from '../styles/variables';
 import { Text } from './typography';
+import { noop } from '../../utils';
 
 const Container = styled.div`
   width: ${props => (props.block ? '100%' : 'auto')};
@@ -17,7 +18,7 @@ const Label = styled(Text)`
 `;
 
 const [r, g, b] = hexRgb(colors.black);
-const Field = styled.input`
+export const Field = styled.input`
   border: 0;
   border-bottom: 1px solid ${colors.black};
   font-family: 'Roboto', sans-serif;
@@ -48,7 +49,7 @@ class Input extends Component {
   static defaultProps = {
     label: '',
     block: false,
-    validation: () => true
+    validation: noop
   };
 
   constructor(props) {
