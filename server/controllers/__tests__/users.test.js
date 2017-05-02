@@ -3,8 +3,8 @@ const { User } = require('../../models');
 const usersController = require('../users');
 
 beforeAll(() => {
-  require('dotenv').config()
-  return User.sync({ force: true })
+  require('dotenv').config();
+  return User.sync({ force: true });
 });
 
 describe('create', () => {
@@ -21,16 +21,17 @@ describe('create', () => {
 
     it('should create the user and return 201', () => {
       const res = new MockResponse();
-      return usersController.create(req, res)
-        .then((count) => {
-          expect(res.statusCode).toEqual(201);
-          expect(res._getJSON()).toEqual(expect.objectContaining({
+      return usersController.create(req, res).then((count) => {
+        expect(res.statusCode).toEqual(201);
+        expect(res._getJSON()).toEqual(
+          expect.objectContaining({
             name: expect.any(String),
             email: expect.any(String),
             admin: expect.any(Boolean),
             token: expect.any(String)
-          }))
-        });
+          })
+        );
+      });
     });
   });
 
@@ -51,7 +52,51 @@ describe('create', () => {
         .then(() => usersController.create(req, res))
         .then((count) => {
           expect(res.statusCode).toEqual(422);
-        })
+        });
     });
-  })
+  });
+});
+
+describe('isAvailable', () => {
+  describe('when user exists', () => {
+    it('should return false', () => {
+      const user = {
+        email: 'asd@asd.com',
+        password: '12345678'
+      };
+      const req = {
+        query: {
+          email: 'asd@asd.com'
+        }
+      };
+      const res = new MockResponse();
+
+      return User.create(user)
+        .then(() => usersController.isAvailable(req, res))
+        .then(() => {
+          expect(res.statusCode).toEqual(200);
+          expect(res._getJSON()).toEqual({
+            isAvailable: false
+          });
+        });
+    });
+  });
+
+  describe('when user does not exist', () => {
+    it('should return true', () => {
+      const req = {
+        query: {
+          email: 'qwe@qwe.com'
+        }
+      };
+      const res = new MockResponse();
+
+      return usersController.isAvailable(req, res).then(() => {
+        expect(res.statusCode).toEqual(200);
+        expect(res._getJSON()).toEqual({
+          isAvailable: true
+        });
+      });
+    });
+  });
 });

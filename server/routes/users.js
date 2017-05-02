@@ -1,13 +1,11 @@
 const express = require('express');
 const { users } = require('../controllers');
-const {
-  clientAuthentication,
-  adminAuthentication
-} = require('../middleware/authentication');
+const { adminAuthentication } = require('../middleware/authentication');
 
 const router = express.Router();
 
 router.post('/', users.create);
+router.get('/available', users.isAvailable);
 
 router.post('/create-admin', adminAuthentication(), users.createAdmin);
 router.get('/', adminAuthentication(), users.list);
