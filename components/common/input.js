@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import hexRgb from 'hex-rgb';
+import MaskedInput from 'react-maskedinput';
 import { colors } from '../styles/variables';
 import { Text } from './typography';
 import { noop } from '../../utils';
@@ -32,6 +33,20 @@ export const Field = styled.input`
   }
 `;
 
+export const MaskedField = styled(MaskedInput)`
+  border: 0;
+  border-bottom: 1px solid ${colors.black};
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  display: block;
+  line-height: 1.5;
+  outline: none;
+  width: 100%;
+  &::placeholder {
+    color: rgba(${r}, ${g}, ${b}, 0.12);
+  }
+`;
+
 const Hint = styled(Text)`
   display: block;
   color: ${props => (props.red ? colors.red : colors.lightgray)};
@@ -43,13 +58,15 @@ class Input extends Component {
     onChange: PropTypes.func.isRequired,
     label: PropTypes.string,
     block: PropTypes.bool,
-    validation: PropTypes.func
+    validation: PropTypes.func,
+    mask: PropTypes.string
   };
 
   static defaultProps = {
     label: '',
     block: false,
-    validation: noop
+    validation: noop,
+    mask: undefined
   };
 
   constructor(props) {
@@ -63,27 +80,42 @@ class Input extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(e) {
+  handleChange({ target }) {
     let valid = this.state.valid;
-    this.setState({ dirty: true, value: e.target.value });
+    this.setState({ dirty: true, value: target.value });
 
     if (this.props.validation && this.state.dirty) {
-      const validationMessage = this.props.validation(e.target.value);
+      const validationMessage = this.props.validation(target.value);
       valid = !validationMessage;
       this.setState({ valid, validationMessage });
     }
 
-    e.target.value = valid ? e.target.value : '';
-    this.props.onChange(e);
+    this.props.onChange({
+      target: {
+        name: target.name,
+        value: valid ? target.value : ''
+      }
+    });
+  }
+
+  hasMask() {
+    return this.props.mask === undefined || this.props.mask === '';
   }
 
   render() {
-    const { label, hint, block, ...rest } = this.props;
+    const { label, hint, block, mask, validation, ...rest } = this.props;
     const { value, valid, validationMessage } = this.state;
     return (
       <Container block={block}>
         <Label uppercase>{label}</Label>
-        <Field {...rest} onChange={this.handleChange} value={value} />
+        {this.hasMask()
+          ? <Field {...rest} value={value} onChange={this.handleChange} />
+          : <MaskedField
+            {...rest}
+            mask={mask}
+            value={value}
+            onChange={this.handleChange}
+          />}
         <Hint red={!valid}>{valid ? hint : validationMessage}</Hint>
       </Container>
     );

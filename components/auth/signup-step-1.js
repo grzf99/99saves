@@ -14,6 +14,7 @@ import {
   SeparatorText,
   FormAlert
 } from '../common/typography';
+import { email, minLength } from '../../utils/validation';
 
 const FormHeader = styled.div`
   padding-bottom: 30px;
@@ -81,6 +82,7 @@ class SignupStep1 extends Component {
               label="Email"
               placeholder="exemplo@exemplo.com"
               onChange={this.handleChange}
+              validation={email}
             />
             <Input
               block
@@ -90,6 +92,7 @@ class SignupStep1 extends Component {
               placeholder="crie sua senha"
               hint="Sua senha deve ter ao menos 8 dígitos, além de letras e números"
               onChange={this.handleChange}
+              validation={minLength(8)}
             />
           </Form>
           <SubmitButton block onClick={this.handleSubmit}>

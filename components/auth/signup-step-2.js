@@ -3,8 +3,11 @@ import styled from 'styled-components';
 import { colors } from '../styles/variables';
 import Form from '../common/form';
 import Input from '../common/input';
+import Select from '../common/select';
 import Button from '../common/button';
 import { Heading, Heading2 } from '../common/typography';
+import { cpf } from '../../utils/validation';
+import { states } from '../../utils/address';
 
 const FormHeader = styled.div`
   padding-bottom: 30px;
@@ -39,14 +42,21 @@ class SignupStep2 extends Component {
   constructor() {
     super();
     this.state = {
-      email: '',
-      password: ''
+      name: '',
+      cpf: '',
+      state: '',
+      city: ''
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange({ target }) {
     this.setState({ [target.name]: target.value });
+  }
+
+  isFormValid() {
+    const { name, state, city } = this.state;
+    return name !== '' && this.state.cpf !== '' && city !== '' && state !== '';
   }
 
   render() {
@@ -71,14 +81,18 @@ class SignupStep2 extends Component {
             name="cpf"
             label="CPF"
             placeholder="000.000.000-00"
+            mask="111.111.111-11"
             hint="Fique tranquilo, não usaremos seu CPF sem sua autorização"
             onChange={this.handleChange}
+            validation={cpf}
           />
-          <Input
+          <Select
             block
             name="state"
             label="Estado"
             placeholder="Estado que você mora"
+            defaultMessage="Escolha o estado"
+            options={states}
             onChange={this.handleChange}
           />
           <Input
@@ -93,7 +107,12 @@ class SignupStep2 extends Component {
           <BackButton block large outline onClick={this.props.onBack}>
             Voltar
           </BackButton>
-          <ConfirmButton block large onClick={this.props.onSubmit}>
+          <ConfirmButton
+            block
+            large
+            disabled={!this.isFormValid()}
+            onClick={this.props.onSubmit}
+          >
             Confirmar
           </ConfirmButton>
         </FormFooter>
