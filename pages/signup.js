@@ -6,7 +6,7 @@ import AuthPage from '../components/auth/auth-page';
 import RenderIf from '../components/common/render-if';
 import SignupStep1 from '../components/auth/signup-step-1';
 import SignupStep2 from '../components/auth/signup-step-2';
-import { signup } from '../store/auth';
+import { signup, isEmailAvailable } from '../store/auth';
 
 class SignupPage extends Component {
   constructor() {
@@ -25,13 +25,15 @@ class SignupPage extends Component {
       // Probably using a ?reditectTo query param
       Router.replace('/saves');
     }
+
+    if (nextProps.isUserAvailable && !nextProps.loading && this.props.loading) {
+      this.setState({ step: 2 });
+    }
   }
 
   handleStep1Submit(user) {
-    this.setState({
-      step: 2,
-      user
-    });
+    this.props.isEmailAvailable(user.email);
+    this.setState({ user });
   }
 
   handleStep2Submit() {
@@ -47,7 +49,10 @@ class SignupPage extends Component {
     return (
       <AuthPage>
         <RenderIf expr={this.state.step === 1}>
-          <SignupStep1 onSubmit={this.handleStep1Submit} />
+          <SignupStep1
+            onSubmit={this.handleStep1Submit}
+            isUserAvailable={this.props.isUserAvailable}
+          />
         </RenderIf>
         <RenderIf expr={this.state.step === 2}>
           <SignupStep2
@@ -65,7 +70,8 @@ export default withStore(
   ({ auth, currentUser }) => ({
     loading: auth.signup.loading,
     error: auth.signup.error,
-    isSignedIn: currentUser.token !== undefined
+    isSignedIn: currentUser.token !== undefined,
+    isUserAvailable: auth.signup.isEmailAvailable
   }),
-  { signup }
+  { signup, isEmailAvailable }
 )(SignupPage);

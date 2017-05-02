@@ -10,7 +10,13 @@ import FacebookButton from '../common/facebook-button';
 import Form from '../common/form';
 import RenderIf from '../common/render-if';
 import { colors } from '../styles/variables';
-import { Heading, Heading2, Text, SeparatorText } from '../common/typography';
+import {
+  Heading,
+  Heading2,
+  Text,
+  SeparatorText,
+  FormAlert
+} from '../common/typography';
 import { email, minLength } from '../../utils/validation';
 
 const Header = styled.div`
@@ -43,12 +49,6 @@ const CreateAccountText = styled(Text)`
   text-align: right;
   text-transform: uppercase;
   cursor: pointer;
-`;
-
-const Alert = styled(Text)`
-  color: ${colors.red};
-  margin-bottom: 13px;
-  font-size: 14px;
 `;
 
 class LoginForm extends Component {
@@ -92,10 +92,10 @@ class LoginForm extends Component {
   }
 
   keyHandle = (e) => {
-    if(e.key === 'Enter') {
+    if (e.key === 'Enter') {
       this.handleSubmit(e);
     }
-  }
+  };
 
   handleChange({ target }) {
     this.setState({ [target.name]: target.value });
@@ -118,7 +118,7 @@ class LoginForm extends Component {
         </RenderIf>
         <Form onSubmit={this.handleSubmit}>
           <RenderIf expr={this.props.error !== undefined}>
-            <Alert>Usuário ou senha inválidos.</Alert>
+            <FormAlert>Usuário ou senha inválidos.</FormAlert>
           </RenderIf>
           <Input
             block

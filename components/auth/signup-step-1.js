@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { colors } from '../styles/variables';
@@ -8,7 +8,12 @@ import Form from '../common/form';
 import Input from '../common/input';
 import Button from '../common/button';
 import SubmitButton from '../common/submit-button';
-import { Heading, Heading2, SeparatorText } from '../common/typography';
+import {
+  Heading,
+  Heading2,
+  SeparatorText,
+  FormAlert
+} from '../common/typography';
 
 const FormHeader = styled.div`
   padding-bottom: 30px;
@@ -25,6 +30,15 @@ const FormFooter = styled.div`
 `;
 
 class SignupStep1 extends Component {
+  static propTypes = {
+    isUserAvailable: PropTypes.bool,
+    onSubmit: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    isUserAvailable: true
+  };
+
   constructor() {
     super();
     this.state = {
@@ -56,7 +70,10 @@ class SignupStep1 extends Component {
               Juntos pelos menores preços do mercado
             </Heading2>
           </FormHeader>
-          <Form onSubmit={this.props.onSubmit}>
+          <Form onSubmit={this.handleSubmit}>
+            {!this.props.isUserAvailable
+              ? <FormAlert>Já existe um usuário com este email.</FormAlert>
+              : null}
             <Input
               block
               name="email"
