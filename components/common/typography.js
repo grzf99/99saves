@@ -42,10 +42,17 @@ export const SeparatorText = styled(Text)`
   color: ${colors.lightgray};
 `;
 
+export const FormAlert = styled(Text)`
+  color: ${colors.red};
+  margin-bottom: 13px;
+  font-size: 14px;
+`;
+
 export default {
   Heading,
   Heading2,
   Text,
   SmallText,
-  SeparatorText
+  SeparatorText,
+  FormAlert
 };

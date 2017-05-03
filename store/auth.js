@@ -7,6 +7,9 @@ export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
 export const LOGOUT = 'LOGOUT';
+export const IS_EMAIL_AVAILABLE_REQUEST = 'IS_EMAIL_AVAILABLE_REQUEST';
+export const IS_EMAIL_AVAILABLE_SUCCESS = 'IS_EMAIL_AVAILABLE_SUCCESS';
+export const IS_EMAIL_AVAILABLE_ERROR = 'IS_EMAIL_AVAILABLE_ERROR';
 
 export const USER_LOCALSTORAGE_KEY = '99-user';
 export const TOKEN_COOKIE_KEY = '99-token';
@@ -16,7 +19,8 @@ export const defaultState = {
     loading: false
   },
   signup: {
-    loading: false
+    loading: false,
+    isEmailAvailable: true
   }
 };
 
@@ -68,6 +72,30 @@ export default (state = defaultState, action) => {
           error: action.error
         }
       };
+    case IS_EMAIL_AVAILABLE_REQUEST:
+      return {
+        ...state,
+        signup: {
+          loading: true,
+          isEmailAvailable: true
+        }
+      };
+    case IS_EMAIL_AVAILABLE_SUCCESS:
+      return {
+        ...state,
+        signup: {
+          loading: false,
+          isEmailAvailable: action.payload.isAvailable
+        }
+      };
+    case IS_EMAIL_AVAILABLE_ERROR:
+      return {
+        ...state,
+        signup: {
+          loading: false,
+          error: action.error
+        }
+      };
     default:
       return state;
   }
@@ -106,4 +134,18 @@ export function logout() {
   window.localStorage.removeItem(USER_LOCALSTORAGE_KEY);
   Cookies.remove(TOKEN_COOKIE_KEY);
   return { type: LOGOUT };
+}
+
+export function isEmailAvailable(email) {
+  return {
+    api: {
+      types: [
+        IS_EMAIL_AVAILABLE_REQUEST,
+        IS_EMAIL_AVAILABLE_SUCCESS,
+        IS_EMAIL_AVAILABLE_ERROR
+      ],
+      url: `/users/available?email=${email}`,
+      method: 'GET'
+    }
+  };
 }
