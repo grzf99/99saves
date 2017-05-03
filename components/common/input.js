@@ -4,7 +4,7 @@ import hexRgb from 'hex-rgb';
 import MaskedInput from 'react-maskedinput';
 import { colors } from '../styles/variables';
 import { Text } from './typography';
-import { noop } from '../../utils';
+import validatable from '../hoc/validatable';
 
 const Container = styled.div`
   width: ${props => (props.block ? '100%' : 'auto')};
@@ -53,68 +53,52 @@ const Hint = styled(Text)`
   padding-top: 5px;
 `;
 
-class Input extends Component {
+export class Input extends Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     label: PropTypes.string,
     block: PropTypes.bool,
-    validation: PropTypes.func,
-    mask: PropTypes.string
+    mask: PropTypes.string,
+    value: PropTypes.string,
+    valid: PropTypes.bool,
+    validationMessage: PropTypes.string
   };
 
   static defaultProps = {
     label: '',
     block: false,
-    validation: noop,
-    mask: undefined
+    mask: undefined,
+    validationMessage: '',
+    valid: true,
+    value: ''
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      valid: true,
-      dirty: false,
-      validationMessage: '',
-      value: ''
-    };
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange({ target }) {
-    let valid = this.state.valid;
-    this.setState({ dirty: true, value: target.value });
-
-    if (this.props.validation && this.state.dirty) {
-      const validationMessage = this.props.validation(target.value);
-      valid = !validationMessage;
-      this.setState({ valid, validationMessage });
-    }
-
-    this.props.onChange({
-      target: {
-        name: target.name,
-        value: valid ? target.value : ''
-      }
-    });
-  }
-
   hasMask() {
-    return this.props.mask === undefined || this.props.mask === '';
+    return this.props.mask !== undefined && this.props.mask !== '';
   }
 
   render() {
-    const { label, hint, block, mask, validation, ...rest } = this.props;
-    const { value, valid, validationMessage } = this.state;
+    const {
+      label,
+      hint,
+      block,
+      mask,
+      value,
+      valid,
+      validationMessage,
+      onChange,
+      ...cleanedProps
+    } = this.props;
     return (
       <Container block={block}>
         <Label uppercase>{label}</Label>
-        {this.hasMask()
-          ? <Field {...rest} value={value} onChange={this.handleChange} />
+        {!this.hasMask()
+          ? <Field {...cleanedProps} value={value} onChange={onChange} />
           : <MaskedField
-            {...rest}
+            {...cleanedProps}
             mask={mask}
             value={value}
-            onChange={this.handleChange}
+            onChange={onChange}
           />}
         <Hint red={!valid}>{valid ? hint : validationMessage}</Hint>
       </Container>
@@ -122,4 +106,4 @@ class Input extends Component {
   }
 }
 
-export default Input;
+export default validatable(Input);

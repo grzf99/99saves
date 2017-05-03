@@ -26,3 +26,7 @@ export function minLength(length) {
 export function cpf(value) {
   return !CPF.isValid(value) ? 'Deve ser um CPF válido' : undefined;
 }
+
+export function required(value) {
+  return value === '' || value === undefined ? 'Campo obrigatório' : undefined;
+}

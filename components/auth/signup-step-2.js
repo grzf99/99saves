@@ -6,7 +6,7 @@ import Input from '../common/input';
 import Select from '../common/select';
 import Button from '../common/button';
 import { Heading, Heading2 } from '../common/typography';
-import { cpf } from '../../utils/validation';
+import { cpf, required } from '../../utils/validation';
 import { states } from '../../utils/address';
 
 const FormHeader = styled.div`
@@ -75,6 +75,7 @@ class SignupStep2 extends Component {
             label="Nome"
             placeholder="Seu nome"
             onChange={this.handleChange}
+            validation={required}
           />
           <Input
             block
@@ -84,7 +85,7 @@ class SignupStep2 extends Component {
             mask="111.111.111-11"
             hint="Fique tranquilo, não usaremos seu CPF sem sua autorização"
             onChange={this.handleChange}
-            validation={cpf}
+            validation={[required, cpf]}
           />
           <Select
             block
@@ -94,6 +95,7 @@ class SignupStep2 extends Component {
             defaultMessage="Escolha o estado"
             options={states}
             onChange={this.handleChange}
+            validation={required}
           />
           <Input
             block
@@ -101,6 +103,7 @@ class SignupStep2 extends Component {
             label="Cidade"
             placeholder="Cidade que você mora"
             onChange={this.handleChange}
+            validation={required}
           />
         </Form>
         <FormFooter>

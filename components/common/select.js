@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import hexRgb from 'hex-rgb';
 import { colors } from '../styles/variables';
 import { Text } from './typography';
-import { noop } from '../../utils';
+import validatable from '../hoc/validatable';
 
 const Container = styled.div`
   width: ${props => (props.block ? '100%' : 'auto')};
@@ -48,38 +48,51 @@ class Select extends Component {
     onChange: PropTypes.func.isRequired,
     label: PropTypes.string,
     block: PropTypes.bool,
-    validation: PropTypes.func,
-    value: PropTypes.string,
     options: PropTypes.arrayOf(
       PropTypes.shape({
         label: PropTypes.string,
         value: PropTypes.string
       })
     ).isRequired,
-    defaultMessage: PropTypes.string
+    defaultOption: PropTypes.string,
+    value: PropTypes.string,
+    valid: PropTypes.bool,
+    validationMessage: PropTypes.string
   };
 
   static defaultProps = {
     label: '',
     block: false,
-    validation: noop,
-    defaultMessage: 'Selecione o registro'
+    defaultOption: 'Selecione o registro',
+    validationMessage: '',
+    valid: true,
+    value: ''
   };
 
   get options() {
     return [
-      { value: '', label: this.props.defaultMessage },
+      { value: '', label: this.props.defaultOption },
       ...this.props.options
     ];
   }
 
   render() {
-    const { label, value, hint, block, ...rest } = this.props;
+    const {
+      label,
+      hint,
+      block,
+      value,
+      valid,
+      validationMessage,
+      onChange,
+      ...cleanedProps
+    } = this.props;
+    debugger;
     return (
       <Container block={block}>
         <Label uppercase>{label}</Label>
         <FieldWrapper>
-          <Field {...rest} onChange={this.props.onChange} value={value}>
+          <Field {...cleanedProps} onChange={onChange} value={value}>
             {this.options.map(option => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -87,10 +100,10 @@ class Select extends Component {
             ))}
           </Field>
         </FieldWrapper>
-        <Hint>{hint}</Hint>
+        <Hint red={!valid}>{valid ? hint : validationMessage}</Hint>
       </Container>
     );
   }
 }
 
-export default Select;
+export default validatable(Select);
