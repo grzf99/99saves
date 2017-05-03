@@ -30,10 +30,10 @@ class ProvidersEdit extends React.Component {
   }
 
   componentDidMount() {
-    this.getSaves(this.props.query.id);
+    this.getProvider(this.props.query.id);
   }
 
-  getSaves(id) {
+  getProvider(id) {
     this.props.api.get(`/providers/${id}`)
         .then((response) => {
           this.setState({
@@ -80,13 +80,13 @@ class ProvidersEdit extends React.Component {
 
     if (!values.logo) delete values.logo;
 
-    const rest = this.props.api.put(`${config.API_URL}/providers/${values.id}`, values)
+    const rest = this.props.api.put(`/providers/${values.id}`, values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
           setTimeout(() => Router.push('/admin/providers'), 2000);
         })
-        .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao alterar o registro' });
+        .catch((error) => {
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Erro - (${error.message})` });
           setTimeout(() => this.setState({ showToast: false }), 2500);
         });
 
