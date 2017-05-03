@@ -28,13 +28,28 @@ const blockStyles = css`
   padding: 10px;
 `;
 
-const disabledStyles = css`
+const primaryDisabledStyles = css`
   background-color: ${colors.darkGreen};
   color: ${colors.gray};
   cursor: default;
+  pointer-events: none;
+  user-select: none;
 
   &:hover {
     background-color: ${colors.darkGreen};
+  }
+`;
+
+const secondaryDisabledStyles = css`
+  background-color: rgba(40,186,100, .2);
+  color: rgba(255, 255, 255, .9);
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+
+  &:hover {
+    background-color: rgba(40,186,100, .2);
+    color: rgba(255, 255, 255, .9);
   }
 `;
 
@@ -56,11 +71,12 @@ const Button = styled.a`
     transition: .2s ease background-color;
   }
 
-  ${props => props.block ? blockStyles : ''}
-  ${props => props.small ? smallStyles : ''}
-  ${props => props.large ? largeStyles : ''}
-  ${props => props.outline ? outlineStyles : ''}
-  ${props => props.disabled ? disabledStyles : ''}
+  ${props => (props.block ? blockStyles : '')}
+  ${props => (props.small ? smallStyles : '')}
+  ${props => (props.large ? largeStyles : '')}
+  ${props => (props.outline ? outlineStyles : '')}
+  ${props => (props.disabled && !props.large ? primaryDisabledStyles : '')}
+  ${props => (props.disabled && props.large ? secondaryDisabledStyles : '')}
 `;
 
 export default Button;

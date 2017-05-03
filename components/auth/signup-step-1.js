@@ -2,18 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { colors } from '../styles/variables';
-import RenderIf from '../common/render-if';
-import FacebookButton from '../common/facebook-button';
 import Form from '../common/form';
 import Input from '../common/input';
 import Button from '../common/button';
-import SubmitButton from '../common/submit-button';
-import {
-  Heading,
-  Heading2,
-  SeparatorText,
-  FormAlert
-} from '../common/typography';
+import { Heading, Heading2, FormAlert } from '../common/typography';
 import { email, minLength } from '../../utils/validation';
 
 const FormHeader = styled.div`
@@ -61,6 +53,10 @@ class SignupStep1 extends Component {
     });
   }
 
+  isFormValid() {
+    return this.state.email !== '' && this.state.password !== '';
+  }
+
   render() {
     return (
       <div>
@@ -95,15 +91,14 @@ class SignupStep1 extends Component {
               validation={minLength(8)}
             />
           </Form>
-          <SubmitButton block onClick={this.handleSubmit}>
+          <Button
+            block
+            large
+            disabled={!this.isFormValid()}
+            onClick={this.handleSubmit}
+          >
             Criar conta com email
-          </SubmitButton>
-          <RenderIf expr={false}>
-            <div>
-              <SeparatorText>ou</SeparatorText>
-              <FacebookButton block>Criar conta com facebook</FacebookButton>
-            </div>
-          </RenderIf>
+          </Button>
         </FormContainer>
         <FormFooter>
           <Link prefetch href="/login">

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { login } from '../../store/auth';
 import Input from '../common/input';
-import SubmitButton from '../common/submit-button';
+import Button from '../common/button';
 import FacebookButton from '../common/facebook-button';
 import Form from '../common/form';
 import RenderIf from '../common/render-if';
@@ -141,14 +141,15 @@ class LoginForm extends Component {
             validation={minLength(8)}
           />
         </Form>
-        <SubmitButton
+        <Button
           block
+          large
           disabled={this.props.loading || !this.isFormValid()}
           onClick={this.handleSubmit}
           type="submit"
         >
           {this.props.submitText}
-        </SubmitButton>
+        </Button>
         <RenderIf expr={false}>
           <div>
             <SeparatorText>ou</SeparatorText>
