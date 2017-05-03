@@ -1,19 +1,21 @@
-'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var Provider = sequelize.define('Provider', {
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    cnpj: DataTypes.STRING,
-    address: DataTypes.STRING,
-    responsible: DataTypes.STRING,
-    phone: DataTypes.STRING,
-    logo: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        Provider.hasMany(models.Product);
+module.exports = (sequelize, DataTypes) => {
+  const Provider = sequelize.define(
+    'Provider',
+    {
+      name: DataTypes.STRING,
+      email: { type: DataTypes.STRING, allowNull: false, unique: true },
+      cnpj: DataTypes.STRING,
+      address: DataTypes.STRING,
+      responsible: DataTypes.STRING,
+      phone: DataTypes.STRING,
+      logo: DataTypes.STRING
+    },
+    {
+      classMethods: {
+        associate(models) {
+          Provider.hasMany(models.Product);
+        }
       }
-    }
-  });
+    });
   return Provider;
 };
