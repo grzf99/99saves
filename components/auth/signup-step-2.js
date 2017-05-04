@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
+import every from 'lodash/every';
 import { colors } from '../styles/variables';
 import Form from '../common/form';
 import Input from '../common/input';
@@ -64,8 +65,10 @@ class SignupStep2 extends Component {
   }
 
   isFormValid() {
-    const { name, state, city } = this.state;
-    return name !== '' && this.state.cpf !== '' && city !== '' && state !== '';
+    return every(
+      ['name', 'cpf', 'state', 'city'],
+      key => this.state[key] !== ''
+    );
   }
 
   render() {
