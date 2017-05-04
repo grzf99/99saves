@@ -8,7 +8,7 @@ test:
   pre:
     - mv .env.sample .env
   override:
-    - echo "true"
+    - npm run test-ci
 deployment:
   staging:
     branch: master
