@@ -1,11 +1,15 @@
-const MockResponse = require('mock-express-response');
-const { User } = require('../../models');
-const usersController = require('../users');
+import MockResponse from 'mock-express-response';
+import { User } from '../../models';
+import usersController from '../users';
 
-beforeAll(() => {
+beforeEach(() => {
   require('dotenv').config();
   return User.sync({ force: true });
 });
+
+afterEach(() => {
+  return User.sync({ force: true });
+})
 
 describe('create', () => {
   describe('when user does not exist', () => {
@@ -86,7 +90,7 @@ describe('isAvailable', () => {
     it('should return true', () => {
       const req = {
         query: {
-          email: 'qwe@qwe.com'
+          email: 'non.existent.user@example.org'
         }
       };
       const res = new MockResponse();

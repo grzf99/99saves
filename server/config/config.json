@@ -1,29 +1,16 @@
 {
   "development": {
-    "username": "postgres",
-    "password": null,
     "database": "99saves-dev",
-    "host": "127.0.0.1",
-    "port": 5432,
     "dialect": "postgres"
   },
   "test": {
-    "username": "postgres",
-    "password": null,
     "database": "99saves-test",
-    "host": "127.0.0.1",
-    "port": 5432,
     "dialect": "postgres",
     "logging": false
   },
   "test-ci": {
-    "username": "ubuntu",
-    "password": null,
     "database": "circle_test",
-    "host": "127.0.0.1",
-    "port": 5432,
-    "dialect": "postgres",
-    "logging": true
+    "dialect": "postgres"
   },
   "production": {
     "use_env_variable": "DATABASE_URL"
