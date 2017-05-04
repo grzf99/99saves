@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import request from 'superagent';
 import Router from 'next/router';
+import Link from 'next/link';
 import FRC, { Input, Row } from 'formsy-react-components';
 import Loading from 'react-loading';
 
@@ -183,12 +184,15 @@ class ProvidersCreate extends React.Component {
                         </RenderIf>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
-                      <div className="text-left">
+                      <div className="pull-left">
                         <input
                           className="btn btn-primary"
                           type="submit"
                           defaultValue="Enviar"
                         />
+                      </div>
+                      <div className="pull-right">
+                        <Link prefetch href="/admin/providers"><a className="btn btn-default">Voltar</a></Link>
                       </div>
                     </Row>
                   </FRC.Form>

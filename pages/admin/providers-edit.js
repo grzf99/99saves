@@ -1,6 +1,7 @@
 import React from 'react';
 import request from 'superagent';
 import Router from 'next/router';
+import Link from 'next/link';
 import FRC, { Input, Row } from 'formsy-react-components';
 import Loading from 'react-loading';
 
@@ -191,8 +192,11 @@ class ProvidersEdit extends React.Component {
                       </div>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
-                      <div className="text-left">
+                      <div className="pull-left">
                         <input className="btn btn-primary" type="submit" defaultValue="Enviar" disabled={this.state.btnEnabled ? 'disabled' : ''} />
+                      </div>
+                      <div className="pull-right">
+                        <Link prefetch href="/admin/providers"><a className="btn btn-default">Voltar</a></Link>
                       </div>
                     </Row>
                   </FRC.Form>
