@@ -110,87 +110,89 @@ class ProvidersCreate extends React.Component {
                     <Loading type="bars" color="#000000" />
                   </div>
                 </RenderIf>
-                <FRC.Form onSubmit={this.submitForm} layout="vertical">
-                  <Input name="id" type="hidden" />
-                  <Input
-                    name="name"
-                    value=""
-                    id="name"
-                    label="Nome do fornecedor"
-                    type="text"
-                    placeholder="Nome do fornecedor"
-                    required
-                    rowClassName="col-sm-12"
-                  />
-                  <Input
-                    name="email"
-                    value=""
-                    id="email"
-                    label="Email do fornecedor"
-                    type="text"
-                    placeholder="Email do fornecedor"
-                    required
-                    rowClassName="col-sm-12"
-                  />
-                  <Input
-                    name="cnpj"
-                    value=""
-                    id="cnpj"
-                    label="CNPJ do fornecedor"
-                    type="text"
-                    placeholder="CNPJ do fornecedor"
-                    required
-                    rowClassName="col-sm-12"
-                  />
-                  <Input
-                    name="responsible"
-                    value=""
-                    id="responsible"
-                    label="Responsável do fornecedor"
-                    type="text"
-                    placeholder="Responsável do fornecedor"
-                    rowClassName="col-sm-12"
-                  />
-                  <Input
-                    name="phone"
-                    value=""
-                    id="phone"
-                    label="Telefone do fornecedor"
-                    type="text"
-                    placeholder="Telefone do fornecedor"
-                    required
-                    rowClassName="col-sm-12"
-                  />
+                <RenderIf expr={!this.state.loading}>
+                  <FRC.Form onSubmit={this.submitForm} layout="vertical">
+                    <Input name="id" type="hidden" />
+                    <Input
+                      name="name"
+                      value=""
+                      id="name"
+                      label="Nome do fornecedor"
+                      type="text"
+                      placeholder="Nome do fornecedor"
+                      required
+                      rowClassName="col-sm-12"
+                    />
+                    <Input
+                      name="email"
+                      value=""
+                      id="email"
+                      label="Email do fornecedor"
+                      type="text"
+                      placeholder="Email do fornecedor"
+                      required
+                      rowClassName="col-sm-12"
+                    />
+                    <Input
+                      name="cnpj"
+                      value=""
+                      id="cnpj"
+                      label="CNPJ do fornecedor"
+                      type="text"
+                      placeholder="CNPJ do fornecedor"
+                      required
+                      rowClassName="col-sm-12"
+                    />
+                    <Input
+                      name="responsible"
+                      value=""
+                      id="responsible"
+                      label="Responsável do fornecedor"
+                      type="text"
+                      placeholder="Responsável do fornecedor"
+                      rowClassName="col-sm-12"
+                    />
+                    <Input
+                      name="phone"
+                      value=""
+                      id="phone"
+                      label="Telefone do fornecedor"
+                      type="text"
+                      placeholder="Telefone do fornecedor"
+                      required
+                      rowClassName="col-sm-12"
+                    />
 
-                  <div className="form-group col-sm-12">
-                    <label className="control-label" htmlFor="logo">
-                        Logo
-                      </label>
-                    <div className="controls">
-                      <input
-                        type="file"
-                        name="logo"
-                        onChange={this.handleSave}
-                      />
-                    </div>
-                      <RenderIf expr={this.state.btnEnabled}>
-                        <Loading type="bars" color="#000000" />  
-                      </RenderIf>
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="logo">
+                          Logo fornecedor
+                        </label>
+                      <div className="controls">
+                        <input
+                          type="file"
+                          name="logo"
+                          onChange={this.handleSave}
+                        />
+                      </div>
+                        <RenderIf expr={this.state.btnEnabled}>
+                          <Loading type="bars" color="#000000" />  
+                        </RenderIf>
 
-                      <RenderIf expr={(this.state.logo)}> 
-                        <img className="col-md-3" src={this.state.logo} alt="brand" />
-                      </RenderIf>
-                  </div>
-                  <Row layout="vertical" rowClassName="col-sm-12">
-                    <div className="text-left">
-                      <input
-                        className="btn btn-primary"
-                        type="submit"
-                        defaultValue="Enviar"
-                      />
+                        <RenderIf expr={(this.state.logo)}> 
+                          <img className="col-md-3" src={this.state.logo} alt="brand" />
+                        </RenderIf>
                     </div>
-                  </Row>
-                </FRC.Form>
+                    <Row layout="vertical" rowClassName="col-sm-12">
+                      <div className="text-left">
+                        <input
+                          className="btn btn-primary"
+                          type="submit"
+                          defaultValue="Enviar"
+                        />
+                      </div>
+                    </Row>
+                  </FRC.Form>
+                </RenderIf>
               </div>
             </div>
           </div>
