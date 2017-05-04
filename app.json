@@ -4,5 +4,19 @@
     {
       "url": "heroku/nodejs"
     }
-  ]
+  ],
+  "env": {
+    "FACEBOOK_APP_ID": {
+      "required": true
+    },
+    "FACEBOOK_APP_SECRET": {
+      "required": true
+    },
+    "DATABASE_URL": {
+      "required": true
+    },
+    "JWT_SECRET": {
+      "required": true
+    }
+  }
 }
