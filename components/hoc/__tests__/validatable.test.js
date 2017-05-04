@@ -143,3 +143,25 @@ describe('has multiple validation functions', () => {
     });
   });
 });
+
+describe('when value prop is invalid', () => {
+  const onChange = jest.fn();
+
+  it('should pass the state value to the inner component', () => {
+    const wrapper = shallow(
+      <Component onChange={onChange} validation={minLength(4)} value={'as'} />
+    );
+    expect(wrapper.first().prop('value')).toEqual(wrapper.state().value);
+  });
+});
+
+describe('when value prop is valid', () => {
+  const onChange = jest.fn();
+
+  it('should pass the state value to the inner component', () => {
+    const wrapper = shallow(
+      <Component onChange={onChange} validation={minLength(4)} value={'asdf'} />
+    );
+    expect(wrapper.first().prop('value')).toEqual('asdf');
+  });
+});

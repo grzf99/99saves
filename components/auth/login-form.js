@@ -92,7 +92,7 @@ class LoginForm extends Component {
   }
 
   keyHandle = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && this.isFormValid()) {
       this.handleSubmit(e);
     }
   };
@@ -127,6 +127,7 @@ class LoginForm extends Component {
             label="Email"
             placeholder="exemplo@exemplo.com"
             onChange={this.handleChange}
+            value={this.state.email}
             onKeyUp={this.keyHandle}
             validation={email}
           />
@@ -137,6 +138,7 @@ class LoginForm extends Component {
             label="Senha"
             placeholder="sua senha"
             onChange={this.handleChange}
+            value={this.state.password}
             onKeyUp={this.keyHandle}
             validation={minLength(8)}
           />

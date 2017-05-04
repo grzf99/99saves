@@ -50,6 +50,7 @@ export class SignupPage extends Component {
       <AuthPage>
         <RenderIf expr={this.state.step === 1}>
           <SignupStep1
+            user={this.state.user}
             onSubmit={this.handleStep1Submit}
             isUserAvailable={this.props.isUserAvailable}
           />

@@ -84,6 +84,7 @@ class SignupStep2 extends Component {
             label="Nome"
             placeholder="Seu nome"
             onChange={this.handleChange}
+            value={this.state.name}
             validation={required}
           />
           <Input
@@ -94,6 +95,7 @@ class SignupStep2 extends Component {
             mask="111.111.111-11"
             hint="Fique tranquilo, não usaremos seu CPF sem sua autorização"
             onChange={this.handleChange}
+            value={this.state.cpf}
             validation={[required, cpf]}
           />
           <Select
@@ -104,6 +106,7 @@ class SignupStep2 extends Component {
             defaultMessage="Escolha o estado"
             options={states}
             onChange={this.handleChange}
+            value={this.state.state}
             validation={required}
           />
           <Input
@@ -112,6 +115,7 @@ class SignupStep2 extends Component {
             label="Cidade"
             placeholder="Cidade que você mora"
             onChange={this.handleChange}
+            value={this.state.city}
             validation={required}
           />
         </Form>

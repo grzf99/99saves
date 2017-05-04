@@ -25,19 +25,28 @@ const FormFooter = styled.div`
 class SignupStep1 extends Component {
   static propTypes = {
     isUserAvailable: PropTypes.bool,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    user: PropTypes.shape({
+      email: PropTypes.string,
+      password: PropTypes.string
+    })
   };
 
   static defaultProps = {
-    isUserAvailable: true
-  };
-
-  constructor() {
-    super();
-    this.state = {
+    isUserAvailable: true,
+    user: {
       email: '',
       password: ''
-    };
+    }
+  };
+
+  constructor(props) {
+    super(props);
+    // Don't do this in other places
+    // This is an anti-pattern in most cases
+    // as you can see here: https://github.com/vasanthk/react-bits/blob/master/anti-patterns/01.props-in-initial-state.md
+    // On this specific case, we want the props to be passed to state just once
+    this.state = { ...props.user };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -75,6 +84,7 @@ class SignupStep1 extends Component {
               label="Email"
               placeholder="exemplo@exemplo.com"
               onChange={this.handleChange}
+              value={this.state.email}
               validation={email}
             />
             <Input
@@ -85,6 +95,7 @@ class SignupStep1 extends Component {
               placeholder="crie sua senha"
               hint="Sua senha deve ter ao menos 8 dígitos, além de letras e números"
               onChange={this.handleChange}
+              value={this.state.password}
               validation={minLength(8)}
             />
           </Form>

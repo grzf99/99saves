@@ -9,7 +9,8 @@ export default (DecoratedComponent) => {
       validation: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.arrayOf(PropTypes.func)
-      ])
+      ]),
+      value: PropTypes.string.isRequired
     };
 
     static defaultProps = {
@@ -60,16 +61,21 @@ export default (DecoratedComponent) => {
       return validation(value);
     }
 
+    getCurrentValue() {
+      const result = this.runValidations(this.props.value);
+      return result === undefined ? this.props.value : this.state.value;
+    }
+
     render() {
       const { validation, onChange, ...cleanedProps } = this.props;
-      const { valid, validationMessage, value } = this.state;
+      const { valid, validationMessage } = this.state;
       return (
         <DecoratedComponent
           {...cleanedProps}
           onChange={this.handleChange}
           valid={valid}
           validationMessage={validationMessage}
-          value={value}
+          value={this.getCurrentValue()}
         />
       );
     }
