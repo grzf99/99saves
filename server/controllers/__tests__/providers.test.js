@@ -124,3 +124,21 @@ describe('update', () => {
     });
   });
 });
+
+describe('deletete', () => {
+  describe('when provider already exist', () => {
+    const req = {
+      params: {
+        id: 1
+      }
+    };
+
+    it('should delete the provider and return 200', () => {
+      const res = new MockResponse();
+      return providersController.delete(req, res)
+        .then((count) => {
+          expect(res.statusCode).toEqual(200);
+        });
+    });
+  });
+});
