@@ -8,7 +8,7 @@ test:
   pre:
     - mv .env.sample .env
   override:
-    - npm run test-ci
+    - NODE_ENV=test-ci jest --forceExit
 deployment:
   staging:
     branch: master
