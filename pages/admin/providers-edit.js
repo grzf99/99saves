@@ -8,6 +8,7 @@ import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
+import RenderIf from '../../components/common/render-if';
 
 class ProvidersEdit extends React.Component {
   static getInitialProps({ query }) {
@@ -19,6 +20,7 @@ class ProvidersEdit extends React.Component {
     this.state = {
       list: [],
       logo: '',
+      btnEnabled: false,
       loading: true,
       showToast: false,
       messageToast: '',
@@ -48,6 +50,7 @@ class ProvidersEdit extends React.Component {
   }
 
   handleSave(event) {
+    this.setState({ btnEnabled: true });
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
@@ -66,6 +69,7 @@ class ProvidersEdit extends React.Component {
       if (response.body.secure_url !== '') {
         imageChange[name] = response.body.secure_url;
         this.setState(imageChange);
+        this.setState({ btnEnabled: false });
       }
     });
   }
@@ -172,11 +176,22 @@ class ProvidersEdit extends React.Component {
                       >Logo</label>
                       <div className="controls">
                         <input type="file" name="logo" onChange={this.handleSave} />
+                        <RenderIf expr={this.state.btnEnabled}>
+                          <Loading type="bars" color="#000000" />  
+                        </RenderIf>
+
+                        <RenderIf expr={(this.state.list.logo && !this.state.logo)}> 
+                          <img className="col-md-3" src={this.state.list.logo} alt="brand" />
+                        </RenderIf>
+
+                        <RenderIf expr={(this.state.logo)}> 
+                          <img className="col-md-3" src={this.state.logo} alt="brand" />
+                        </RenderIf>
                       </div>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" disabled={this.state.btnEnabled ? 'disabled' : ''} />
                       </div>
                     </Row>
                   </FRC.Form>
