@@ -1,22 +1,21 @@
-import MockResponse from 'mock-express-response';
-import { User } from '../../models';
-import usersController from '../users';
+const MockResponse = require('mock-express-response');
+const { User, Profile } = require('../../models');
+const usersController = require('../users');
 
 beforeEach(() => {
   require('dotenv').config();
-  return User.sync({ force: true });
+  return User.sync({ force: true }).then(() => Profile.sync({ force: true }));
 });
 
-afterEach(() => {
-  return User.sync({ force: true });
-})
+afterEach(() =>
+  User.sync({ force: true }).then(() => Profile.sync({ force: true }))
+);
 
 describe('create', () => {
   describe('when user does not exist', () => {
     const req = {
       body: {
         user: {
-          name: 'Jon Snow',
           email: 'jonsnow@winterfell.com',
           password: '123456'
         }
@@ -25,17 +24,20 @@ describe('create', () => {
 
     it('should create the user and return 201', () => {
       const res = new MockResponse();
-      return usersController.create(req, res).then((count) => {
-        expect(res.statusCode).toEqual(201);
-        expect(res._getJSON()).toEqual(
-          expect.objectContaining({
-            name: expect.any(String),
-            email: expect.any(String),
-            admin: expect.any(Boolean),
-            token: expect.any(String)
-          })
-        );
-      });
+      return usersController
+        .create(req, res)
+        .then(() => User.count())
+        .then((count) => {
+          expect(res.statusCode).toEqual(201);
+          expect(count).toEqual(1);
+          expect(res._getJSON()).toEqual(
+            expect.objectContaining({
+              email: expect.any(String),
+              admin: expect.any(Boolean),
+              token: expect.any(String)
+            })
+          );
+        });
     });
   });
 
@@ -43,7 +45,6 @@ describe('create', () => {
     const req = {
       body: {
         user: {
-          name: 'Sansa Stark',
           email: 'sansa@winterfell.com',
           password: '123456'
         }
@@ -52,10 +53,46 @@ describe('create', () => {
 
     it('should not create the user and return 422', () => {
       const res = new MockResponse();
-      return User.create(Object.assign({}, req.body.user))
+      return User.create(req.body.user)
         .then(() => usersController.create(req, res))
-        .then((count) => {
+        .then(() => {
           expect(res.statusCode).toEqual(422);
+        });
+    });
+  });
+
+  describe('when profile is passed', () => {
+    const req = {
+      body: {
+        user: {
+          email: 'jonsnow@winterfell.com',
+          password: '123456',
+          profile: {
+            name: 'Jon Snow',
+            cpf: '11111111',
+            city: 'Goiania',
+            state: 'GO'
+          }
+        }
+      }
+    };
+
+    it('should create the user, the profile and return 201', () => {
+      const res = new MockResponse();
+      return usersController
+        .create(req, res)
+        .then(() => Promise.all([User.count(), Profile.count()]))
+        .then(([userCount, profileCount]) => {
+          expect(res.statusCode).toEqual(201);
+          expect(userCount).toEqual(1);
+          expect(profileCount).toEqual(1);
+          expect(res._getJSON()).toEqual(
+            expect.objectContaining({
+              email: expect.any(String),
+              admin: expect.any(Boolean),
+              token: expect.any(String)
+            })
+          );
         });
     });
   });
