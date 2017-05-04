@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import Router from 'next/router';
 import withStore from 'next-redux-wrapper';
 import createStore from '../../store';
 import { noop } from '../../utils';
 import createAPIClient from '../../utils/apiClient';
 import { TOKEN_COOKIE_KEY, logout } from '../../store/auth';
 import { setToken } from '../../store/currentUser';
-import Toast from '../common/toast';
 
 export default function withApi(mapStateToProps = noop, mapDispatchToProps) {
   return (Page) => {
@@ -26,9 +26,6 @@ export default function withApi(mapStateToProps = noop, mapDispatchToProps) {
 
       constructor(props) {
         super(props);
-        this.state = {
-          showToast: false
-        };
         this.handleLogout = this.handleLogout.bind(this);
       }
 
@@ -38,8 +35,7 @@ export default function withApi(mapStateToProps = noop, mapDispatchToProps) {
 
       handleLogout() {
         this.props.logout();
-        this.setState({ showToast: true });
-        setTimeout(() => this.setState({ showToast: false }), 2500);
+        Router.push({ pathname: '/', query: { loggedOut: true } });
       }
 
       render() {
@@ -50,9 +46,6 @@ export default function withApi(mapStateToProps = noop, mapDispatchToProps) {
               api={this.client}
               onLogout={this.handleLogout}
             />
-            <Toast show={this.state.showToast}>
-              Você foi deslogado com sucesso.
-            </Toast>
           </div>
         );
       }

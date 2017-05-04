@@ -452,6 +452,8 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
 
+    const showLoggedOutToast = props.url.query.loggedOut;
+
     this.state = {
       logged: props.isSignedIn,
       modalIsOpen: false,
@@ -459,7 +461,8 @@ class Index extends React.Component {
       activeTab: 1,
       saves: props.saves,
       subscribeTo: 0,
-      showToast: false
+      showToast: false,
+      showLoggedOut: showLoggedOutToast
     };
 
     this.openModal = this.openModal.bind(this);
@@ -468,6 +471,7 @@ class Index extends React.Component {
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.loadSaves = this.loadSaves.bind(this);
     this.handleSubscribe = this.handleSubscribe.bind(this);
+    this.removeLogoutMessage = this.removeLogoutMessage.bind(this);
     this.goToOffers = this.goToOffers.bind(this);
   }
 
@@ -485,6 +489,12 @@ class Index extends React.Component {
         this.handleSubscribe(this.state.subscribeTo);
       }
     }
+
+    this.setState({ showLoggedOut: nextProps.url.query.loggedOut });
+  }
+
+  removeLogoutMessage() {
+    this.setState({ showLoggedOut: false });
   }
 
   handleSubscribe(subscribeTo) {
@@ -742,6 +752,9 @@ class Index extends React.Component {
 
         <Toast show={this.state.showToast}>
           Você receberá um email com atualizações sobre esta negociação.
+        </Toast>
+        <Toast show={this.state.showLoggedOut} onFade={this.removeLogoutMessage}>
+          Você foi deslogado com sucesso.
         </Toast>
       </Page>
     );

@@ -1,7 +1,8 @@
+import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import { colors } from '../styles/variables';
 
-const Toast = styled.div`
+const Container = styled.div`
   background: ${colors.blue};
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   color: ${colors.white};
@@ -12,7 +13,7 @@ const Toast = styled.div`
   left: 12px;
   right: 12px;
   padding: 12px 24px;
-  transform: translateY(${props => props.show ? '54px' : '-55px'});
+  transform: translateY(${props => (props.show ? '54px' : '-55px')});
   transition: .3s ease transform;
 
   @media (min-width: 480px) {
@@ -22,4 +23,28 @@ const Toast = styled.div`
   }
 `;
 
-export default props => <Toast {...props}>{props.children}</Toast>;
+class Toast extends Component {
+  static propTypes = {
+    show: PropTypes.bool,
+    onFade: PropTypes.func,
+    timer: PropTypes.number
+  }
+
+  static defaultProps = {
+    show: false,
+    onFade: () => {},
+    timer: 1500
+  }
+  render() {
+    const { show, onFade, timer } = this.props;
+
+    if (show) {
+      setTimeout(() => onFade(), timer);
+    }
+    return (
+      <Container {...this.props}>{this.props.children}</Container>
+    );
+  }
+}
+
+export default Toast;
