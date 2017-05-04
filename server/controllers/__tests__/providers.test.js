@@ -62,3 +62,40 @@ describe('create', () => {
     });
   })
 });
+
+describe('update', () => {
+  describe('when provider already exist', () => {
+    const req = {
+      body: {
+        name: 'Provider test update',
+        email: 'contactupdate@providertesteupdate.com',
+        cnpj: '123456789012',
+        address: 'street avenue update',
+        responsible: 'Josh Nieh',
+        phone: '13456789098123',
+        logo: 'https://res.cloudinary.com/kevinsoul/image/upload/v1492435685/dkv45lnh4lpijr3oea4u.png',
+      },
+      params: {
+        id: 4
+      }
+    };
+
+    it('should update the provider and return 200', () => {
+      const res = new MockResponse();
+      return Provider.create(Object.assign({}, req.body))
+        .then(() => providersController.update(req, res))
+        .then((count) => {
+          expect(res.statusCode).toEqual(200);
+          expect(res._getJSON()).toEqual(expect.objectContaining({
+            name: expect.any(String),
+            email: expect.any(String),
+            cnpj: expect.any(String),
+            address: expect.any(String),
+            responsible: expect.any(String),
+            phone: expect.any(String),
+            logo: expect.any(String)
+          }))
+        });
+    });
+  });
+});
