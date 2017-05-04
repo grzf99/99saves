@@ -9,6 +9,7 @@ import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
+import RenderIf from '../../components/common/render-if';
 
 class ProvidersCreate extends React.Component {
   constructor(props) {
@@ -171,6 +172,13 @@ class ProvidersCreate extends React.Component {
                           onChange={this.handleSave}
                         />
                       </div>
+                        <RenderIf expr={this.state.btnEnabled}>
+                          <Loading type="bars" color="#000000" />  
+                        </RenderIf>
+
+                        <RenderIf expr={(this.state.logo)}> 
+                          <img className="col-md-3" src={this.state.logo} alt="brand" />
+                        </RenderIf>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
