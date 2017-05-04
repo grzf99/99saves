@@ -98,4 +98,29 @@ describe('update', () => {
         });
     });
   });
+
+  describe('when provider does not have input value required', () => {
+    const req = {
+      body: {
+        name: 'Provider test update',
+        email: null,
+        cnpj: '123456789012',
+        address: 'street avenue update',
+        responsible: 'Josh Nieh',
+        phone: '13456789098123',
+        logo: 'https://res.cloudinary.com/kevinsoul/image/upload/v1492435685/dkv45lnh4lpijr3oea4u.png',
+      },
+      params: {
+        id: 4
+      }
+    };
+
+    it('provider email is null', () => {
+      const res = new MockResponse();
+      return providersController.update(req, res)
+        .then((count) => {
+          expect(res.statusCode).toEqual(400);
+        });
+    });
+  });
 });
