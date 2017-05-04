@@ -132,7 +132,7 @@ class ProvidersCreate extends React.Component {
                       value=""
                       id="email"
                       label="Email do fornecedor"
-                      type="text"
+                      type="email"
                       placeholder="Email do fornecedor"
                       required
                       rowClassName="col-sm-12"

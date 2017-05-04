@@ -136,7 +136,7 @@ class ProvidersEdit extends React.Component {
                       value={this.state.list.email || ''}
                       id="email"
                       label="Email do fornecedor"
-                      type="text"
+                      type="email"
                       placeholder="Email do fornecedor"
                       required
                       rowClassName="col-sm-12"
