@@ -8,7 +8,7 @@ import SignupStep1 from '../components/auth/signup-step-1';
 import SignupStep2 from '../components/auth/signup-step-2';
 import { signup, isEmailAvailable } from '../store/auth';
 
-class SignupPage extends Component {
+export class SignupPage extends Component {
   constructor() {
     super();
     this.state = {
@@ -36,9 +36,9 @@ class SignupPage extends Component {
     this.setState({ user });
   }
 
-  handleStep2Submit() {
+  handleStep2Submit(profile) {
     const { user } = this.state;
-    this.props.signup(user);
+    this.props.signup({ ...user, profile });
   }
 
   handleStep2Back() {

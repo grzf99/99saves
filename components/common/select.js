@@ -87,7 +87,7 @@ class Select extends Component {
       onChange,
       ...cleanedProps
     } = this.props;
-    debugger;
+
     return (
       <Container block={block}>
         <Label uppercase>{label}</Label>

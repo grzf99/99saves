@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import { colors } from '../styles/variables';
 import Form from '../common/form';
@@ -39,6 +39,10 @@ const ConfirmButton = styled(Button)`
 `;
 
 class SignupStep2 extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired
+  };
+
   constructor() {
     super();
     this.state = {
@@ -48,10 +52,15 @@ class SignupStep2 extends Component {
       city: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange({ target }) {
     this.setState({ [target.name]: target.value });
+  }
+
+  handleSubmit() {
+    this.props.onSubmit(this.state);
   }
 
   isFormValid() {
@@ -68,7 +77,7 @@ class SignupStep2 extends Component {
             Para você participar de nossa plataforma
           </Heading2>
         </FormHeader>
-        <Form onSubmit={this.props.onSubmit}>
+        <Form onSubmit={this.handleSubmit}>
           <Input
             block
             name="name"
@@ -114,7 +123,7 @@ class SignupStep2 extends Component {
             block
             large
             disabled={!this.isFormValid()}
-            onClick={this.props.onSubmit}
+            onClick={this.handleSubmit}
           >
             Confirmar
           </ConfirmButton>

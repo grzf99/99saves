@@ -47,10 +47,7 @@ class SignupStep1 extends Component {
   }
 
   handleSubmit() {
-    this.props.onSubmit({
-      email: this.state.email,
-      password: this.state.password
-    });
+    this.props.onSubmit(this.state);
   }
 
   isFormValid() {
