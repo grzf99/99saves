@@ -44,12 +44,13 @@ module.exports = {
   },
 
   delete(req, res) {
-    Provider.destroy({
-      where: {
-        id: req.params.id
-      }
-    })
-    .then(deletedRecords => res.status(200).json(deletedRecords))
-    .catch(error => res.status(500).json(error));
+    return Provider
+      .destroy({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then(deletedRecords => res.status(200).json(deletedRecords))
+      .catch(error => res.status(400).json(error));
   }
 };
