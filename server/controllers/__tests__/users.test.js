@@ -90,7 +90,7 @@ describe('isAvailable', () => {
     it('should return true', () => {
       const req = {
         query: {
-          email: 'qwe@qwe.com'
+          email: 'non.existent.user@example.org'
         }
       };
       const res = new MockResponse();
