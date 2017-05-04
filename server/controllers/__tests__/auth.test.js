@@ -1,11 +1,16 @@
-const MockResponse = require('mock-express-response');
-const { User } = require('../../models');
-const authController = require('../auth');
+import MockResponse from 'mock-express-response';
+import { User } from '../../models';
+import authController from '../auth';
 
-beforeAll(() => {
-  require('dotenv').config()
-  return User.sync({ force: true })
+beforeEach(() => {
+  require('dotenv').config();
+  return User.sync({ force: true });
 });
+
+afterEach(() => {
+  return User.sync({ force: true });
+})
+
 
 describe('clientLogin', () => {
   const req = {
