@@ -25,7 +25,7 @@ module.exports = {
         where: {
           id: req.params.id
         }
-      })
+      }).then(() => Provider.findById(req.params.id))
       .then(provider => res.status(200).send(provider))
       .catch(error => res.status(400).send(error));
   },
