@@ -17,6 +17,7 @@ class ProvidersCreate extends React.Component {
     super(props);
     this.state = {
       logo: '',
+      btnEnabled: false,
       loading: true,
       showToast: false,
       messageToast: '',
@@ -32,6 +33,7 @@ class ProvidersCreate extends React.Component {
   }
 
   handleSave(event) {
+    this.setState({ btnEnabled: true });
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
@@ -55,6 +57,7 @@ class ProvidersCreate extends React.Component {
       if (response.body.secure_url !== '') {
         imageChange[name] = response.body.secure_url;
         this.setState(imageChange);
+        this.setState({ btnEnabled: false });
       }
     });
   }
@@ -185,11 +188,7 @@ class ProvidersCreate extends React.Component {
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="pull-left">
-                        <input
-                          className="btn btn-primary"
-                          type="submit"
-                          defaultValue="Enviar"
-                        />
+                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" disabled={this.state.btnEnabled ? 'disabled' : ''} />
                       </div>
                       <div className="pull-right">
                         <Link prefetch href="/admin/providers"><a className="btn btn-default">Voltar</a></Link>
