@@ -21,7 +21,7 @@ export default props => (
     <div className="container bootstrap snippet">
 
       <div className="row">
-        <div className="col-md-3">
+        <div className="col-md-2">
           <a href="#/">
             <strong><i className="glyphicon glyphicon-briefcase" /> Menu</strong>
           </a>
@@ -31,7 +31,7 @@ export default props => (
 
           <hr />
         </div>
-        <div className="col-md-9">
+        <div className="col-md-10">
           { props.children }
         </div>
       </div>
