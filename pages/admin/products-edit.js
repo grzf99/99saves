@@ -27,6 +27,7 @@ class ProductsCreate extends React.Component {
       price: '',
       priceBuscape: '',
       list: [],
+      btnEnabled: false,
       loading: true,
       showToast: false,
       messageToast: '',
@@ -93,6 +94,7 @@ class ProductsCreate extends React.Component {
   }
 
   handleSave(event) {
+    this.setState({ btnEnabled: true });
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
@@ -113,11 +115,13 @@ class ProductsCreate extends React.Component {
     upload.end((err, response) => {
       if (err) {
         this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        this.setState({ btnEnabled: false });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
       if (response.body.secure_url !== '') {
         imageChange[name] = response.body.secure_url;
+        this.setState({ btnEnabled: false });
         this.setState(imageChange);
       }
     });
@@ -307,38 +311,54 @@ class ProductsCreate extends React.Component {
                       >Imagem de destaque *</label>
                       <div className="controls">
                         <input type="file" name="image_default" onChange={this.handleSave} />
-                        { this.state.list.image_default ? (
-                          <img className="col-md-2" src={this.state.list.image_default} alt={ this.state.list.title }/>
-                        ) : (
-                          <p>sem imagem</p>
-                        )}
+                        <RenderIf expr={(!!this.state.list.image_default && !this.state.image_default)}> 
+                          <img className="col-md-3" src={this.state.list.image_default} alt="image" />
+                        </RenderIf>
+
+                        <RenderIf expr={(!!this.state.image_default)}> 
+                          <img className="col-md-3" src={this.state.image_default} alt="image" />
+                        </RenderIf>
                       </div>
                     </div>
                     <div className="form-group col-sm-12">
                       <label className="control-label" htmlFor="image2">Outra imagem</label>
                       <div className="controls">
                         <input type="file" name="image2" onChange={this.handleSave} />
-                        { this.state.list.image2 ? (
-                          <img className="col-md-2" src={this.state.list.image2} alt={ this.state.list.title }/>
-                        ) : (
-                          <p>sem imagem</p>
-                        )}
+                        <RenderIf expr={(!!this.state.list.image2 && !this.state.image2)}> 
+                          <img className="col-md-3" src={this.state.list.image2} alt="image" />
+                        </RenderIf>
+
+                        <RenderIf expr={(!!this.state.image2)}> 
+                          <img className="col-md-3" src={this.state.image2} alt="image" />
+                        </RenderIf>
                       </div>
                     </div>
                     <div className="form-group col-sm-12">
                       <label className="control-label" htmlFor="image3">Outra imagem</label>
                       <div className="controls">
                         <input type="file" name="image3" onChange={this.handleSave} />
-                        { this.state.list.image3 ? (
-                          <img className="col-md-2" src={this.state.list.image3} alt={ this.state.list.title }/>
-                        ) : (
-                          <p>sem imagem</p>
-                        )}
+                        <RenderIf expr={(!!this.state.list.image3 && !this.state.image3)}> 
+                          <img className="col-md-3" src={this.state.list.image3} alt="image" />
+                        </RenderIf>
+
+                        <RenderIf expr={(!!this.state.image3)}> 
+                          <img className="col-md-3" src={this.state.image3} alt="image" />
+                        </RenderIf>
                       </div>
                     </div>
+                    <RenderIf expr={this.state.btnEnabled}>
+                      <div className="form-group col-sm-12">
+                        <Loading type="bars" color="#000000" />
+                      </div>
+                    </RenderIf>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                        <input
+                          className="btn btn-primary"
+                          type="submit"
+                          defaultValue="Enviar"
+                          disabled={this.state.btnEnabled ? 'disabled' : ''}
+                        />
                       </div>
                     </Row>
                   </FRC.Form>

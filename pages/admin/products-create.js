@@ -368,7 +368,7 @@ class ProductsCreate extends React.Component {
                         className="control-label"
                         htmlFor="image_default"
                       >
-                          Imagem de destaque
+                          Imagem de destaque *
                         </label>
                       <div className="controls">
                         <input
