@@ -15,7 +15,7 @@ class Nav extends Component {
           </div>
           <div className="navbar-collapse pull-right col-sm-4">
             <p className="navbar-text navbar-right">
-              <i className="glyphicon glyphicon-user" /> { this.props.current_user.name } - { this.props.current_user.email }
+              <i className="glyphicon glyphicon-user" /> { this.props.currentUser.name } - { this.props.currentUser.email }
               ( <a href="#/" className="navbar-link" onClick={this.props.onLogout}>Sair</a> )
             </p>
           </div>
@@ -26,5 +26,5 @@ class Nav extends Component {
 }
 
 export default connect(state => ({
-  current_user: state.currentUser
+  currentUser: state.currentUser
 }))(Nav);
