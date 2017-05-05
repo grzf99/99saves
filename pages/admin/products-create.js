@@ -220,11 +220,13 @@ class ProductsCreate extends React.Component {
               </div>
 
               <div className="panel-body">
-                {this.state.loading
-                  ? <div className="pull-center">
+                <RenderIf expr={this.state.loading}>
+                  <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
-                  : <FRC.Form onSubmit={this.submitForm} layout="vertical">
+                </RenderIf>
+                <RenderIf expr={!this.state.loading}>
+                  <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input name="id" type="hidden" />
                     <Input
                       name="title"
@@ -438,7 +440,8 @@ class ProductsCreate extends React.Component {
                         />
                       </div>
                     </Row>
-                  </FRC.Form>}
+                  </FRC.Form>
+                </RenderIf>
               </div>
             </div>
           </div>
