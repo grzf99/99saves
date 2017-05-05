@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
 import differenceInMinutes from 'date-fns/difference_in_minutes';
+import nl2br from 'react-nl2br';
 import format from 'date-fns/format';
 import { formatCurrency } from '../utils';
 
@@ -417,14 +418,14 @@ class Offer extends React.Component {
                       <RenderIf expr={!!product.description}>
                         <Info>
                           <h3>Descrição</h3>
-                          {product.description}
+                          {nl2br(product.description)}
                         </Info>
                       </RenderIf>
 
                       <RenderIf expr={!!product.technique_information}>
                         <Info>
                           <h3>Informações técnicas do produto</h3>
-                          {product.technique_information}
+                          {nl2br(product.technique_information)}
                         </Info>
                       </RenderIf>
                     </Panel>

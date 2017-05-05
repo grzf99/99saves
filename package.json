@@ -71,6 +71,7 @@
     "react-loading": "0.0.9",
     "react-maskedinput": "^3.3.4",
     "react-modal": "^1.7.3",
+    "react-nl2br": "^0.2.0",
     "react-no-ssr": "^1.1.0",
     "react-redux": "^5.0.4",
     "react-swipeable-views": "^0.11.2",
