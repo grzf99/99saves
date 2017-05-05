@@ -1,7 +1,10 @@
 import React from 'react';
+import styled from 'styled-components';
 import Modal from 'react-modal';
+import { colors } from '../styles/variables';
+import { Text } from './typography';
 
-const createModalStyles = (styleProps) => ({
+const createModalStyles = styleProps => ({
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.8)'
   },
@@ -19,7 +22,31 @@ const createModalStyles = (styleProps) => ({
   }
 });
 
-export default ({ children, isOpen, onClose, contentLabel, style, ...styleProps }) => (
+const CloseButton = styled(Text)`
+  position: absolute;
+  font-size: 16px;
+  color: ${colors.green};
+  top: 19px;
+  right: 19px;
+  cursor: pointer;
+`;
+
+const ModalContent = styled.div`
+  > * + * {
+    position: relative;
+    height: auto;
+    width: auto;
+  }
+`;
+
+export default ({
+  children,
+  isOpen,
+  onClose,
+  contentLabel,
+  style,
+  ...styleProps
+}) => (
   <Modal
     isOpen={isOpen}
     onClose={onClose}
@@ -27,6 +54,9 @@ export default ({ children, isOpen, onClose, contentLabel, style, ...styleProps 
     style={style || createModalStyles(styleProps)}
     contentLabel={contentLabel || 'Login'}
   >
-    {children}
+    <ModalContent>
+      <CloseButton onClick={onClose}>X</CloseButton>
+      {children}
+    </ModalContent>
   </Modal>
 );

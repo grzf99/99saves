@@ -16,6 +16,8 @@ import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
 import Modal from '../components/common/modal';
 import RenderIf from '../components/common/render-if';
+import SubscriptionConfirmationModal
+  from '../components/saves/subscription-confirmation-modal';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -462,7 +464,9 @@ class Index extends React.Component {
       saves: props.saves,
       subscribeTo: 0,
       showToast: false,
-      showLoggedOut: showLoggedOutToast
+      showLoggedOut: showLoggedOutToast,
+      subscriptionConfirmationModalIsOpen: false,
+      currentSubscribeTarget: null
     };
 
     this.openModal = this.openModal.bind(this);
@@ -498,17 +502,40 @@ class Index extends React.Component {
   }
 
   handleSubscribe(subscribeTo) {
+    this.setState({
+      subscriptionConfirmationModalIsOpen: true,
+      currentSubscribeTarget: subscribeTo
+    });
+  }
+
+  handleSubscribeConfirm(subscribeTo) {
     return this.props.api
       .post(`/saves/${subscribeTo}/subscriptions`)
       .then(() => {
-        const rows = [...this.state.saves.rows].map((row) => {
-          const save = row;
-          if (save.id === subscribeTo) save.hasSubscribed = true;
-          return save;
+        const item = this.state.saves.rows.find(
+          save => save.id === subscribeTo
+        );
+        item.hasSubscribed = true;
+
+        const subscriptionsRows = [...this.state.subscriptions.rows, item];
+
+        this.setState({
+          subscriptions: {
+            count: subscriptionsRows.length,
+            rows: subscriptionsRows
+          },
+          showToast: true
         });
-        this.setState({ saves: { count: rows.length, rows }, showToast: true });
+
         setTimeout(() => this.setState({ showToast: false }), 4000);
       });
+  }
+
+  handleSubscribeCancel() {
+    this.setState({
+      subscriptionConfirmationModalIsOpen: false,
+      currentSubscribeTarget: null
+    });
   }
 
   openModal(subscribeTo) {
@@ -734,6 +761,13 @@ class Index extends React.Component {
           onClose={() => this.closeModal()}
         />
 
+        <SubscriptionConfirmationModal
+          isOpen={this.state.subscriptionConfirmationModalIsOpen}
+          subscribeTo={this.state.currentSubscribeTarget}
+          onConfirm={this.handleSubscribeConfirm}
+          onClose={this.handleSubscribeCancel}
+        />
+
         <Modal
           isOpen={this.state.modalVideoIsOpen}
           onClose={this.closeModal}
@@ -753,7 +787,10 @@ class Index extends React.Component {
         <Toast show={this.state.showToast}>
           Você receberá um email com atualizações sobre esta negociação.
         </Toast>
-        <Toast show={this.state.showLoggedOut} onFade={this.removeLogoutMessage}>
+        <Toast
+          show={this.state.showLoggedOut}
+          onFade={this.removeLogoutMessage}
+        >
           Você foi deslogado com sucesso.
         </Toast>
       </Page>
