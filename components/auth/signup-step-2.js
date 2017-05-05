@@ -41,7 +41,8 @@ const ConfirmButton = styled(Button)`
 
 class SignupStep2 extends Component {
   static propTypes = {
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired
   };
 
   constructor() {
@@ -69,6 +70,10 @@ class SignupStep2 extends Component {
       ['name', 'cpf', 'state', 'city'],
       key => this.state[key] !== ''
     );
+  }
+
+  shouldDisableSubmitButton() {
+    return this.props.loading || !this.isFormValid();
   }
 
   render() {
@@ -129,7 +134,7 @@ class SignupStep2 extends Component {
           <ConfirmButton
             block
             large
-            disabled={!this.isFormValid()}
+            disabled={this.shouldDisableSubmitButton()}
             onClick={this.handleSubmit}
           >
             Confirmar

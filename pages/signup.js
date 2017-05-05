@@ -57,6 +57,7 @@ export class SignupPage extends Component {
         </RenderIf>
         <RenderIf expr={this.state.step === 2}>
           <SignupStep2
+            loading={this.props.loading}
             onSubmit={this.handleStep2Submit}
             onBack={this.handleStep2Back}
           />
