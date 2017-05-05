@@ -188,15 +188,15 @@ class ProductsCreate extends React.Component {
         this.setState({
           showToast: true,
           typeToast: 'success',
-          messageToast: 'Registro cadsatrado com Sucesso'
+          messageToast: 'Registro cadsdtrado com Sucesso'
         });
         setTimeout(() => Router.push('/admin/products'), 2000);
       })
-      .catch(() => {
+      .catch((error) => {
         this.setState({
           showToast: true,
           typeToast: 'warning',
-          messageToast: 'Erro ao inserir o registro'
+          messageToast: `Erro ao inserir (${error.message})`
         });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       });
