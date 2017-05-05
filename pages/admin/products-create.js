@@ -142,7 +142,7 @@ class ProductsCreate extends React.Component {
   }
 
   isFormValid(values) {
-    return values.title && values.image_default;
+    return values.title && values.image_default && values.price && values.link_buy && values.SaveId && values.ProviderId && values.Coupons && values.method_payment;
   }
 
   submitForm(data) {
@@ -152,10 +152,11 @@ class ProductsCreate extends React.Component {
       image3: this.state.image3,
       Coupons: this.state.coupons.map(coupon => ({ key: coupon })),
       price: this.state.price.replace(".", "").replace(",", "."),
-      priceBuscape: this.state.priceBusca.replace(".", "").replace(",", ".")
+      priceBuscape: this.state.priceBuscape.replace(".", "").replace(",", ".")
     });
 
     if (!this.isFormValid(values)) {
+      console.log(values);
       this.setState({
         showToast: true,
         typeToast: 'warning',
@@ -234,7 +235,7 @@ class ProductsCreate extends React.Component {
                     />
                     <div className="form-group col-sm-12">
                       <label className="control-label" htmlFor="price">
-                        Preço 
+                        Preço *
                       </label>
                       <div className="controls">
                         <CurrencyInput
@@ -268,7 +269,6 @@ class ProductsCreate extends React.Component {
                       label="Link Buscapé"
                       type="text"
                       placeholder="Link Buscapé"
-                      required
                       rowClassName="col-sm-12"
                     />
                     <div className="form-group col-sm-12">
@@ -326,6 +326,7 @@ class ProductsCreate extends React.Component {
                           type="file"
                           accept="text/plain"
                           name="coupons"
+                          required
                           onChange={this.handleCouponsChange}
                         />
                       </div>
@@ -368,6 +369,7 @@ class ProductsCreate extends React.Component {
                         <input
                           type="file"
                           name="image_default"
+                          required
                           onChange={this.handleImageChange}
                         />
                       </div>
