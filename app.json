@@ -17,6 +17,9 @@
     },
     "JWT_SECRET": {
       "required": true
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
     }
   }
 }
