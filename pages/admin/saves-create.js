@@ -9,6 +9,7 @@ import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
+import RenderIf from '../../components/common/render-if';
 
 class SavesCreate extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class SavesCreate extends React.Component {
       image_default: '',
       startDate: '',
       list: [],
+      btnEnabled: false,
       loading: true,
       showToast: false,
       messageToast: '',
@@ -32,6 +34,7 @@ class SavesCreate extends React.Component {
   }
 
   handleSave(event) {
+    this.setState({ btnEnabled: true });
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
@@ -44,11 +47,13 @@ class SavesCreate extends React.Component {
     upload.end((err, response) => {
       if (err) {
         this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        this.setState({ btnEnabled: false });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
       if (response.body.secure_url !== '') {
         imageChange[name] = response.body.secure_url;
+        this.setState({ btnEnabled: false });
         this.setState(imageChange);
       }
     });
@@ -92,11 +97,12 @@ class SavesCreate extends React.Component {
               </div>
 
               <div className="panel-body">
-                {this.state.loading ? (
+               <RenderIf expr={this.state.loading}>
                   <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
-                ) : (
+                </RenderIf>
+                <RenderIf expr={!this.state.loading}>
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input
                       name="id"
@@ -145,14 +151,23 @@ class SavesCreate extends React.Component {
                       <div className="controls">
                         <input type="file" name="image_default" onChange={this.handleSave} />
                       </div>
+                      <RenderIf expr={this.state.btnEnabled}>
+                          <Loading type="bars" color="#000000" />  
+                        </RenderIf>
+
+                        <RenderIf expr={(!!this.state.image_default)}> 
+                          <div className="controls">
+                            <img className="col-md-3" src={this.state.image_default} alt="image" />
+                          </div>
+                        </RenderIf>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" disabled={this.state.btnEnabled ? 'disabled' : ''} />
                       </div>
                     </Row>
                   </FRC.Form>
-                )}
+                </RenderIf>
               </div>
             </div>
           </div>
