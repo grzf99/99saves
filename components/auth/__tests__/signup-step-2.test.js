@@ -6,7 +6,7 @@ import Form from '../../common/form';
 describe('<SignupStep2 />', () => {
   const onSubmit = jest.fn();
   describe('onSubmit', () => {
-    it('passes the email and password values to onSubmit prop', () => {
+    it('passes the profile data to onSubmit prop', () => {
       const state = {
         name: 'Jon Snow',
         cpf: '123.123.123-11',
