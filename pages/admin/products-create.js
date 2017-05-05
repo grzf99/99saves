@@ -156,7 +156,7 @@ class ProductsCreate extends React.Component {
       image3: this.state.image3,
       Coupons: this.state.coupons.map(coupon => ({ key: coupon })),
       price: this.state.price.replace(".", "").replace(",", "."),
-      priceBuscape: this.state.priceBuscape.replace(".", "").replace(",", ".")
+      price_buscape: this.state.priceBuscape.replace(".", "").replace(",", ".")
     });
 
     if (!this.isFormValid(values)) {
