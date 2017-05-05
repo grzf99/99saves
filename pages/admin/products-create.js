@@ -225,9 +225,9 @@ class ProductsCreate extends React.Component {
                       name="title"
                       value=""
                       id="title"
-                      label="Título do save"
+                      label="Título do produto"
                       type="text"
-                      placeholder="Título do save"
+                      placeholder="Título do produto"
                       required
                       rowClassName="col-sm-12"
                     />
@@ -352,7 +352,7 @@ class ProductsCreate extends React.Component {
                       cols={40}
                       name="description"
                       value=""
-                      label="Descrição do save"
+                      label="Descrição do produto"
                       placeholder="Descrição"
                       rowClassName="col-sm-12"
                     />
