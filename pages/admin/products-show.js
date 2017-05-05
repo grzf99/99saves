@@ -5,6 +5,7 @@ import moment from 'moment';
 import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
 import Link from 'next/link';
+import CurrencyInput from 'react-currency-input';
 
 import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
@@ -62,7 +63,7 @@ class ProductsCreate extends React.Component {
     let list = [{ value: '', label: 'Selecione um registro' }];
     this.props.api.get('/saves')
         .then((response) => {
-          response.data.rows.map( (item) => {
+          response.data.map( (item) => {
             list.push({ value: item.id, label: item.title});
           });
           this.setState({ selectOptions: list });
@@ -164,22 +165,28 @@ class ProductsCreate extends React.Component {
                       name="title"
                       value={this.state.list.title || ''}
                       id="title"
-                      label="Título do save"
+                      label="Título do produto"
                       type="text"
-                      placeholder="Título do save"
+                      placeholder="Título do produto"
                       required
                       rowClassName="col-sm-12"
                     />
-                    <Input
-                      name="price"
-                      value={this.state.list.price || ''}
-                      id="price"
-                      label="Preço"
-                      type="text"
-                      placeholder="Preço"
-                      required
-                      rowClassName="col-sm-12"
-                    />
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="price">
+                        Preço *
+                      </label>
+                      <div className="controls">
+                        <CurrencyInput
+                          didabled
+                          value={this.state.list.price || ''}
+                          placeholder="Preço"
+                          className="form-control col-sm-3 disabled"
+                          decimalSeparator=","
+                          thousandSeparator="."
+                          disabled
+                        />
+                      </div>
+                    </div>
                     <Input
                       name="method_payment"
                       value={this.state.list.method_payment || ''}
@@ -200,23 +207,29 @@ class ProductsCreate extends React.Component {
                       required
                       rowClassName="col-sm-12"
                     />
-                    <Input
-                      name="price_buscape"
-                      value={this.state.list.price_buscape || ''}
-                      id="price_buscape"
-                      label="Menor preço buscapé"
-                      type="text"
-                      placeholder="Menor preço buscapé"
-                      required
-                      rowClassName="col-sm-12"
-                    />
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="price">
+                        Preço Buscapé
+                      </label>
+                      <div className="controls">
+                        <CurrencyInput
+                          didabled
+                          value={this.state.list.price_buscape || ''}
+                          placeholder="Preço"
+                          className="form-control col-sm-3 disabled"
+                          decimalSeparator=","
+                          thousandSeparator="."
+                          disabled
+                        />
+                      </div>
+                    </div>
                     <Input
                       name="link_buy"
                       value={this.state.list.link_buy || ''}
                       id="link_buy"
-                      label="Link de compra"
+                      label="link para compra na loja"
                       type="text"
-                      placeholder="Link de compra"
+                      placeholder="link para compra na loja"
                       required
                       rowClassName="col-sm-12"
                     />
@@ -225,7 +238,6 @@ class ProductsCreate extends React.Component {
                       value={this.state.list.SaveId || ''}
                       label="Save"
                       id="saveid"
-                      help="Campo obriagatório"
                       options={this.state.selectOptions}
                       required
                       rowClassName="col-sm-12"
@@ -235,7 +247,6 @@ class ProductsCreate extends React.Component {
                       value={this.state.list.ProviderId || ''}
                       label="Fornecedor"
                       id="providerd"
-                      help="Campo obriagatório"
                       options={this.state.selectProvider}
                       required
                       rowClassName="col-sm-12"
@@ -255,7 +266,7 @@ class ProductsCreate extends React.Component {
                       cols={40}
                       name="description"
                       value={this.state.list.description || ''}
-                      label="Descrição do save"
+                      label="Descrição do produto"
                       placeholder="Descrição"
                       rowClassName="col-sm-12"
                     />

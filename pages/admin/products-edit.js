@@ -4,7 +4,10 @@ import Router from 'next/router';
 import moment from 'moment';
 import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
+import CurrencyInput from 'react-currency-input';
+import every from 'lodash/every';
 
+import RenderIf from '../../components/common/render-if';
 import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
@@ -22,7 +25,10 @@ class ProductsCreate extends React.Component {
       image2: '',
       image3: '',
       startDate: '',
+      price: '',
+      priceBuscape: '',
       list: [],
+      btnEnabled: false,
       loading: true,
       showToast: false,
       messageToast: '',
@@ -33,6 +39,7 @@ class ProductsCreate extends React.Component {
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
+    this.handlePriceChange = this.handlePriceChange.bind(this);
     this.getSaves();
     this.getProvider();
   }
@@ -49,6 +56,7 @@ class ProductsCreate extends React.Component {
           this.setState({
             ...this.state, list: response.data
           });
+          this.setState({ price: this.state.list.price || '', priceBuscape: this.state.list.price_buscape || '' });
           setTimeout(() => this.setState({ loading: false }), 1500);
         })
         .catch((error) => {
@@ -86,7 +94,12 @@ class ProductsCreate extends React.Component {
   }
 
   handleSave(event) {
+    this.setState({ btnEnabled: true });
     this.handleImageUpload(event.target.files[0], event.target.name);
+  }
+
+  handlePriceChange(key) {
+    return (value) => this.setState({ [key]: value })
   }
 
   handleImageUpload(file, name) {
@@ -98,39 +111,55 @@ class ProductsCreate extends React.Component {
     upload.end((err, response) => {
       if (err) {
         this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        this.setState({ btnEnabled: false });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
       if (response.body.secure_url !== '') {
         imageChange[name] = response.body.secure_url;
+        this.setState({ btnEnabled: false });
         this.setState(imageChange);
       }
     });
+  }
+
+  isFormValid(values) {
+    return every(
+      ['title', 'price', 'link_buy', 'SaveId', 'ProviderId', 'Coupons', 'method_payment'],
+      key => this.state[key] !== ''
+    );
   }
 
   submitForm(data) {
     const values = Object.assign(data, {
       image_default: this.state.image_default,
       image2: this.state.image2,
-      image3: this.state.image3
+      image3: this.state.image3,
+      price: this.state.price.toLocaleString().replace(".", "").replace(",", "."),
+      price_buscape: this.state.priceBuscape.toLocaleString().replace(".", "").replace(",", ".")
     });
-
-    if (!values.title ) {
-      this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Preencha todos os campos obrigatórios' });
-      setTimeout(() => this.setState({ showToast: false }), 4500);
-    }
 
     if (!values.image_default) delete values.image_default;
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
+    if (!this.isFormValid(values) && (values.image_default ? values.image_default : this.state.list.image_default)) {
+      this.setState({
+        showToast: true,
+        typeToast: 'warning',
+        messageToast: 'Preencha todos os campos obrigatórios'
+      });
+      setTimeout(() => this.setState({ showToast: false }), 4500);
+      return;
+    }
+
     const rest = this.props.api.put(`/products/${values.id}`, values)
         .then(() => {
-          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
+          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadastrado com Sucesso' });
           setTimeout(() => Router.push('/admin/products'), 2000);
         })
-        .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao inserir o registro' });
+        .catch((error) => {
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Erro ao inserir (${error.message})` });
           setTimeout(() => this.setState({ showToast: false }), 2500);
         });
 
@@ -144,15 +173,16 @@ class ProductsCreate extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Alterar Produtos</span>
+                <span className="panel-title">Alterar Produto</span>
               </div>
 
               <div className="panel-body">
-                {this.state.loading ? (
+                <RenderIf expr={this.state.loading}>
                   <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
-                ) : (
+                </RenderIf>
+                <RenderIf expr={!this.state.loading}>
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input
                       name="id"
@@ -163,22 +193,31 @@ class ProductsCreate extends React.Component {
                       name="title"
                       value={this.state.list.title || ''}
                       id="title"
-                      label="Título do save"
+                      label="Título do produto"
                       type="text"
-                      placeholder="Título do save"
+                      placeholder="Título do produto"
                       required
                       rowClassName="col-sm-12"
                     />
-                    <Input
-                      name="price"
-                      value={this.state.list.price || ''}
-                      id="price"
-                      label="Preço"
-                      type="text"
-                      placeholder="Preço"
-                      required
-                      rowClassName="col-sm-12"
-                    />
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="price">
+                        Preço *
+                      </label>
+                      <div className="controls">
+                        <CurrencyInput
+                          name="price"
+                          value={this.state.price}
+                          id="price"
+                          label="Preço"
+                          placeholder="Preço"
+                          className="form-control col-sm-3"
+                          decimalSeparator=","
+                          thousandSeparator="."
+                          required
+                          onChange={this.handlePriceChange('price')}
+                        />
+                      </div>
+                    </div>
                     <Input
                       name="method_payment"
                       value={this.state.list.method_payment || ''}
@@ -196,26 +235,33 @@ class ProductsCreate extends React.Component {
                       label="Link Buscapé"
                       type="text"
                       placeholder="Link Buscapé"
-                      required
                       rowClassName="col-sm-12"
                     />
-                    <Input
-                      name="price_buscape"
-                      value={this.state.list.price_buscape || ''}
-                      id="price_buscape"
-                      label="Menor preço buscapé"
-                      type="text"
-                      placeholder="Menor preço buscapé"
-                      required
-                      rowClassName="col-sm-12"
-                    />
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="price_buscape">
+                        Preço Buscapé
+                      </label>
+                      <div className="controls">
+                        <CurrencyInput
+                          name="price_buscape"
+                          value={this.state.priceBuscape}
+                          id="price_buscape"
+                          label="Menor preço buscapé"
+                          placeholder="Menor preço buscapé"
+                          className="form-control col-sm-3"
+                          decimalSeparator=","
+                          thousandSeparator="."
+                          onChange={this.handlePriceChange('priceBuscape')}
+                        />
+                      </div>
+                    </div>
                     <Input
                       name="link_buy"
                       value={this.state.list.link_buy || ''}
                       id="link_buy"
-                      label="Link de compra"
+                      label="link para compra na loja"
                       type="text"
-                      placeholder="Link de compra"
+                      placeholder="link para compra na loja"
                       required
                       rowClassName="col-sm-12"
                     />
@@ -242,65 +288,80 @@ class ProductsCreate extends React.Component {
                     <Textarea
                       rows={10}
                       cols={40}
+                      name="description"
+                      value={this.state.list.description || ''}
+                      label="Descrição do produto"
+                      placeholder="Descrição"
+                      rowClassName="col-sm-12"
+                    />
+                    <Textarea
+                      rows={10}
+                      cols={40}
                       name="technique_information"
                       value={this.state.list.technique_information || ''}
                       label="Informações técnicas"
                       placeholder="Informações técnicas"
                       rowClassName="col-sm-12"
                     />
-
-                    <Textarea
-                      rows={10}
-                      cols={40}
-                      name="description"
-                      value={this.state.list.description || ''}
-                      label="Descrição do save"
-                      placeholder="Descrição"
-                      rowClassName="col-sm-12"
-                    />
                     <div className="form-group col-sm-12">
                       <label
                         className="control-label"
                         htmlFor="image_default"
-                      >Imagem de destaque</label>
+                      >Imagem de destaque *</label>
                       <div className="controls">
                         <input type="file" name="image_default" onChange={this.handleSave} />
-                        { this.state.list.image_default ? (
-                          <img className="col-md-2" src={this.state.list.image_default} alt={ this.state.list.title }/>
-                        ) : (
-                          <p>sem imagem</p>
-                        )}
+                        <RenderIf expr={(!!this.state.list.image_default && !this.state.image_default)}> 
+                          <img className="col-md-3" src={this.state.list.image_default} alt="image" />
+                        </RenderIf>
+
+                        <RenderIf expr={(!!this.state.image_default)}> 
+                          <img className="col-md-3" src={this.state.image_default} alt="image" />
+                        </RenderIf>
                       </div>
                     </div>
                     <div className="form-group col-sm-12">
                       <label className="control-label" htmlFor="image2">Outra imagem</label>
                       <div className="controls">
                         <input type="file" name="image2" onChange={this.handleSave} />
-                        { this.state.list.image2 ? (
-                          <img className="col-md-2" src={this.state.list.image2} alt={ this.state.list.title }/>
-                        ) : (
-                          <p>sem imagem</p>
-                        )}
+                        <RenderIf expr={(!!this.state.list.image2 && !this.state.image2)}> 
+                          <img className="col-md-3" src={this.state.list.image2} alt="image" />
+                        </RenderIf>
+
+                        <RenderIf expr={(!!this.state.image2)}> 
+                          <img className="col-md-3" src={this.state.image2} alt="image" />
+                        </RenderIf>
                       </div>
                     </div>
                     <div className="form-group col-sm-12">
                       <label className="control-label" htmlFor="image3">Outra imagem</label>
                       <div className="controls">
                         <input type="file" name="image3" onChange={this.handleSave} />
-                        { this.state.list.image3 ? (
-                          <img className="col-md-2" src={this.state.list.image3} alt={ this.state.list.title }/>
-                        ) : (
-                          <p>sem imagem</p>
-                        )}
+                        <RenderIf expr={(!!this.state.list.image3 && !this.state.image3)}> 
+                          <img className="col-md-3" src={this.state.list.image3} alt="image" />
+                        </RenderIf>
+
+                        <RenderIf expr={(!!this.state.image3)}> 
+                          <img className="col-md-3" src={this.state.image3} alt="image" />
+                        </RenderIf>
                       </div>
                     </div>
+                    <RenderIf expr={this.state.btnEnabled}>
+                      <div className="form-group col-sm-12">
+                        <Loading type="bars" color="#000000" />
+                      </div>
+                    </RenderIf>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                        <input
+                          className="btn btn-primary"
+                          type="submit"
+                          defaultValue="Enviar"
+                          disabled={this.state.btnEnabled ? 'disabled' : ''}
+                        />
                       </div>
                     </Row>
                   </FRC.Form>
-                )}
+                </RenderIf>
               </div>
             </div>
           </div>
