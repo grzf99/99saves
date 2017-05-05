@@ -377,9 +377,7 @@ class ProductsCreate extends React.Component {
                         />
                       </div>
                       <RenderIf expr={this.state.btnEnabled}>
-                        <div>
-                          carregando imagem...  
-                        </div>
+                        <Loading type="bars" color="#000000" />
                       </RenderIf>
 
                       <RenderIf expr={!!this.state.image_default}>
@@ -399,6 +397,15 @@ class ProductsCreate extends React.Component {
                           onChange={this.handleImageChange}
                         />
                       </div>
+                      <RenderIf expr={this.state.btnEnabled}>
+                        <Loading type="bars" color="#000000" />
+                      </RenderIf>
+
+                      <RenderIf expr={!!this.state.image2}>
+                        <div className="controls">
+                          <img className="col-md-3" src={this.state.image2} alt="image" />
+                        </div>
+                      </RenderIf>
                     </div>
                     <div className="form-group col-sm-12">
                       <label className="control-label" htmlFor="image3">
@@ -411,6 +418,15 @@ class ProductsCreate extends React.Component {
                           onChange={this.handleImageChange}
                         />
                       </div>
+                      <RenderIf expr={this.state.btnEnabled}>
+                        <Loading type="bars" color="#000000" />
+                      </RenderIf>
+
+                      <RenderIf expr={!!this.state.image3}>
+                        <div className="controls">
+                          <img className="col-md-3" src={this.state.image3} alt="image" />
+                        </div>
+                      </RenderIf>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
