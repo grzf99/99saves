@@ -142,11 +142,11 @@ class ProductsCreate extends React.Component {
 
     const rest = this.props.api.put(`/products/${values.id}`, values)
         .then(() => {
-          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
+          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadastrado com Sucesso' });
           setTimeout(() => Router.push('/admin/products'), 2000);
         })
-        .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao inserir o registro' });
+        .catch((error) => {
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Erro ao inserir (${error.message})` });
           setTimeout(() => this.setState({ showToast: false }), 2500);
         });
 
@@ -160,7 +160,7 @@ class ProductsCreate extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Alterar Produtos</span>
+                <span className="panel-title">Alterar Produto</span>
               </div>
 
               <div className="panel-body">
@@ -179,9 +179,9 @@ class ProductsCreate extends React.Component {
                       name="title"
                       value={this.state.list.title || ''}
                       id="title"
-                      label="Título do save"
+                      label="Título do produto"
                       type="text"
-                      placeholder="Título do save"
+                      placeholder="Título do produto"
                       required
                       rowClassName="col-sm-12"
                     />
@@ -246,9 +246,9 @@ class ProductsCreate extends React.Component {
                       name="link_buy"
                       value={this.state.list.link_buy || ''}
                       id="link_buy"
-                      label="Link de compra"
+                      label="link para compra na loja"
                       type="text"
-                      placeholder="Link de compra"
+                      placeholder="link para compra na loja"
                       required
                       rowClassName="col-sm-12"
                     />
@@ -275,20 +275,19 @@ class ProductsCreate extends React.Component {
                     <Textarea
                       rows={10}
                       cols={40}
+                      name="description"
+                      value={this.state.list.description || ''}
+                      label="Descrição do produto"
+                      placeholder="Descrição"
+                      rowClassName="col-sm-12"
+                    />
+                    <Textarea
+                      rows={10}
+                      cols={40}
                       name="technique_information"
                       value={this.state.list.technique_information || ''}
                       label="Informações técnicas"
                       placeholder="Informações técnicas"
-                      rowClassName="col-sm-12"
-                    />
-
-                    <Textarea
-                      rows={10}
-                      cols={40}
-                      name="description"
-                      value={this.state.list.description || ''}
-                      label="Descrição do save"
-                      placeholder="Descrição"
                       rowClassName="col-sm-12"
                     />
                     <div className="form-group col-sm-12">

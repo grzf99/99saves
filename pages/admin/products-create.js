@@ -298,9 +298,9 @@ class ProductsCreate extends React.Component {
                       name="link_buy"
                       value=""
                       id="link_buy"
-                      label="Link de compra"
+                      label="link para compra na loja"
                       type="text"
-                      placeholder="Link de compra"
+                      placeholder="link para compra na loja"
                       required
                       rowClassName="col-sm-12"
                     />
@@ -348,19 +348,19 @@ class ProductsCreate extends React.Component {
                     <Textarea
                       rows={10}
                       cols={40}
-                      name="technique_information"
+                      name="description"
                       value=""
-                      label="Informações técnicas"
-                      placeholder="Informações técnicas"
+                      label="Descrição do produto"
+                      placeholder="Descrição"
                       rowClassName="col-sm-12"
                     />
                     <Textarea
                       rows={10}
                       cols={40}
-                      name="description"
+                      name="technique_information"
                       value=""
-                      label="Descrição do produto"
-                      placeholder="Descrição"
+                      label="Informações técnicas"
+                      placeholder="Informações técnicas"
                       rowClassName="col-sm-12"
                     />
                     <div className="form-group col-sm-12">
