@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { User } = require('../models');
+const { User, Profile } = require('../models');
 const { generateToken } = require('../../utils/jwt');
 
 module.exports = {
@@ -13,35 +13,22 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
-  create(req, res) {
-    const { user } = req.body;
-    return User.findOrCreate({
-      where: { email: user.email },
-      defaults: Object.assign({}, user, { admin: false })
-    }).spread((user, created) => {
-      if (created) {
-        const token = generateToken(user.toJSON());
-        res.status(201).json(Object.assign({}, user.toJSON(), { token }));
-      } else {
-        res.sendStatus(422);
-      }
-    });
-  },
+  async create(req, res) {
+    const params = req.body.user;
+    let user = await User.find({ where: { email: params.email } });
+    if (user !== null) {
+      return res.sendStatus(422);
+    }
 
-  // TODO: since admin is only being set on update
-  // remove this and unify to create users in just one method to avoid duplication
-  createAdmin(req, res) {
-    let user = req.body;
-    return User.findOrCreate({
-      where: { email: user.email },
-      defaults: Object.assign({}, user, { admin: false })
-    }).spread((user, created) => {
-      if (created) {
-        res.sendStatus(201);
-      } else {
-        res.sendStatus(422);
-      }
-    });
+    user = await User.create(Object.assign({}, params, { admin: false }));
+    const profile = await Profile.create(
+      Object.assign({}, params.profile, { UserId: user.id })
+    );
+    const token = generateToken(user.toJSON());
+
+    return res
+      .status(201)
+      .json(Object.assign({}, user.toJSON(), { token, profile }));
   },
 
   update(req, res) {
