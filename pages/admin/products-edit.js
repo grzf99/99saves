@@ -38,8 +38,7 @@ class ProductsCreate extends React.Component {
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
-    this.handlePrice = this.handlePrice.bind(this);
-    this.handlePriceBuscape = this.handlePriceBuscape.bind(this);
+    this.handlePriceChange = this.handlePriceChange.bind(this);
     this.getSaves();
     this.getProvider();
   }
@@ -98,12 +97,8 @@ class ProductsCreate extends React.Component {
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
-  handlePrice(target) {
-    this.setState({ price: target });
-  }
-
-  handlePriceBuscape(target) {
-    this.setState({ priceBuscape: target });
+  handlePriceChange(key) {
+    return (value) => this.setState({ [key]: value })
   }
 
   handleImageUpload(file, name) {
@@ -215,7 +210,7 @@ class ProductsCreate extends React.Component {
                           decimalSeparator=","
                           thousandSeparator="."
                           required
-                          onChange={this.handlePrice}
+                          onChange={this.handlePriceChange('price')}
                         />
                       </div>
                     </div>
@@ -252,7 +247,7 @@ class ProductsCreate extends React.Component {
                           className="form-control col-sm-3"
                           decimalSeparator=","
                           thousandSeparator="."
-                          onChange={this.handlePriceBuscape}
+                          onChange={this.handlePriceChange('priceBuscape')}
                         />
                       </div>
                     </div>
