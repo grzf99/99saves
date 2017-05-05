@@ -23,6 +23,7 @@ class ProductsCreate extends React.Component {
       price: '',
       priceBuscape: '',
       list: [],
+      btnEnabled: false,
       loading: true,
       showToast: false,
       messageToast: '',
@@ -114,6 +115,7 @@ class ProductsCreate extends React.Component {
   }
 
   handleImageChange(event) {
+    this.setState({ btnEnabled: true });
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
@@ -131,11 +133,13 @@ class ProductsCreate extends React.Component {
           typeToast: 'warning',
           messageToast: `Problemas ao se comunicar com API: ${err}`
         });
+        this.setState({ btnEnabled: false });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
       if (response.body.secure_url !== '') {
         imageChange[name] = response.body.secure_url;
+        this.setState({ btnEnabled: false });
         this.setState(imageChange);
       }
     });
@@ -372,6 +376,17 @@ class ProductsCreate extends React.Component {
                           onChange={this.handleImageChange}
                         />
                       </div>
+                      <RenderIf expr={this.state.btnEnabled}>
+                        <div>
+                          carregando imagem...  
+                        </div>
+                      </RenderIf>
+
+                      <RenderIf expr={!!this.state.image_default}>
+                        <div className="controls">
+                          <img className="col-md-3" src={this.state.image_default} alt="image" />
+                        </div>
+                      </RenderIf>
                     </div>
                     <div className="form-group col-sm-12">
                       <label className="control-label" htmlFor="image2">
@@ -403,6 +418,7 @@ class ProductsCreate extends React.Component {
                           className="btn btn-primary"
                           type="submit"
                           defaultValue="Enviar"
+                          disabled={this.state.btnEnabled ? 'disabled' : ''}
                         />
                       </div>
                     </Row>
