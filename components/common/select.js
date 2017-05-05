@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import hexRgb from 'hex-rgb';
-import MaskedInput from 'react-maskedinput';
 import { colors } from '../styles/variables';
 import { Text } from './typography';
 import validatable from '../hoc/validatable';
@@ -18,30 +17,21 @@ const Label = styled(Text)`
   display: block;
 `;
 
-const [r, g, b] = hexRgb(colors.black);
-export const Field = styled.input`
-  border: 0;
+const FieldWrapper = styled.div`
   border-bottom: 1px solid ${colors.black};
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  display: block;
-  line-height: 1.5;
-  outline: none;
-  width: 100%;
-  &::placeholder {
-    color: rgba(${r}, ${g}, ${b}, 0.12);
-  }
 `;
 
-export const MaskedField = styled(MaskedInput)`
+const [r, g, b] = hexRgb(colors.black);
+export const Field = styled.select`
   border: 0;
-  border-bottom: 1px solid ${colors.black};
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   display: block;
   line-height: 1.5;
   outline: none;
   width: 100%;
+  background: transparent;
+  min-height: 27px;
   &::placeholder {
     color: rgba(${r}, ${g}, ${b}, 0.12);
   }
@@ -53,12 +43,18 @@ const Hint = styled(Text)`
   padding-top: 5px;
 `;
 
-export class Input extends Component {
+class Select extends Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     label: PropTypes.string,
     block: PropTypes.bool,
-    mask: PropTypes.string,
+    options: PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string,
+        value: PropTypes.string
+      })
+    ).isRequired,
+    defaultOption: PropTypes.string,
     value: PropTypes.string,
     valid: PropTypes.bool,
     validationMessage: PropTypes.string
@@ -67,14 +63,17 @@ export class Input extends Component {
   static defaultProps = {
     label: '',
     block: false,
-    mask: undefined,
+    defaultOption: 'Selecione o registro',
     validationMessage: '',
     valid: true,
     value: ''
   };
 
-  hasMask() {
-    return this.props.mask !== undefined && this.props.mask !== '';
+  get options() {
+    return [
+      { value: '', label: this.props.defaultOption },
+      ...this.props.options
+    ];
   }
 
   render() {
@@ -82,28 +81,29 @@ export class Input extends Component {
       label,
       hint,
       block,
-      mask,
       value,
       valid,
       validationMessage,
       onChange,
       ...cleanedProps
     } = this.props;
+
     return (
       <Container block={block}>
         <Label uppercase>{label}</Label>
-        {!this.hasMask()
-          ? <Field {...cleanedProps} value={value} onChange={onChange} />
-          : <MaskedField
-            {...cleanedProps}
-            mask={mask}
-            value={value}
-            onChange={onChange}
-          />}
+        <FieldWrapper>
+          <Field {...cleanedProps} onChange={onChange} value={value}>
+            {this.options.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Field>
+        </FieldWrapper>
         <Hint red={!valid}>{valid ? hint : validationMessage}</Hint>
       </Container>
     );
   }
 }
 
-export default validatable(Input);
+export default validatable(Select);
