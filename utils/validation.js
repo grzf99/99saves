@@ -1,3 +1,4 @@
+import { CPF } from 'cpf_cnpj';
 import { isEmail } from 'validator';
 
 function isString(value) {
@@ -20,4 +21,12 @@ export function minLength(length) {
     (isString(value) && value.length < length
       ? `Deve conter pelo menos ${length} caracteres`
       : undefined);
+}
+
+export function cpf(value) {
+  return !CPF.isValid(value) ? 'Deve ser um CPF válido' : undefined;
+}
+
+export function required(value) {
+  return value === '' || value === undefined ? 'Campo obrigatório' : undefined;
 }

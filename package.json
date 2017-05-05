@@ -30,6 +30,7 @@
     "body-parser": "^1.17.1",
     "bootstrap": "3",
     "cookie-parser": "^1.4.3",
+    "cpf_cnpj": "^0.2.0",
     "date-fns": "^1.28.3",
     "dotenv": "^4.0.0",
     "enzyme": "^2.8.0",
@@ -61,7 +62,7 @@
     "passport-jwt": "^2.2.1",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
-    "polished": "^1.0.1",
+    "polished": "^1.1.1",
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.2",
     "react-bootstrap": "^0.30.8",
@@ -86,6 +87,7 @@
     "babel-eslint": "^7.2.3",
     "mock-express-response": "^0.2.0",
     "moxios": "^0.4.0",
-    "regenerator-runtime": "^0.10.3"
+    "regenerator-runtime": "^0.10.3",
+    "webpack": "^2.5.0"
   }
 }

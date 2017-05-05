@@ -23,7 +23,7 @@ class UsersCreate extends React.Component {
       loading: true,
       showToast: false,
       messageToast: '',
-      typeToast: '',
+      typeToast: ''
     };
     this.submitForm = this.submitForm.bind(this);
   }
@@ -34,18 +34,27 @@ class UsersCreate extends React.Component {
 
   submitForm(data) {
     if (!data.name || !data.email || !data.password) {
-      return alert('Preencha todos os campos obrigatórios');  // eslint-disable-line
+      return alert('Preencha todos os campos obrigatórios'); // eslint-disable-line
     }
 
-    const rest = this.props.api.post('/users/create-admin', data)
-        .then(() => {
-          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadastrado com Sucesso' });
-          setTimeout(() => Router.push('/admin/users'), 2500);
-        })
-        .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao alterar o registro' });
-          setTimeout(() => this.setState({ showToast: false }), 2500);
+    const rest = this.props.api
+      .post('/users', data)
+      .then(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'success',
+          messageToast: 'Registro cadastrado com Sucesso'
         });
+        setTimeout(() => Router.push('/admin/users'), 2500);
+      })
+      .catch(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: 'Erro ao alterar o registro'
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
+      });
 
     return rest;
   }
@@ -61,16 +70,12 @@ class UsersCreate extends React.Component {
               </div>
 
               <div className="panel-body">
-                {this.state.loading ? (
-                  <div className="pull-center">
+                {this.state.loading
+                  ? <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
-                ) : (
-                  <FRC.Form onSubmit={this.submitForm} layout="vertical">
-                    <Input
-                      name="id"
-                      type="hidden"
-                    />
+                  : <FRC.Form onSubmit={this.submitForm} layout="vertical">
+                    <Input name="id" type="hidden" />
                     <Input
                       name="name"
                       id="name"
@@ -100,17 +105,20 @@ class UsersCreate extends React.Component {
                     />
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                        <input
+                          className="btn btn-primary"
+                          type="submit"
+                          defaultValue="Enviar"
+                        />
                       </div>
                     </Row>
-                  </FRC.Form>
-                )}
+                  </FRC.Form>}
               </div>
             </div>
           </div>
         </div>
         <AlertMessage type={this.state.typeToast} show={this.state.showToast}>
-          { this.state.messageToast }
+          {this.state.messageToast}
         </AlertMessage>
       </Layout>
     );
