@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import request from 'superagent';
 import Router from 'next/router';
+import Link from 'next/link';
 import FRC, { Input, Row } from 'formsy-react-components';
 import Loading from 'react-loading';
 
@@ -9,12 +10,14 @@ import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
+import RenderIf from '../../components/common/render-if';
 
 class ProvidersCreate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       logo: '',
+      btnEnabled: false,
       loading: true,
       showToast: false,
       messageToast: '',
@@ -30,6 +33,7 @@ class ProvidersCreate extends React.Component {
   }
 
   handleSave(event) {
+    this.setState({ btnEnabled: true });
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
@@ -53,6 +57,7 @@ class ProvidersCreate extends React.Component {
       if (response.body.secure_url !== '') {
         imageChange[name] = response.body.secure_url;
         this.setState(imageChange);
+        this.setState({ btnEnabled: false });
       }
     });
   }
@@ -104,11 +109,13 @@ class ProvidersCreate extends React.Component {
               </div>
 
               <div className="panel-body">
-                {this.state.loading
-                  ? <div className="pull-center">
+                <RenderIf expr={this.state.loading}>
+                  <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
-                  : <FRC.Form onSubmit={this.submitForm} layout="vertical">
+                </RenderIf>
+                <RenderIf expr={!this.state.loading}>
+                  <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input name="id" type="hidden" />
                     <Input
                       name="name"
@@ -125,7 +132,7 @@ class ProvidersCreate extends React.Component {
                       value=""
                       id="email"
                       label="Email do fornecedor"
-                      type="text"
+                      type="email"
                       placeholder="Email do fornecedor"
                       required
                       rowClassName="col-sm-12"
@@ -162,7 +169,7 @@ class ProvidersCreate extends React.Component {
 
                     <div className="form-group col-sm-12">
                       <label className="control-label" htmlFor="logo">
-                          Logo
+                          Logo fornecedor
                         </label>
                       <div className="controls">
                         <input
@@ -171,17 +178,24 @@ class ProvidersCreate extends React.Component {
                           onChange={this.handleSave}
                         />
                       </div>
+                        <RenderIf expr={this.state.btnEnabled}>
+                          <Loading type="bars" color="#000000" />  
+                        </RenderIf>
+
+                        <RenderIf expr={(this.state.logo)}> 
+                          <img className="col-md-3" src={this.state.logo} alt="brand" />
+                        </RenderIf>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
-                      <div className="text-left">
-                        <input
-                          className="btn btn-primary"
-                          type="submit"
-                          defaultValue="Enviar"
-                        />
+                      <div className="pull-left">
+                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" disabled={this.state.btnEnabled ? 'disabled' : ''} />
+                      </div>
+                      <div className="pull-right">
+                        <Link prefetch href="/admin/providers"><a className="btn btn-default">Voltar</a></Link>
                       </div>
                     </Row>
-                  </FRC.Form>}
+                  </FRC.Form>
+                </RenderIf>
               </div>
             </div>
           </div>

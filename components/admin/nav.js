@@ -1,25 +1,30 @@
-export default () => (
-  <div id="top-nav" className="navbar navbar-inverse navbar-static-top">
-    <div className="container bootstrap snippet">
-      <div className="navbar-header">
-        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span className="icon-toggle" />
-        </button>
-        <a className="navbar-brand" href="#/">99saves</a>
-      </div>
-      <div className="navbar-collapse collapse">
-        <ul className="nav navbar-nav navbar-right">
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-          <li className="dropdown">
-            <a className="dropdown-toggle" role="button" data-toggle="dropdown" href="#/">
-              <i className="glyphicon glyphicon-user" /> Admin <span className="caret" /></a>
-            <ul id="g-account-menu" className="dropdown-menu" role="menu">
-              <li><a href="#/">My Profile</a></li>
-              <li><a href="#/"><i className="glyphicon glyphicon-lock" /> Logout</a></li>
-            </ul>
-          </li>
-        </ul>
+class Nav extends Component {
+
+  render() {
+    return (
+      <div id="top-nav" className="navbar navbar-inverse navbar-static-top">
+        <div className="container bootstrap snippet">
+          <div className="navbar-header">
+            <button type="button" className="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span className="icon-toggle" />
+            </button>
+            <a className="navbar-brand" href="#/">99saves</a>
+          </div>
+          <div className="navbar-collapse pull-right col-sm-4">
+            <p className="navbar-text navbar-right">
+              <i className="glyphicon glyphicon-user" /> { this.props.currentUser.name } - { this.props.currentUser.email }
+              ( <a href="#/" className="navbar-link" onClick={this.props.onLogout}>Sair</a> )
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-);
+    );
+  }
+}
+
+export default connect(state => ({
+  currentUser: state.currentUser
+}))(Nav);
