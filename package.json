@@ -10,11 +10,15 @@
     "build": "next build",
     "dev": "nodemon --watch server --watch server.js server.js",
     "lint": "eslint .",
-    "start": "NODE_ENV=production npm build && node server.js",
+    "start": "NODE_ENV=production node server.js",
     "test": "NODE_ENV=test jest --watch",
     "test-ci": "NODE_ENV=test-ci jest",
-    "sequelize": "sequelize"
+    "sequelize": "sequelize",
+    "heroku-postbuild": "heroku-nextjs-build"
   },
+  "cacheDirectories": [
+    "nextjs/node_modules"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
