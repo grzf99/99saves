@@ -21,6 +21,7 @@ class ProductsCreate extends React.Component {
       image3: '',
       startDate: '',
       price: '',
+      priceBuscape: '',
       list: [],
       loading: true,
       showToast: false,
@@ -36,6 +37,7 @@ class ProductsCreate extends React.Component {
     this.handleCouponsChange = this.handleCouponsChange.bind(this);
     this.handleSaveChange = this.handleSaveChange.bind(this);
     this.handlePrice = this.handlePrice.bind(this);
+    this.handlePriceBuscape = this.handlePriceBuscape.bind(this);
     this.getSaves();
     this.getProvider();
   }
@@ -92,6 +94,11 @@ class ProductsCreate extends React.Component {
   handlePrice(target) {
     this.setState({ price: target });
   }
+
+  handlePriceBuscape(target) {
+    this.setState({ priceBuscape: target });
+  }
+  
 
   handleCouponsChange(event) {
     const [file] = event.target.files;
@@ -238,6 +245,7 @@ class ProductsCreate extends React.Component {
                           className="form-control col-sm-3"
                           decimalSeparator=","
                           thousandSeparator="."
+                          required
                           onChange={this.handlePrice}
                         />
                       </div>
@@ -262,16 +270,24 @@ class ProductsCreate extends React.Component {
                       required
                       rowClassName="col-sm-12"
                     />
-                    <Input
-                      name="price_buscape"
-                      value=""
-                      id="price_buscape"
-                      label="Menor preço buscapé"
-                      type="text"
-                      placeholder="Menor preço buscapé"
-                      required
-                      rowClassName="col-sm-12"
-                    />
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="price">
+                        Preço 
+                      </label>
+                      <div className="controls">
+                        <CurrencyInput
+                          name="price_buscape"
+                          value={this.state.priceBuscape}
+                          id="price_buscape"
+                          label="Menor preço buscapé"
+                          placeholder="Menor preço buscapé"
+                          className="form-control col-sm-3"
+                          decimalSeparator=","
+                          thousandSeparator="."
+                          onChange={this.handlePriceBuscape}
+                        />
+                      </div>
+                    </div>
                     <Input
                       name="link_buy"
                       value=""
