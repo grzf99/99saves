@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
 import withStore from 'next-redux-wrapper';
-
+import getCookies from 'next-cookies';
 import RenderIf from '../common/render-if';
 import createStore from '../../store';
 import { noop } from '../../utils';
@@ -19,7 +19,8 @@ export default function withAuth(
       static getInitialProps(ctx) {
         let token;
         if (ctx.req !== undefined) {
-          token = ctx.req.cookies[TOKEN_COOKIE_KEY];
+          const cookies = getCookies(ctx);
+          token = cookies[TOKEN_COOKIE_KEY];
           ctx.store.dispatch(setToken(token));
         }
 
