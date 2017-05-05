@@ -87,6 +87,7 @@
     "babel-eslint": "^7.2.3",
     "mock-express-response": "^0.2.0",
     "moxios": "^0.4.0",
-    "regenerator-runtime": "^0.10.3"
+    "regenerator-runtime": "^0.10.3",
+    "webpack": "^2.5.0"
   }
 }
