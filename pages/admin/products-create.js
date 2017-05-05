@@ -151,7 +151,8 @@ class ProductsCreate extends React.Component {
       image2: this.state.image2,
       image3: this.state.image3,
       Coupons: this.state.coupons.map(coupon => ({ key: coupon })),
-      price: this.state.price.replace(".", "").replace(",", ".")
+      price: this.state.price.replace(".", "").replace(",", "."),
+      priceBuscape: this.state.priceBusca.replace(".", "").replace(",", ".")
     });
 
     if (!this.isFormValid(values)) {
@@ -271,8 +272,8 @@ class ProductsCreate extends React.Component {
                       rowClassName="col-sm-12"
                     />
                     <div className="form-group col-sm-12">
-                      <label className="control-label" htmlFor="price">
-                        Preço 
+                      <label className="control-label" htmlFor="price_buscape">
+                        Preço Buscapé
                       </label>
                       <div className="controls">
                         <CurrencyInput
