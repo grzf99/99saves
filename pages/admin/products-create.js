@@ -156,7 +156,6 @@ class ProductsCreate extends React.Component {
     });
 
     if (!this.isFormValid(values)) {
-      console.log(values);
       this.setState({
         showToast: true,
         typeToast: 'warning',
