@@ -4,6 +4,7 @@ import Router from 'next/router';
 import moment from 'moment';
 import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
+import CurrencyInput from 'react-currency-input';
 
 import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
@@ -22,6 +23,8 @@ class ProductsCreate extends React.Component {
       image2: '',
       image3: '',
       startDate: '',
+      price: '',
+      priceBuscape: '',
       list: [],
       loading: true,
       showToast: false,
@@ -33,6 +36,8 @@ class ProductsCreate extends React.Component {
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
+    this.handlePrice = this.handlePrice.bind(this);
+    this.handlePriceBuscape = this.handlePriceBuscape.bind(this);
     this.getSaves();
     this.getProvider();
   }
@@ -49,6 +54,7 @@ class ProductsCreate extends React.Component {
           this.setState({
             ...this.state, list: response.data
           });
+          this.setState({ price: this.state.list.price || '', priceBuscape: this.state.list.price_buscape || '' });
           setTimeout(() => this.setState({ loading: false }), 1500);
         })
         .catch((error) => {
@@ -89,6 +95,14 @@ class ProductsCreate extends React.Component {
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
+  handlePrice(target) {
+    this.setState({ price: target });
+  }
+
+  handlePriceBuscape(target) {
+    this.setState({ priceBuscape: target });
+  }
+
   handleImageUpload(file, name) {
     const imageChange = {};
     const upload = request.post(config.CLOUDINARY_UPLOAD_URL)
@@ -112,7 +126,9 @@ class ProductsCreate extends React.Component {
     const values = Object.assign(data, {
       image_default: this.state.image_default,
       image2: this.state.image2,
-      image3: this.state.image3
+      image3: this.state.image3,
+      price: this.state.price.replace(".", "").replace(",", "."),
+      price_buscape: this.state.priceBuscape.replace(".", "").replace(",", ".")
     });
 
     if (!values.title ) {
@@ -169,16 +185,25 @@ class ProductsCreate extends React.Component {
                       required
                       rowClassName="col-sm-12"
                     />
-                    <Input
-                      name="price"
-                      value={this.state.list.price || ''}
-                      id="price"
-                      label="Preço"
-                      type="text"
-                      placeholder="Preço"
-                      required
-                      rowClassName="col-sm-12"
-                    />
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="price">
+                        Preço *
+                      </label>
+                      <div className="controls">
+                        <CurrencyInput
+                          name="price"
+                          value={this.state.price}
+                          id="price"
+                          label="Preço"
+                          placeholder="Preço"
+                          className="form-control col-sm-3"
+                          decimalSeparator=","
+                          thousandSeparator="."
+                          required
+                          onChange={this.handlePrice}
+                        />
+                      </div>
+                    </div>
                     <Input
                       name="method_payment"
                       value={this.state.list.method_payment || ''}
@@ -199,16 +224,24 @@ class ProductsCreate extends React.Component {
                       required
                       rowClassName="col-sm-12"
                     />
-                    <Input
-                      name="price_buscape"
-                      value={this.state.list.price_buscape || ''}
-                      id="price_buscape"
-                      label="Menor preço buscapé"
-                      type="text"
-                      placeholder="Menor preço buscapé"
-                      required
-                      rowClassName="col-sm-12"
-                    />
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="price_buscape">
+                        Preço Buscapé
+                      </label>
+                      <div className="controls">
+                        <CurrencyInput
+                          name="price_buscape"
+                          value={this.state.priceBuscape}
+                          id="price_buscape"
+                          label="Menor preço buscapé"
+                          placeholder="Menor preço buscapé"
+                          className="form-control col-sm-3"
+                          decimalSeparator=","
+                          thousandSeparator="."
+                          onChange={this.handlePriceBuscape}
+                        />
+                      </div>
+                    </div>
                     <Input
                       name="link_buy"
                       value={this.state.list.link_buy || ''}
