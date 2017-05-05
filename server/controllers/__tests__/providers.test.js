@@ -125,7 +125,7 @@ describe('update', () => {
   });
 });
 
-describe('deletete', () => {
+describe('delete', () => {
   describe('when provider already exist', () => {
     const req = {
       params: {
