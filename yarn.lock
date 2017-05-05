@@ -5320,6 +5320,12 @@ react-modal@^1.7.3:
     exenv "1.2.0"
     lodash.assign "^4.2.0"
 
+react-nl2br@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-nl2br/-/react-nl2br-0.2.0.tgz#3c7cbd3d87abd6938d6cee7fe0ae180326bdf2a1"
+  dependencies:
+    react "^0.14.0 || ^15.0.0"
+
 react-no-ssr@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-no-ssr/-/react-no-ssr-1.1.0.tgz#313b48d2e26020f969ed98e472f10481604e3cc8"
@@ -5399,7 +5405,7 @@ react-test-renderer@^15.4.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react@^15.4.2:
+"react@>=0.14.0 || >=15.0.0", "react@^0.14.0 || ^15.0.0", react@^15.4.2:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
   dependencies:
