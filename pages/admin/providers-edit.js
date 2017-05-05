@@ -1,6 +1,7 @@
 import React from 'react';
 import request from 'superagent';
 import Router from 'next/router';
+import Link from 'next/link';
 import FRC, { Input, Row } from 'formsy-react-components';
 import Loading from 'react-loading';
 
@@ -8,6 +9,7 @@ import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
+import RenderIf from '../../components/common/render-if';
 
 class ProvidersEdit extends React.Component {
   static getInitialProps({ query }) {
@@ -19,6 +21,7 @@ class ProvidersEdit extends React.Component {
     this.state = {
       list: [],
       logo: '',
+      btnEnabled: false,
       loading: true,
       showToast: false,
       messageToast: '',
@@ -30,10 +33,10 @@ class ProvidersEdit extends React.Component {
   }
 
   componentDidMount() {
-    this.getSaves(this.props.query.id);
+    this.getProvider(this.props.query.id);
   }
 
-  getSaves(id) {
+  getProvider(id) {
     this.props.api.get(`/providers/${id}`)
         .then((response) => {
           this.setState({
@@ -48,6 +51,7 @@ class ProvidersEdit extends React.Component {
   }
 
   handleSave(event) {
+    this.setState({ btnEnabled: true });
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
@@ -66,6 +70,7 @@ class ProvidersEdit extends React.Component {
       if (response.body.secure_url !== '') {
         imageChange[name] = response.body.secure_url;
         this.setState(imageChange);
+        this.setState({ btnEnabled: false });
       }
     });
   }
@@ -80,13 +85,13 @@ class ProvidersEdit extends React.Component {
 
     if (!values.logo) delete values.logo;
 
-    const rest = this.props.api.put(`${config.API_URL}/providers/${values.id}`, values)
+    const rest = this.props.api.put(`/providers/${values.id}`, values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
           setTimeout(() => Router.push('/admin/providers'), 2000);
         })
-        .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao alterar o registro' });
+        .catch((error) => {
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Erro - (${error.message})` });
           setTimeout(() => this.setState({ showToast: false }), 2500);
         });
 
@@ -104,11 +109,12 @@ class ProvidersEdit extends React.Component {
               </div>
 
               <div className="panel-body">
-                {this.state.loading ? (
+                <RenderIf expr={this.state.loading}>
                   <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
-                ) : (
+                </RenderIf>
+                <RenderIf expr={!this.state.loading}>
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input
                       name="id"
@@ -130,7 +136,7 @@ class ProvidersEdit extends React.Component {
                       value={this.state.list.email || ''}
                       id="email"
                       label="Email do fornecedor"
-                      type="text"
+                      type="email"
                       placeholder="Email do fornecedor"
                       required
                       rowClassName="col-sm-12"
@@ -172,15 +178,29 @@ class ProvidersEdit extends React.Component {
                       >Logo</label>
                       <div className="controls">
                         <input type="file" name="logo" onChange={this.handleSave} />
+                        <RenderIf expr={this.state.btnEnabled}>
+                          <Loading type="bars" color="#000000" />  
+                        </RenderIf>
+
+                        <RenderIf expr={(this.state.list.logo && !this.state.logo)}> 
+                          <img className="col-md-3" src={this.state.list.logo} alt="brand" />
+                        </RenderIf>
+
+                        <RenderIf expr={(this.state.logo)}> 
+                          <img className="col-md-3" src={this.state.logo} alt="brand" />
+                        </RenderIf>
                       </div>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
-                      <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                      <div className="pull-left">
+                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" disabled={this.state.btnEnabled ? 'disabled' : ''} />
+                      </div>
+                      <div className="pull-right">
+                        <Link prefetch href="/admin/providers"><a className="btn btn-default">Voltar</a></Link>
                       </div>
                     </Row>
                   </FRC.Form>
-                )}
+                </RenderIf>
               </div>
             </div>
           </div>
