@@ -15,8 +15,6 @@ class SavesCreate extends React.Component {
     super(props);
     this.state = {
       image_default: '',
-      image2: '',
-      image3: '',
       startDate: '',
       list: [],
       loading: true,
@@ -59,8 +57,6 @@ class SavesCreate extends React.Component {
   submitForm(data) {
     const values = Object.assign(data, {
       image_default: this.state.image_default,
-      image2: this.state.image2,
-      image3: this.state.image3,
       date_start: moment(data.date_start, moment.ISO_8859).format(),
       date_end: moment(data.date_end, moment.ISO_8859).format()
     });
@@ -71,8 +67,6 @@ class SavesCreate extends React.Component {
     }
 
     if (!values.image_default) delete values.image_default;
-    if (!values.image2) delete values.image2;
-    if (!values.image3) delete values.image3;
 
     const rest = this.props.api.post('/saves', values)
         .then(() => {
@@ -150,18 +144,6 @@ class SavesCreate extends React.Component {
                       >Imagem de destaque</label>
                       <div className="controls">
                         <input type="file" name="image_default" onChange={this.handleSave} />
-                      </div>
-                    </div>
-                    <div className="form-group col-sm-12">
-                      <label className="control-label" htmlFor="image2">Outra imagem</label>
-                      <div className="controls">
-                        <input type="file" name="image2" onChange={this.handleSave} />
-                      </div>
-                    </div>
-                    <div className="form-group col-sm-12">
-                      <label className="control-label" htmlFor="image3">Outra imagem</label>
-                      <div className="controls">
-                        <input type="file" name="image3" onChange={this.handleSave} />
                       </div>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
