@@ -344,7 +344,7 @@ class ProductsCreate extends React.Component {
                       rowClassName="col-sm-12"
                     />
                     <Textarea
-                      rows={3}
+                      rows={10}
                       cols={40}
                       name="technique_information"
                       value=""
@@ -353,7 +353,7 @@ class ProductsCreate extends React.Component {
                       rowClassName="col-sm-12"
                     />
                     <Textarea
-                      rows={3}
+                      rows={10}
                       cols={40}
                       name="description"
                       value=""
