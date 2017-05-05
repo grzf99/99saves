@@ -32,8 +32,7 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-app.prepare()
-.then(() => {
+app.prepare().then(() => {
   const server = express();
   server.use(logger('dev'));
   server.use(bodyParser.json());
@@ -50,7 +49,12 @@ app.prepare()
 
   server.use('/api', apiRoutes);
   server.get('/offer/:saveId', (req, res) =>
-    app.render(req, res, '/offer', Object.assign({}, req.query, { saveId: req.params.saveId }))
+    app.render(
+      req,
+      res,
+      '/offer',
+      Object.assign({}, req.query, { saveId: req.params.saveId })
+    )
   );
   server.get('*', (req, res) => handle(req, res));
 

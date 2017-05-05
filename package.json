@@ -10,11 +10,10 @@
     "build": "next build",
     "dev": "nodemon --watch server --watch server.js server.js",
     "lint": "eslint .",
-    "start": "NODE_ENV=production next start -p $PORT",
+    "start": "NODE_ENV=production npm build && node server.js",
     "test": "NODE_ENV=test jest --watch",
     "test-ci": "NODE_ENV=test-ci jest",
-    "sequelize": "sequelize",
-    "heroku-postbuild": "heroku-nextjs-build"
+    "sequelize": "sequelize"
   },
   "author": "",
   "license": "ISC",
@@ -49,6 +48,7 @@
     "moment": "^2.18.1",
     "morgan": "^1.8.1",
     "next": "^2.0.0",
+    "next-cookies": "^1.0.1",
     "next-redux-wrapper": "1.1.2",
     "nodemon": "^1.11.0",
     "numeral": "^2.0.6",
