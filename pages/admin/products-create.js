@@ -3,6 +3,7 @@ import request from 'superagent';
 import Router from 'next/router';
 import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
+import CurrencyInput from 'react-currency-input';
 
 import { pluralize } from '../../utils';
 import RenderIf from '../../components/common/render-if';
@@ -19,6 +20,7 @@ class ProductsCreate extends React.Component {
       image2: '',
       image3: '',
       startDate: '',
+      price: '',
       list: [],
       loading: true,
       showToast: false,
@@ -33,6 +35,7 @@ class ProductsCreate extends React.Component {
     this.handleImageUpload = this.handleImageUpload.bind(this);
     this.handleCouponsChange = this.handleCouponsChange.bind(this);
     this.handleSaveChange = this.handleSaveChange.bind(this);
+    this.handlePrice = this.handlePrice.bind(this);
     this.getSaves();
     this.getProvider();
   }
@@ -86,6 +89,10 @@ class ProductsCreate extends React.Component {
     this.fetchSubscriptionsCount(saveId);
   }
 
+  handlePrice(target) {
+    this.setState({ price: target });
+  }
+
   handleCouponsChange(event) {
     const [file] = event.target.files;
     const reader = new FileReader();
@@ -136,7 +143,8 @@ class ProductsCreate extends React.Component {
       image_default: this.state.image_default,
       image2: this.state.image2,
       image3: this.state.image3,
-      Coupons: this.state.coupons.map(coupon => ({ key: coupon }))
+      Coupons: this.state.coupons.map(coupon => ({ key: coupon })),
+      price: this.state.price.replace(".", "").replace(",", ".")
     });
 
     if (!this.isFormValid(values)) {
@@ -216,16 +224,24 @@ class ProductsCreate extends React.Component {
                       required
                       rowClassName="col-sm-12"
                     />
-                    <Input
-                      name="price"
-                      value=""
-                      id="price"
-                      label="Preço"
-                      type="text"
-                      placeholder="Preço"
-                      required
-                      rowClassName="col-sm-12"
-                    />
+                    <div className="form-group col-sm-12">
+                      <label className="control-label" htmlFor="price">
+                        Preço 
+                      </label>
+                      <div className="controls">
+                        <CurrencyInput
+                          name="price"
+                          value={this.state.price}
+                          id="price"
+                          label="Preço"
+                          placeholder="Preço"
+                          className="form-control col-sm-3"
+                          decimalSeparator=","
+                          thousandSeparator="."
+                          onChange={this.handlePrice}
+                        />
+                      </div>
+                    </div>
                     <Input
                       name="method_payment"
                       value=""
