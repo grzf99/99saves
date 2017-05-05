@@ -122,23 +122,32 @@ class ProductsCreate extends React.Component {
     });
   }
 
+  isFormValid(values) {
+    return values.title && values.price && values.link_buy && values.SaveId && values.ProviderId && values.method_payment && (values.image_default ? values.image_default : this.state.list.image_default);
+  }
+
   submitForm(data) {
     const values = Object.assign(data, {
       image_default: this.state.image_default,
       image2: this.state.image2,
       image3: this.state.image3,
-      price: this.state.price.replace(".", "").replace(",", "."),
-      price_buscape: this.state.priceBuscape.replace(".", "").replace(",", ".")
+      price: this.state.price.toLocaleString().replace(".", "").replace(",", "."),
+      price_buscape: this.state.priceBuscape.toLocaleString().replace(".", "").replace(",", ".")
     });
-
-    if (!values.title ) {
-      this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Preencha todos os campos obrigatórios' });
-      setTimeout(() => this.setState({ showToast: false }), 4500);
-    }
 
     if (!values.image_default) delete values.image_default;
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
+
+    if (!this.isFormValid(values)) {
+      this.setState({
+        showToast: true,
+        typeToast: 'warning',
+        messageToast: 'Preencha todos os campos obrigatórios'
+      });
+      setTimeout(() => this.setState({ showToast: false }), 4500);
+      return;
+    }
 
     const rest = this.props.api.put(`/products/${values.id}`, values)
         .then(() => {
@@ -221,7 +230,6 @@ class ProductsCreate extends React.Component {
                       label="Link Buscapé"
                       type="text"
                       placeholder="Link Buscapé"
-                      required
                       rowClassName="col-sm-12"
                     />
                     <div className="form-group col-sm-12">
@@ -294,7 +302,7 @@ class ProductsCreate extends React.Component {
                       <label
                         className="control-label"
                         htmlFor="image_default"
-                      >Imagem de destaque</label>
+                      >Imagem de destaque *</label>
                       <div className="controls">
                         <input type="file" name="image_default" onChange={this.handleSave} />
                         { this.state.list.image_default ? (
