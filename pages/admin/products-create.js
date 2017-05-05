@@ -4,6 +4,7 @@ import Router from 'next/router';
 import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
 import CurrencyInput from 'react-currency-input';
+import every from 'lodash/every';
 
 import { pluralize } from '../../utils';
 import RenderIf from '../../components/common/render-if';
@@ -140,7 +141,10 @@ class ProductsCreate extends React.Component {
   }
 
   isFormValid(values) {
-    return values.title && values.image_default && values.price && values.link_buy && values.SaveId && values.ProviderId && values.Coupons && values.method_payment;
+    return every(
+      ['title', 'image_default', 'price', 'link_buy', 'SaveId', 'ProviderId', 'Coupons', 'method_payment'],
+      key => this.state[key] !== ''
+    );
   }
 
   submitForm(data) {

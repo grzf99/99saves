@@ -5,6 +5,7 @@ import moment from 'moment';
 import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
 import CurrencyInput from 'react-currency-input';
+import every from 'lodash/every';
 
 import RenderIf from '../../components/common/render-if';
 import withAuth from '../../components/hoc/withAuth';
@@ -123,7 +124,10 @@ class ProductsCreate extends React.Component {
   }
 
   isFormValid(values) {
-    return values.title && values.price && values.link_buy && values.SaveId && values.ProviderId && values.method_payment && (values.image_default ? values.image_default : this.state.list.image_default);
+    return every(
+      ['title', 'price', 'link_buy', 'SaveId', 'ProviderId', 'Coupons', 'method_payment'],
+      key => this.state[key] !== ''
+    );
   }
 
   submitForm(data) {
@@ -139,7 +143,7 @@ class ProductsCreate extends React.Component {
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
 
-    if (!this.isFormValid(values)) {
+    if (!this.isFormValid(values) && (values.image_default ? values.image_default : this.state.list.image_default)) {
       this.setState({
         showToast: true,
         typeToast: 'warning',
