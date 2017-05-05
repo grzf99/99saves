@@ -1,5 +1,6 @@
 import moment from 'moment';
 import Link from 'next/link';
+import { formatCurrency } from '../../utils';
 
 export default (props) => {
   const renderRows = () => {
@@ -10,7 +11,7 @@ export default (props) => {
         <td>{ item.Save.title }</td>
         <td>{ item.Provider.name }</td>
         <td>{ item.title }</td>
-        <td>{ item.price }</td>
+        <td>R$ { formatCurrency(item.price) }</td>
         <td>{(item.image_default) ? <img alt={item.title} src={item.image_default} width="40" /> : ''}</td>
         <td>
           <Link prefetch href={`/admin/products-show?id=${item.id}`}>
