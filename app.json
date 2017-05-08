@@ -20,6 +20,9 @@
     },
     "HEROKU_APP_NAME": {
       "required": true
+    },
+    "NPM_CONFIG_PRODUCTION": {
+      "required": true
     }
   }
 }

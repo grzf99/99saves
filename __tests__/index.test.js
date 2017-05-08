@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Index, StyledCard } from '../index';
+import { Index, StyledCard } from '../pages/index';
 import SubscriptionConfirmationModal
-  from '../../components/saves/subscription-confirmation-modal';
+  from '../components/saves/subscription-confirmation-modal';
 
 describe('<IndexPage />', () => {
   const saves = {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { SignupPage } from '../signup';
-import SignupStep1 from '../../components/auth/signup-step-1';
-import SignupStep2 from '../../components/auth/signup-step-2';
+import { SignupPage } from '../pages/signup';
+import SignupStep1 from '../components/auth/signup-step-1';
+import SignupStep2 from '../components/auth/signup-step-2';
 
 describe('<Signup />', () => {
   const user = {
