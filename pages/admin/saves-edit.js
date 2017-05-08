@@ -9,6 +9,7 @@ import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
+import RenderIf from '../../components/common/render-if';
 
 class SavesEdit extends React.Component {
   static getInitialProps({ query }) {
@@ -112,11 +113,12 @@ class SavesEdit extends React.Component {
               </div>
 
               <div className="panel-body">
-                {this.state.loading ? (
+                <RenderIf expr={this.state.loading}>
                   <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
-                ) : (
+                </RenderIf>
+                <RenderIf expr={!this.state.loading}>
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input
                       name="id"
@@ -173,7 +175,7 @@ class SavesEdit extends React.Component {
                       </div>
                     </Row>
                   </FRC.Form>
-                )}
+                </RenderIf>
               </div>
             </div>
           </div>
