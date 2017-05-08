@@ -16,6 +16,8 @@ import Tab from '../components/common/tab';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
+import SubscriptionConfirmationModal
+  from '../components/saves/subscription-confirmation-modal';
 
 const CardsList = styled(Container)`
   align-items: stretch;
@@ -25,7 +27,7 @@ const CardsList = styled(Container)`
   flex-flow: row wrap;
 `;
 
-const StyledCard = styled(Card)`
+export const StyledCard = styled(Card)`
   @media (min-width: 480px) {
     flex: 1;
     flex-basis: calc(50% - 10px);
@@ -74,7 +76,7 @@ const BlankState = styled.div`
   }
 `;
 
-class Saves extends React.Component {
+export class Saves extends React.Component {
   static async getInitialProps(ctx) {
     const items = await ctx.api.get('/saves?filters[active]=true');
     const saves = savesMapper(items.data);
@@ -87,7 +89,7 @@ class Saves extends React.Component {
     this.state = {
       user: {},
       logged: props.isSignedIn,
-      modalIsOpen: false,
+      loginModalIsOpen: false,
       activeTab: props.isSignedIn ? 1 : 0,
       saves: props.saves,
       subscriptions: {
@@ -95,7 +97,9 @@ class Saves extends React.Component {
         rows: []
       },
       subscribeTo: 0,
-      showToast: false
+      showToast: false,
+      subscriptionConfirmationModalIsOpen: false,
+      currentSubscribeTarget: null
     };
 
     this.openModal = this.openModal.bind(this);
@@ -104,6 +108,8 @@ class Saves extends React.Component {
     this.loadSaves = this.loadSaves.bind(this);
     this.loadSubscriptions = this.loadSubscriptions.bind(this);
     this.handleSubscribe = this.handleSubscribe.bind(this);
+    this.handleSubscribeConfirm = this.handleSubscribeConfirm.bind(this);
+    this.handleSubscribeCancel = this.handleSubscribeCancel.bind(this);
   }
 
   componentDidMount() {
@@ -126,6 +132,13 @@ class Saves extends React.Component {
   }
 
   handleSubscribe(subscribeTo) {
+    this.setState({
+      subscriptionConfirmationModalIsOpen: true,
+      currentSubscribeTarget: subscribeTo
+    });
+  }
+
+  handleSubscribeConfirm(subscribeTo) {
     return this.props.api
       .post(`/saves/${subscribeTo}/subscriptions`)
       .then(() => {
@@ -146,6 +159,13 @@ class Saves extends React.Component {
 
         setTimeout(() => this.setState({ showToast: false }), 4000);
       });
+  }
+
+  handleSubscribeCancel() {
+    this.setState({
+      subscriptionConfirmationModalIsOpen: false,
+      currentSubscribeTarget: null
+    });
   }
 
   goToOffers(slug) {
@@ -177,11 +197,11 @@ class Saves extends React.Component {
   }
 
   openModal(subscribeTo) {
-    this.setState({ modalIsOpen: true, subscribeTo });
+    this.setState({ loginModalIsOpen: true, subscribeTo });
   }
 
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.setState({ loginModalIsOpen: false });
   }
 
   renderUserSaves() {
@@ -213,7 +233,10 @@ class Saves extends React.Component {
   render() {
     return (
       <Page hasFooter>
-        <Toolbar logged={this.props.isSignedIn} onLogout={this.props.onLogout} />
+        <Toolbar
+          logged={this.props.isSignedIn}
+          onLogout={this.props.onLogout}
+        />
 
         {this.state.logged &&
           <Tabs
@@ -253,8 +276,15 @@ class Saves extends React.Component {
         <Footer />
 
         <LoginModal
-          isOpen={this.state.modalIsOpen}
-          close={() => this.closeModal()}
+          isOpen={this.state.loginModalIsOpen}
+          onClose={this.closeModal}
+        />
+
+        <SubscriptionConfirmationModal
+          isOpen={this.state.subscriptionConfirmationModalIsOpen}
+          subscribeTo={this.state.currentSubscribeTarget}
+          onConfirm={this.handleSubscribeConfirm}
+          onClose={this.handleSubscribeCancel}
         />
 
         <Toast show={this.state.showToast}>

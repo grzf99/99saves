@@ -184,9 +184,7 @@ export default class extends React.Component {
         <Button block onClick={this.goToOffers}>Participar da votação</Button>
       );
     } else if (this.state.checkoutOpen) {
-      return (
-        <Button block onClick={this.goToOffers}>Comprar agora</Button>
-      );
+      return <Button block onClick={this.goToOffers}>Comprar agora</Button>;
     } else if (this.state.finished) {
       return (
         <Button block outline onClick={this.goToOffers}>Sobre o produto</Button>
@@ -212,7 +210,10 @@ export default class extends React.Component {
     } else if (this.state.checkoutOpen && this.props.winnerProduct) {
       images = (
         <ImageWrapper>
-          <CardImage src={this.props.winnerProduct.image_default} alt={this.props.winnerProduct.title} />
+          <CardImage
+            src={this.props.winnerProduct.image_default}
+            alt={this.props.winnerProduct.title}
+          />
         </ImageWrapper>
       );
     } else {
@@ -252,7 +253,12 @@ export default class extends React.Component {
         </Header>
 
         <RenderIf expr={this.state.checkoutOpen || this.state.finished}>
-          <Headline spotlight={!this.state.finished} disabled={this.state.finished} uppercase withRoboto>
+          <Headline
+            spotlight={!this.state.finished}
+            disabled={this.state.finished}
+            uppercase
+            withRoboto
+          >
             Oferta vencedora R$
             {' '}
             {formatCurrency(
@@ -280,7 +286,9 @@ export default class extends React.Component {
             <Button
               block
               target="_blank"
-              href={this.props.winnerProduct && this.props.winnerProduct.link_buy}
+              href={
+                this.props.winnerProduct && this.props.winnerProduct.link_buy
+              }
             >
               Comprar agora
             </Button>
