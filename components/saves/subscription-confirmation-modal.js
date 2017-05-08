@@ -43,6 +43,12 @@ export default class extends Component {
       step: 1
     };
     this.handleConfirmation = this.handleConfirmation.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
+
+  handleClose() {
+    this.setState({ step: 1 });
+    this.props.onClose();
   }
 
   handleConfirmation() {
@@ -64,7 +70,7 @@ export default class extends Component {
         <Button block large onClick={this.handleConfirmation}>
           Tenho intenção de comprar
         </Button>
-        <InvisibleButon block large negative onClick={this.props.onClose}>
+        <InvisibleButon block large negative onClick={this.handleClose}>
           Não sei se vou comprar
         </InvisibleButon>
       </div>
@@ -84,7 +90,7 @@ export default class extends Component {
           O mais votado será eleito e você terá 48 horas para comprar o save vencedor.
           Fique ligado no seu painel de usuário e em seu e-mail.
         </Content>
-        <Button block large onClick={this.props.onClose}>
+        <Button block large onClick={this.handleClose}>
           Entendi
         </Button>
       </div>

@@ -67,5 +67,20 @@ describe('<SubscriptionConfirmationModal />', () => {
 
       expect(onClose).toHaveBeenCalled();
     });
+
+    it('should reset the step to 1', () => {
+      const onClose = jest.fn();
+      const onConfirm = jest.fn();
+      const wrapper = shallow(
+        <SubscriptionConfirmationModal
+          onClose={onClose}
+          onConfirm={onConfirm}
+        />
+      );
+      wrapper.setState({ step: 2 });
+      wrapper.find(Button).simulate('click');
+
+      expect(wrapper.state().step).toEqual(1);
+    });
   });
 });
