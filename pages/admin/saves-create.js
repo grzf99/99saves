@@ -130,7 +130,7 @@ class SavesCreate extends React.Component {
                     <Input
                       name="date_start"
                       value=""
-                      label="Data início do save"
+                      label="Abertura do save"
                       type="date"
                       required
                       rowClassName="col-sm-6"
@@ -138,7 +138,7 @@ class SavesCreate extends React.Component {
                     <Input
                       name="date_end"
                       value=""
-                      label="Data finalização do save"
+                      label="Fechamento para envio de ofertas"
                       type="date"
                       required
                       rowClassName="col-sm-6"
@@ -156,9 +156,9 @@ class SavesCreate extends React.Component {
                       <label
                         className="control-label"
                         htmlFor="image_default"
-                      >Imagem de destaque</label>
+                      >Imagem de destaque *</label>
                       <div className="controls">
-                        <input type="file" name="image_default" onChange={this.handleSave} />
+                        <input type="file" name="image_default" required onChange={this.handleSave} />
                       </div>
                       <RenderIf expr={this.state.btnEnabled}>
                           <Loading type="bars" color="#000000" />  
