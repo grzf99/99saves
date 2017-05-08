@@ -45,7 +45,8 @@ class SavesEdit extends React.Component {
           setTimeout(() => this.setState({ loading: false }), 1500);
         })
         .catch((error) => {
-          console.log(error); // eslint-disable-line
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${error}` });
+          setTimeout(() => this.setState({ showToast: false }), 2500);
         });
   }
 
@@ -61,11 +62,14 @@ class SavesEdit extends React.Component {
 
     upload.end((err, response) => {
       if (err) {
-        console.error(err); // eslint-disable-line
+        this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        this.setState({ btnEnabled: false });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
       if (response.body.secure_url !== '') {
         imageChange[name] = response.body.secure_url;
+        this.setState({ btnEnabled: false });
         this.setState(imageChange);
       }
     });
