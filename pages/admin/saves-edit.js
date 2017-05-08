@@ -9,6 +9,7 @@ import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
+import RenderIf from '../../components/common/render-if';
 
 class SavesEdit extends React.Component {
   static getInitialProps({ query }) {
@@ -19,10 +20,9 @@ class SavesEdit extends React.Component {
     super(props);
     this.state = {
       image_default: '',
-      image2: '',
-      image3: '',
       startDate: '',
       list: [],
+      btnEnabled: false,
       loading: true,
       showToast: false,
       messageToast: '',
@@ -47,11 +47,13 @@ class SavesEdit extends React.Component {
           setTimeout(() => this.setState({ loading: false }), 1500);
         })
         .catch((error) => {
-          console.log(error); // eslint-disable-line
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${error.message}` });
+          setTimeout(() => this.setState({ showToast: false }), 2500);
         });
   }
 
   handleSave(event) {
+    this.setState({ btnEnabled: true });
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
@@ -63,11 +65,14 @@ class SavesEdit extends React.Component {
 
     upload.end((err, response) => {
       if (err) {
-        console.error(err); // eslint-disable-line
+        this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        this.setState({ btnEnabled: false });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
       }
 
       if (response.body.secure_url !== '') {
         imageChange[name] = response.body.secure_url;
+        this.setState({ btnEnabled: false });
         this.setState(imageChange);
       }
     });
@@ -76,8 +81,6 @@ class SavesEdit extends React.Component {
   submitForm(data) {
     const values = Object.assign(data, {
       image_default: this.state.image_default,
-      image2: this.state.image2,
-      image3: this.state.image3,
       date_start: moment(data.date_start, moment.ISO_8859).format(),
       date_end: moment(data.date_end, moment.ISO_8859).format()
     });
@@ -87,16 +90,14 @@ class SavesEdit extends React.Component {
     }
 
     if (!values.image_default) delete values.image_default;
-    if (!values.image2) delete values.image2;
-    if (!values.image3) delete values.image3;
 
     const rest = this.props.api.put(`/saves/${values.id}`, values)
         .then(() => {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
           setTimeout(() => Router.push('/admin/saves'), 2500);
         })
-        .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao alterar o registro' });
+        .catch((error) => {
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Err ao alterar o registro ${error.message}` });
           setTimeout(() => this.setState({ showToast: false }), 2500);
         });
 
@@ -114,11 +115,12 @@ class SavesEdit extends React.Component {
               </div>
 
               <div className="panel-body">
-                {this.state.loading ? (
+                <RenderIf expr={this.state.loading}>
                   <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
-                ) : (
+                </RenderIf>
+                <RenderIf expr={!this.state.loading}>
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input
                       name="id"
@@ -168,26 +170,26 @@ class SavesEdit extends React.Component {
                       <div className="controls">
                         <input type="file" name="image_default" onChange={this.handleSave} />
                       </div>
+                      <RenderIf expr={(!!this.state.list.image_default && !this.state.image_default)}> 
+                        <img className="col-md-3" src={this.state.list.image_default} alt="image" />
+                      </RenderIf>
+
+                      <RenderIf expr={(!!this.state.image_default)}> 
+                        <img className="col-md-3" src={this.state.image_default} alt="image" />
+                      </RenderIf>
                     </div>
-                    <div className="form-group col-sm-12">
-                      <label className="control-label" htmlFor="image2">Outra imagem</label>
-                      <div className="controls">
-                        <input type="file" name="image2" onChange={this.handleSave} />
+                    <RenderIf expr={this.state.btnEnabled}>
+                      <div className="form-group col-sm-12">
+                        <Loading type="bars" color="#000000" />
                       </div>
-                    </div>
-                    <div className="form-group col-sm-12">
-                      <label className="control-label" htmlFor="image3">Outra imagem</label>
-                      <div className="controls">
-                        <input type="file" name="image3" onChange={this.handleSave} />
-                      </div>
-                    </div>
+                    </RenderIf>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" disabled={this.state.btnEnabled ? 'disabled' : ''} />
                       </div>
                     </Row>
                   </FRC.Form>
-                )}
+                </RenderIf>
               </div>
             </div>
           </div>

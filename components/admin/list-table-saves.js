@@ -7,11 +7,18 @@ export default (props) => {
     return list.map(item => (
       <tr key={item.id}>
         <td>{ item.id }</td>
-        <td>{(item.image_default) ? <img alt={item.title} src={item.image_default} width="40" /> : ''}</td>
+        <td width="30">{(item.image_default) ? <img alt={item.title} src={item.image_default} width="25" /> : ''}</td>
         <td>{ item.title }</td>
-        <td>{ item.description }</td>
+        <td>
+          { ( moment() > moment(item.date_start) && moment() <= moment(item.date_end) ? 'Adessão' : '') }
+          { ( moment() > moment(item.date_end) && moment() <= moment(item.votation_end) ? 'Votação' : '') }
+          { ( moment() > moment(item.votation_end) && moment() <= moment(item.checkout_end) ? 'Compra' : '') }
+          { ( moment() > moment(item.checkout_end) ? 'Finalizado' : '') }
+        </td>
         <td>{ (item.date_start) ? moment(item.date_start).format('DD/MM/YYYY') : ''}</td>
         <td>{ (item.date_end) ? moment(item.date_end).format('DD/MM/YYYY') : ''}</td>
+        <td>{ (item.votation_end) ? moment(item.votation_end).format('DD/MM/YYYY') : ''}</td>
+        <td>{ (item.checkout_end) ? moment(item.checkout_end).format('DD/MM/YYYY') : ''}</td>
         <td>
           <Link prefetch href={`/admin/saves-edit?id=${item.id}`}>
             <a className="">Editar</a>
@@ -33,11 +40,13 @@ export default (props) => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Imagem</th>
+            <th></th>
             <th>Title</th>
-            <th>Description</th>
-            <th>Data Início</th>
-            <th>Data Término</th>
+            <th>status</th>
+            <th>Início</th>
+            <th>Tér. Adessão</th>
+            <th>Tér. Votação</th>
+            <th>Tér. Compra</th>
             <th />
             <th />
           </tr>
