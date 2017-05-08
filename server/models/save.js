@@ -1,23 +1,40 @@
-const _ = require('lodash');
+const { minBy } = require('lodash');
+const { addDays } = require('date-fns');
+const { slugify } = require('../../utils');
 
 module.exports = (sequelize, DataTypes) => {
   const Save = sequelize.define(
     'Save',
     {
-      title: DataTypes.STRING,
+      title: {
+        type: DataTypes.STRING,
+        set(value) {
+          this.setDataValue('title', value);
+          this.setDataValue('slug', slugify(value));
+        }
+      },
       description: DataTypes.TEXT,
       image_default: DataTypes.STRING,
       image2: DataTypes.STRING,
       image3: DataTypes.STRING,
       slug: { type: DataTypes.STRING, unique: true },
       date_start: DataTypes.DATE,
-      date_end: DataTypes.DATE,
+      date_end: {
+        type: DataTypes.DATE,
+        set(value) {
+          this.setDataValue('date_end', value);
+          this.setDataValue('negotiation_end', addDays(value, 1).toISOString());
+          this.setDataValue('votation_end', addDays(value, 2).toISOString());
+          this.setDataValue('checkout_end', addDays(value, 4).toISOString());
+        }
+      },
       checkout_end: DataTypes.DATE,
       votation_end: DataTypes.DATE,
+      negotiation_end: DataTypes.DATE,
       winnerProduct: {
         type: DataTypes.VIRTUAL,
         get() {
-          const productWithBestPrice = _.minBy(this.Products, 'price');
+          const productWithBestPrice = minBy(this.Products, 'price');
           if (this.Products === undefined) {
             return;
           }
