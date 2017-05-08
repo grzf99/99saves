@@ -45,7 +45,7 @@ class SavesEdit extends React.Component {
           setTimeout(() => this.setState({ loading: false }), 1500);
         })
         .catch((error) => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${error}` });
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${error.message}` });
           setTimeout(() => this.setState({ showToast: false }), 2500);
         });
   }
@@ -93,8 +93,8 @@ class SavesEdit extends React.Component {
           this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
           setTimeout(() => Router.push('/admin/saves'), 2500);
         })
-        .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao alterar o registro' });
+        .catch((error) => {
+          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Err ao alterar o registro ${error.message}` });
           setTimeout(() => this.setState({ showToast: false }), 2500);
         });
 
