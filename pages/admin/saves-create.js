@@ -59,6 +59,10 @@ class SavesCreate extends React.Component {
     });
   }
 
+  isFormValid(values) {
+    return values.title && values.image_default && values.date_start && values.date_end;
+  }
+
   submitForm(data) {
     const values = Object.assign(data, {
       image_default: this.state.image_default,
@@ -66,9 +70,14 @@ class SavesCreate extends React.Component {
       date_end: moment(data.date_end, moment.ISO_8859).format()
     });
 
-    if (!values.title || !values.date_start || !values.date_end || !values.image_default) {
-      this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Preencha todos os campos obrigatórios' });
+    if (!this.isFormValid(values)) {
+      this.setState({
+        showToast: true,
+        typeToast: 'warning',
+        messageToast: 'Preencha todos os campos obrigatórios'
+      });
       setTimeout(() => this.setState({ showToast: false }), 4500);
+      return;
     }
 
     if (!values.image_default) delete values.image_default;
