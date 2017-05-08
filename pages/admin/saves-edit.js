@@ -22,6 +22,7 @@ class SavesEdit extends React.Component {
       image_default: '',
       startDate: '',
       list: [],
+      btnEnabled: false,
       loading: true,
       showToast: false,
       messageToast: '',
@@ -52,6 +53,7 @@ class SavesEdit extends React.Component {
   }
 
   handleSave(event) {
+    this.setState({ btnEnabled: true });
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
@@ -168,10 +170,22 @@ class SavesEdit extends React.Component {
                       <div className="controls">
                         <input type="file" name="image_default" onChange={this.handleSave} />
                       </div>
+                      <RenderIf expr={(!!this.state.list.image_default && !this.state.image_default)}> 
+                        <img className="col-md-3" src={this.state.list.image_default} alt="image" />
+                      </RenderIf>
+
+                      <RenderIf expr={(!!this.state.image_default)}> 
+                        <img className="col-md-3" src={this.state.image_default} alt="image" />
+                      </RenderIf>
                     </div>
+                    <RenderIf expr={this.state.btnEnabled}>
+                      <div className="form-group col-sm-12">
+                        <Loading type="bars" color="#000000" />
+                      </div>
+                    </RenderIf>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" />
+                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" disabled={this.state.btnEnabled ? 'disabled' : ''} />
                       </div>
                     </Row>
                   </FRC.Form>
