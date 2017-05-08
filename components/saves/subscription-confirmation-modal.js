@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import Modal from '../common/modal';
-import RenderIf from '../common/render-if';
 import { colors } from '../styles/variables';
 import { Heading, Heading2, Text } from '../common/typography';
 import Button from '../common/button';
@@ -21,13 +20,23 @@ const Content = styled(Text)`
   color: ${colors.lightgray};
 `;
 
-const InvisibleButon = styled(Button)`
+export const InvisibleButon = styled(Button)`
   padding: 0;
   padding-top: 28px;
   margin-bottom: -7px;
 `;
 
 export default class extends Component {
+  static propTypes = {
+    subscribeTo: PropTypes.number,
+    onClose: PropTypes.func.isRequired,
+    onConfirm: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    subscribeTo: undefined
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -44,7 +53,7 @@ export default class extends Component {
   renderStep1() {
     return (
       <div>
-        <Title uppercase>Você realmente pretende comprar esse produto? </Title>
+        <Title uppercase>Você realmente pretende comprar esse produto?</Title>
         <Subtitle uppercase>
           Só se junte para negociar conosco
         </Subtitle>
@@ -86,12 +95,8 @@ export default class extends Component {
     const { onConfirm, subscribeTo, onClose, ...cleanedProps } = this.props;
     return (
       <Modal {...cleanedProps} onClose={onClose} width="400px">
-        <RenderIf expr={this.state.step === 1}>
-          {this.renderStep1()}
-        </RenderIf>
-        <RenderIf expr={this.state.step === 2}>
-          {this.renderStep2()}
-        </RenderIf>
+        {this.state.step === 1 ? this.renderStep1() : null}
+        {this.state.step === 2 ? this.renderStep2() : null}
       </Modal>
     );
   }

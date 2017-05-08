@@ -36,7 +36,7 @@ const CardsList = styled(Container)`
   flex-flow: row wrap;
 `;
 
-const StyledCard = styled(Card)`
+export const StyledCard = styled(Card)`
   @media (min-width: 480px) {
     flex: 1;
     flex-basis: calc(50% - 10px);
@@ -444,7 +444,7 @@ const SaveInfo = styled.span`
   text-align: center;
 `;
 
-class Index extends React.Component {
+export class Index extends React.Component {
   static async getInitialProps(ctx) {
     const items = await ctx.api.get('/saves?filters[active]=true&limit=3');
     const saves = savesMapper(items.data);
@@ -475,6 +475,8 @@ class Index extends React.Component {
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.loadSaves = this.loadSaves.bind(this);
     this.handleSubscribe = this.handleSubscribe.bind(this);
+    this.handleSubscribeConfirm = this.handleSubscribeConfirm.bind(this);
+    this.handleSubscribeCancel = this.handleSubscribeCancel.bind(this);
     this.removeLogoutMessage = this.removeLogoutMessage.bind(this);
     this.goToOffers = this.goToOffers.bind(this);
   }
@@ -679,7 +681,7 @@ class Index extends React.Component {
                 A oferta vencedora fica disponível para compra
               </ItWorktTitle>
               <ItWorkDescription>
-                Encerrada a pesquisa, automaticamente a oferta que teve o maior número de votos é liberada para compra através de um link em sua área do usuário, dentro do 99saves.com.
+                Encerrada a pesquisa, export automaticamente a oferta que teve o maior número de votos é liberada para compra através de um link em sua área do usuário, dentro do 99saves.com.
                 {' '}
               </ItWorkDescription>
             </ItWorkInfos>

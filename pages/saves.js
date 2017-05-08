@@ -27,7 +27,7 @@ const CardsList = styled(Container)`
   flex-flow: row wrap;
 `;
 
-const StyledCard = styled(Card)`
+export const StyledCard = styled(Card)`
   @media (min-width: 480px) {
     flex: 1;
     flex-basis: calc(50% - 10px);
@@ -76,7 +76,7 @@ const BlankState = styled.div`
   }
 `;
 
-class Saves extends React.Component {
+export class Saves extends React.Component {
   static async getInitialProps(ctx) {
     const items = await ctx.api.get('/saves?filters[active]=true');
     const saves = savesMapper(items.data);
