@@ -96,7 +96,7 @@ export class Saves extends React.Component {
         count: 0,
         rows: []
       },
-      subscribeTo: 0,
+      subscribeTo: undefined,
       showToast: false,
       subscriptionConfirmationModalIsOpen: false,
       currentSubscribeTarget: null
@@ -125,8 +125,11 @@ export class Saves extends React.Component {
       this.loadSubscriptions();
       this.closeModal();
 
-      if (nextProps.isSignedIn !== this.props.isSignedIn) {
-        this.handleSubscribe(this.state.subscribeTo);
+      if (
+        nextProps.isSignedIn !== this.props.isSignedIn &&
+        this.state.currentSubscribeTarget
+      ) {
+        this.handleSubscribe(this.state.currentSubscribeTarget);
       }
     }
   }
@@ -197,7 +200,10 @@ export class Saves extends React.Component {
   }
 
   openModal(subscribeTo) {
-    this.setState({ loginModalIsOpen: true, subscribeTo });
+    this.setState({
+      loginModalIsOpen: true,
+      currentSubscribeTarget: subscribeTo
+    });
   }
 
   closeModal() {

@@ -462,7 +462,7 @@ export class Index extends React.Component {
       modalVideoIsOpen: false,
       activeTab: 1,
       saves: props.saves,
-      subscribeTo: 0,
+      subscribeTo: undefined,
       showToast: false,
       showLoggedOut: showLoggedOutToast,
       subscriptionConfirmationModalIsOpen: false,
@@ -491,8 +491,11 @@ export class Index extends React.Component {
       this.loadSaves();
       this.closeModal();
 
-      if (nextProps.isSignedIn !== this.props.isSignedIn) {
-        this.handleSubscribe(this.state.subscribeTo);
+      if (
+        nextProps.isSignedIn !== this.props.isSignedIn &&
+        this.state.currentSubscribeTarget
+      ) {
+        this.handleSubscribe(this.state.currentSubscribeTarget);
       }
     }
 
@@ -541,7 +544,7 @@ export class Index extends React.Component {
   }
 
   openModal(subscribeTo) {
-    this.setState({ modalIsOpen: true, subscribeTo });
+    this.setState({ modalIsOpen: true, currentSubscribeTarget: subscribeTo });
   }
 
   openVideoModal() {
