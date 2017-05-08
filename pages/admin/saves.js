@@ -5,13 +5,17 @@ import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
 import ListTable from '../../components/admin/list-table-saves';
+import AlertMessage from '../../components/common/alert-message';
 
 class Saves extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      list: []
+      list: [],
+      showToast: false,
+      messageToast: '',
+      typeToast: ''
     };
 
     this.refresh = this.refresh.bind(this);
@@ -29,7 +33,12 @@ class Saves extends React.Component {
         this.setState({ ...this.state, list: response.data });
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Problemas ao se comunicar com api: ${error.message}`
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
       });
   }
 
@@ -37,10 +46,21 @@ class Saves extends React.Component {
     this.props.api
       .delete(`/saves/${save.id}`)
       .then(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'success',
+          messageToast: 'Registro Excluido com Sucesso'
+        });
+        setTimeout(() => this.setState({ showToast: false }), 1500);
         this.refresh();
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Erro ao excluir o registro: ${error.message}`
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
       });
   }
 
@@ -66,6 +86,9 @@ class Saves extends React.Component {
             </div>
           </div>
         </div>
+        <AlertMessage type={this.state.typeToast} show={this.state.showToast}>
+          {this.state.messageToast}
+        </AlertMessage>
       </Layout>
     );
   }
