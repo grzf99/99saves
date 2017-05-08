@@ -16,6 +16,8 @@ import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
 import Modal from '../components/common/modal';
 import RenderIf from '../components/common/render-if';
+import SubscriptionConfirmationModal
+  from '../components/saves/subscription-confirmation-modal';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -34,7 +36,7 @@ const CardsList = styled(Container)`
   flex-flow: row wrap;
 `;
 
-const StyledCard = styled(Card)`
+export const StyledCard = styled(Card)`
   @media (min-width: 480px) {
     flex: 1;
     flex-basis: calc(50% - 10px);
@@ -442,7 +444,7 @@ const SaveInfo = styled.span`
   text-align: center;
 `;
 
-class Index extends React.Component {
+export class Index extends React.Component {
   static async getInitialProps(ctx) {
     const items = await ctx.api.get('/saves?filters[active]=true&limit=3');
     const saves = savesMapper(items.data);
@@ -462,7 +464,9 @@ class Index extends React.Component {
       saves: props.saves,
       subscribeTo: 0,
       showToast: false,
-      showLoggedOut: showLoggedOutToast
+      showLoggedOut: showLoggedOutToast,
+      subscriptionConfirmationModalIsOpen: false,
+      currentSubscribeTarget: null
     };
 
     this.openModal = this.openModal.bind(this);
@@ -471,6 +475,8 @@ class Index extends React.Component {
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.loadSaves = this.loadSaves.bind(this);
     this.handleSubscribe = this.handleSubscribe.bind(this);
+    this.handleSubscribeConfirm = this.handleSubscribeConfirm.bind(this);
+    this.handleSubscribeCancel = this.handleSubscribeCancel.bind(this);
     this.removeLogoutMessage = this.removeLogoutMessage.bind(this);
     this.goToOffers = this.goToOffers.bind(this);
   }
@@ -498,17 +504,40 @@ class Index extends React.Component {
   }
 
   handleSubscribe(subscribeTo) {
+    this.setState({
+      subscriptionConfirmationModalIsOpen: true,
+      currentSubscribeTarget: subscribeTo
+    });
+  }
+
+  handleSubscribeConfirm(subscribeTo) {
     return this.props.api
       .post(`/saves/${subscribeTo}/subscriptions`)
       .then(() => {
-        const rows = [...this.state.saves.rows].map((row) => {
-          const save = row;
-          if (save.id === subscribeTo) save.hasSubscribed = true;
-          return save;
+        const item = this.state.saves.rows.find(
+          save => save.id === subscribeTo
+        );
+        item.hasSubscribed = true;
+
+        const subscriptionsRows = [...this.state.subscriptions.rows, item];
+
+        this.setState({
+          subscriptions: {
+            count: subscriptionsRows.length,
+            rows: subscriptionsRows
+          },
+          showToast: true
         });
-        this.setState({ saves: { count: rows.length, rows }, showToast: true });
+
         setTimeout(() => this.setState({ showToast: false }), 4000);
       });
+  }
+
+  handleSubscribeCancel() {
+    this.setState({
+      subscriptionConfirmationModalIsOpen: false,
+      currentSubscribeTarget: null
+    });
   }
 
   openModal(subscribeTo) {
@@ -652,7 +681,7 @@ class Index extends React.Component {
                 A oferta vencedora fica disponível para compra
               </ItWorktTitle>
               <ItWorkDescription>
-                Encerrada a pesquisa, automaticamente a oferta que teve o maior número de votos é liberada para compra através de um link em sua área do usuário, dentro do 99saves.com.
+                Encerrada a pesquisa, export automaticamente a oferta que teve o maior número de votos é liberada para compra através de um link em sua área do usuário, dentro do 99saves.com.
                 {' '}
               </ItWorkDescription>
             </ItWorkInfos>
@@ -734,6 +763,13 @@ class Index extends React.Component {
           onClose={() => this.closeModal()}
         />
 
+        <SubscriptionConfirmationModal
+          isOpen={this.state.subscriptionConfirmationModalIsOpen}
+          subscribeTo={this.state.currentSubscribeTarget}
+          onConfirm={this.handleSubscribeConfirm}
+          onClose={this.handleSubscribeCancel}
+        />
+
         <Modal
           isOpen={this.state.modalVideoIsOpen}
           onClose={this.closeModal}
@@ -753,7 +789,10 @@ class Index extends React.Component {
         <Toast show={this.state.showToast}>
           Você receberá um email com atualizações sobre esta negociação.
         </Toast>
-        <Toast show={this.state.showLoggedOut} onFade={this.removeLogoutMessage}>
+        <Toast
+          show={this.state.showLoggedOut}
+          onFade={this.removeLogoutMessage}
+        >
           Você foi deslogado com sucesso.
         </Toast>
       </Page>

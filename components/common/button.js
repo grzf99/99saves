@@ -53,6 +53,16 @@ const secondaryDisabledStyles = css`
   }
 `;
 
+const negativeStyles = css`
+  background: transparent;
+  color: ${colors.green};
+
+  &:hover {
+    background: transparent;
+    color: ${colors.green};
+  }
+`;
+
 const Button = styled.a`
   background-color: ${colors.green};
   border-radius: 2px;
@@ -77,6 +87,7 @@ const Button = styled.a`
   ${props => (props.outline ? outlineStyles : '')}
   ${props => (props.disabled && !props.large ? primaryDisabledStyles : '')}
   ${props => (props.disabled && props.large ? secondaryDisabledStyles : '')}
+  ${props => (props.negative ? negativeStyles : '')}
 `;
 
 export default Button;
