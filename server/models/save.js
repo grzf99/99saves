@@ -1,6 +1,6 @@
 const { minBy } = require('lodash');
-const { addDays } = require('date-fns');
-const { slugify } = require('../../utils');
+const { addDays, isBefore, isAfter } = require('date-fns');
+const { slugify, isDateBetween } = require('../../utils');
 
 module.exports = (sequelize, DataTypes) => {
   const Save = sequelize.define(
@@ -31,13 +31,84 @@ module.exports = (sequelize, DataTypes) => {
       checkout_end: DataTypes.DATE,
       votation_end: DataTypes.DATE,
       negotiation_end: DataTypes.DATE,
+      preSubscription: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return isBefore(new Date(), new Date(this.date_start));
+        }
+      },
+      subscriptionOpen: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return isDateBetween(
+            new Date(),
+            new Date(this.date_start),
+            new Date(this.date_end)
+          );
+        }
+      },
+      negotiationOpen: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return isDateBetween(
+            new Date(),
+            new Date(this.date_end),
+            new Date(this.negotiation_end)
+          );
+        }
+      },
+      votationOpen: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return isDateBetween(
+            new Date(),
+            new Date(this.negotiation_end),
+            new Date(this.votation_end)
+          );
+        }
+      },
+      checkoutOpen: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return isDateBetween(
+            new Date(),
+            new Date(this.votation_end),
+            new Date(this.checkout_end)
+          );
+        }
+      },
+      finished: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return isAfter(new Date(), new Date(this.checkout_end));
+        }
+      },
+      status: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          if (this.preSubscription) {
+            return 'pre-subscription';
+          } else if (this.subscriptionOpen) {
+            return 'subscription';
+          } else if (this.negotiationOpen) {
+            return 'negotiation';
+          } else if (this.votationOpen) {
+            return 'votation';
+          } else if (this.checkoutOpen) {
+            return 'checkout';
+          }
+
+          return 'finished';
+        }
+      },
       winnerProduct: {
         type: DataTypes.VIRTUAL,
         get() {
-          const productWithBestPrice = minBy(this.Products, 'price');
           if (this.Products === undefined) {
             return;
           }
+
+          const productWithBestPrice = minBy(this.Products, 'price');
           return this.Products.reduce((acc, product) => {
             if (acc === undefined) {
               return product.Votes && product.Votes.length > 0 ? product : acc;
@@ -62,7 +133,15 @@ module.exports = (sequelize, DataTypes) => {
           if (this.winnerProduct) {
             this.dataValues.winnerProduct = this.winnerProduct.toJSON();
           }
-          return this.dataValues;
+          return Object.assign({}, this.dataValues, {
+            status: this.status,
+            preSubscription: this.preSubscription,
+            subscriptionOpen: this.subscriptionOpen,
+            negotiationOpen: this.negotiationOpen,
+            votationOpen: this.votationOpen,
+            checkoutOpen: this.checkoutOpen,
+            finished: this.finished
+          });
         }
       }
     }

@@ -4,6 +4,7 @@ const slugify = require('./slugify');
 const savesMapper = require('./savesMapper');
 const formatCurrency = require('./formatCurrency');
 const pluralize = require('./pluralize');
+const isDateBetween = require('./isDateBetween');
 
 const noop = () => {};
 
@@ -14,5 +15,6 @@ module.exports = {
   savesMapper,
   formatCurrency,
   noop,
-  pluralize
+  pluralize,
+  isDateBetween
 };

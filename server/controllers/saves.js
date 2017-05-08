@@ -15,7 +15,7 @@ module.exports = {
   },
 
   update(req, res) {
-    return Save.update(req.body), {
+    return Save.update(req.body, {
       where: {
         id: req.params.id
       }
