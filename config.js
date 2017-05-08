@@ -1,8 +1,8 @@
 const PORT = process.env.PORT || 3000;
 const HEROKU_URL = `https://${process.env.HEROKU_APP_NAME}.herokuapp.com/`;
-const CLOUDINARY_UPLOAD_PRESET = 'k0xbougu';
-const CLOUDINARY_UPLOAD_URL =
-  'https://api.cloudinary.com/v1_1/kevinsoul/upload';
+const CLOUDINARY_UPLOAD_PRESET = process.env.CLOUDINARY_UPLOAD_PRESET || 'apfaysep';
+const CLOUDINARY_UPLOAD_URL = process.env.CLOUDINARY_UPLOAD_URL || 
+  'https://api.cloudinary.com/v1_1/djdhnwkjw/upload';
 const API_URL = (function apiUrl(env) {
   switch (env) {
     case 'production':
