@@ -7,4 +7,4 @@ const statuses = {
   finished: 'Finalizado'
 };
 
-module.exports = save => statuses[save.status];
+module.exports = status => statuses[status];
