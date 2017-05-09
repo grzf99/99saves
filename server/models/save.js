@@ -1,5 +1,5 @@
 const { minBy } = require('lodash');
-const { addDays, isBefore, isAfter } = require('date-fns');
+const { addDays, differenceInDays, isSameDay } = require('date-fns');
 const { slugify, isDateBetween } = require('../../utils');
 
 module.exports = (sequelize, DataTypes) => {
@@ -34,37 +34,33 @@ module.exports = (sequelize, DataTypes) => {
       preSubscription: {
         type: DataTypes.VIRTUAL,
         get() {
-          return isBefore(new Date(), new Date(this.date_start));
+          return differenceInDays(new Date(), new Date(this.date_start)) < 0;
         }
       },
       subscriptionOpen: {
         type: DataTypes.VIRTUAL,
         get() {
-          return isDateBetween(
-            new Date(),
-            new Date(this.date_start),
-            new Date(this.date_end)
+          const now = new Date();
+          return (
+            isSameDay(now, this.date_start) ||
+            isDateBetween(
+              now,
+              new Date(this.date_start),
+              new Date(this.date_end)
+            )
           );
         }
       },
       negotiationOpen: {
         type: DataTypes.VIRTUAL,
         get() {
-          return isDateBetween(
-            new Date(),
-            new Date(this.date_end),
-            new Date(this.negotiation_end)
-          );
+          return isSameDay(new Date(), new Date(this.negotiation_end));
         }
       },
       votationOpen: {
         type: DataTypes.VIRTUAL,
         get() {
-          return isDateBetween(
-            new Date(),
-            new Date(this.negotiation_end),
-            new Date(this.votation_end)
-          );
+          return isSameDay(new Date(), new Date(this.votation_end));
         }
       },
       checkoutOpen: {
@@ -80,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
       finished: {
         type: DataTypes.VIRTUAL,
         get() {
-          return isAfter(new Date(), new Date(this.checkout_end));
+          return differenceInDays(new Date(), new Date(this.checkout_end)) > 0;
         }
       },
       status: {
