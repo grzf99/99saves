@@ -6,6 +6,12 @@ module.exports = {
       new webpack.DefinePlugin({
         'process.env.HEROKU_APP_NAME': JSON.stringify(
           process.env.HEROKU_APP_NAME
+        ),
+        'process.env.CLOUDINARY_UPLOAD_PRESET': JSON.stringify(
+          process.env.CLOUDINARY_UPLOAD_PRESET
+        ),
+        'process.env.CLOUDINARY_UPLOAD_URL': JSON.stringify(
+          process.env.CLOUDINARY_UPLOAD_URL
         )
       })
     );
