@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const { User, Profile } = require('../models');
 const { generateToken } = require('../../utils/jwt');
+const SignupWelcomeMailer = require('../mailers/signup-welcome');
 
 module.exports = {
   list(req, res) {
@@ -24,8 +25,10 @@ module.exports = {
     const profile = await Profile.create(
       Object.assign({}, params.profile, { UserId: user.id })
     );
-    const token = generateToken(user.toJSON());
 
+    SignupWelcomeMailer.mail(user.email, { user, profile });
+
+    const token = generateToken(user.toJSON());
     return res
       .status(201)
       .json(Object.assign({}, user.toJSON(), { token, profile }));
