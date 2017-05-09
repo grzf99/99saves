@@ -23,6 +23,12 @@
     },
     "NPM_CONFIG_PRODUCTION": {
       "required": true
+    },
+    "CLOUDINARY_UPLOAD_PRESET": {
+      "required": true
+    },
+    "CLOUDINARY_UPLOAD_URL": {
+      "required": true
     }
   }
 }
