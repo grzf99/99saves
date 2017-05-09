@@ -5,6 +5,7 @@ const savesMapper = require('./savesMapper');
 const formatCurrency = require('./formatCurrency');
 const pluralize = require('./pluralize');
 const isDateBetween = require('./isDateBetween');
+const getSaveStatus = require('./getSaveStatus');
 
 const noop = () => {};
 
@@ -16,5 +17,6 @@ module.exports = {
   formatCurrency,
   noop,
   pluralize,
-  isDateBetween
+  isDateBetween,
+  getSaveStatus
 };

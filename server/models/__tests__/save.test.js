@@ -46,7 +46,7 @@ describe('date_end setter', () => {
 describe('preSubscription getter', () => {
   describe('when today is before date_start', () => {
     it('should be true', () => {
-      const save = Save.build({ date_start: addDays(new Date(), 1) });
+      const save = Save.build({ date_start: addDays(new Date(), 2) });
       expect(save.preSubscription).toEqual(true);
     });
   });
