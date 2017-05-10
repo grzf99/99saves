@@ -532,7 +532,7 @@ class Offer extends React.Component {
           show={this.state.showToastVotation}
           onFade={this.removeToastVotation}
         >
-          Voto computado com sucesso!
+          Seu voto foi registrado. Em breve você conhecerá a oferta vencedora
         </Toast>
       </Page>
     );
