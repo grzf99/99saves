@@ -1,6 +1,6 @@
 const Sendgrid = require('sendgrid');
 const { mail } = require('sendgrid');
-const { EMAIL_SENDER } = require('../config');
+const { EMAIL_SENDER } = require('../../config');
 
 const sg = Sendgrid(process.env.SENDGRID_API_KEY);
 
@@ -12,15 +12,13 @@ function createMail(subject, to, contentType, contentString) {
   return new mail.Mail(fromEmail, subject, toEmail, content);
 }
 
-module.exports = {
-  sendHtmlMail(subject, to, html) {
-    const body = createMail(subject, to, 'text/html', html);
-    const request = sg.emptyRequest({
-      method: 'POST',
-      path: '/v3/mail/send',
-      body: body.toJSON()
-    });
+module.exports = (subject, to, html) => {
+  const body = createMail(subject, to, 'text/html', html);
+  const request = sg.emptyRequest({
+    method: 'POST',
+    path: '/v3/mail/send',
+    body: body.toJSON()
+  });
 
-    return sg.API(request);
-  }
+  return sg.API(request);
 };

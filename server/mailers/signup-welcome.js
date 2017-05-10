@@ -1,5 +1,5 @@
-const compileTemplate = require('../../utils/compileTemplate');
-const { sendHtmlMail } = require('../../utils/mailClient');
+const juice = require('juice');
+const { sendMail, compileTemplate } = require('../../utils/mailers');
 
 module.exports = {
   async mail(to, context) {
@@ -8,7 +8,7 @@ module.exports = {
       context
     );
     try {
-      await sendHtmlMail('Bem-vindo(a) ao 99saves!', to, content);
+      await sendMail('Bem-vindo(a) ao 99saves!', to, juice(content));
     } catch (err) {
       console.log(err);
     }

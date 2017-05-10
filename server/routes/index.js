@@ -21,4 +21,9 @@ router.use('/providers', providersRouter);
 router.use('/products', productsRouter);
 router.use('/coupons', couponsRouter);
 
+if (process.env.NODE_ENV !== 'production') {
+  const emailsRouter = require('./emails');
+  router.use('/emails', emailsRouter);
+}
+
 module.exports = router;
