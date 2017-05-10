@@ -2,6 +2,7 @@ const PORT = process.env.PORT || 3000;
 const HEROKU_URL = `https://${process.env.HEROKU_APP_NAME}.herokuapp.com/`;
 const CLOUDINARY_UPLOAD_PRESET = process.env.CLOUDINARY_UPLOAD_PRESET;
 const CLOUDINARY_UPLOAD_URL = process.env.CLOUDINARY_UPLOAD_URL;
+const EMAIL_SENDER = process.env.EMAIL_SENDER;
 const API_URL = (function apiUrl(env) {
   switch (env) {
     case 'production':
@@ -16,5 +17,6 @@ module.exports = {
   API_URL,
   PORT,
   CLOUDINARY_UPLOAD_PRESET,
-  CLOUDINARY_UPLOAD_URL
+  CLOUDINARY_UPLOAD_URL,
+  EMAIL_SENDER
 };

@@ -25,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
           return bcrypt.hash(user.password, 10).then((hash) => {
             user.password = hash;
           });
-        }
+        },
+        afterCreate(user) {}
       },
       classMethods: {
         associate(models) {
