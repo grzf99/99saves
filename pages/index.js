@@ -658,7 +658,7 @@ export class Index extends React.Component {
             <ItWorkInfos>
               <ItWorktTitle>interesse</ItWorktTitle>
               <ItWorkDescription>
-                Você, assim como centenas de outras pessoas, aplica a um save, demonstrando seu interesse em um determinado produto (o tempo máximo que um save fica aberto para entrada de consumidores é de 10 dias).
+                Você, assim como centenas de outras pessoas, aplica a um save, demonstrando seu interesse em um determinado produto (o tempo máximo que um save fica aberto para entrada de consumidores é de 5 dias).
               </ItWorkDescription>
             </ItWorkInfos>
           </ItWorkContainer>
