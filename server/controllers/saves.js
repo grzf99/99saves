@@ -1,6 +1,4 @@
-const addDays = require('date-fns/add_days');
 const { Product, Save, Subscription, Vote } = require('../models');
-const { slugify } = require('../../utils');
 
 module.exports = {
   show(req, res) {
@@ -11,27 +9,13 @@ module.exports = {
   },
 
   create(req, res) {
-    const dateEnd = new Date(req.body.date_end || new Date());
-    const computedProps = {
-      checkout_end: addDays(dateEnd, 3).toISOString(),
-      votation_end: addDays(dateEnd, 2).toISOString(),
-      slug: slugify(req.body.title)
-    };
-
-    return Save.create(Object.assign(computedProps, req.body))
+    return Save.create(req.body)
       .then(saves => res.status(201).send(saves))
       .catch(error => res.status(400).send(error));
   },
 
   update(req, res) {
-    const dateEnd = new Date(req.body.date_end || new Date());
-    const computedProps = {
-      checkout_end: addDays(dateEnd, 3).toISOString(),
-      votation_end: addDays(dateEnd, 2).toISOString(),
-      slug: slugify(req.body.title)
-    };
-
-    return Save.update(Object.assign(computedProps, req.body), {
+    return Save.update(req.body, {
       where: {
         id: req.params.id
       }

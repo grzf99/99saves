@@ -14,14 +14,24 @@ import Toolbar from '../components/toolbar';
 import Page from '../components/common/page';
 import Footer from '../components/footer';
 import Container from '../components/common/container';
-import { Heading, Heading2, Text, SmallText } from '../components/common/typography';
+import {
+  Heading,
+  Heading2,
+  Text,
+  SmallText
+} from '../components/common/typography';
 import Button from '../components/common/button';
 import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
 import { Row, Column } from '../components/common/grid';
 import Panel from '../components/common/panel';
 import Section from '../components/common/section';
-import { ArrowBack, Buscape, ChevronLeft, ChevronRight } from '../components/common/svg';
+import {
+  ArrowBack,
+  Buscape,
+  ChevronLeft,
+  ChevronRight
+} from '../components/common/svg';
 import Gallery from '../components/gallery';
 import Headline from '../components/common/headline';
 import RenderIf from '../components/common/render-if';
@@ -212,17 +222,7 @@ const MarginContainer = styled(Container)`
 class Offer extends React.Component {
   static async getInitialProps(ctx) {
     const save = (await ctx.api.get(`/saves/${ctx.query.saveId}`)).data;
-
-    const now = Date.now();
-    const dateEnd = new Date(save.date_end).getTime();
-    const votationEnd = new Date(save.votation_end).getTime();
-    const checkoutEnd = new Date(save.checkout_end).getTime();
-
-    const votationOpen = now > dateEnd && now <= votationEnd;
-    const checkoutOpen = now > votationEnd && now <= checkoutEnd;
-    const finished = now > checkoutEnd;
-
-    return { save, votationOpen, checkoutOpen, finished };
+    return { save };
   }
 
   constructor(props) {
@@ -254,7 +254,7 @@ class Offer extends React.Component {
     this.timer = setInterval(() => {
       this.setState({
         countdown: this.getCountdown(
-          this.props.checkoutOpen
+          this.props.save.checkoutOpen
             ? this.state.save.checkout_end
             : this.state.save.votation_end
         )
@@ -349,37 +349,46 @@ class Offer extends React.Component {
         <Header>
           <Link prefetch href="/saves"><a><ArrowBack /></a></Link>
           <div>
-            <RenderIf expr={this.props.votationOpen}>
+            <RenderIf expr={this.props.save.votationOpen}>
               <GrayText>Vote na melhor oferta de</GrayText>
             </RenderIf>
             <Heading white uppercase>{this.state.save.title}</Heading>
           </div>
         </Header>
 
-        <RenderIf expr={this.props.checkoutOpen || this.props.votationOpen}>
+        <RenderIf
+          expr={this.props.save.checkoutOpen || this.props.save.votationOpen}
+        >
           <Headline spotlight large>
-            A { this.props.checkoutOpen ? 'oferta' : 'votação'} acaba em <b>{this.state.countdown}</b>
+            A
+            {' '}
+            {this.props.save.checkoutOpen ? 'oferta' : 'votação'}
+            {' '}
+            acaba em
+            {' '}
+            <b>{this.state.countdown}</b>
           </Headline>
         </RenderIf>
 
-        <RenderIf expr={this.props.finished}>
+        <RenderIf expr={this.props.save.finished}>
           <Headline disabled large uppercase>
             Oferta encerrada
           </Headline>
         </RenderIf>
 
-        <RenderIf expr={this.props.votationOpen}>
+        <RenderIf expr={this.props.save.votationOpen}>
           <Section gray>
             <Container>
-              <CustomTabs index={this.state.activeTab} onChange={this.handleChangeIndex}>
-                {
-                  this.state.products.map((product, key) => (
-                    <CustomTab key={product.id}>
-                      <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
-                      <Text white>R$ {formatCurrency(product.price)}</Text>
-                    </CustomTab>
-                  ))
-                }
+              <CustomTabs
+                index={this.state.activeTab}
+                onChange={this.handleChangeIndex}
+              >
+                {this.state.products.map((product, key) => (
+                  <CustomTab key={product.id}>
+                    <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
+                    <Text white>R$ {formatCurrency(product.price)}</Text>
+                  </CustomTab>
+                ))}
               </CustomTabs>
             </Container>
           </Section>
@@ -404,7 +413,7 @@ class Offer extends React.Component {
               </Section>
 
               <MarginContainer>
-                <RenderIf expr={this.props.votationOpen}>
+                <RenderIf expr={this.props.save.votationOpen}>
                   <ItemHeader>
                     <Tag white>Oferta {key + 1}</Tag>
                     {this.renderVotationButton(product)}
@@ -440,11 +449,13 @@ class Offer extends React.Component {
                         </Heading>
                       </Price>
 
-                      <RenderIf expr={this.props.checkoutOpen}>
+                      <RenderIf expr={this.props.save.checkoutOpen}>
                         {this.renderCheckoutButton(product)}
                       </RenderIf>
 
-                      <RenderIf expr={!!(product.price_buscape && product.link_buscape)}>
+                      <RenderIf
+                        expr={!!(product.price_buscape && product.link_buscape)}
+                      >
                         <BuscapeBox>
                           <Text uppercase white>Menor preço no Buscapé</Text>
                           <Price>
@@ -463,9 +474,17 @@ class Offer extends React.Component {
                         </BuscapeBox>
                       </RenderIf>
 
-                      <RenderIf expr={!!(product.price_buscape && product.link_buscape && product.date_buscape)}>
+                      <RenderIf
+                        expr={
+                          !!(product.price_buscape &&
+                            product.link_buscape &&
+                            product.date_buscape)
+                        }
+                      >
                         <BuscapeDate>
-                          Valor pesquisado pela equipe 99saves em {format(product.date_buscape, 'DD/MM [às] HH:mm')}
+                          Valor pesquisado pela equipe 99saves em
+                          {' '}
+                          {format(product.date_buscape, 'DD/MM [às] HH:mm')}
                         </BuscapeDate>
                       </RenderIf>
                     </AlignRight>
@@ -476,15 +495,26 @@ class Offer extends React.Component {
           ))}
         </SwipeableViews>
 
-        <RenderIf expr={this.props.votationOpen && this.state.activeTab !== 0}>
-          <PrevArrow onClick={() => this.handleChangeIndex(this.state.activeTab - 1)}>
+        <RenderIf
+          expr={this.props.save.votationOpen && this.state.activeTab !== 0}
+        >
+          <PrevArrow
+            onClick={() => this.handleChangeIndex(this.state.activeTab - 1)}
+          >
             <Icon><ChevronLeft /></Icon>
             <span>Oferta {this.state.activeTab}</span>
           </PrevArrow>
         </RenderIf>
 
-        <RenderIf expr={this.props.votationOpen && this.state.activeTab !== this.state.products.length - 1}>
-          <RightArrow onClick={() => this.handleChangeIndex(this.state.activeTab + 1)}>
+        <RenderIf
+          expr={
+            this.props.save.votationOpen &&
+              this.state.activeTab !== this.state.products.length - 1
+          }
+        >
+          <RightArrow
+            onClick={() => this.handleChangeIndex(this.state.activeTab + 1)}
+          >
             <Icon><ChevronRight /></Icon>
             <span>Oferta {this.state.activeTab + 2}</span>
           </RightArrow>

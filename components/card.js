@@ -137,21 +137,6 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
 
-    const now = Date.now();
-    const dateEnd = new Date(props.date_end).getTime();
-    const votationEnd = new Date(props.votation_end).getTime();
-    const checkoutEnd = new Date(props.checkout_end).getTime();
-
-    const votationOpen = now > dateEnd && now <= votationEnd;
-    const checkoutOpen = now > votationEnd && now < checkoutEnd;
-    const finished = now > checkoutEnd;
-
-    this.state = {
-      votationOpen,
-      checkoutOpen,
-      finished
-    };
-
     this.handleSave = this.handleSave.bind(this);
     this.goToOffers = this.goToOffers.bind(this);
     this.goToCheckout = this.goToCheckout.bind(this);
@@ -179,13 +164,13 @@ export default class extends React.Component {
       return (
         <Button block onClick={this.handleSave}>Participar deste save</Button>
       );
-    } else if (this.state.votationOpen) {
+    } else if (this.props.votationOpen) {
       return (
         <Button block onClick={this.goToOffers}>Participar da votação</Button>
       );
-    } else if (this.state.checkoutOpen) {
+    } else if (this.props.checkoutOpen) {
       return <Button block onClick={this.goToOffers}>Comprar agora</Button>;
-    } else if (this.state.finished) {
+    } else if (this.props.finished) {
       return (
         <Button block outline onClick={this.goToOffers}>Sobre o produto</Button>
       );
@@ -201,13 +186,13 @@ export default class extends React.Component {
   renderImages() {
     let images;
 
-    if (this.state.votationOpen && this.props.Products.length > 0) {
+    if (this.props.votationOpen && this.props.Products.length > 0) {
       images = this.props.Products.map(product => (
         <ImageWrapper key={product.id}>
           <CardImage src={product.image_default} alt={product.title} />
         </ImageWrapper>
       ));
-    } else if (this.state.checkoutOpen && this.props.winnerProduct) {
+    } else if (this.props.checkoutOpen && this.props.winnerProduct) {
       images = (
         <ImageWrapper>
           <CardImage
@@ -234,17 +219,17 @@ export default class extends React.Component {
   render() {
     return (
       <Card {...this.props}>
-        <RenderIf expr={this.state.finished}>
+        <RenderIf expr={this.props.finished}>
           <Status>Oferta encerrada</Status>
         </RenderIf>
-        <RenderIf expr={this.state.votationOpen}>
+        <RenderIf expr={this.props.votationOpen}>
           <Tag uppercase>Votação</Tag>
         </RenderIf>
         <Header>
           {this.renderImages()}
           <Gradient>
             <RenderIf
-              expr={!this.state.checkoutOpen && !this.state.votationOpen}
+              expr={!this.props.checkoutOpen && !this.props.votationOpen}
             >
               <SmallText>imagem meramente ilustrativa</SmallText>
             </RenderIf>
@@ -252,10 +237,10 @@ export default class extends React.Component {
           </Gradient>
         </Header>
 
-        <RenderIf expr={this.state.checkoutOpen || this.state.finished}>
+        <RenderIf expr={this.props.checkoutOpen || this.props.finished}>
           <Headline
-            spotlight={!this.state.finished}
-            disabled={this.state.finished}
+            spotlight={!this.props.finished}
+            disabled={this.props.finished}
             uppercase
             withRoboto
           >
@@ -267,7 +252,7 @@ export default class extends React.Component {
           </Headline>
         </RenderIf>
 
-        <RenderIf expr={this.state.checkoutOpen}>
+        <RenderIf expr={this.props.checkoutOpen}>
           <Buscape>
             menor preço no Buscapé: R$
             {' '}
@@ -278,7 +263,7 @@ export default class extends React.Component {
           </Buscape>
         </RenderIf>
 
-        <RenderIf expr={this.state.checkoutOpen}>
+        <RenderIf expr={this.props.checkoutOpen}>
           <ButtonGroup>
             <Button block outline onClick={this.goToOffers}>
               Sobre o produto
@@ -295,12 +280,12 @@ export default class extends React.Component {
           </ButtonGroup>
         </RenderIf>
 
-        <RenderIf expr={!this.state.checkoutOpen}>
+        <RenderIf expr={!this.props.checkoutOpen}>
           <Info>
-            <RenderIf expr={!this.state.votationOpen}>
+            <RenderIf expr={!this.props.votationOpen}>
               <CustomText>{this.props.description}</CustomText>
             </RenderIf>
-            <RenderIf expr={this.state.votationOpen}>
+            <RenderIf expr={this.props.votationOpen}>
               <CustomText>Escolha a melhor oferta</CustomText>
             </RenderIf>
             {this.renderButton()}
