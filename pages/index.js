@@ -205,7 +205,7 @@ const BrandContainer = styled.div`
   background: ${colors.white};
   display: flex;
   flex-direction: column;
-  min-height: 280px;
+  min-height: 480px;
   justify-content: flex-start;
   position: relative;
   &:after {
@@ -222,7 +222,7 @@ const BrandContainer = styled.div`
     transform: rotate(1.2deg);
   }
   @media (max-width: 728px) {
-    min-height: 550px;
+    min-height: 1000px;
   }
 `;
 
@@ -232,10 +232,23 @@ const BannerTitle = styled.h2`
   font-size: 38px;
   font-weight: 500;
   line-height: 1.26;
+  margin-bottom: 0;
   text-align: center;
   text-transform: uppercase;
   @media (max-width: 500px) {
     font-size: 22px;
+  }
+`;
+
+const BannerSubTitle = styled.p`
+  color: ${colors.gray};
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  @media (max-width: 500px) {
+    font-size: 15px;
   }
 `;
 
@@ -610,13 +623,14 @@ export class Index extends React.Component {
 
         <BrandContainer>
           <BannerTitle>te conectamos com fabricantes que você cconfia</BannerTitle>
+          <BannerSubTitle>E negociamos produtos diretamente com eles</BannerSubTitle>
           <BrandImagesContainer>
             <BrandImage
-              src="/static/images/logo-kitchen-aid.svg"
-              alt="kitchen-aid"
+              src="/static/images/image-costumers.svg"
+              alt="Cliente"
             />
-            <BrandImage src="/static/images/logo-brastemp.svg" alt="Brastemp" />
-            <BrandImage src="/static/images/logo-consul.svg" alt="Consult" />
+            <BrandImage src="/static/images/image-shop.svg" alt="loja" />
+            <BrandImage src="/static/images/image-factory.svg" alt="Fabricante" />
           </BrandImagesContainer>
         </BrandContainer>
 
