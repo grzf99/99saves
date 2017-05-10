@@ -20,6 +20,7 @@ export default class MyDocument extends Document {
         <Head>
           <title>99saves</title>
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png"/>
           <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet" />
           <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,700" rel="stylesheet" />
 
