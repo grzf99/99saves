@@ -88,7 +88,6 @@ export class Saves extends React.Component {
 
     this.state = {
       user: {},
-      logged: props.isSignedIn,
       loginModalIsOpen: false,
       activeTab: props.isSignedIn ? 1 : 0,
       saves: props.saves,
@@ -216,7 +215,7 @@ export class Saves extends React.Component {
         <StyledCard
           {...save}
           key={save.id}
-          logged={this.state.logged}
+          logged={this.props.isSignedIn}
           openLoginModal={() => this.openModal(save.id)}
           handleSubscribe={() => this.handleSubscribe(save.id)}
           goToOffers={() => this.goToOffers(save.slug)}
@@ -244,7 +243,7 @@ export class Saves extends React.Component {
           onLogout={this.props.onLogout}
         />
 
-        {this.state.logged &&
+        {this.props.isSignedIn &&
           <Tabs
             withBorder
             index={this.state.activeTab}
@@ -255,7 +254,7 @@ export class Saves extends React.Component {
           </Tabs>}
 
         <SwipeableViews
-          disabled={!this.state.logged}
+          disabled={!this.props.isSignedIn}
           index={this.state.activeTab}
           onChangeIndex={this.handleChangeIndex}
           animateHeight
@@ -266,7 +265,7 @@ export class Saves extends React.Component {
                 <StyledCard
                   {...save}
                   key={save.id}
-                  logged={this.state.logged}
+                  logged={this.props.isSignedIn}
                   openLoginModal={() => this.openModal(save.id)}
                   handleSubscribe={() => this.handleSubscribe(save.id)}
                   goToOffers={() => this.goToOffers(save.slug)}
