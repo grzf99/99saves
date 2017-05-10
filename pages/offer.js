@@ -317,6 +317,8 @@ class Offer extends React.Component {
 
     if (this.state.vote === product.id) {
       ButtonText = 'Oferta escolhida';
+    } else if (this.state.vote !== 0) {
+      ButtonText = 'voto registrado';
     } else {
       ButtonText = 'Votar nesta oferta';
     }
