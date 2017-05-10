@@ -227,10 +227,11 @@ const BrandContainer = styled.div`
 `;
 
 const BannerTitle = styled.h2`
-  color: ${colors.battleshipFrey};
+  color: ${colors.black};
   font-family: Oswald;
-  font-size: 28px;
+  font-size: 38px;
   font-weight: 500;
+  line-height: 1.26;
   text-align: center;
   text-transform: uppercase;
   @media (max-width: 500px) {
@@ -608,7 +609,7 @@ export class Index extends React.Component {
         </Banner>
 
         <BrandContainer>
-          <BannerTitle>negociamos com as marcas que você confia</BannerTitle>
+          <BannerTitle>te conectamos com fabricantes que você cconfia</BannerTitle>
           <BrandImagesContainer>
             <BrandImage
               src="/static/images/logo-kitchen-aid.svg"
