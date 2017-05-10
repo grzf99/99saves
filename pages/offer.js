@@ -35,6 +35,7 @@ import {
 import Gallery from '../components/gallery';
 import Headline from '../components/common/headline';
 import RenderIf from '../components/common/render-if';
+import Toast from '../components/common/toast';
 
 const Header = styled(Container)`
   display: flex;
@@ -233,7 +234,8 @@ class Offer extends React.Component {
       save: props.save,
       products: props.save.Products,
       vote: 0,
-      countdown: '...'
+      countdown: '...',
+      showToastVotation: false
     };
 
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
@@ -241,10 +243,15 @@ class Offer extends React.Component {
     this.renderVotationButton = this.renderVotationButton.bind(this);
     this.renderCheckoutButton = this.renderCheckoutButton.bind(this);
     this.getCountdown = this.getCountdown.bind(this);
+    this.removeToastVotation = this.removeToastVotation.bind(this);
     // TODO: Remover quando mergear a auth
     this.loadVote = this.loadVote.bind(this);
 
     this.timer = null;
+  }
+
+  removeToastVotation() {
+    this.setState({ showToastVotation: false });
   }
 
   componentDidMount() {
@@ -300,7 +307,7 @@ class Offer extends React.Component {
           ProductId: productId
         })
         .then(({ data }) => {
-          this.setState({ vote: data.ProductId });
+          this.setState({ vote: data.ProductId, showToastVotation: true });
         });
     }
   }
@@ -521,6 +528,12 @@ class Offer extends React.Component {
         </RenderIf>
 
         <Footer />
+        <Toast
+          show={this.state.showToastVotation}
+          onFade={this.removeToastVotation}
+        >
+          Voto computado com sucesso!
+        </Toast>
       </Page>
     );
   }
