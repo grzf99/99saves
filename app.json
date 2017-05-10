@@ -29,6 +29,12 @@
     },
     "CLOUDINARY_UPLOAD_URL": {
       "required": true
+    },
+    "SENDGRID_API_KEY": {
+      "required": true
+    },
+    "EMAIL_SENDER": {
+      "required": true
     }
   }
 }

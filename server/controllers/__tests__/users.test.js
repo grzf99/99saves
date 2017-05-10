@@ -2,6 +2,9 @@ const MockResponse = require('mock-express-response');
 const { User, Profile } = require('../../models');
 const usersController = require('../users');
 
+jest.mock('../../mailers/signup-welcome');
+const SignupWelcomeMailer = require('../../mailers/signup-welcome');
+
 beforeEach(() => {
   require('dotenv').config();
   return User.sync({ force: true }).then(() => Profile.sync({ force: true }));
@@ -37,6 +40,7 @@ describe('create', () => {
               token: expect.any(String)
             })
           );
+          expect(SignupWelcomeMailer.mail).toHaveBeenCalled();
         });
     });
   });
@@ -93,6 +97,7 @@ describe('create', () => {
               token: expect.any(String)
             })
           );
+          expect(SignupWelcomeMailer.mail).toHaveBeenCalled();
         });
     });
   });
