@@ -25,7 +25,6 @@ const Page = styled.div`
   position: relative;
   overflow: hidden;
   width: 100%;
-  ${props => props.hasFooter && 'padding-bottom: 98px'};
 `;
 
 const CardsList = styled(Container)`
