@@ -1,2 +1,207 @@
-<div>Bem-vindo(a) ao 99saves, {{ profile.name }}!</div>
-<div>Agora você pode participar de todas as nossas negociações.</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,700" rel="stylesheet" />
+</head>
+
+<body>
+  <table class="mail">
+    <thead>
+      <tr style="height: 35px;"></tr>
+      <tr>
+        <th></th>
+        <th class="mail__logo-wrapper">
+          <a href="{{ appUrl }}" target="_blank">
+            <img class="mail__logo-header" src="{{ appUrl }}/static/images/logo-99-saves.png" alt="logo">
+          </a>
+        </th>
+        <th></th>
+      </tr>
+      <tr style="height: 35px;"></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="min-width: 58px;"></td>
+        <td class="mail__content-wrapper">
+          <table class="mail__content">
+            <tbody>
+              <tr style="height: 47px;"></tr>
+              <tr>
+                <td style="width: 50px;"></td>
+                <td>
+                  <h1 class="mail__title">Bem-vindo(a) ao 99saves!</h1>
+                </td>
+                <td style="width: 50px;"></td>
+              </tr>
+              <tr style="height: 23px;"></tr>
+              <tr>
+                <td style="width: 50px;"></td>
+                <td>
+                  <p class="mail__text">Agora você pode participar de todas as nossas negociações.</p>
+                </td>
+                <td style="width: 50px;"></td>
+              </tr>
+              <tr style="height: 23px;"></tr>
+              <tr>
+                <td style="width: 50px;"></td>
+                <td>
+                  <p class="mail__text">Atenciosamente,</p>
+                  <p class="mail__text mail__text--bold">Equipe 99saves.com</p>
+                </td>
+                <td style="width: 50px;"></td>
+              </tr>
+              <tr style="height: 47px;"></tr>
+            </tbody>
+          </table>
+        </td>
+        <td style="min-width: 58px;"></td>
+      </tr>
+      <tr style="height: 28px;"></tr>
+      <tr>
+        <td style="min-width: 58px;"></td>
+        <td>
+          <table class="mail__footer">
+            <tbody>
+              <tr>
+                <td style="width: 18px;"></td>
+                <td>
+                  <a href="{{ appUrl }}" target="_blank">
+                    <img class="mail__logo-footer" src="{{ appUrl }}/static/images/logo-99-saves.png" alt="logo">
+                  </a>
+                </td>
+                <td></td>
+                <td class="mail__footer-icon">
+                  <a href="https://www.facebook.com/99saves/" target="_blank">
+                    <img src="{{ appUrl }}/static/images/ic-medium.png" alt="medium">
+                  </a>
+                </td>
+                <td style="width: 20px;"></td>
+                <td class="mail__footer-icon">
+                  <a href="https://www.facebook.com/99saves/" target="_blank">
+                    <img src="{{ appUrl }}/static/images/ic-facebook.png" alt="facebook">
+                  </a>
+                </td>
+                <td style="width: 20px;"></td>
+                <td class="mail__footer-icon">
+                  <a href="https://www.youtube.com/channel/UCVaiNqY6WhW9PqJeUbaLwbw" target="_blank">
+                    <img src="{{ appUrl }}/static/images/ic-youtube.png" alt="youtube">
+                  </a>
+                </td>
+                <td style="width: 20px;"></td>
+                <td class="mail__footer-icon">
+                  <a href="https://www.instagram.com/99saves/" target="_blank">
+                    <img src="{{ appUrl }}/static/images/ic-insta.png" alt="instagram">
+                  </a>
+                </td>
+                <td style="width: 20px;"></td>
+                <td class="mail__footer-icon">
+                  <a href="https://www.linkedin.com/company-beta/16232043/" target="_blank">
+                    <img src="{{ appUrl }}/static/images/ic-linkedin.png" alt="linkedin">
+                  </a>
+                </td>
+                <td style="width: 16px;"></td>
+              </tr>
+              <tr style="height: 16.6px;"></tr>
+              <tr>
+                <td colspan="13">
+                  <hr class="mail__footer-separator">
+                </td>
+              </tr>
+              <tr style="height: 14px;"></tr>
+              <tr>
+                <td colspan="13">
+                  <p class="mail__text mail__text--footer">
+                    Não responda este email. Entre em contato conosco através de nossas redes sociais ou através do canal de comunicação em
+                    <a class="mail__link" href="{{ appUrl }}" target="_blank">nosso site</a>.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td style="min-width: 58px;"></td>
+      </tr>
+      <tr style="height: 43px;"></tr>
+    </tbody>
+  </table>
+
+  <style>
+    .mail {
+      width: 100%;
+      background: #1d2028;
+    }
+
+    .mail__logo-wrapper {
+      text-align: center;
+    }
+
+    .mail__logo-header {
+      width: 162px;
+    }
+
+    .mail__content-wrapper {
+      width: 600px;
+    }
+
+    .mail__content {
+      width: 100%;
+      background: #fff;
+      border-radius: 2px;
+    }
+
+    .mail__title {
+      text-align: left;
+      text-transform: uppercase;
+      font-family: 'Oswald', sans-serif;
+      font-size: 34px;
+      line-height: 1.47;
+      color: #1d2028;
+      margin: 0;
+      padding: 0;
+    }
+
+    .mail__text {
+      text-align: left;
+      font-size: 14px;
+      font-weight: 400;
+      color: #69707d;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+    }
+
+    .mail__text--bold {
+      font-weight: bold;
+    }
+
+    .mail__footer {
+      width: 100%;
+    }
+
+    .mail__logo-footer {
+      width: 97px;
+    }
+
+    .mail__footer-separator {
+      border: 1px solid #253e4f;
+      margin: 0;
+    }
+
+    .mail__text--footer {
+      text-align: center;
+    }
+
+    .mail__link,
+    .mail__link:visited,
+    .mail__link:focus {
+      color: #27af51;
+      text-decoration: none;
+    }
+
+    .mail__footer-icon {
+      width: 22px;
+    }
+  </style>
+</body>
+
+</html>

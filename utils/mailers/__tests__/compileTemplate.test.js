@@ -7,7 +7,7 @@ const fs = require('fs');
 const FS_MOCK_FILES = {
   [path.join(
     __dirname,
-    '../../server/templates/mailers/my-template.hbs'
+    '../../../server/templates/mailers/my-template.hbs'
   )]: '<div>{{ user.name }}</div>'
 };
 
