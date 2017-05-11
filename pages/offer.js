@@ -90,6 +90,7 @@ const GrayText = styled(Text)`
 
 const Tag = styled(Heading2)`
   background: ${colors.gray};
+  color: ${colors.white};;
   font-size: 24px;
   padding: 2px 10px;
   text-transform: uppercase;
