@@ -220,6 +220,41 @@ const MarginContainer = styled(Container)`
   margin: 20px auto;
 `;
 
+const ColumnHeader = styled.div`
+  display: flex;
+  align-itens: flex-start;
+  justify-content: flex-start;
+
+`;
+
+const ColumnImage = styled.div`
+  align-itens: center;
+  background: ${colors.white};
+  display: flex;
+  height: 80px;
+  justify-content: center;
+  margin-right: 10px;
+  max-width: 88px;
+  width: 100%;
+`;
+
+const ProviderImage = styled.img`
+  align-self: center;
+  max-height: 80px;
+  width: 80px;
+`;
+
+const ColumnText = styled.div`
+  width: 100%;
+`;
+
+const ProviderOffer = styled.span`
+  color: ${colors.gray};
+  font-family: 'Roboto';
+  font-size: 12px;
+  text-align: left;
+`;
+
 class Offer extends React.Component {
   static async getInitialProps(ctx) {
     const save = (await ctx.api.get(`/saves/${ctx.query.saveId}`)).data;
@@ -431,7 +466,15 @@ class Offer extends React.Component {
 
                 <Row>
                   <Column>
-                    <Heading white>{product.title}</Heading>
+                    <ColumnHeader>
+                      <ColumnImage>
+                        <ProviderImage src={product.Provider.logo} alt={product.Provider.name} />
+                      </ColumnImage>
+                      <ColumnText>
+                        <ProviderOffer>Ofertado por {product.Provider.name}</ProviderOffer>
+                        <Heading white>{product.title} </Heading>
+                      </ColumnText>
+                    </ColumnHeader>
                     <Panel>
                       <RenderIf expr={!!product.description}>
                         <Info>
