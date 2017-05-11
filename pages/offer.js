@@ -255,6 +255,17 @@ const ProviderOffer = styled.span`
   text-align: left;
 `;
 
+const MethodPayment = styled.span`
+  clear: both;
+  color: ${colors.white};
+  display: inherit;
+  font-family: 'Oswald';
+  font-size: 16px;
+  margin-bottom: 10px
+  margin-top: -5px;
+  text-align: right;
+`;
+
 class Offer extends React.Component {
   static async getInitialProps(ctx) {
     const save = (await ctx.api.get(`/saves/${ctx.query.saveId}`)).data;
@@ -500,6 +511,9 @@ class Offer extends React.Component {
                           {formatCurrency(product.price)}
                         </Heading>
                       </Price>
+                      <MethodPayment>
+                        {product.method_payment}
+                      </MethodPayment>
 
                       <RenderIf expr={this.props.save.checkoutOpen}>
                         {this.renderCheckoutButton(product)}
