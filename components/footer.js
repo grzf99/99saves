@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { colors } from './styles/variables';
 import { Text } from './common/typography';
-import { Facebook, Instagram, Youtube, Linkedin } from './common/svg';
+import { Facebook, Instagram, Youtube, Linkedin, Medium } from './common/svg';
 
 const Footer = styled.footer`
   align-items: center;
@@ -9,6 +9,7 @@ const Footer = styled.footer`
   bottom: 0;
   box-shadow: inset 0 1px 0 0 ${colors.darkBlue};
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   position: absolute;
   width: 100%;
@@ -26,12 +27,15 @@ const CustomText = styled(Text)`
 
 const SocialMedia = styled.div`
   align-items: center;
-  background: ${colors.white};
   display: flex;
   justify-content: space-between;
   padding: 25px;
-  max-width: 220px;
+  max-width: 250px;
   width: 100%;
+
+  > a svg path {
+    fill: ${colors.white};
+  }
 
   > a:hover svg path {
     fill: ${colors.green};
@@ -41,11 +45,10 @@ const SocialMedia = styled.div`
 
 export default props => (
   <Footer {...props}>
-    <CustomText white>
-      &reg;
-      2017 | Todos os direitos reservados
-    </CustomText>
     <SocialMedia>
+      <a href="https://medium.com/@99saves">
+        <Medium />
+      </a>
       <a href="https://www.facebook.com/99saves/">
         <Facebook />
       </a>
@@ -59,5 +62,9 @@ export default props => (
         <Linkedin />
       </a>
     </SocialMedia>
+    <CustomText white>
+      &reg;
+      2017 | Todos os direitos reservados
+    </CustomText>
   </Footer>
 );
