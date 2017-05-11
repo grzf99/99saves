@@ -115,6 +115,11 @@ const FooterLink = styled.div`
   }
 `;
 
+const FooterLogo = styled.img`
+  align-self: center;
+  margin-bottom: 20px;
+`;
+
 export default props => (
   <Footer {...props}>
     <SocialMedia>
@@ -154,5 +159,6 @@ export default props => (
         </FooterLink>
       </FooterLinks>
     </TextLinks>
+    <FooterLogo src="/static/images/logo-99-saves.svg" alt="99saves"  />
   </Footer>
 );
