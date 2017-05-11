@@ -5,13 +5,11 @@ import { Facebook, Instagram, Youtube, Linkedin, Medium } from './common/svg';
 
 const Footer = styled.footer`
   align-items: center;
-  background: ${colors.black};
+  background: ${colors.darkGrey};
   bottom: 0;
-  box-shadow: inset 0 1px 0 0 ${colors.darkBlue};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: absolute;
   width: 100%;
 `;
 
@@ -43,6 +41,18 @@ const SocialMedia = styled.div`
   }
 `;
 
+const TextLinks = styled.div`
+  align-items: center;
+  border-top: 1px solid ${colors.black};
+  border-bottom: 1px solid ${colors.black};
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  max-width: 960px;
+  padding: 25px 0;
+  width: 100%;
+`;
+
 export default props => (
   <Footer {...props}>
     <SocialMedia>
@@ -62,9 +72,11 @@ export default props => (
         <Linkedin />
       </a>
     </SocialMedia>
-    <CustomText white>
-      &reg;
-      2017 | Todos os direitos reservados
-    </CustomText>
+    <TextLinks>
+      <CustomText white>
+        &reg;
+        2017 | Todos os direitos reservados
+      </CustomText>
+    </TextLinks>
   </Footer>
 );
