@@ -9,6 +9,7 @@ export const colors = {
   darkSkyBlue: '#2994e0',
   darkSkyBlue2: '#2894e1',
   darkGreyBlue: '#253e50',
+  darkGrey: '#0e0f0f',
   facebookBlue: '#3c5193',
   green: '#28ba64',
   gray: '#69707d',
