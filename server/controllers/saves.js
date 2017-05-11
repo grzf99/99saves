@@ -1,4 +1,4 @@
-const { Product, Save, Subscription, Vote } = require('../models');
+const { Product, Save, Subscription, Vote, Provider } = require('../models');
 
 module.exports = {
   show(req, res) {
@@ -61,7 +61,7 @@ function createShowQuery(req, includeVote = true) {
     },
     include: [
       {
-        model: Product
+        model: Product,
       }
     ]
   };
@@ -70,7 +70,7 @@ function createShowQuery(req, includeVote = true) {
     query.include = [
       {
         model: Product,
-        include: [Vote]
+        include: [Vote, Provider]
       }
     ];
   }
