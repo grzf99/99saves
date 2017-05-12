@@ -8,7 +8,6 @@ function getSaveSubscriptions(id) {
 }
 
 module.exports = async (job, done) => {
-  console.log('running saves job');
   const queue = require('./index');
   const { save } = job.data;
   const subscriptions = await getSaveSubscriptions(save.id);
@@ -17,7 +16,6 @@ module.exports = async (job, done) => {
     return done();
   }
 
-  console.log(`we have ${subscriptions.length} subscriptions`);
   return Promise.all(
     subscriptions.map(s =>
       queue
@@ -31,9 +29,3 @@ module.exports = async (job, done) => {
     )
   ).then(() => done());
 };
-
-// sendMail(
-//   `Vote agora na melhor oferta de ${save.title}.`,
-//   s.User.email,
-//   content
-// )
