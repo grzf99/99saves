@@ -278,7 +278,7 @@ export class Saves extends React.Component {
           </CardsList>
         </SwipeableViews>
 
-        <Footer />
+        <Footer marginTop />
 
         <LoginModal
           isOpen={this.state.loginModalIsOpen}

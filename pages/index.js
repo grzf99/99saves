@@ -334,7 +334,7 @@ const ItWorkContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin: 80px 0;
+  margin: 80px 0 0;
   width: 100%;
   &.reverse {
     flex-direction: row-reverse;
@@ -773,7 +773,7 @@ export class Index extends React.Component {
           <Button outline href="/saves">veja todos os saves</Button>
         </ItWorkContainer>
 
-        <Footer />
+        <Footer marginTop />
 
         <LoginModal
           isOpen={this.state.modalIsOpen}

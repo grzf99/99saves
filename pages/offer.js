@@ -587,7 +587,7 @@ class Offer extends React.Component {
           </RightArrow>
         </RenderIf>
 
-        <Footer />
+        <Footer marginTop />
         <Toast
           show={this.state.showToastVotation}
           onFade={this.removeToastVotation}
