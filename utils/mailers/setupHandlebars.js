@@ -11,15 +11,17 @@ const partialsDir = path.join(
 );
 const filenames = fs.readdirSync(partialsDir);
 
-filenames.forEach((filename) => {
-  const matches = /^([^.]+).hbs$/.exec(filename);
-  if (!matches) {
-    return;
-  }
+if (filenames !== undefined) {
+  filenames.forEach((filename) => {
+    const matches = /^([^.]+).hbs$/.exec(filename);
+    if (!matches) {
+      return;
+    }
 
-  const [_, name] = matches;
-  const template = fs.readFileSync(`${partialsDir}/${filename}`, 'utf8');
-  Handlebars.registerPartial(name, template);
-});
+    const [_, name] = matches;
+    const template = fs.readFileSync(`${partialsDir}/${filename}`, 'utf8');
+    Handlebars.registerPartial(name, template);
+  });
+}
 
 module.exports = Handlebars;
