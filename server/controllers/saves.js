@@ -1,4 +1,5 @@
 const { Product, Save, Subscription, Vote, Provider } = require('../models');
+const VotationStartMailer = require('../mailers/votation-start');
 
 module.exports = {
   show(req, res) {
@@ -10,7 +11,7 @@ module.exports = {
 
   create(req, res) {
     return Save.create(req.body)
-      .then(saves => res.status(201).send(saves))
+      .then(save => res.status(201).send(save))
       .catch(error => res.status(400).send(error));
   },
 
@@ -61,7 +62,7 @@ function createShowQuery(req, includeVote = true) {
     },
     include: [
       {
-        model: Product,
+        model: Product
       }
     ]
   };

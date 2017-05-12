@@ -3,6 +3,7 @@ const { mail } = require('sendgrid');
 const { EMAIL_SENDER } = require('../../config');
 
 const sg = Sendgrid(process.env.SENDGRID_API_KEY);
+console.log(process.env.SENDGRID_API_KEY);
 
 function createMail(subject, to, contentType, contentString) {
   const fromEmail = new mail.Email(EMAIL_SENDER);
