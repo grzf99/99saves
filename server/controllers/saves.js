@@ -1,5 +1,4 @@
 const { Product, Save, Subscription, Vote, Provider } = require('../models');
-const VotationStartMailer = require('../mailers/votation-start');
 
 module.exports = {
   show(req, res) {
