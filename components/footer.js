@@ -158,8 +158,8 @@ export default props => (
       <FooterLinks>
         <FooterTitle>Links</FooterTitle>
         <FooterLink>
-          <a href="https://medium.com/@99saves">Todos os saves</a>
-          <a href="https://www.facebook.com/99saves/">Perguntas frequentes</a>
+          <a href="/saves">Todos os saves</a>
+          <a href="/politica-privacidade">Política de privacidade</a>
           <a href="https://www.youtube.com">Termos de uso</a>
         </FooterLink>
       </FooterLinks>
