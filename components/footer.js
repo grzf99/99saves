@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Link from 'next/link';
 import { colors } from './styles/variables';
 import { Text } from './common/typography';
 import { Facebook, Instagram, Youtube, Linkedin, Medium } from './common/svg';
@@ -10,6 +11,8 @@ const Footer = styled.footer`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  
+  ${props => props.marginTop && 'margin-top: 80px;'};
   width: 100%;
 `;
 
@@ -54,6 +57,7 @@ const TextLinks = styled.div`
   width: 100%;
 
   div:first-child {
+    margin-left: 45px;
     padding-right: 40px;
     position: relative;
 
@@ -117,6 +121,7 @@ const FooterLink = styled.div`
 
 const FooterLogo = styled.img`
   align-self: center;
+  cursor: pointer;
   margin-bottom: 20px;
 `;
 
@@ -159,6 +164,9 @@ export default props => (
         </FooterLink>
       </FooterLinks>
     </TextLinks>
-    <FooterLogo src="/static/images/logo-99-saves.svg" alt="99saves"  />
+    <Link prefetch href="/">
+      <FooterLogo src="/static/images/logo-99-saves.svg" alt="99saves"  />
+    </Link>
+    
   </Footer>
 );
