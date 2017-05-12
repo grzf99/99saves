@@ -17,20 +17,23 @@ const LocalLogo = styled(Logo)`
 `;
 
 export default ({ children }) => (
-  <Page
-    hasFooter
-    flex
-    centered
-    backgroundImage="static/images/signup-background@2x.jpg"
-  >
-    <Container maxWidth="400px">
-      <Header>
-        <Link prefetch href="/">
-          <a><LocalLogo /></a>
-        </Link>
-      </Header>
-      {children}
-    </Container>
+  <div>
+    <Page
+      hasFooter
+      flex
+      centered
+      backgroundImage="static/images/signup-background@2x.jpg"
+      paddingBottom
+    >
+      <Container maxWidth="400px">
+        <Header>
+          <Link prefetch href="/">
+            <a><LocalLogo /></a>
+          </Link>
+        </Header>
+        {children}
+      </Container>  
+    </Page>
     <Footer />
-  </Page>
+  </div>
 );
