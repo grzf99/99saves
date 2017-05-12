@@ -35,6 +35,7 @@ const ModalContent = styled.div`
   > * + * {
     position: relative;
     height: auto;
+    min-height: 300px;
     width: auto;
   }
 `;
