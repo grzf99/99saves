@@ -7,8 +7,7 @@ export default styled.div`
   min-height: 100vh;
   position: relative;
   width: 100%;
-
-  ${props => props.hasFooter && 'padding-bottom: 98px'};
+  ${props => props.paddingBottom && 'padding-bottom: 20px'};
   ${props => props.flex && 'display: flex'};
   ${props => props.centered && `
     align-items: center;
