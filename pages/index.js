@@ -698,7 +698,7 @@ export class Index extends React.Component {
                 A oferta vencedora fica disponível para compra
               </ItWorktTitle>
               <ItWorkDescription>
-                Encerrada a pesquisa, export automaticamente a oferta que teve o maior número de votos é liberada para compra através de um link em sua área do usuário, dentro do 99saves.com.
+                Encerrada a pesquisa, automaticamente a oferta que teve o maior número de votos é liberada para compra através de um link em sua área do usuário, dentro do 99saves.com.
                 {' '}
               </ItWorkDescription>
             </ItWorkInfos>
