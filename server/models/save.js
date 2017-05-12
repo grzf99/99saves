@@ -1,5 +1,5 @@
 const { minBy } = require('lodash');
-const { addDays, differenceInDays, isSameDay } = require('date-fns');
+const { endOfDay, addDays, differenceInDays, isSameDay } = require('date-fns');
 const { slugify, isDateBetween } = require('../../utils');
 
 module.exports = (sequelize, DataTypes) => {
@@ -23,9 +23,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         set(value) {
           this.setDataValue('date_end', value);
-          this.setDataValue('negotiation_end', addDays(value, 1).toISOString());
-          this.setDataValue('votation_end', addDays(value, 2).toISOString());
-          this.setDataValue('checkout_end', addDays(value, 4).toISOString());
+          this.setDataValue(
+            'negotiation_end',
+            endOfDay(addDays(value, 1)).toISOString()
+          );
+          this.setDataValue(
+            'votation_end',
+            endOfDay(addDays(value, 2)).toISOString()
+          );
+          this.setDataValue(
+            'checkout_end',
+            endOfDay(addDays(value, 4)).toISOString()
+          );
         }
       },
       checkout_end: DataTypes.DATE,
