@@ -621,7 +621,7 @@ export class Index extends React.Component {
         </Banner>
 
         <BrandContainer>
-          <BannerTitle>te conectamos com fabricantes que você cconfia</BannerTitle>
+          <BannerTitle>te conectamos com fabricantes que você confia</BannerTitle>
           <BannerSubTitle>E negociamos produtos diretamente com eles</BannerSubTitle>
           <BrandImagesContainer>
             <BrandImage
