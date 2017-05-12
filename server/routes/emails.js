@@ -24,6 +24,7 @@ router.get('/votation-start', async (req, res) => {
   const save = {
     id: 1,
     title: 'Máquina de lavar',
+    slug: 'maquina-de-lavar-1',
     Products: [
       {
         id: 1,
