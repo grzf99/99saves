@@ -48,7 +48,7 @@ export default function withAuth(
 
           if (url) {
             Router.replace(
-              `${url}?as=${Router.router.as}&pathname=${Router.router.pathname}&query=${JSON.stringify(Router.router.query)}`
+              `${url}?as=${Router.router.asPath}&pathname=${Router.router.pathname}&query=${JSON.stringify(Router.router.query)}`
             );
           }
         }
