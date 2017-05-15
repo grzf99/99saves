@@ -8,6 +8,7 @@ import Headline from './common/headline';
 import RenderIf from './common/render-if';
 import { Heading, Text, SmallText } from './common/typography';
 import { formatCurrency } from '../utils';
+import CountDown from '../components/common/countdown';
 
 const Card = styled.div`
   background: ${colors.black};
@@ -31,7 +32,7 @@ const Tag = styled(Text)`
   font-weight: 400;
   padding: 5px 14px;
   position: absolute;
-  top: 15px;
+  top: 42px;
   z-index: 3;
 `;
 
@@ -58,8 +59,9 @@ const Header = styled.div`
   background: ${colors.white};
   display: flex;
   flex-direction: column;
-  height: 250px;
+  height: 230px;
   justify-content: center;
+  margin-top: 27px;
   padding-top: 24px;
   position: relative;
 `;
@@ -219,6 +221,7 @@ export default class extends React.Component {
   render() {
     return (
       <Card {...this.props}>
+        <CountDown {...this.props} />
         <RenderIf expr={this.props.finished}>
           <Status>Oferta encerrada</Status>
         </RenderIf>
