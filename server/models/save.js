@@ -54,13 +54,21 @@ module.exports = (sequelize, DataTypes) => {
       negotiationOpen: {
         type: DataTypes.VIRTUAL,
         get() {
-          return isSameDay(new Date(), new Date(this.negotiation_end));
+          return isDateBetween(
+            new Date(),
+            new Date(this.date_end),
+            new Date(this.negotiation_end)
+          );
         }
       },
       votationOpen: {
         type: DataTypes.VIRTUAL,
         get() {
-          return isSameDay(new Date(), new Date(this.votation_end));
+          return isDateBetween(
+            new Date(),
+            new Date(this.negotiation_end),
+            new Date(this.votation_end)
+          );
         }
       },
       checkoutOpen: {
