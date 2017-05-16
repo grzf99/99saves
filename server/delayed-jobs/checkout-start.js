@@ -21,6 +21,9 @@ module.exports = async (job, done) => {
   if (subscriptions.length === 0) {
     return done();
   }
+  console.log(
+    `running checkout start job for save ${save.id} with ${subscriptions.length} subscriptions`
+  );
 
   return Promise.all(
     subscriptions.map((s) => {
