@@ -14,6 +14,7 @@ const CountDown = styled.div`
   &.card {
     font-size: 14px;
     position: absolute;
+    top: 3px;
     width: 100%;
     z-index: 3;
 `;
@@ -83,7 +84,7 @@ export default class extends React.Component {
   render() {
     return (
       <CountDown {...this.props} >
-        { this.getCountdown(this.props.date) }
+        { this.getCountdown(this.props.date) } ⏳
       </CountDown>
     );
   }
