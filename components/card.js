@@ -8,6 +8,7 @@ import Headline from './common/headline';
 import RenderIf from './common/render-if';
 import { Heading, Text, SmallText } from './common/typography';
 import { formatCurrency } from '../utils';
+import CountDown from '../components/common/countdown';
 
 const Card = styled.div`
   background: ${colors.black};
@@ -31,8 +32,9 @@ const Tag = styled(Text)`
   font-weight: 400;
   padding: 5px 14px;
   position: absolute;
-  top: 15px;
+  top: 42px;
   z-index: 3;
+  ${props => props.gray ? `background-color: ${colors.gray}` : ''}
 `;
 
 const ImagesContainer = styled.div`
@@ -58,8 +60,9 @@ const Header = styled.div`
   background: ${colors.white};
   display: flex;
   flex-direction: column;
-  height: 250px;
+  height: 230px;
   justify-content: center;
+  margin-top: 27px;
   padding-top: 24px;
   position: relative;
 `;
@@ -164,6 +167,10 @@ export default class extends React.Component {
       return (
         <Button block onClick={this.handleSave}>Participar deste save</Button>
       );
+    } else if (this.props.negotiationOpen) {
+      return (
+        <CustomText>Em breve você conhecerá as que ofertas feitas pelos fabricantes e escolherá a melhor</CustomText>
+      );
     } else if (this.props.votationOpen) {
       return (
         <Button block onClick={this.goToOffers}>Participar da votação</Button>
@@ -219,11 +226,15 @@ export default class extends React.Component {
   render() {
     return (
       <Card {...this.props}>
+        <CountDown {...this.props} className="card" />
         <RenderIf expr={this.props.finished}>
           <Status>Oferta encerrada</Status>
         </RenderIf>
         <RenderIf expr={this.props.votationOpen}>
           <Tag uppercase>Votação</Tag>
+        </RenderIf>
+        <RenderIf expr={this.props.negotiationOpen}>
+          <Tag uppercase gray>Negociação</Tag>
         </RenderIf>
         <Header>
           {this.renderImages()}

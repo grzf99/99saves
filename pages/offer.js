@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
-import differenceInMinutes from 'date-fns/difference_in_minutes';
 import nl2br from 'react-nl2br';
 import format from 'date-fns/format';
 import { formatCurrency } from '../utils';
@@ -36,6 +35,7 @@ import Gallery from '../components/gallery';
 import Headline from '../components/common/headline';
 import RenderIf from '../components/common/render-if';
 import Toast from '../components/common/toast';
+import CountDown from '../components/common/countdown';
 
 const Header = styled(Container)`
   display: flex;
@@ -281,7 +281,6 @@ class Offer extends React.Component {
       save: props.save,
       products: props.save.Products,
       vote: 0,
-      countdown: '...',
       showToastVotation: false
     };
 
@@ -289,7 +288,6 @@ class Offer extends React.Component {
     this.handleVote = this.handleVote.bind(this);
     this.renderVotationButton = this.renderVotationButton.bind(this);
     this.renderCheckoutButton = this.renderCheckoutButton.bind(this);
-    this.getCountdown = this.getCountdown.bind(this);
     this.removeToastVotation = this.removeToastVotation.bind(this);
     // TODO: Remover quando mergear a auth
     this.loadVote = this.loadVote.bind(this);
@@ -304,24 +302,10 @@ class Offer extends React.Component {
   componentDidMount() {
     const accessToken = window.localStorage.getItem(USER_LOCALSTORAGE_KEY);
     if (accessToken) this.loadVote();
-
-    this.timer = setInterval(() => {
-      this.setState({
-        countdown: this.getCountdown(
-          this.props.save.checkoutOpen
-            ? this.state.save.checkout_end
-            : this.state.save.votation_end
-        )
-      });
-    }, 1000);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.isSignedIn) this.loadVote();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timer);
   }
 
   getWinnerProductIndex(save) {
@@ -389,11 +373,6 @@ class Offer extends React.Component {
     );
   }
 
-  getCountdown(end) {
-    const diffInMinutes = differenceInMinutes(new Date(end), new Date());
-    return `${Math.floor(diffInMinutes / 60)}h ${diffInMinutes % 60}m`;
-  }
-
   render() {
     return (
       <Page hasFooter>
@@ -422,7 +401,7 @@ class Offer extends React.Component {
             {' '}
             acaba em
             {' '}
-            <b>{this.state.countdown}</b>
+            <CountDown {...this.props.save} />
           </Headline>
         </RenderIf>
 
