@@ -3,7 +3,8 @@ const {
   startOfDay,
   endOfDay,
   addDays,
-  differenceInDays,
+  isBefore,
+  isAfter,
   isSameDay,
   addHours
 } = require('date-fns');
@@ -41,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       preSubscription: {
         type: DataTypes.VIRTUAL,
         get() {
-          return differenceInDays(new Date(), new Date(this.date_start)) < 0;
+          return isBefore(new Date(), new Date(this.date_start));
         }
       },
       subscriptionOpen: {
@@ -91,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
       finished: {
         type: DataTypes.VIRTUAL,
         get() {
-          return differenceInDays(new Date(), new Date(this.checkout_end)) > 0;
+          return isAfter(new Date(), new Date(this.checkout_end));
         }
       },
       status: {

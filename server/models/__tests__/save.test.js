@@ -1,4 +1,4 @@
-import { differenceInDays, addDays } from 'date-fns';
+import { differenceInDays, addDays, endOfDay, startOfDay } from 'date-fns';
 import { Save } from '../';
 
 describe('title setter', () => {
@@ -70,8 +70,8 @@ describe('subscriptionOpen getter', () => {
   describe('when today is before date_start', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), 1),
-        date_end: addDays(new Date(), 2)
+        date_start: startOfDay(addDays(new Date(), 1)),
+        date_end: endOfDay(addDays(new Date(), 2))
       });
       expect(save.subscriptionOpen).toEqual(false);
     });
@@ -80,8 +80,8 @@ describe('subscriptionOpen getter', () => {
   describe('when today is the same day as date_start', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: new Date(),
-        date_end: addDays(new Date(), 2)
+        date_start: startOfDay(new Date()),
+        date_end: endOfDay(addDays(new Date(), 2))
       });
       expect(save.subscriptionOpen).toEqual(true);
     });
@@ -90,8 +90,8 @@ describe('subscriptionOpen getter', () => {
   describe('when today is between date_start and date_end', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -1),
-        date_end: addDays(new Date(), 2)
+        date_start: startOfDay(addDays(new Date(), -1)),
+        date_end: endOfDay(addDays(new Date(), 2))
       });
       expect(save.subscriptionOpen).toEqual(true);
     });
@@ -100,8 +100,8 @@ describe('subscriptionOpen getter', () => {
   describe('when today is the same day as date_end', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -1),
-        date_end: new Date()
+        date_start: startOfDay(addDays(new Date(), -1)),
+        date_end: endOfDay(new Date())
       });
       expect(save.subscriptionOpen).toEqual(true);
     });
@@ -110,8 +110,8 @@ describe('subscriptionOpen getter', () => {
   describe('when today is after date_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -2),
-        date_end: addDays(new Date(), -1)
+        date_start: startOfDay(addDays(new Date(), -2)),
+        date_end: endOfDay(addDays(new Date(), -1))
       });
       expect(save.subscriptionOpen).toEqual(false);
     });
@@ -122,8 +122,8 @@ describe('negotiationOpen getter', () => {
   describe('when today is before negotiation_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -3),
-        date_end: new Date()
+        date_start: startOfDay(addDays(new Date(), -3)),
+        date_end: endOfDay(new Date())
       });
       expect(save.negotiationOpen).toEqual(false);
     });
@@ -132,8 +132,8 @@ describe('negotiationOpen getter', () => {
   describe('when today is the same day as negotiaton_end', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -2),
-        date_end: addDays(new Date(), -1)
+        date_start: startOfDay(addDays(new Date(), -2)),
+        date_end: endOfDay(addDays(new Date(), -1))
       });
       expect(save.negotiationOpen).toEqual(true);
     });
@@ -142,8 +142,8 @@ describe('negotiationOpen getter', () => {
   describe('when today is after negotiation_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -3),
-        date_end: addDays(new Date(), -2)
+        date_start: startOfDay(addDays(new Date(), -3)),
+        date_end: endOfDay(addDays(new Date(), -2))
       });
       expect(save.negotiationOpen).toEqual(false);
     });
@@ -154,8 +154,8 @@ describe('votationOpen getter', () => {
   describe('when today is before votation_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -4),
-        date_end: addDays(new Date(), -1)
+        date_start: startOfDay(addDays(new Date(), -4)),
+        date_end: endOfDay(addDays(new Date(), -1))
       });
       expect(save.votationOpen).toEqual(false);
     });
@@ -164,8 +164,8 @@ describe('votationOpen getter', () => {
   describe('when today is the same day as votation_end', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -2),
-        date_end: addDays(new Date(), -2)
+        date_start: startOfDay(addDays(new Date(), -2)),
+        date_end: endOfDay(addDays(new Date(), -2))
       });
       expect(save.votationOpen).toEqual(true);
     });
@@ -174,8 +174,8 @@ describe('votationOpen getter', () => {
   describe('when today is after votation_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -3),
-        date_end: addDays(new Date(), -3)
+        date_start: startOfDay(addDays(new Date(), -3)),
+        date_end: endOfDay(addDays(new Date(), -3))
       });
       expect(save.votationOpen).toEqual(false);
     });
@@ -186,8 +186,8 @@ describe('checkoutOpen getter', () => {
   describe('when today is before votation_end + 1', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -3),
-        date_end: addDays(new Date(), -2)
+        date_start: startOfDay(addDays(new Date(), -3)),
+        date_end: endOfDay(addDays(new Date(), -2))
       });
       expect(save.checkoutOpen).toEqual(false);
     });
@@ -196,8 +196,8 @@ describe('checkoutOpen getter', () => {
   describe('when today is between votation_end + 1 and checkout_end', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -4),
-        date_end: addDays(new Date(), -3)
+        date_start: startOfDay(addDays(new Date(), -4)),
+        date_end: endOfDay(addDays(new Date(), -3))
       });
       expect(save.checkoutOpen).toEqual(true);
     });
@@ -206,8 +206,8 @@ describe('checkoutOpen getter', () => {
   describe('when today is the same day as checkout_end', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -5),
-        date_end: addDays(new Date(), -4)
+        date_start: startOfDay(addDays(new Date(), -5)),
+        date_end: endOfDay(addDays(new Date(), -4))
       });
       expect(save.checkoutOpen).toEqual(true);
     });
@@ -216,8 +216,8 @@ describe('checkoutOpen getter', () => {
   describe('when today is after checkout_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -6),
-        date_end: addDays(new Date(), -5)
+        date_start: startOfDay(addDays(new Date(), -6)),
+        date_end: endOfDay(addDays(new Date(), -5))
       });
       expect(save.checkoutOpen).toEqual(false);
     });
@@ -228,8 +228,8 @@ describe('finished getter', () => {
   describe('when today is before checkout_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -4),
-        date_end: addDays(new Date(), -3)
+        date_start: startOfDay(addDays(new Date(), -4)),
+        date_end: endOfDay(addDays(new Date(), -3))
       });
       expect(save.finished).toEqual(false);
     });
@@ -238,8 +238,8 @@ describe('finished getter', () => {
   describe('when today is the same day as checkout_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -5),
-        date_end: addDays(new Date(), -4)
+        date_start: startOfDay(addDays(new Date(), -5)),
+        date_end: endOfDay(addDays(new Date(), -4))
       });
       expect(save.finished).toEqual(false);
     });
@@ -248,8 +248,8 @@ describe('finished getter', () => {
   describe('when today is after checkout_end', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: addDays(new Date(), -6),
-        date_end: addDays(new Date(), -5)
+        date_start: startOfDay(addDays(new Date(), -6)),
+        date_end: endOfDay(addDays(new Date(), -5))
       });
       expect(save.finished).toEqual(true);
     });
