@@ -140,6 +140,16 @@ module.exports = (sequelize, DataTypes) => {
               $gt: startOfDay(new Date())
             }
           }
+        },
+        startedCheckoutToday: {
+          where: {
+            votation_end: {
+              $lt: startOfDay(new Date())
+            },
+            checkout_end: {
+              $gt: endOfDay(new Date())
+            }
+          }
         }
       },
       classMethods: {
