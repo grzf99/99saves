@@ -8,6 +8,7 @@ const passport = require('passport');
 // loading env variables from .env file
 require('dotenv').config();
 
+const startClockwork = require('./server/clockwork');
 const apiRoutes = require('./server/routes');
 const passportStrategies = require('./server/strategies');
 const { User } = require('./server/models');
@@ -58,6 +59,7 @@ app.prepare().then(() => {
   );
   server.get('*', (req, res) => handle(req, res));
 
+  startClockwork();
   server.listen(port, (err) => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const Handlebars = require('handlebars');
+const Handlebars = require('./setupHandlebars');
 const buildContext = require('./buildContext');
 
 module.exports = (templatePath, context) =>

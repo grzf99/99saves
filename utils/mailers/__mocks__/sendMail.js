@@ -4,7 +4,7 @@ const sendMailMock = () => {
   if (!failPromise) {
     return Promise.resolve({ statusCode: 200 });
   }
-  return Promise.reject();
+  throw new Error('Failed to send email');
 };
 
 sendMailMock.__setFailPromise = (fail) => {

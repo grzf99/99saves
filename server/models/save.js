@@ -1,5 +1,11 @@
 const { minBy } = require('lodash');
-const { addDays, differenceInDays, isSameDay } = require('date-fns');
+const {
+  startOfDay,
+  endOfDay,
+  addDays,
+  differenceInDays,
+  isSameDay
+} = require('date-fns');
 const { slugify, isDateBetween } = require('../../utils');
 
 module.exports = (sequelize, DataTypes) => {
@@ -126,6 +132,16 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
+      scopes: {
+        votable: {
+          where: {
+            votation_end: {
+              $lt: endOfDay(new Date()),
+              $gt: startOfDay(new Date())
+            }
+          }
+        }
+      },
       classMethods: {
         associate(models) {
           Save.hasMany(models.Subscription);
