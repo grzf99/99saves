@@ -34,10 +34,7 @@ const Tag = styled(Text)`
   position: absolute;
   top: 42px;
   z-index: 3;
-
-  &.gray {
-    background: ${colors.gray};
-  }
+  ${props => props.gray ? `background-color: ${colors.gray}` : ''}
 `;
 
 const ImagesContainer = styled.div`
@@ -237,7 +234,7 @@ export default class extends React.Component {
           <Tag uppercase>Votação</Tag>
         </RenderIf>
         <RenderIf expr={this.props.negotiationOpen}>
-          <Tag uppercase className="gray">Negociação</Tag>
+          <Tag uppercase gray>Negociação</Tag>
         </RenderIf>
         <Header>
           {this.renderImages()}
