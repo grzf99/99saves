@@ -4,7 +4,8 @@ const {
   endOfDay,
   addDays,
   differenceInDays,
-  isSameDay
+  isSameDay,
+  addHours
 } = require('date-fns');
 const { slugify, isDateBetween } = require('../../utils');
 
@@ -136,18 +137,18 @@ module.exports = (sequelize, DataTypes) => {
         votable: {
           where: {
             votation_end: {
-              $lt: endOfDay(new Date()),
-              $gt: startOfDay(new Date())
+              $lt: addHours(endOfDay(new Date()), 3),
+              $gt: addHours(startOfDay(new Date()), 3)
             }
           }
         },
         startedCheckoutToday: {
           where: {
             votation_end: {
-              $lt: startOfDay(new Date())
+              $lt: addHours(startOfDay(new Date()), 3)
             },
             checkout_end: {
-              $gt: endOfDay(new Date())
+              $gt: addHours(endOfDay(new Date()), 3)
             }
           }
         }
