@@ -1,7 +1,8 @@
 import React from 'react';
 import request from 'superagent';
 import Router from 'next/router';
-import moment from 'moment';
+import startOfDay from 'date-fns/start_of_day';
+import formatDate from 'date-fns/format';
 import FRC, { Input, Row, Textarea } from 'formsy-react-components';
 import Loading from 'react-loading';
 
@@ -26,7 +27,7 @@ class SavesEdit extends React.Component {
       loading: true,
       showToast: false,
       messageToast: '',
-      typeToast: '',
+      typeToast: ''
     };
     this.getSaves = this.getSaves.bind(this);
     this.submitForm = this.submitForm.bind(this);
@@ -39,17 +40,23 @@ class SavesEdit extends React.Component {
   }
 
   getSaves(id) {
-    this.props.api.get(`/saves/${id}`)
-        .then((response) => {
-          this.setState({
-            ...this.state, list: response.data
-          });
-          setTimeout(() => this.setState({ loading: false }), 1500);
-        })
-        .catch((error) => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${error.message}` });
-          setTimeout(() => this.setState({ showToast: false }), 2500);
+    this.props.api
+      .get(`/saves/${id}`)
+      .then((response) => {
+        this.setState({
+          ...this.state,
+          list: response.data
         });
+        setTimeout(() => this.setState({ loading: false }), 1500);
+      })
+      .catch((error) => {
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Problemas ao se comunicar com API: ${error.message}`
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
+      });
   }
 
   handleSave(event) {
@@ -59,13 +66,18 @@ class SavesEdit extends React.Component {
 
   handleImageUpload(file, name) {
     const imageChange = {};
-    const upload = request.post(config.CLOUDINARY_UPLOAD_URL)
-                     .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
-                     .field('file', file);
+    const upload = request
+      .post(config.CLOUDINARY_UPLOAD_URL)
+      .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
+      .field('file', file);
 
     upload.end((err, response) => {
       if (err) {
-        this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Problemas ao se comunicar com API: ${err}`
+        });
         this.setState({ btnEnabled: false });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       }
@@ -79,27 +91,35 @@ class SavesEdit extends React.Component {
   }
 
   submitForm(data) {
-    const values = Object.assign(data, {
+    const values = Object.assign({}, data, {
       image_default: this.state.image_default,
-      date_start: moment(data.date_start, moment.ISO_8859).format(),
-      date_end: moment(data.date_end, moment.ISO_8859).format()
+      date_start: startOfDay(data.date_start).toJSON()
     });
 
-    if (!values.title || !values.date_start || !values.date_end) {
-      return alert('Preencha todos os campos obrigatórios');  // eslint-disable-line
+    if (!values.title || !values.date_start) {
+      return alert('Preencha todos os campos obrigatórios'); // eslint-disable-line
     }
 
     if (!values.image_default) delete values.image_default;
 
-    const rest = this.props.api.put(`/saves/${values.id}`, values)
-        .then(() => {
-          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro alterado com Sucesso' });
-          setTimeout(() => Router.push('/admin/saves'), 2500);
-        })
-        .catch((error) => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: `Err ao alterar o registro ${error.message}` });
-          setTimeout(() => this.setState({ showToast: false }), 2500);
+    const rest = this.props.api
+      .put(`/saves/${values.id}`, values)
+      .then(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'success',
+          messageToast: 'Registro alterado com Sucesso'
         });
+        setTimeout(() => Router.push('/admin/saves'), 2500);
+      })
+      .catch((error) => {
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Err ao alterar o registro ${error.message}`
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
+      });
 
     return rest;
   }
@@ -139,19 +159,14 @@ class SavesEdit extends React.Component {
                     />
                     <Input
                       name="date_start"
-                      value={moment(this.state.list.date_start).format('YYYY-MM-DD') || ''}
+                      value={
+                        formatDate(this.state.list.date_start, 'YYYY-MM-DD') ||
+                          ''
+                      }
                       label="Data início do save"
                       type="date"
                       required
-                      rowClassName="col-sm-6"
-                    />
-                    <Input
-                      name="date_end"
-                      value={moment(this.state.list.date_end).format('YYYY-MM-DD') || ''}
-                      label="Data finalização do save"
-                      type="date"
-                      required
-                      rowClassName="col-sm-6"
+                      rowClassName="col-sm-12"
                     />
                     <Textarea
                       rows={3}
@@ -163,19 +178,35 @@ class SavesEdit extends React.Component {
                       rowClassName="col-sm-12"
                     />
                     <div className="form-group col-sm-12">
-                      <label
-                        className="control-label"
-                        htmlFor="image_default"
-                      >Imagem de destaque</label>
+                      <label className="control-label" htmlFor="image_default">
+                        Imagem de destaque
+                      </label>
                       <div className="controls">
-                        <input type="file" name="image_default" onChange={this.handleSave} />
+                        <input
+                          type="file"
+                          name="image_default"
+                          onChange={this.handleSave}
+                        />
                       </div>
-                      <RenderIf expr={(!!this.state.list.image_default && !this.state.image_default)}> 
-                        <img className="col-md-3" src={this.state.list.image_default} alt="image" />
+                      <RenderIf
+                        expr={
+                          !!this.state.list.image_default &&
+                            !this.state.image_default
+                        }
+                      >
+                        <img
+                          className="col-md-3"
+                          src={this.state.list.image_default}
+                          alt="image"
+                        />
                       </RenderIf>
 
-                      <RenderIf expr={(!!this.state.image_default)}> 
-                        <img className="col-md-3" src={this.state.image_default} alt="image" />
+                      <RenderIf expr={!!this.state.image_default}>
+                        <img
+                          className="col-md-3"
+                          src={this.state.image_default}
+                          alt="save"
+                        />
                       </RenderIf>
                     </div>
                     <RenderIf expr={this.state.btnEnabled}>
@@ -185,7 +216,12 @@ class SavesEdit extends React.Component {
                     </RenderIf>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" disabled={this.state.btnEnabled ? 'disabled' : ''} />
+                        <input
+                          className="btn btn-primary"
+                          type="submit"
+                          defaultValue="Enviar"
+                          disabled={this.state.btnEnabled ? 'disabled' : ''}
+                        />
                       </div>
                     </Row>
                   </FRC.Form>
@@ -195,7 +231,7 @@ class SavesEdit extends React.Component {
           </div>
         </div>
         <AlertMessage type={this.state.typeToast} show={this.state.showToast}>
-          { this.state.messageToast }
+          {this.state.messageToast}
         </AlertMessage>
       </Layout>
     );

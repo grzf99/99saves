@@ -1,7 +1,8 @@
 import React from 'react';
 import request from 'superagent';
 import Router from 'next/router';
-import moment from 'moment';
+import startOfDay from 'date-fns/start_of_day';
+import endOfDay from 'date-fns/end_of_day';
 import FRC, { Input, Row, Textarea } from 'formsy-react-components';
 import Loading from 'react-loading';
 
@@ -22,7 +23,7 @@ class SavesCreate extends React.Component {
       loading: true,
       showToast: false,
       messageToast: '',
-      typeToast: '',
+      typeToast: ''
     };
     this.submitForm = this.submitForm.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -40,13 +41,18 @@ class SavesCreate extends React.Component {
 
   handleImageUpload(file, name) {
     const imageChange = {};
-    const upload = request.post(config.CLOUDINARY_UPLOAD_URL)
-                     .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
-                     .field('file', file);
+    const upload = request
+      .post(config.CLOUDINARY_UPLOAD_URL)
+      .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
+      .field('file', file);
 
     upload.end((err, response) => {
       if (err) {
-        this.setState({ showToast: true, typeToast: 'warning', messageToast: `Problemas ao se comunicar com API: ${err}` });
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Problemas ao se comunicar com API: ${err}`
+        });
         this.setState({ btnEnabled: false });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       }
@@ -60,14 +66,19 @@ class SavesCreate extends React.Component {
   }
 
   isFormValid(values) {
-    return values.title && values.image_default && values.date_start && values.date_end;
+    return (
+      values.title &&
+      values.image_default &&
+      values.date_start &&
+      values.date_end
+    );
   }
 
   submitForm(data) {
-    const values = Object.assign(data, {
+    const values = Object.assign({}, data, {
       image_default: this.state.image_default,
-      date_start: moment(data.date_start, moment.ISO_8859).format(),
-      date_end: moment(data.date_end, moment.ISO_8859).format()
+      date_start: startOfDay(data.date_start).toJSON(),
+      date_end: endOfDay(data.date_end).toJSON()
     });
 
     if (!this.isFormValid(values)) {
@@ -82,15 +93,24 @@ class SavesCreate extends React.Component {
 
     if (!values.image_default) delete values.image_default;
 
-    const rest = this.props.api.post('/saves', values)
-        .then(() => {
-          this.setState({ showToast: true, typeToast: 'success', messageToast: 'Registro cadsatrado com Sucesso' });
-          setTimeout(() => Router.push('/admin/saves'), 2000);
-        })
-        .catch(() => {
-          this.setState({ showToast: true, typeToast: 'warning', messageToast: 'Erro ao inserir o registro' });
-          setTimeout(() => this.setState({ showToast: false }), 2500);
+    const rest = this.props.api
+      .post('/saves', values)
+      .then(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'success',
+          messageToast: 'Registro cadsatrado com Sucesso'
         });
+        setTimeout(() => Router.push('/admin/saves'), 2000);
+      })
+      .catch(() => {
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: 'Erro ao inserir o registro'
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
+      });
 
     return rest;
   }
@@ -106,17 +126,14 @@ class SavesCreate extends React.Component {
               </div>
 
               <div className="panel-body">
-               <RenderIf expr={this.state.loading}>
+                <RenderIf expr={this.state.loading}>
                   <div className="pull-center">
                     <Loading type="bars" color="#000000" />
                   </div>
                 </RenderIf>
                 <RenderIf expr={!this.state.loading}>
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
-                    <Input
-                      name="id"
-                      type="hidden"
-                    />
+                    <Input name="id" type="hidden" />
                     <Input
                       name="title"
                       value=""
@@ -153,26 +170,39 @@ class SavesCreate extends React.Component {
                       rowClassName="col-sm-12"
                     />
                     <div className="form-group col-sm-12">
-                      <label
-                        className="control-label"
-                        htmlFor="image_default"
-                      >Imagem de destaque *</label>
+                      <label className="control-label" htmlFor="image_default">
+                        Imagem de destaque *
+                      </label>
                       <div className="controls">
-                        <input type="file" name="image_default" required onChange={this.handleSave} />
+                        <input
+                          type="file"
+                          name="image_default"
+                          required
+                          onChange={this.handleSave}
+                        />
                       </div>
                       <RenderIf expr={this.state.btnEnabled}>
-                          <Loading type="bars" color="#000000" />  
-                        </RenderIf>
+                        <Loading type="bars" color="#000000" />
+                      </RenderIf>
 
-                        <RenderIf expr={(!!this.state.image_default)}> 
-                          <div className="controls">
-                            <img className="col-md-3" src={this.state.image_default} alt="image" />
-                          </div>
-                        </RenderIf>
+                      <RenderIf expr={!!this.state.image_default}>
+                        <div className="controls">
+                          <img
+                            className="col-md-3"
+                            src={this.state.image_default}
+                            alt="image"
+                          />
+                        </div>
+                      </RenderIf>
                     </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
-                        <input className="btn btn-primary" type="submit" defaultValue="Enviar" disabled={this.state.btnEnabled ? 'disabled' : ''} />
+                        <input
+                          className="btn btn-primary"
+                          type="submit"
+                          defaultValue="Enviar"
+                          disabled={this.state.btnEnabled ? 'disabled' : ''}
+                        />
                       </div>
                     </Row>
                   </FRC.Form>
@@ -182,11 +212,11 @@ class SavesCreate extends React.Component {
           </div>
         </div>
         <AlertMessage type={this.state.typeToast} show={this.state.showToast}>
-          { this.state.messageToast }
+          {this.state.messageToast}
         </AlertMessage>
       </Layout>
     );
   }
 }
 
-export default withAuth({ isAdminPage: true })(SavesCreate)
+export default withAuth({ isAdminPage: true })(SavesCreate);
