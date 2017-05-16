@@ -6,13 +6,16 @@ import { differenceInMinutes } from 'date-fns';
 const CountDown = styled.div`
   background: transparent;
   color: ${colors.white};
+  display: initial;
   font-family: 'Oswald', sans-serif;
-  font-size: 14px;
   font-weight: 500;
   text-align: center;
-  position: absolute;
-  width: 100%;
-  z-index: 3;
+  
+  &.card {
+    font-size: 14px;
+    position: absolute;
+    width: 100%;
+    z-index: 3;
 `;
 
 export default class extends React.Component {
@@ -79,9 +82,9 @@ export default class extends React.Component {
 
   render() {
     return (
-      <CountDown>
-      { this.getCountdown(this.props.date) }
-    </CountDown>
+      <CountDown {...this.props} >
+        { this.getCountdown(this.props.date) }
+      </CountDown>
     );
   }
 }
