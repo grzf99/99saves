@@ -23,15 +23,17 @@ module.exports = async (job, done) => {
   }
 
   return Promise.all(
-    subscriptions.map(s =>
-      queue
-        .create('email', {
-          subject: `O melhor preço de ${save.title} chegou. Compre até ${(format(save.checkout_end), 'DD/MM')}!`,
-          to: s.User.email,
-          template: 'mailers/checkout-start.hbs',
-          context: { save, product }
-        })
-        .save()
-    )
+    subscriptions.map((s) => {
+      if (s.User && s.User.email) {
+        return queue
+          .create('email', {
+            subject: `O melhor preço de ${save.title} chegou. Compre até ${(format(save.checkout_end), 'DD/MM')}!`,
+            to: s.User.email,
+            template: 'mailers/checkout-start.hbs',
+            context: { save, product }
+          })
+          .save();
+      }
+    })
   ).then(() => done());
 };
