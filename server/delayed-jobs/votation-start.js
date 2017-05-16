@@ -8,12 +8,10 @@ function getSaveSubscriptions(id) {
 }
 
 module.exports = async (job, done) => {
-  console.log('running votation start job');
   const queue = require('./index');
   const { save } = job.data;
   const subscriptions = await getSaveSubscriptions(save.id);
 
-  console.log(`we have ${subscriptions.length} subscriptions`);
   if (subscriptions.length === 0) {
     return done();
   }
