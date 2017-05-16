@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,700" rel="stylesheet" />
+</head>
+
+<body>
+  <table class="mail">
+    <thead>
+      <tr style="height: 35px;"></tr>
+      <tr>
+        <th style="min-width: 58px;"></th>
+        <th class="mail__header-width">
+          <h1 class="mail__title">Você tem até {{ formatDate save.checkout_end 'DD/MM' }}</h1>
+        </th>
+        <th style="min-width: 58px;"></th>
+      </tr>
+      <tr>
+        <th style="min-width: 58px;"></th>
+        <th class="mail__header-width">
+          <p class="mail__subtitle">
+            O melhor produto pelo melhor preço do mercado está na mão. Agora é só correr para comprar.
+          </p>
+        </th>
+        <th style="min-width: 58px;"></th>
+      </tr>
+      <tr style="height: 25px;"></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="min-width: 28px;"></td>
+        <td class="mail__product-wrapper">
+          <table class="mail__product">
+            <tbody>
+              <tr style="height: 13px;"></tr>
+              <tr>
+                <td style="width: 14px;"></td>
+                <td rowspan="2" class="product__logo-wrapper">
+                  <img class="product__logo" src="{{ product.Provider.logo }}" alt="{{ product.Provider.name }}">
+                </td>
+                <td style="width: 16px;"></td>
+                <td>
+                  <p class="product__text product__text--provider">
+                    Ofertado por {{ product.Provider.name }}
+                  </p>
+                </td>
+                <td style="width: 14px;"></td>
+              </tr>
+              <tr>
+                <td style="width: 14px;"></td>
+                <td style="width: 16px;"></td>
+                <td>
+                  <p class="product__title">{{ product.title }}</p>
+                </td>
+                <td style="width: 14px;"></td>
+              </tr>
+              <tr style="height: 16px;"></tr>
+            </tbody>
+          </table>
+        </td>
+        <td style="min-width: 28px;"></td>
+      </tr>
+      <tr>
+        <td style="min-width: 28px;"></td>
+        <td class="mail__content-wrapper">
+          <table class="mail__content">
+            <tbody>
+              <tr style="height: 21px;"></tr>
+              <tr>
+                <td style="width: 20px;"></td>
+                <td rowspan="7">
+                  <img class="product__image" src="{{ product.image_default }}" alt="{{ product.title }}">
+                </td>
+                <td style="height: 1px;">
+                  <p class="product__text product__text--label">Oferta exclusiva para participantes do save</p>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td style="height: 1px;">
+                  <p class="product__price">R$ {{ currency product.price }}</p>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td style="height: 1px;">
+                  <p class="product__text product__text--method">{{ product.method_payment }}</p>
+                </td>
+              </tr>
+              <tr style="height: 13px;"></tr>
+              <tr>
+                <td></td>
+                <td style="height: 1px;">
+                  <a href="{{ appUrl }}/offer/{{ save.slug }}" class="product__button">
+                    Ver oferta no 99saves
+                  </a>
+                </td>
+              </tr>
+              <tr style="height: 17px;"></tr>
+              <tr>
+                <td></td>
+                <td class="product__buscape-container">
+                  <table>
+                    <tbody>
+                      <tr style="height: 11px;"></tr>
+                      <tr>
+                        <td style="width: 16px;"></td>
+                        <td>
+                          <p class="product__text product__text--label-buscape">
+                            Menor preço do produto no buscapé
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 16px;"></td>
+                        <td>
+                          <p class="product__price product__price--buscape">
+                            R$ {{ product.price_buscape }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 16px;"></td>
+                        <td>
+                          <p class="product__text product__text--date-buscape">
+                            valor pesquisado pela equipe 99saves {{ formatDate product.date_buscape "DD/MM à\s HH:mm" }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr style="height: 11px;"></tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr style="height: 18px;"></tr>
+            </tbody>
+          </table>
+        </td>
+        <td style="min-width: 28px;"></td>
+      </tr>
+      {{> mail-footer}}
+    </tbody>
+  </table>
+
+  <style>
+    .mail {
+      width: 100%;
+      background: #1d2028;
+    }
+
+    .mail__header-width {
+      width: 600px;
+    }
+
+    .mail__title {
+      text-align: left;
+      text-transform: uppercase;
+      font-family: 'Oswald', sans-serif;
+      font-size: 34px;
+      line-height: 1.47;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .mail__subtitle {
+      text-align: left;
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #fff;
+      margin: 0;
+    }
+
+    .mail__product-wrapper {
+      width: 600px;
+    }
+
+    .mail__product {
+      border: 1px solid #253e4f;
+    }
+
+    .product__logo-wrapper {
+      height: 57px;
+      width: 57px;
+      background: #fff;
+    }
+
+    .product__logo {
+      width: 100%;
+    }
+
+    .product__text {
+      font-family: 'Roboto', sans-serif;
+      font-size: 12px;
+      color: #acb2c0;
+      margin: 0;
+    }
+
+    .product__text--label {
+      width: 194px;
+      color: #1d2028;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .product__text--method {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+    }
+
+    .product__text--label-buscape {
+      color: #1d2028;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .product__text--date-buscape {
+      font-size: 8px;
+      font-weight: 500;
+    }
+
+    .product__title {
+      text-align: left;
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      color: #fff;
+      margin: 0;
+    }
+
+    .product__image {
+      height: 250px;
+    }
+
+    .product__price {
+      text-align: left;
+      font-family: 'Oswald', sans-serif;
+      font-size: 36px;
+      font-weight: bold;
+      color: #1d2028;
+      margin: 0;
+    }
+
+    .product__price--buscape {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .product__button,
+    .product__button:visited,
+    .product__button:focus {
+      display: block;
+      width: 250px;
+      height: 44px;
+      text-align: center;
+      line-height: 44px;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: #fff;
+      border-radius: 2px;
+      background-color: #28ba64;
+      box-shadow: inset 0 -2px 0 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .product__buscape-container {
+      background: #f1f1f1;
+    }
+
+    .mail__content-wrapper {
+      width: 600px;
+    }
+
+    .mail__content {
+      width: 100%;
+      background: #fff;
+      border-radius: 2px;
+    }
+  </style>
+</body>
+
+</html>
