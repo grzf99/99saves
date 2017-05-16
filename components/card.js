@@ -34,6 +34,10 @@ const Tag = styled(Text)`
   position: absolute;
   top: 42px;
   z-index: 3;
+
+  &.gray {
+    background: ${colors.gray};
+  }
 `;
 
 const ImagesContainer = styled.div`
@@ -166,6 +170,10 @@ export default class extends React.Component {
       return (
         <Button block onClick={this.handleSave}>Participar deste save</Button>
       );
+    } else if (this.props.negotiationOpen) {
+      return (
+        <CustomText>Em breve você conhecerá as que ofertas feitas pelos fabricantes e escolherá a melhor</CustomText>
+      );
     } else if (this.props.votationOpen) {
       return (
         <Button block onClick={this.goToOffers}>Participar da votação</Button>
@@ -227,6 +235,9 @@ export default class extends React.Component {
         </RenderIf>
         <RenderIf expr={this.props.votationOpen}>
           <Tag uppercase>Votação</Tag>
+        </RenderIf>
+        <RenderIf expr={this.props.negotiationOpen}>
+          <Tag uppercase className="gray">Negociação</Tag>
         </RenderIf>
         <Header>
           {this.renderImages()}
