@@ -1,9 +1,9 @@
 import React from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
+import some from 'lodash/some';
 
 import { savesMapper } from '../utils';
-import { USER_LOCALSTORAGE_KEY } from '../store/auth';
 import withApi from '../components/hoc/withApi';
 import { colors } from '../components/styles/variables';
 import { Heading } from '../components/common/typography';
@@ -495,8 +495,10 @@ export class Index extends React.Component {
   }
 
   componentDidMount() {
-    const accessToken = window.localStorage.getItem(USER_LOCALSTORAGE_KEY);
-    if (accessToken) this.loadSaves();
+    if (this.props.isSignedIn) {
+      this.loadSaves();
+      this.loadSubscriptions();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -504,15 +506,20 @@ export class Index extends React.Component {
       this.loadSaves();
       this.closeModal();
 
-      if (
-        nextProps.isSignedIn !== this.props.isSignedIn &&
-        this.state.currentSubscribeTarget
-      ) {
-        this.handleSubscribe(this.state.currentSubscribeTarget);
-      }
+      this.loadSubscriptions().then(() => {
+        const { currentSubscribeTarget, subscriptions } = this.state;
+        const isSubscribedOnCurrentSave = some(subscriptions.rows, {
+          id: currentSubscribeTarget
+        });
+        if (currentSubscribeTarget && !isSubscribedOnCurrentSave) {
+          this.handleSubscribe(currentSubscribeTarget);
+        }
+      });
     }
 
-    this.setState({ showLoggedOut: nextProps.url.query.loggedOut });
+    if (!this.props.url.query.loggedOut) {
+      this.setState({ showLoggedOut: nextProps.url.query.loggedOut });
+    }
   }
 
   removeLogoutMessage() {
@@ -577,7 +584,7 @@ export class Index extends React.Component {
   }
 
   loadSaves() {
-    this.props.api
+    return this.props.api
       .get('/saves?filters[active]=true&limit=3')
       .then(res => res.data)
       .then(saves => savesMapper(saves))
@@ -585,6 +592,16 @@ export class Index extends React.Component {
         this.setState({
           saves
         });
+      });
+  }
+
+  loadSubscriptions() {
+    return this.props.api
+      .get('/saves?filters[subscribed]=true')
+      .then(res => res.data)
+      .then(saves => savesMapper(saves))
+      .then((subscriptions) => {
+        this.setState({ subscriptions });
       });
   }
 
@@ -621,15 +638,22 @@ export class Index extends React.Component {
         </Banner>
 
         <BrandContainer>
-          <BannerTitle>te conectamos com fabricantes que você confia</BannerTitle>
-          <BannerSubTitle>E negociamos produtos diretamente com eles</BannerSubTitle>
+          <BannerTitle>
+            te conectamos com fabricantes que você confia
+          </BannerTitle>
+          <BannerSubTitle>
+            E negociamos produtos diretamente com eles
+          </BannerSubTitle>
           <BrandImagesContainer>
             <BrandImage
               src="/static/images/image-costumers.svg"
               alt="Cliente"
             />
             <BrandImage src="/static/images/image-shop.svg" alt="loja" />
-            <BrandImage src="/static/images/image-factory.svg" alt="Fabricante" />
+            <BrandImage
+              src="/static/images/image-factory.svg"
+              alt="Fabricante"
+            />
           </BrandImagesContainer>
         </BrandContainer>
 
@@ -760,7 +784,7 @@ export class Index extends React.Component {
               <StyledCard
                 {...save}
                 key={save.id}
-                logged={this.state.logged}
+                logged={this.props.isSignedIn}
                 openLoginModal={() => this.openModal(save.id)}
                 handleSubscribe={() => this.handleSubscribe(save.id)}
                 goToOffers={() => this.goToOffers(save.slug)}

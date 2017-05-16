@@ -2,6 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
+import some from 'lodash/some';
 
 import { savesMapper } from '../utils';
 import withApi from '../components/hoc/withApi';
@@ -119,17 +120,19 @@ export class Saves extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isSignedIn) {
+    if (nextProps.isSignedIn !== this.props.isSignedIn) {
       this.loadSaves();
-      this.loadSubscriptions();
       this.closeModal();
 
-      if (
-        nextProps.isSignedIn !== this.props.isSignedIn &&
-        this.state.currentSubscribeTarget
-      ) {
-        this.handleSubscribe(this.state.currentSubscribeTarget);
-      }
+      this.loadSubscriptions().then(() => {
+        const { currentSubscribeTarget, subscriptions } = this.state;
+        const isSubscribedOnCurrentSave = some(subscriptions.rows, {
+          id: currentSubscribeTarget
+        });
+        if (currentSubscribeTarget && !isSubscribedOnCurrentSave) {
+          this.handleSubscribe(currentSubscribeTarget);
+        }
+      });
     }
   }
 
