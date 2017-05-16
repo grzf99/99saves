@@ -221,7 +221,7 @@ export default class extends React.Component {
   render() {
     return (
       <Card {...this.props}>
-        <CountDown {...this.props} />
+        <CountDown {...this.props} className="card" />
         <RenderIf expr={this.props.finished}>
           <Status>Oferta encerrada</Status>
         </RenderIf>
