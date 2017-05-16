@@ -24,7 +24,6 @@ export default class extends React.Component {
     super(props);
 
     this.state = {
-      save: props.save,
       countDown: '...',
     };
   }
@@ -53,12 +52,11 @@ export default class extends React.Component {
     } else if (this.props.status === 'checkout') {
         date = this.props.checkout_end;
     }
-    const diffInMinutes = differenceInMinutes(new Date(date), new Date());
+
     return this.countDownTimer(date);
   }
 
-  countDownTimer(dt)
-  {
+  countDownTimer(dt) {
       let end = new Date(dt);
 
       let _second = 1000;
