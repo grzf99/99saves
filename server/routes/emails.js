@@ -84,4 +84,33 @@ router.get('/purchase-start', async (req, res) => {
   res.status(200).send(result);
 });
 
+router.get('/last-chance', async (req, res) => {
+  const save = {
+    id: 2,
+    title: 'Máquina de lavar',
+    slug: 'maquina-de-lavar-1',
+    checkout_end: new Date()
+  };
+  const product = {
+    id: 1,
+    title: 'Máquina de Lavar | Lavadora de Roupa Brastemp Clean Automática Turbo Performance 10Kg Branca - BWC10BB',
+    image_default: 'http://images.maquinadevendas.com.br/370x370/produto/246273_5026290_20161003161856.jpg',
+    price: 1299,
+    price_buscape: 1400,
+    date_buscape: new Date(),
+    method_payment: 'em até 10x sem juros',
+    Provider: {
+      id: 1,
+      name: 'Brastemp',
+      logo: 'https://mainaranobrega.files.wordpress.com/2015/06/brastemp-svg.png'
+    }
+  };
+
+  const result = await compileTemplate('mailers/last-chance.hbs', {
+    save,
+    product
+  });
+  res.status(200).send(result);
+});
+
 module.exports = router;
