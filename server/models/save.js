@@ -3,8 +3,10 @@ const {
   startOfDay,
   endOfDay,
   addDays,
-  differenceInDays,
-  isSameDay
+  isBefore,
+  isAfter,
+  isSameDay,
+  addHours
 } = require('date-fns');
 const { slugify, isDateBetween } = require('../../utils');
 
@@ -40,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       preSubscription: {
         type: DataTypes.VIRTUAL,
         get() {
-          return differenceInDays(new Date(), new Date(this.date_start)) < 0;
+          return isBefore(new Date(), new Date(this.date_start));
         }
       },
       subscriptionOpen: {
@@ -90,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
       finished: {
         type: DataTypes.VIRTUAL,
         get() {
-          return differenceInDays(new Date(), new Date(this.checkout_end)) > 0;
+          return isAfter(new Date(), new Date(this.checkout_end));
         }
       },
       status: {
@@ -136,8 +138,18 @@ module.exports = (sequelize, DataTypes) => {
         votable: {
           where: {
             votation_end: {
-              $lt: endOfDay(new Date()),
-              $gt: startOfDay(new Date())
+              $lt: addHours(endOfDay(new Date()), 3),
+              $gt: addHours(startOfDay(new Date()), 3)
+            }
+          }
+        },
+        startedCheckoutToday: {
+          where: {
+            votation_end: {
+              $lt: addHours(startOfDay(new Date()), 3)
+            },
+            checkout_end: {
+              $gt: addHours(endOfDay(new Date()), 3)
             }
           }
         }

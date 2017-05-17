@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const Handlebars = require('handlebars');
+const dateFns = require('date-fns');
 const formatCurrency = require('../formatCurrency');
 
 Handlebars.registerHelper('currency', formatCurrency);
+Handlebars.registerHelper('formatDate', dateFns.format);
 
 const partialsDir = path.join(
   __dirname,
