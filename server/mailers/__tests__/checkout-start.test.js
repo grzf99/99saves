@@ -1,9 +1,17 @@
 const { addDays, endOfDay } = require('date-fns');
-const { Save } = require('../../models');
+const { Save, Product, Provider } = require('../../models');
 const CheckoutStartMailer = require('../checkout-start');
 
-beforeEach(() => Save.sync({ force: true }));
-afterEach(() => Save.sync({ force: true }));
+beforeEach(() =>
+  Save.sync({ force: true })
+    .then(() => Product.sync({ force: true }))
+    .then(() => Provider.sync({ force: true }))
+);
+afterEach(() =>
+  Save.sync({ force: true })
+    .then(() => Product.sync({ force: true }))
+    .then(() => Provider.sync({ force: true }))
+);
 
 jest.mock('../../delayed-jobs');
 const queue = require('../../delayed-jobs');
