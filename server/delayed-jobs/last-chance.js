@@ -17,7 +17,7 @@ module.exports = async (job, done) => {
   const { save } = job.data;
   const subscriptions = await getSaveSubscriptions(save.id);
   const product = await getWinnerProductDetails(save.winnerProduct.id);
-
+  
   if (subscriptions.length === 0) {
     return done();
   }
