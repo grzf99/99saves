@@ -152,6 +152,14 @@ module.exports = (sequelize, DataTypes) => {
               $gt: addHours(endOfDay(new Date()), 3)
             }
           }
+        },
+        lastChance: {
+          where: {
+            checkout_end: {
+              $lt: addHours(endOfDay(new Date()), 3),
+              $gt: addHours(startOfDay(new Date()), 3)
+            }
+          }
         }
       },
       classMethods: {

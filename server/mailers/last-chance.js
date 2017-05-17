@@ -3,7 +3,7 @@ const queue = require('../delayed-jobs');
 
 module.exports = {
   async verify() {
-    const saves = await Save.scope('votationEnd').findAll({
+    const saves = await Save.scope('lastChance').findAll({
       include: [{ model: Product, include: [Provider] }]
     });
     return saves.map(save => queue.create('last-chance', { save }).save());
