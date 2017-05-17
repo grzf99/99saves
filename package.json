@@ -22,6 +22,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "accounting": "^0.4.1",
     "axios": "^0.16.0",
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
@@ -49,7 +50,6 @@
     "next-cookies": "^1.0.1",
     "next-redux-wrapper": "1.1.2",
     "node-schedule": "^1.2.1",
-    "numeral": "^2.0.6",
     "passport": "^0.3.2",
     "passport-facebook-token": "^3.3.0",
     "passport-jwt": "^2.2.1",
