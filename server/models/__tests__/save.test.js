@@ -1,6 +1,9 @@
 import { differenceInDays, addDays, endOfDay, startOfDay } from 'date-fns';
 import { Save } from '../';
 
+beforeEach(() => Save.sync({ force: true }));
+afterEach(() => Save.sync({ force: true }));
+
 describe('title setter', () => {
   it('should set the title', () => {
     const save = Save.build({ title: 'My title' });
@@ -254,4 +257,26 @@ describe('finished getter', () => {
       expect(save.finished).toEqual(true);
     });
   });
+});
+
+describe('feedbackable scope', () => {
+  it('should return all saves that are on the 10th day after finished', () =>
+    Save.bulkCreate([
+      {
+        date_start: addDays(new Date(), -5),
+        date_end: endOfDay(addDays(new Date(), -3))
+      },
+      {
+        date_start: addDays(new Date(), -16),
+        date_end: endOfDay(addDays(new Date(), -14))
+      },
+      {
+        date_start: addDays(new Date(), -17),
+        date_end: endOfDay(addDays(new Date(), -15))
+      }
+    ])
+      .then(() => Save.scope('feedbackable').findAll())
+      .then((saves) => {
+        expect(saves.length).toEqual(1);
+      }));
 });

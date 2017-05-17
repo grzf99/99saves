@@ -160,6 +160,13 @@ module.exports = (sequelize, DataTypes) => {
               $gt: addHours(startOfDay(new Date()), 3)
             }
           }
+        },
+        feedbackable: {
+          where: {
+            checkout_end: {
+              $eq: endOfDay(addDays(new Date(), -10))
+            }
+          }
         }
       },
       classMethods: {
