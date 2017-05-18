@@ -4,6 +4,7 @@ const startClockwork = require('../clockwork');
 jest.mock('../mailers/votation-start');
 jest.mock('../mailers/checkout-start');
 jest.mock('../mailers/last-chance');
+jest.mock('../mailers/feedback');
 const VotationStartMailer = require('../mailers/votation-start');
 const CheckoutStartMailer = require('../mailers/checkout-start');
 const LastChanceMailer = require('../mailers/last-chance');
