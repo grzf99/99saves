@@ -71,6 +71,13 @@ function createShowQuery(req, includeVote = true) {
       {
         model: Product,
         include: [Vote, Provider]
+      },
+      {
+        model: Subscription,
+        include: [Vote],
+        where: {
+          UserId: req.user.id
+        },
       }
     ];
   }
