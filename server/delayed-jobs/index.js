@@ -9,11 +9,14 @@ const options = {
     ? process.env.REDIS_URL
     : undefined
 };
-const queue = kue.createQueue(options);
 
-queue.process('email', emailProcessor);
-queue.process('votation-start', votationStartProcessor);
-queue.process('checkout-start', checkoutStartProcessor);
-queue.process('last-chance', lastChanceProcessor);
+module.exports = () => {
+  const queue = kue.createQueue(options);
 
-module.exports = queue;
+  queue.process('email', emailProcessor);
+  queue.process('votation-start', votationStartProcessor);
+  queue.process('checkout-start', checkoutStartProcessor);
+  queue.process('last-chance', lastChanceProcessor);
+
+  global.queue = queue;
+};

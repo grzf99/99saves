@@ -28,7 +28,7 @@ module.exports = async (job, done) => {
   return Promise.all(
     subscriptions.map((s) => {
       if (s.User && s.User.email) {
-        return queue
+        return global.queue
           .create('email', {
             subject: 'O seu tempo tá acabando. Corra.',
             to: s.User.email,

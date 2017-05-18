@@ -9,6 +9,7 @@ const passport = require('passport');
 require('dotenv').config();
 
 const startClockwork = require('./server/clockwork');
+const startQueue = require('./server/delayed-jobs');
 const apiRoutes = require('./server/routes');
 const passportStrategies = require('./server/strategies');
 const { User } = require('./server/models');
@@ -60,6 +61,7 @@ app.prepare().then(() => {
   server.get('*', (req, res) => handle(req, res));
 
   startClockwork();
+  startQueue();
   server.listen(port, (err) => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);

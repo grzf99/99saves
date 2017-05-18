@@ -1,5 +1,4 @@
 const { Save, Product } = require('../models');
-const queue = require('../delayed-jobs');
 
 module.exports = {
   async verify() {
@@ -7,7 +6,7 @@ module.exports = {
       include: [Product]
     });
     return saves.map(save =>
-      queue.create('feedback', { save }).removeOnComplete(true).save()
+      global.queue.create('feedback', { save }).removeOnComplete(true).save()
     );
   }
 };

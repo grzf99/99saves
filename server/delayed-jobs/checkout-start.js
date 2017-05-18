@@ -13,7 +13,6 @@ function getWinnerProductDetails(id) {
 }
 
 module.exports = async (job, done) => {
-  const queue = require('./index');
   const { save } = job.data;
   const subscriptions = await getSaveSubscriptions(save.id);
   const product = await getWinnerProductDetails(save.winnerProduct.id);
@@ -28,7 +27,7 @@ module.exports = async (job, done) => {
   return Promise.all(
     subscriptions.map((s) => {
       if (s.User && s.User.email) {
-        return queue
+        return global.queue
           .create('email', {
             subject: `O melhor preço de ${save.title} chegou. Compre até ${format(save.checkout_end, 'DD/MM')}!`,
             to: s.User.email,
