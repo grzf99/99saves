@@ -552,7 +552,7 @@ class Offer extends React.Component {
               <CheckouModal 
                 isOpen={this.state.modalIsOpen}
                 onClose={() => this.closeModal()}
-                product={product}
+                product={this.props.save}
                 width="400px"
               />
             </div>
