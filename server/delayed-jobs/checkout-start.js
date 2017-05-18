@@ -35,6 +35,7 @@ module.exports = async (job, done) => {
             template: 'mailers/checkout-start.hbs',
             context: { save, product }
           })
+          .removeOnComplete(true)
           .save();
       }
     })

@@ -17,7 +17,7 @@ module.exports = async (job, done) => {
   const { save } = job.data;
   const subscriptions = await getSaveSubscriptions(save.id);
   const product = await getWinnerProductDetails(save.winnerProduct.id);
-  
+
   if (subscriptions.length === 0) {
     return done();
   }
@@ -30,11 +30,12 @@ module.exports = async (job, done) => {
       if (s.User && s.User.email) {
         return queue
           .create('email', {
-            subject: `O seu tempo tá acabando. Corra.`,
+            subject: 'O seu tempo tá acabando. Corra.',
             to: s.User.email,
             template: 'mailers/last-chance.hbs',
             context: { save, product }
           })
+          .removeOnComplete(true)
           .save();
       }
     })

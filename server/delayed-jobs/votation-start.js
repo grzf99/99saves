@@ -29,6 +29,7 @@ module.exports = async (job, done) => {
             template: 'mailers/votation-start.hbs',
             context: { save }
           })
+          .removeOnComplete(true)
           .save();
       }
     })

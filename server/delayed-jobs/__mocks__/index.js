@@ -1,5 +1,7 @@
 module.exports = {
   create: jest.fn(() => ({
-    save: jest.fn()
+    removeOnComplete: jest.fn(() => ({
+      save: jest.fn()
+    }))
   }))
 };

@@ -6,6 +6,8 @@ module.exports = {
     const saves = await Save.scope('startedCheckoutToday').findAll({
       include: [{ model: Product, include: [Provider] }]
     });
-    return saves.map(save => queue.create('checkout-start', { save }).save());
+    return saves.map(save =>
+      queue.create('checkout-start', { save }).removeOnComplete(true).save()
+    );
   }
 };

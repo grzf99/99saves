@@ -6,6 +6,8 @@ module.exports = {
     const saves = await Save.scope('feedbackable').findAll({
       include: [Product]
     });
-    return saves.map(save => queue.create('feedback', { save }).save());
+    return saves.map(save =>
+      queue.create('feedback', { save }).removeOnComplete(true).save()
+    );
   }
 };

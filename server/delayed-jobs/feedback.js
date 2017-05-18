@@ -31,6 +31,7 @@ module.exports = async (job, done) => {
             template: 'mailers/feedback.hbs',
             context: { save, product }
           })
+          .removeOnComplete(true)
           .save();
       }
     })

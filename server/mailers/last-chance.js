@@ -6,6 +6,8 @@ module.exports = {
     const saves = await Save.scope('lastChance').findAll({
       include: [{ model: Product, include: [Provider] }]
     });
-    return saves.map(save => queue.create('last-chance', { save }).save());
+    return saves.map(save =>
+      queue.create('last-chance', { save }).removeOnComplete(true).save()
+    );
   }
 };
