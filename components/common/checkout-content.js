@@ -59,10 +59,10 @@ const ContentButton = styled.div`
 
 class CheckoutContent extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      value: '12345612',
+      value: this.props.product.Subscriptions[0].CouponId,
       copied: false
     };
   }
@@ -70,7 +70,6 @@ class CheckoutContent extends Component {
 
 
   render() {
-    console.log(this.props.product);
     return (
       <div>
         <Header>
@@ -81,7 +80,7 @@ class CheckoutContent extends Component {
         </Header>
 
         <InputButton>
-          <InputCopy>123456789</InputCopy>
+          <InputCopy>{this.props.product.Subscriptions[0].CouponId}</InputCopy>
           <CopyToClipboard
             text={this.state.value}
             onCopy={() => this.setState({copied: true})}
@@ -102,7 +101,7 @@ class CheckoutContent extends Component {
           <Button
             block
             large
-            href={this.props.product.link_buy}
+            href={this.props.product.Products[0].link_buy}
             target="_blank"
           >
             ir para o site do fabricante
