@@ -36,6 +36,7 @@ import Headline from '../components/common/headline';
 import RenderIf from '../components/common/render-if';
 import Toast from '../components/common/toast';
 import CountDown from '../components/common/countdown';
+import CheckouModal from '../components/common/checkout-modal';
 
 const Header = styled(Container)`
   display: flex;
@@ -281,7 +282,8 @@ class Offer extends React.Component {
       save: props.save,
       products: props.save.Products,
       vote: 0,
-      showToastVotation: false
+      showToastVotation: false,
+      modalIsOpen: false
     };
 
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
@@ -291,8 +293,18 @@ class Offer extends React.Component {
     this.removeToastVotation = this.removeToastVotation.bind(this);
     // TODO: Remover quando mergear a auth
     this.loadVote = this.loadVote.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
 
     this.timer = null;
+  }
+
+  openModal(subscribeTo) {
+    this.setState({ modalIsOpen: true });
+  }
+
+  closeModal() {
+    this.setState({ modalIsOpen: false });
   }
 
   removeToastVotation() {
@@ -367,7 +379,7 @@ class Offer extends React.Component {
 
   renderCheckoutButton(product) {
     return (
-      <Button large href={product.link_buy} target="_blank">
+      <Button large onClick={() => this.openModal()}>
         Comprar agora
       </Button>
     );
@@ -537,6 +549,12 @@ class Offer extends React.Component {
                   </Column>
                 </Row>
               </MarginContainer>
+              <CheckouModal 
+                isOpen={this.state.modalIsOpen}
+                onClose={() => this.closeModal()}
+                product={product}
+                width="400px"
+              />
             </div>
           ))}
         </SwipeableViews>
