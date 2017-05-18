@@ -22,7 +22,7 @@ export default ({ children }) => (
       hasFooter
       flex
       centered
-      backgroundImage="static/images/signup-background@2x.jpg"
+      backgroundImage="/static/images/signup-background@2x.jpg"
       paddingBottom
     >
       <Container maxWidth="400px">
@@ -32,7 +32,7 @@ export default ({ children }) => (
           </Link>
         </Header>
         {children}
-      </Container>  
+      </Container>
     </Page>
     <Footer />
   </div>

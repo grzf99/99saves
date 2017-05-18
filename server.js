@@ -49,14 +49,14 @@ app.prepare().then(() => {
   // });
 
   server.use('/api', apiRoutes);
-  server.get('/offer/:saveId', (req, res) =>
-    app.render(
-      req,
-      res,
-      '/offer',
-      Object.assign({}, req.query, { saveId: req.params.saveId })
-    )
-  );
+  server.get('/offer/:saveId', (req, res) => {
+    const { saveId } = req.params;
+    app.render(req, res, '/offer', Object.assign({}, req.query, { saveId }));
+  });
+  server.get('/feedback/:saveId', (req, res) => {
+    const { saveId } = req.params;
+    app.render(req, res, '/feedback', Object.assign({}, req.query, { saveId }));
+  });
   server.get('*', (req, res) => handle(req, res));
 
   startClockwork();

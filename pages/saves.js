@@ -19,6 +19,7 @@ import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
 import SubscriptionConfirmationModal
   from '../components/saves/subscription-confirmation-modal';
+import { colors } from '../components/styles/variables';
 
 const CardsList = styled(Container)`
   align-items: stretch;
@@ -226,8 +227,8 @@ export class Saves extends React.Component {
         />
         ))
       : <BlankState>
-        <Heading white>Ainda não tem nenhum save???</Heading>
-        <Text white>
+        <Heading color={colors.white}>Ainda não tem nenhum save???</Heading>
+        <Text color={colors.white}>
             O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!
           </Text>
         <div>
