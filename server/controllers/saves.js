@@ -50,6 +50,25 @@ module.exports = {
     })
       .then(save => res.status(200).json({ subscriptions: save.Subscriptions }))
       .catch(err => res.status(400).json(err));
+  },
+
+  async mySubscription(req, res) {
+    try {
+      const save = await Save.find({ where: { slug: req.params.id } });
+      const subscription = await Subscription.find({
+        where: {
+          SaveId: save.id,
+          UserId: req.user.id
+        }
+      });
+      if (subscription !== null) {
+        res.status(200).json(subscription.toJSON());
+      } else {
+        res.sendStatus(404);
+      }
+    } catch (err) {
+      res.status(500).send(err);
+    }
   }
 };
 

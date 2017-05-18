@@ -10,6 +10,11 @@ const router = express.Router();
 // client
 router.get('/:id', clientAuthentication(true), saves.show);
 router.get('/', clientAuthentication(true), saves.list);
+router.get(
+  '/:id/my-subscription',
+  clientAuthentication(),
+  saves.mySubscription
+);
 router.post(
   '/:saveId/subscriptions',
   clientAuthentication(),
