@@ -69,13 +69,8 @@ class CheckoutContent extends Component {
   }
 
   getCupon() {
-    let coupon;
-    _.map(this.props.save.Subscriptions, (sub) => {
-      let cupom = _.find(sub, {ProductId: this.props.save.winnerProduct.id});
-      coupon = cupom.key;
-    });
-
-    return coupon;
+    const [subscription] = this.props.save.Subscriptions;
+    return subscription.Coupon.key;
   }
 
   render() {
