@@ -283,7 +283,7 @@ class Offer extends React.Component {
       products: props.save.Products,
       vote: 0,
       showToastVotation: false,
-      modalIsOpen: false
+      checkoutModalIsOpen: false
     };
 
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
@@ -293,18 +293,16 @@ class Offer extends React.Component {
     this.removeToastVotation = this.removeToastVotation.bind(this);
     // TODO: Remover quando mergear a auth
     this.loadVote = this.loadVote.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.openModal = this.openModal.bind(this);
 
     this.timer = null;
   }
 
-  openModal(subscribeTo) {
-    this.setState({ modalIsOpen: true });
+  openCheckoutModal(subscribeTo) {
+    this.setState({ checkoutModalIsOpen: true });
   }
 
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.setState({ checkoutModalIsOpen: false });
   }
 
   removeToastVotation() {
@@ -379,7 +377,7 @@ class Offer extends React.Component {
 
   renderCheckoutButton(product) {
     return (
-      <Button large onClick={() => this.openModal()}>
+      <Button large onClick={() => this.openCheckoutModal()}>
         Comprar agora
       </Button>
     );
@@ -550,7 +548,7 @@ class Offer extends React.Component {
                 </Row>
               </MarginContainer>
               <CheckoutModal 
-                isOpen={this.state.modalIsOpen}
+                isOpen={this.state.checkoutModalIsOpen}
                 onClose={() => this.closeModal()}
                 save={this.props.save}
                 width="400px"

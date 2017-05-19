@@ -142,23 +142,21 @@ export default class extends React.Component {
     super(props);
 
     this.state = {
-      modalIsOpen: false
+      checkoutModalIsOpen: false
     };
 
     this.handleSave = this.handleSave.bind(this);
     this.goToOffers = this.goToOffers.bind(this);
     this.goToCheckout = this.goToCheckout.bind(this);
     this.renderImages = this.renderImages.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.openModal = this.openModal.bind(this);
   }
 
-  openModal(subscribeTo) {
-    this.setState({ modalIsOpen: true });
+  openCheckoutModal(subscribeTo) {
+    this.setState({ checkoutModalIsOpen: true });
   }
 
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.setState({ checkoutModalIsOpen: false });
   }
 
   handleSave() {
@@ -297,13 +295,13 @@ export default class extends React.Component {
             <Button
               block
               target="_blank"
-              onClick={() => this.openModal()}
+              onClick={() => this.openCheckoutModal()}
               
             >
               Comprar agora
             </Button>
             <CheckoutModal 
-              isOpen={this.state.modalIsOpen}
+              isOpen={this.state.checkoutModalIsOpen}
               onClose={() => this.closeModal()}
               save={this.props}
               width="400px"
