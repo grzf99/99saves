@@ -2,6 +2,8 @@ import MockResponse from 'mock-express-response';
 import { User } from '../../models';
 import authController from '../auth';
 
+jest.mock('../../mailers/forgot-password');
+
 beforeEach(() => {
   require('dotenv').config();
   return User.sync({ force: true });
