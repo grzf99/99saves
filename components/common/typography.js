@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { colors } from '../styles/variables';
 
 export const Heading = styled.h1`
-  color: ${props => (props.white ? colors.white : colors.black)};
+  color: ${props => (props.color ? props.color : colors.black)};
   font-family: 'Oswald', sans-serif;
   font-size: ${props => (props.large ? '34px' : '26px')};
   font-weight: ${props => (props.large ? '700' : '500')};;
@@ -20,7 +20,7 @@ export const Heading2 = styled.h2`
 `;
 
 export const Text = styled.p`
-  color: ${props => (props.white ? colors.white : colors.black)};
+  color: ${props => (props.color ? props.color : colors.black)};
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   margin: 0;

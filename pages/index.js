@@ -14,6 +14,7 @@ import Footer from '../components/footer';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
+import ForgotPasswordModal from '../components/auth/forgot-password-modal';
 import Modal from '../components/common/modal';
 import RenderIf from '../components/common/render-if';
 import SubscriptionConfirmationModal
@@ -471,7 +472,7 @@ export class Index extends React.Component {
 
     this.state = {
       logged: props.isSignedIn,
-      modalIsOpen: false,
+      loginModalIsOpen: false,
       modalVideoIsOpen: false,
       activeTab: 1,
       saves: props.saves,
@@ -479,12 +480,13 @@ export class Index extends React.Component {
       showToast: false,
       showLoggedOut: showLoggedOutToast,
       subscriptionConfirmationModalIsOpen: false,
-      currentSubscribeTarget: null
+      currentSubscribeTarget: null,
+      forgotPasswordModalIsOpen: false
     };
 
-    this.openModal = this.openModal.bind(this);
+    this.openLoginModal = this.openLoginModal.bind(this);
     this.openVideoModal = this.openVideoModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.closeLoginModal = this.closeLoginModal.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
     this.loadSaves = this.loadSaves.bind(this);
     this.handleSubscribe = this.handleSubscribe.bind(this);
@@ -492,6 +494,8 @@ export class Index extends React.Component {
     this.handleSubscribeCancel = this.handleSubscribeCancel.bind(this);
     this.removeLogoutMessage = this.removeLogoutMessage.bind(this);
     this.goToOffers = this.goToOffers.bind(this);
+    this.openForgotPasswordModal = this.openForgotPasswordModal.bind(this);
+    this.closeForgotPasswordModal = this.closeForgotPasswordModal.bind(this);
   }
 
   componentDidMount() {
@@ -504,7 +508,7 @@ export class Index extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.isSignedIn) {
       this.loadSaves();
-      this.closeModal();
+      this.closeLoginModal();
 
       this.loadSubscriptions().then(() => {
         const { currentSubscribeTarget, subscriptions } = this.state;
@@ -563,16 +567,27 @@ export class Index extends React.Component {
     });
   }
 
-  openModal(subscribeTo) {
-    this.setState({ modalIsOpen: true, currentSubscribeTarget: subscribeTo });
+  openLoginModal(subscribeTo) {
+    this.setState({
+      loginModalIsOpen: true,
+      currentSubscribeTarget: subscribeTo
+    });
   }
 
   openVideoModal() {
     this.setState({ modalVideoIsOpen: true });
   }
 
-  closeModal() {
-    this.setState({ modalIsOpen: false, modalVideoIsOpen: false });
+  closeLoginModal() {
+    this.setState({ loginModalIsOpen: false, modalVideoIsOpen: false });
+  }
+
+  openForgotPasswordModal() {
+    this.setState({ forgotPasswordModalIsOpen: true, loginModalIsOpen: false });
+  }
+
+  closeForgotPasswordModal() {
+    this.setState({ forgotPasswordModalIsOpen: false });
   }
 
   handleChangeIndex(tabIndex) {
@@ -614,6 +629,7 @@ export class Index extends React.Component {
             logged={this.props.isSignedIn}
             background="transparent"
             onLogout={this.props.onLogout}
+            api={this.props.api}
           />
 
           <BannerContainer>
@@ -624,11 +640,11 @@ export class Index extends React.Component {
 
             <BannerActions>
               <RenderIf expr={!this.props.isSignedIn}>
-                <Button outline onClick={() => this.openModal()}>
+                <Button outline onClick={this.openLoginModal}>
                   participe agora mesmo
                 </Button>
               </RenderIf>
-              <VideoButton onClick={() => this.openVideoModal()}>
+              <VideoButton onClick={this.openVideoModal}>
                 entenda como funciona
               </VideoButton>
             </BannerActions>
@@ -758,7 +774,7 @@ export class Index extends React.Component {
 
           <ItWorkContainer className="center">
             <RenderIf expr={!this.props.isSignedIn}>
-              <Button outline onClick={() => this.openModal()}>
+              <Button outline onClick={this.openLoginModal}>
                 participe agora mesmo
               </Button>
             </RenderIf>
@@ -785,7 +801,7 @@ export class Index extends React.Component {
                 {...save}
                 key={save.id}
                 logged={this.props.isSignedIn}
-                openLoginModal={() => this.openModal(save.id)}
+                openLoginModal={() => this.openLoginModal(save.id)}
                 handleSubscribe={() => this.handleSubscribe(save.id)}
                 goToOffers={() => this.goToOffers(save.slug)}
                 linkToBuy={save.winnerProduct && save.winnerProduct.link_buy}
@@ -800,8 +816,15 @@ export class Index extends React.Component {
         <Footer marginTop />
 
         <LoginModal
-          isOpen={this.state.modalIsOpen}
-          onClose={() => this.closeModal()}
+          isOpen={this.state.loginModalIsOpen}
+          onForgotPassword={this.openForgotPasswordModal}
+          onClose={this.closeLoginModal}
+        />
+
+        <ForgotPasswordModal
+          isOpen={this.state.forgotPasswordModalIsOpen}
+          onClose={this.closeForgotPasswordModal}
+          api={this.props.api}
         />
 
         <SubscriptionConfirmationModal
@@ -813,8 +836,8 @@ export class Index extends React.Component {
 
         <Modal
           isOpen={this.state.modalVideoIsOpen}
-          onClose={this.closeModal}
-          onRequestClose={this.closeModal}
+          onClose={this.closeLoginModal}
+          onRequestClose={this.closeLoginModal}
           contentLabel="Video promocional"
           style={modalVideoStyles}
         >
