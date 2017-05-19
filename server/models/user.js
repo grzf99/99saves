@@ -17,7 +17,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
-      facebookId: DataTypes.STRING
+      facebookId: DataTypes.STRING,
+      resetPasswordToken: DataTypes.STRING,
+      resetPasswordTokenExpires: DataTypes.INTEGER
     },
     {
       hooks: {
@@ -26,7 +28,13 @@ module.exports = (sequelize, DataTypes) => {
             user.password = hash;
           });
         },
-        afterCreate(user) {}
+        beforeUpdate(user) {
+          if (user.changed('resetPasswordToken')) {
+            return bcrypt.hash(user.resetPasswordToken, 10).then((hash) => {
+              user.resetPasswordToken = hash;
+            });
+          }
+        }
       },
       classMethods: {
         associate(models) {
