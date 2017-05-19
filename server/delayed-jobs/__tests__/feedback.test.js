@@ -1,5 +1,5 @@
 const { Save, Subscription, User, Product } = require('../../models');
-const lastChanceProcessor = require('../last-chance');
+const feedbackProcessor = require('../feedback');
 
 beforeEach(() =>
   User.sync({ force: true })
@@ -37,7 +37,7 @@ describe('when there are no subscriptions on the save', () => {
       .then((save) => {
         job.data.save = save;
       })
-      .then(() => lastChanceProcessor(job, cb))
+      .then(() => feedbackProcessor(job, cb))
       .then(() => {
         expect(cb).toHaveBeenCalled();
         expect(global.queue.create).not.toHaveBeenCalled();
@@ -62,7 +62,7 @@ describe('when there are subscriptions on the save', () => {
       .then((save) => {
         job.data.save = save;
       })
-      .then(() => lastChanceProcessor(job, cb))
+      .then(() => feedbackProcessor(job, cb))
       .then(() => {
         expect(cb).toHaveBeenCalled();
         expect(global.queue.create).toHaveBeenCalledTimes(1);

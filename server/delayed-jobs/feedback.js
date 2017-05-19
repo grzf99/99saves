@@ -1,4 +1,3 @@
-const { format } = require('date-fns');
 const { User, Subscription, Product, Provider } = require('../models');
 
 function getSaveSubscriptions(id) {
@@ -22,7 +21,7 @@ module.exports = async (job, done) => {
     return done();
   }
   console.log(
-    `running last chance start job for save ${save.id} with ${subscriptions.length} subscriptions`
+    `running feedback job for save ${save.id} with ${subscriptions.length} subscriptions`
   );
 
   return Promise.all(
@@ -30,9 +29,9 @@ module.exports = async (job, done) => {
       if (s.User && s.User.email) {
         return global.queue
           .create('email', {
-            subject: 'O seu tempo tá acabando. Corra.',
+            subject: `Como foi a compra de ${save.title}?`,
             to: s.User.email,
-            template: 'mailers/last-chance.hbs',
+            template: 'mailers/feedback.hbs',
             context: { save, product }
           })
           .removeOnComplete(true)

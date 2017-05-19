@@ -9,6 +9,7 @@ const passport = require('passport');
 require('dotenv').config();
 
 const startClockwork = require('./server/clockwork');
+const startQueue = require('./server/delayed-jobs');
 const apiRoutes = require('./server/routes');
 const passportStrategies = require('./server/strategies');
 const { User } = require('./server/models');
@@ -49,17 +50,18 @@ app.prepare().then(() => {
   // });
 
   server.use('/api', apiRoutes);
-  server.get('/offer/:saveId', (req, res) =>
-    app.render(
-      req,
-      res,
-      '/offer',
-      Object.assign({}, req.query, { saveId: req.params.saveId })
-    )
-  );
+  server.get('/offer/:saveId', (req, res) => {
+    const { saveId } = req.params;
+    app.render(req, res, '/offer', Object.assign({}, req.query, { saveId }));
+  });
+  server.get('/feedback/:saveId', (req, res) => {
+    const { saveId } = req.params;
+    app.render(req, res, '/feedback', Object.assign({}, req.query, { saveId }));
+  });
   server.get('*', (req, res) => handle(req, res));
 
   startClockwork();
+  startQueue();
   server.listen(port, (err) => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);

@@ -5,6 +5,7 @@ const authRouter = require('./auth');
 const providersRouter = require('./providers');
 const productsRouter = require('./products');
 const couponsRouter = require('./coupons');
+const subscriptionsRouter = require('./subscriptions');
 
 const router = express.Router();
 
@@ -20,6 +21,7 @@ router.use('/auth', authRouter);
 router.use('/providers', providersRouter);
 router.use('/products', productsRouter);
 router.use('/coupons', couponsRouter);
+router.use('/subscriptions', subscriptionsRouter);
 
 if (process.env.NODE_ENV !== 'production') {
   const emailsRouter = require('./emails');

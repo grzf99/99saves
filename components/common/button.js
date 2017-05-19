@@ -66,7 +66,7 @@ const negativeStyles = css`
 const Button = styled.a`
   background-color: ${colors.green};
   border-radius: 2px;
-  color: ${colors.white};
+  color: ${props => (props.textColor ? props.textColor : colors.white)};
   display: inline-block;
   cursor: pointer;
   font-family: 'Roboto', sans-serif;
@@ -77,8 +77,9 @@ const Button = styled.a`
   text-transform: uppercase;
 
   &:hover {
+    color: ${props => (props.textHoverColor ? props.textHoverColor : colors.white)};
     background-color: ${colors.alternateGreen};
-    transition: .2s ease background-color;
+    transition: .2s ease all;
   }
 
   ${props => (props.block ? blockStyles : '')}

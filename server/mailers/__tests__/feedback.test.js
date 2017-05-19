@@ -1,6 +1,6 @@
 const { addDays, endOfDay } = require('date-fns');
 const { Save, Product, Provider } = require('../../models');
-const CheckoutStartMailer = require('../checkout-start');
+const FeedbackMailer = require('../feedback');
 
 beforeEach(() =>
   Save.sync({ force: true })
@@ -17,30 +17,30 @@ jest.mock('../../delayed-jobs');
 global.queue = require('../../delayed-jobs');
 
 describe('#verify', () => {
-  describe('when there are no saves on checkout', () => {
+  describe('when there are no saves on votation', () => {
     it('should not enqueue any jobs', () =>
-      CheckoutStartMailer.verify().then(() => {
+      FeedbackMailer.verify().then(() => {
         expect(global.queue.create).not.toHaveBeenCalled();
       }));
   });
 
-  describe('when there are saves on votation', () => {
+  describe('when there are saves ready to receive feedback', () => {
     it('should enqueue that many jobs', () =>
       Save.bulkCreate([
         {
-          date_start: addDays(new Date(), -5),
-          date_end: endOfDay(addDays(new Date(), -4))
+          date_start: addDays(new Date(), -15),
+          date_end: endOfDay(addDays(new Date(), -13))
         },
         {
-          date_start: addDays(new Date(), -4),
-          date_end: endOfDay(addDays(new Date(), -3))
+          date_start: addDays(new Date(), -15),
+          date_end: endOfDay(addDays(new Date(), -13))
         },
         {
-          date_start: addDays(new Date(), -4),
-          date_end: endOfDay(addDays(new Date(), -3))
+          date_start: addDays(new Date(), -3),
+          date_end: endOfDay(addDays(new Date(), -2))
         }
       ])
-        .then(saves => CheckoutStartMailer.verify())
+        .then(() => FeedbackMailer.verify())
         .then(() => {
           expect(global.queue.create).toHaveBeenCalledTimes(2);
         }));

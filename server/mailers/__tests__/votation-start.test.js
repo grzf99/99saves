@@ -14,13 +14,13 @@ afterEach(() =>
 );
 
 jest.mock('../../delayed-jobs');
-const queue = require('../../delayed-jobs');
+global.queue = require('../../delayed-jobs');
 
 describe('#verify', () => {
   describe('when there are no saves on votation', () => {
     it('should not enqueue any jobs', () =>
       VotationStartMailer.verify().then(() => {
-        expect(queue.create).not.toHaveBeenCalled();
+        expect(global.queue.create).not.toHaveBeenCalled();
       }));
   });
 
@@ -38,7 +38,7 @@ describe('#verify', () => {
       ])
         .then(() => VotationStartMailer.verify())
         .then(() => {
-          expect(queue.create).toHaveBeenCalledTimes(2);
+          expect(global.queue.create).toHaveBeenCalledTimes(2);
         }));
   });
 });

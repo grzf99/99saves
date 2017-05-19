@@ -22,13 +22,14 @@ module.exports = async (job, done) => {
   return Promise.all(
     subscriptions.map((s) => {
       if (s.User && s.User.email) {
-        return queue
+        return global.queue
           .create('email', {
             subject: `Vote agora na melhor oferta de ${save.title}.`,
             to: s.User.email,
             template: 'mailers/votation-start.hbs',
             context: { save }
           })
+          .removeOnComplete(true)
           .save();
       }
     })

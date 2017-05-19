@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
     'Subscription',
     {
       UserId: DataTypes.INTEGER,
-      SaveId: DataTypes.INTEGER
+      SaveId: DataTypes.INTEGER,
+      rate: DataTypes.INTEGER
     },
     {
       classMethods: {

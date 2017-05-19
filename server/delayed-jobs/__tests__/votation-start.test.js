@@ -13,7 +13,7 @@ afterEach(() =>
 );
 
 jest.mock('../index');
-const queue = require('../index');
+global.queue = require('../index');
 
 const job = {
   data: {}
@@ -29,7 +29,7 @@ describe('when there are no subscriptions on the save', () => {
       })
       .then(() => {
         expect(cb).toHaveBeenCalled();
-        expect(queue.create).not.toHaveBeenCalled();
+        expect(global.queue.create).not.toHaveBeenCalled();
       }));
 });
 
@@ -47,6 +47,6 @@ describe('when there are subscriptions on the save', () => {
       .then(() => votationStartProcessor(job, cb))
       .then(() => {
         expect(cb).toHaveBeenCalled();
-        expect(queue.create).toHaveBeenCalledTimes(1);
+        expect(global.queue.create).toHaveBeenCalledTimes(1);
       }));
 });
