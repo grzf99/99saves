@@ -8,6 +8,7 @@ const passport = require('passport');
 // loading env variables from .env file
 require('dotenv').config();
 
+const createRollbar = require('./utils/rollbar');
 const startClockwork = require('./server/clockwork');
 const startQueue = require('./server/delayed-jobs');
 const apiRoutes = require('./server/routes');
@@ -59,6 +60,11 @@ app.prepare().then(() => {
     app.render(req, res, '/feedback', Object.assign({}, req.query, { saveId }));
   });
   server.get('*', (req, res) => handle(req, res));
+
+  if (process.env.NODE_ENV === 'production') {
+    const rollbar = createRollbar();
+    server.use(rollbar.errorHandler());
+  }
 
   startClockwork();
   startQueue();

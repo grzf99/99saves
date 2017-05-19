@@ -38,6 +38,9 @@
     },
     "REDIS_URL": {
       "required": true
+    },
+    "ROLLBAR_ACCESS_TOKEN": {
+      "required": true
     }
   }
 }
