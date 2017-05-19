@@ -161,7 +161,7 @@ class FeedbackPage extends Component {
         <Button
           large
           block
-          disabled={this.props.loading}
+          disabled={this.state.rate === undefined || this.props.loading}
           onClick={this.handleConfirmClick}
         >
           Confirmar avaliação
