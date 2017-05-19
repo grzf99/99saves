@@ -99,8 +99,8 @@ class CheckoutContent extends Component {
         </InputButton>
 
         <RenderIf expr={this.state.copied}>
-            <MessageCopied>Cupom copiado para área de transferência</MessageCopied>
-          </RenderIf>
+          <MessageCopied>Cupom copiado para área de transferência</MessageCopied>
+        </RenderIf>
 
         <Heading2 fontWeight="500" color={colors.lightgray}>
           2º passo - Vá para o site do fabricante e compre usando seu cupom do 99saves
