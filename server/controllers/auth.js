@@ -8,16 +8,6 @@ module.exports = {
 
   adminLogin(req, res) {
     return login(req, res, true);
-  },
-
-  facebook(req, res) {
-    if (req.user) {
-      res.status(200).send({
-        user: req.user
-      });
-    } else {
-      res.sendStatus(401);
-    }
   }
 };
 
