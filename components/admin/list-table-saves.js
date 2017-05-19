@@ -39,6 +39,15 @@ export default (props) => {
             : ''}
         </td>
         <td>
+          {(item.checkoutOpen || item.finished) ? 
+            <Link prefetch href={`/admin/saves-inscritos?id=${item.id}`}>
+              <a className="">Inscritos</a>
+            </Link>
+          : ''
+          }
+          
+        </td>
+        <td>
           <Link prefetch href={`/admin/saves-edit?id=${item.id}`}>
             <a className="">Editar</a>
           </Link>
@@ -73,6 +82,7 @@ export default (props) => {
             <th>Tér. Negociação</th>
             <th>Tér. Votação</th>
             <th>Tér. Compra</th>
+            <th />
             <th />
             <th />
           </tr>
