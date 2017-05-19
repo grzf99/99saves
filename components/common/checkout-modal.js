@@ -4,8 +4,8 @@ import CheckoutContent from './checkout-content';
 
 const defaultWidth = "88%";
 
-export default ({ submitText, ...cleanedProps, width, product }) => (
+export default ({ submitText, ...cleanedProps, width, save }) => (
   <Modal {...cleanedProps} width={ width ? width : defaultWidth }>
-    <CheckoutContent product={ product } />
+    <CheckoutContent save={ save } />
   </Modal>
 );

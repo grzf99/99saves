@@ -36,7 +36,7 @@ import Headline from '../components/common/headline';
 import RenderIf from '../components/common/render-if';
 import Toast from '../components/common/toast';
 import CountDown from '../components/common/countdown';
-import CheckouModal from '../components/common/checkout-modal';
+import CheckoutModal from '../components/common/checkout-modal';
 
 const Header = styled(Container)`
   display: flex;
@@ -549,10 +549,10 @@ class Offer extends React.Component {
                   </Column>
                 </Row>
               </MarginContainer>
-              <CheckouModal 
+              <CheckoutModal 
                 isOpen={this.state.modalIsOpen}
                 onClose={() => this.closeModal()}
-                product={this.props.save}
+                save={this.props.save}
                 width="400px"
               />
             </div>
