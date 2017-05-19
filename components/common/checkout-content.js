@@ -12,6 +12,7 @@ import {
   FormAlert
 } from '../common/typography';
 import CopyToClipboard from 'react-copy-to-clipboard';
+const _ = require('lodash');
 
 const Header = styled.div`
   padding-bottom: 30px;
@@ -62,12 +63,20 @@ class CheckoutContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: this.props.product.Subscriptions[0].CouponId,
+      value: this.getCupon(),
       copied: false
     };
   }
 
+  getCupon() {
+    let coupon;
+    _.map(this.props.save.Subscriptions, (sub) => {
+      let cupom = _.find(sub, {ProductId: this.props.save.winnerProduct.id});
+      coupon = cupom.key;
+    });
 
+    return coupon;
+  }
 
   render() {
     return (
@@ -80,7 +89,7 @@ class CheckoutContent extends Component {
         </Header>
 
         <InputButton>
-          <InputCopy>{this.props.product.Subscriptions[0].CouponId}</InputCopy>
+          <InputCopy>{this.state.value}</InputCopy>
           <CopyToClipboard
             text={this.state.value}
             onCopy={() => this.setState({copied: true})}
@@ -101,7 +110,7 @@ class CheckoutContent extends Component {
           <Button
             block
             large
-            href={this.props.product.Products[0].link_buy}
+            href={this.props.save.winnerProduct.link_buy}
             target="_blank"
           >
             ir para o site do fabricante
