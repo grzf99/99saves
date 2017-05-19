@@ -32,5 +32,10 @@ router.get(
   adminAuthentication(),
   saves.listSubscriptions
 );
+router.get(
+  '/:saveId/users',
+  adminAuthentication(),
+  saves.listUsers
+);
 
 module.exports = router;
