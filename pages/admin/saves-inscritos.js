@@ -26,16 +26,17 @@ class SavesSubscriptions extends React.Component {
     };
 
     this.refresh = this.refresh.bind(this);
+    this.getSave = this.getSave.bind(this);
   }
 
   componentWillMount() {
     this.refresh();
-    this.getSaves(this.props.query.id);
+    this.getSave(this.props.query.id);
   }
 
-  getSaves(id) {
+  getSave(id) {
     this.props.api
-      .get(`/saves/${id}`)
+      .get(`/saves/${id}/save`)
       .then((response) => {
         this.setState({
           ...this.state,
@@ -45,6 +46,7 @@ class SavesSubscriptions extends React.Component {
         setTimeout(() => this.setState({ loading: false }), 1500);
       })
       .catch((error) => {
+        console.log(error);
         this.setState({
           showToast: true,
           typeToast: 'warning',

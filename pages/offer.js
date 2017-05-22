@@ -36,6 +36,7 @@ import Headline from '../components/common/headline';
 import RenderIf from '../components/common/render-if';
 import Toast from '../components/common/toast';
 import CountDown from '../components/common/countdown';
+import CheckoutModal from '../components/common/checkout-modal';
 
 const Header = styled(Container)`
   display: flex;
@@ -281,7 +282,8 @@ class Offer extends React.Component {
       save: props.save,
       products: props.save.Products,
       vote: 0,
-      showToastVotation: false
+      showToastVotation: false,
+      checkoutModalIsOpen: false
     };
 
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
@@ -293,6 +295,14 @@ class Offer extends React.Component {
     this.loadVote = this.loadVote.bind(this);
 
     this.timer = null;
+  }
+
+  openCheckoutModal(subscribeTo) {
+    this.setState({ checkoutModalIsOpen: true });
+  }
+
+  closeModal() {
+    this.setState({ checkoutModalIsOpen: false });
   }
 
   removeToastVotation() {
@@ -367,7 +377,7 @@ class Offer extends React.Component {
 
   renderCheckoutButton(product) {
     return (
-      <Button large href={product.link_buy} target="_blank">
+      <Button large onClick={() => this.openCheckoutModal()}>
         Comprar agora
       </Button>
     );
@@ -537,6 +547,12 @@ class Offer extends React.Component {
                   </Column>
                 </Row>
               </MarginContainer>
+              <CheckoutModal 
+                isOpen={this.state.checkoutModalIsOpen}
+                onClose={() => this.closeModal()}
+                save={this.props.save}
+                width="400px"
+              />
             </div>
           ))}
         </SwipeableViews>

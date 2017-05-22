@@ -9,6 +9,7 @@ import RenderIf from './common/render-if';
 import { Heading, Text, SmallText } from './common/typography';
 import { formatCurrency } from '../utils';
 import CountDown from '../components/common/countdown';
+import CheckoutModal from '../components/common/checkout-modal';
 
 const Card = styled.div`
   background: ${colors.black};
@@ -140,10 +141,22 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      checkoutModalIsOpen: false
+    };
+
     this.handleSave = this.handleSave.bind(this);
     this.goToOffers = this.goToOffers.bind(this);
     this.goToCheckout = this.goToCheckout.bind(this);
     this.renderImages = this.renderImages.bind(this);
+  }
+
+  openCheckoutModal(subscribeTo) {
+    this.setState({ checkoutModalIsOpen: true });
+  }
+
+  closeModal() {
+    this.setState({ checkoutModalIsOpen: false });
   }
 
   handleSave() {
@@ -282,12 +295,17 @@ export default class extends React.Component {
             <Button
               block
               target="_blank"
-              href={
-                this.props.winnerProduct && this.props.winnerProduct.link_buy
-              }
+              onClick={() => this.openCheckoutModal()}
+              
             >
               Comprar agora
             </Button>
+            <CheckoutModal 
+              isOpen={this.state.checkoutModalIsOpen}
+              onClose={() => this.closeModal()}
+              save={this.props}
+              width="400px"
+            />
           </ButtonGroup>
         </RenderIf>
 

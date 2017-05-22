@@ -71,6 +71,18 @@ module.exports = {
       .catch(err => res.status(400).json(err));
   },
 
+  showSave(req, res) {
+    return Save.findById(req.params.saveId, {
+      include: [
+        { 
+          model: Product
+        }
+      ]
+    })
+      .then(save => res.status(200).send(save.toJSON()))
+      .catch(err => res.status(400).json(err));
+  },
+
   async mySubscription(req, res) {
     try {
       const save = await Save.find({ where: { slug: req.params.id } });
@@ -109,6 +121,13 @@ function createShowQuery(req, includeVote = true) {
       {
         model: Product,
         include: [Vote, Provider]
+      },
+      {
+        model: Subscription,
+        include: [Vote, Coupon],
+        where: {
+          UserId: req.user.id
+        },
       }
     ];
   }
@@ -146,7 +165,7 @@ function createListQuery(req) {
       ...query.include,
       {
         model: Subscription,
-        include: [Vote],
+        include: [Vote, Coupon],
         where: {
           UserId: req.user.id
         },
