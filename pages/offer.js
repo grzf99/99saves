@@ -397,7 +397,7 @@ class Offer extends React.Component {
             <RenderIf expr={this.props.save.votationOpen}>
               <GrayText>Vote na melhor oferta de</GrayText>
             </RenderIf>
-            <Heading white uppercase>{this.state.save.title}</Heading>
+            <Heading color={colors.white} uppercase>{this.state.save.title}</Heading>
           </div>
         </Header>
 
@@ -431,7 +431,7 @@ class Offer extends React.Component {
                 {this.state.products.map((product, key) => (
                   <CustomTab key={product.id}>
                     <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
-                    <Text white>R$ {formatCurrency(product.price)}</Text>
+                    <Text color={colors.white}>R$ {formatCurrency(product.price)}</Text>
                   </CustomTab>
                 ))}
               </CustomTabs>
@@ -473,7 +473,7 @@ class Offer extends React.Component {
                       </ColumnImage>
                       <ColumnText>
                         <ProviderOffer>Ofertado por {product.Provider.name}</ProviderOffer>
-                        <Heading white>{product.title} </Heading>
+                        <Heading color={colors.white}>{product.title} </Heading>
                       </ColumnText>
                     </ColumnHeader>
                     <Panel>
@@ -494,10 +494,10 @@ class Offer extends React.Component {
                   </Column>
                   <Column third>
                     <AlignRight>
-                      <Text uppercase white>Oferta feita para o 99saves</Text>
+                      <Text uppercase color={colors.white}>Oferta feita para o 99saves</Text>
                       <Price>
-                        <Text white>R$</Text>
-                        <Heading white large>
+                        <Text color={colors.white}>R$</Text>
+                        <Heading color={colors.white} large>
                           {formatCurrency(product.price)}
                         </Heading>
                       </Price>
@@ -513,9 +513,9 @@ class Offer extends React.Component {
                         expr={!!(product.price_buscape && product.link_buscape)}
                       >
                         <BuscapeBox>
-                          <Text uppercase white>Menor preço no Buscapé</Text>
+                          <Text uppercase color={colors.white}>Menor preço no Buscapé</Text>
                           <Price>
-                            <Heading white>
+                            <Heading color={colors.white}>
                               R$ {formatCurrency(product.price_buscape)}
                             </Heading>
                           </Price>

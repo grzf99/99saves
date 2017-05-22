@@ -24,6 +24,7 @@ router.get('/:saveId/votes', clientAuthentication(), votes.show);
 router.post('/:saveId/votes', clientAuthentication(), votes.create);
 
 // admin
+router.get('/:saveId/save', adminAuthentication(), saves.showSave);
 router.post('/', adminAuthentication(), saves.create);
 router.put('/:id', adminAuthentication(), saves.update);
 router.delete('/:id', adminAuthentication(), saves.delete);
@@ -31,6 +32,11 @@ router.get(
   '/:saveId/subscriptions',
   adminAuthentication(),
   saves.listSubscriptions
+);
+router.get(
+  '/:saveId/users',
+  adminAuthentication(),
+  saves.listUsers
 );
 
 module.exports = router;

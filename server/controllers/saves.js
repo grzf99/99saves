@@ -1,4 +1,4 @@
-const { Product, Save, Subscription, Vote, Provider, Coupon } = require('../models');
+const { Product, Save, Subscription, Vote, Provider, User, Coupon, Profile } = require('../models');
 
 module.exports = {
   show(req, res) {
@@ -49,6 +49,37 @@ module.exports = {
       include: [{ model: Subscription }]
     })
       .then(save => res.status(200).json({ subscriptions: save.Subscriptions }))
+      .catch(err => res.status(400).json(err));
+  },
+
+  listUsers(req, res) {
+    return Save.findById(req.params.saveId, {
+      include: [
+        { 
+          model: Subscription,
+          include: [Coupon, {
+            model: User,
+            include: [Profile]
+          }],
+          where: {
+            SaveId: req.params.saveId
+          }
+        }
+      ]
+    })
+      .then(save => res.status(200).json({ subscriptions: save.Subscriptions }))
+      .catch(err => res.status(400).json(err));
+  },
+
+  showSave(req, res) {
+    return Save.findById(req.params.saveId, {
+      include: [
+        { 
+          model: Product
+        }
+      ]
+    })
+      .then(save => res.status(200).send(save.toJSON()))
       .catch(err => res.status(400).json(err));
   },
 
