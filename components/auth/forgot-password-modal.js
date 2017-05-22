@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import Modal from '../common/modal';
-import { Heading, Text } from '../common/typography';
+import { Heading, Text, FormAlert } from '../common/typography';
 import Input from '../common/input';
 import Button from '../common/button';
 import Form from '../common/form';
 import { colors } from '../styles/variables';
 import { email } from '../../utils/validation';
+import RenderIf from '../common/render-if';
 
 const Header = styled.div`
   padding-bottom: 30px;
@@ -43,7 +44,8 @@ export default class extends Component {
     this.state = {
       email: '',
       step: 1,
-      loading: false
+      loading: false,
+      errorApi: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -68,6 +70,9 @@ export default class extends Component {
     this.setState({ loading: true });
     this.props.api.post('/auth/forgot-password', { email }).then(() => {
       this.setState({ step: 2, loading: false });
+    })
+    .catch(error => {
+      this.setState({ errorApi: true, loading: false });
     });
   }
 
@@ -87,6 +92,9 @@ export default class extends Component {
           </Text>
         </Header>
         <Form onSubmit={this.handleSubmit}>
+          <RenderIf expr={this.state.errorApi}>
+            <FormAlert>E-mail não existe</FormAlert>
+          </RenderIf>
           <Input
             block
             name="email"
