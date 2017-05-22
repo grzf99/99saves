@@ -41,7 +41,7 @@ class SavesEdit extends React.Component {
 
   getSaves(id) {
     this.props.api
-      .get(`/saves/${id}`)
+      .get(`/saves/${id}/save`)
       .then((response) => {
         this.setState({
           ...this.state,
