@@ -257,7 +257,7 @@ export default class extends React.Component {
             >
               <SmallText>imagem meramente ilustrativa</SmallText>
             </RenderIf>
-            <Heading white>{this.props.title}</Heading>
+            <Heading color={colors.white}>{this.props.title}</Heading>
           </Gradient>
         </Header>
 
