@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
 import styled from 'styled-components';
+import withApi from '../components/hoc/withApi';
 import AuthPage from '../components/auth/auth-page';
 import RenderIf from '../components/common/render-if';
 import Form from '../components/common/form';
@@ -59,14 +60,15 @@ const FormFooter = styled.div`
 `;
 
 class ResetPassword extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       step: 1,
       loading: false,
       password: '',
       password_verify: '',
-      validPassword: false
+      validPassword: false,
+      errorApi: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -81,7 +83,14 @@ class ResetPassword extends Component {
     if(this.isEqualPassword()) {
       this.setState({validPassword: true});
     } else {
-      this.setState({step: 2});
+      const password = this.state.password;
+      const token = this.props.url.query.token;
+      this.props.api.post('/auth/reset-password', { token, password }).then(() => {
+        this.setState({ step: 2, loading: false, errorApi: false });
+      })
+      .catch(error => {
+        this.setState({ errorApi: true, loading: false });
+      });
     }
   }
 
@@ -105,6 +114,9 @@ class ResetPassword extends Component {
             </Heading2>
           </FormHeader>
           <Form onSubmit={this.handleSubmit}>
+            <RenderIf expr={this.state.errorApi}>
+              <FormAlert>Token inválido, solicite o esqueci minha senha novamente.</FormAlert>
+            </RenderIf>
             {this.state.validPassword
               ? <FormAlert>Digite a mesma senha nos 2 campos.</FormAlert>
               : null}
@@ -171,4 +183,4 @@ class ResetPassword extends Component {
   }
 }
 
-export default ResetPassword;
+export default withApi()(ResetPassword);
