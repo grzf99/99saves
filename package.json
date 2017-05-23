@@ -11,7 +11,7 @@
     "dev": "nodemon --watch server --watch server.js server.js",
     "lint": "eslint .",
     "start": "NODE_ENV=production node server.js",
-    "test": "NODE_ENV=test jest --watch",
+    "test": "NODE_ENV=test jest --watch --forceExit -i",
     "test-ci": "NODE_ENV=test-ci jest",
     "sequelize": "sequelize",
     "heroku-postbuild": "heroku-nextjs-build"
