@@ -4,7 +4,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
-
+const basicAuth = require('basic-auth-connect');
 // loading env variables from .env file
 require('dotenv').config();
 
@@ -50,6 +50,7 @@ app.prepare().then(() => {
   // });
 
   server.use('/api', apiRoutes);
+  server.use(basicAuth('username', 'password'));
   server.get('/offer/:saveId', (req, res) => {
     const { saveId } = req.params;
     app.render(req, res, '/offer', Object.assign({}, req.query, { saveId }));
