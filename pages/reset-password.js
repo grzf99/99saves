@@ -79,8 +79,7 @@ class ResetPassword extends Component {
   }
 
   handleSubmit() {
-    console.log(`${this.state.password} - ${this.state.password_verify}`);
-    if(this.isEqualPassword()) {
+    if(!this.isEqualPassword()) {
       this.setState({validPassword: true});
     } else {
       const password = this.state.password;
@@ -100,7 +99,7 @@ class ResetPassword extends Component {
   }
 
   isEqualPassword() {
-     return this.state.password !== this.state.password_verify;
+     return this.state.password === this.state.password_verify;
   }
 
   renderStep1() {
