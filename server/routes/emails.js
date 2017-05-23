@@ -141,4 +141,16 @@ router.get('/last-chance', async (req, res) => {
   res.status(200).send(result);
 });
 
+router.get('/forgot-password', async (req, res) => {
+  const user = {
+    email: 'jon@snow.com',
+    resetPasswordToken: '123456'
+  };
+
+  const result = await compileTemplate('mailers/forgot-password.hbs', {
+    user
+  });
+  res.status(200).send(result);
+});
+
 module.exports = router;

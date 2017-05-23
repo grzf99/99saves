@@ -32,13 +32,20 @@ const Footer = styled.div`
   padding-top: 42px;
 `;
 
-const ForgotPasswordText = styled(Text)`
+const ForgotPasswordButton = styled(Button)`
+  background: transparent;
+  text-align: left;
+  padding: 0;
   flex: 1;
   font-size: 14px;
   font-weight: 500;
   color: ${colors.lightgray};
   text-transform: uppercase;
   cursor: pointer;
+
+  &:hover {
+    background: transparent;
+  }
 `;
 
 const CreateAccountText = styled(Text)`
@@ -54,12 +61,14 @@ const CreateAccountText = styled(Text)`
 class LoginForm extends Component {
   static propTypes = {
     submitText: PropTypes.string,
-    isAdmin: PropTypes.bool
+    isAdmin: PropTypes.bool,
+    onForgotPassword: PropTypes.func
   };
 
   static defaultProps = {
     submitText: 'Login com email',
-    isAdmin: false
+    isAdmin: false,
+    onForgotPassword: () => {}
   };
 
   constructor() {
@@ -158,16 +167,16 @@ class LoginForm extends Component {
             <FacebookButton block>Login com facebook</FacebookButton>
           </div>
         </RenderIf>
-        <Footer>
-          <RenderIf expr={false}>
-            <ForgotPasswordText>Esqueci a senha</ForgotPasswordText>
-          </RenderIf>
-          <RenderIf expr={!this.props.isAdmin}>
+        <RenderIf expr={!this.props.isAdmin}>
+          <Footer>
+            <ForgotPasswordButton onClick={this.props.onForgotPassword}>
+              Esqueci a senha
+            </ForgotPasswordButton>
             <Link prefetch href="/signup">
               <CreateAccountText>Criar nova conta</CreateAccountText>
             </Link>
-          </RenderIf>
-        </Footer>
+          </Footer>
+        </RenderIf>
       </div>
     );
   }

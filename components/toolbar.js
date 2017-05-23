@@ -6,7 +6,7 @@ import RenderIf from './common/render-if';
 import Button from './common/button';
 import Container from './common/container';
 import LoginModal from './auth/login-modal';
-import { connect } from 'react-redux';
+import ForgotPasswordModal from './auth/forgot-password-modal';
 
 const Toolbar = styled.header`
   background: ${colors.black};
@@ -58,40 +58,40 @@ const LinkAllSaves = styled.a`
   }
 `;
 
-const LoggedIn = styled.span`
-  background-color: transparent;
-  color: ${colors.white};
-  display: inline-block;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  margin-left: 30px;
-  text-transform: uppercase;
-`;
-
 class Toolbars extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      modalOpen: false
+      loginModalOpen: false,
+      forgotPasswordModalIsOpen: false
     };
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.openLoginModal = this.openLoginModal.bind(this);
+    this.closeLoginModal = this.closeLoginModal.bind(this);
+    this.openForgotPasswordModal = this.openForgotPasswordModal.bind(this);
+    this.closeForgotPasswordModal = this.closeForgotPasswordModal.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.logged && nextProps.logged !== this.props.logged) {
-      this.closeModal();
+      this.closeLoginModal();
     }
   }
 
-  openModal() {
-    this.setState({ modalOpen: true });
+  openLoginModal() {
+    this.setState({ loginModalOpen: true });
   }
 
-  closeModal() {
-    this.setState({ modalOpen: false });
+  closeLoginModal() {
+    this.setState({ loginModalOpen: false });
+  }
+
+  openForgotPasswordModal() {
+    this.setState({ forgotPasswordModalIsOpen: true, loginModalOpen: false });
+  }
+
+  closeForgotPasswordModal() {
+    this.setState({ forgotPasswordModalIsOpen: false });
   }
 
   render() {
@@ -111,7 +111,7 @@ class Toolbars extends React.Component {
               </LinkAllSaves>
             </Link>
             <RenderIf expr={!this.props.logged}>
-              <Button small outline onClick={this.openModal}>
+              <Button small outline onClick={this.openLoginModal}>
                 login
               </Button>
             </RenderIf>
@@ -123,12 +123,20 @@ class Toolbars extends React.Component {
           </MenuLinks>
         </CustomContainer>
 
-        <LoginModal isOpen={this.state.modalOpen} onClose={this.closeModal} />
+        <LoginModal
+          isOpen={this.state.loginModalOpen}
+          onForgotPassword={this.openForgotPasswordModal}
+          onClose={this.closeLoginModal}
+        />
+
+        <ForgotPasswordModal
+          isOpen={this.state.forgotPasswordModalIsOpen}
+          onClose={this.closeForgotPasswordModal}
+          api={this.props.api}
+        />
       </Toolbar>
     );
   }
 }
 
-export default connect(state => ({
-  current_user: state.currentUser
-}))(Toolbars);
+export default Toolbars;

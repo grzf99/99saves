@@ -1,5 +1,9 @@
+const crypto = require('crypto');
+const ms = require('ms');
+const { isAfter, addMilliseconds } = require('date-fns');
 const { User, Profile } = require('../models');
 const { generateToken } = require('../../utils/jwt');
+const ForgotPasswordMailer = require('../mailers/forgot-password');
 
 module.exports = {
   clientLogin(req, res) {
@@ -10,13 +14,53 @@ module.exports = {
     return login(req, res, true);
   },
 
-  facebook(req, res) {
-    if (req.user) {
-      res.status(200).send({
-        user: req.user
-      });
-    } else {
-      res.sendStatus(401);
+  async forgotPassword(req, res) {
+    const { email } = req.body;
+    try {
+      await User.update(
+        {
+          resetPasswordToken: crypto.randomBytes(64).toString('hex'),
+          resetPasswordTokenExpires: addMilliseconds(
+            new Date(),
+            ms('2 days')
+          ).toISOString()
+        },
+        {
+          where: { email },
+          individualHooks: true
+        }
+      );
+      const user = await User.find({ where: { email } });
+      ForgotPasswordMailer.mail(user);
+
+      return res.sendStatus(200);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
+    }
+  },
+
+  async resetPassword(req, res) {
+    const { token, password } = req.body;
+    const now = new Date();
+    const user = await User.find({ where: { resetPasswordToken: token } });
+
+    if (
+      user === null ||
+      (user !== null && isAfter(now, new Date(user.resetPasswordTokenExpires)))
+    ) {
+      return res.status(422).send('Token is invalid');
+    }
+
+    try {
+      await User.update(
+        { password, resetPasswordToken: null, resetPasswordTokenExpires: null },
+        { where: { resetPasswordToken: token }, individualHooks: true }
+      );
+      return res.sendStatus(200);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
     }
   }
 };

@@ -22,7 +22,7 @@ const job = {
 describe('when there are no subscriptions on the save', () => {
   const cb = jest.fn();
   it('should not enqueue any jobs', () =>
-    Save.create({ title: 'mySave' })
+    Save.create({ title: 'mySave votation' })
       .then((save) => {
         job.data.save = save;
         return votationStartProcessor(job, cb);
@@ -37,8 +37,8 @@ describe('when there are subscriptions on the save', () => {
   const cb = jest.fn();
   it('should enqueue that many email jobs', () =>
     Promise.all([
-      Save.create({ title: 'mySave' }),
-      User.create({ email: 'asd@asd.com', password: '1234' })
+      Save.create({ title: 'mySave votation 2' }),
+      User.create({ email: 'asd@asdvotat12.com', password: '1234' })
     ])
       .then(([save, user]) => {
         job.data.save = save;
