@@ -164,7 +164,7 @@ module.exports = (sequelize, DataTypes) => {
         feedbackable: {
           where: {
             checkout_end: {
-              $gt: addHours(startOfDay(addDays(new Date(), -9)), 3),
+              $gt: addHours(startOfDay(addDays(new Date(), -9)), 2),
               $lt: addHours(endOfDay(addDays(new Date(), -9)), 3)
             }
           }
