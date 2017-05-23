@@ -24,11 +24,11 @@ const job = {
 describe('when there are no subscriptions on the save', () => {
   const cb = jest.fn();
   it('should not enqueue any jobs', () =>
-    Save.create({ title: 'mySave' })
+    Save.create({ title: 'mySave last chance' })
       .then((save) => {
         job.data.save = save;
         return Product.create({
-          title: 'My product',
+          title: 'My product last chance',
           price: 10,
           SaveId: save.id
         });
@@ -48,13 +48,13 @@ describe('when there are subscriptions on the save', () => {
   const cb = jest.fn();
   it('should enqueue that many email jobs', () =>
     Promise.all([
-      Save.create({ title: 'mySave' }),
-      User.create({ email: 'asd@asd.com', password: '1234' })
+      Save.create({ title: 'mySave last 2' }),
+      User.create({ email: 'asd@asdlsatchance2.com', password: '1234' })
     ])
       .then(([save, user]) => {
         job.data.save = save;
         return Promise.all([
-          Product.create({ title: 'My product', price: 10, SaveId: save.id }),
+          Product.create({ title: 'My product the last chance 2', price: 10, SaveId: save.id }),
           Subscription.create({ UserId: user.id, SaveId: save.id })
         ]);
       })
