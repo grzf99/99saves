@@ -69,7 +69,7 @@ export default class extends Component {
     const { email } = this.state;
     this.setState({ loading: true });
     this.props.api.post('/auth/forgot-password', { email }).then(() => {
-      this.setState({ step: 2, loading: false });
+      this.setState({ step: 2, loading: false, email: '' });
     })
     .catch(error => {
       this.setState({ errorApi: true, loading: false });
