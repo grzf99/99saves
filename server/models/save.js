@@ -138,7 +138,7 @@ module.exports = (sequelize, DataTypes) => {
         votable: {
           where: {
             votation_end: {
-              $lt: addHours(endOfDay(new Date()), 3),
+              $lt: addHours(endOfDay(new Date()), 4),
               $gt: addHours(startOfDay(new Date()), 3)
             }
           }
@@ -156,7 +156,7 @@ module.exports = (sequelize, DataTypes) => {
         lastChance: {
           where: {
             checkout_end: {
-              $lt: addHours(endOfDay(new Date()), 3),
+              $lt: addHours(endOfDay(new Date()), 4),
               $gt: addHours(startOfDay(new Date()), 3)
             }
           }
