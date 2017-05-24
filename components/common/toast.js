@@ -13,7 +13,7 @@ const Container = styled.div`
   left: 12px;
   right: 12px;
   padding: 12px 24px;
-  transform: translateY(${props => (props.show ? '54px' : '-55px')});
+  transform: translateY(${props => (props.show ? '55px' : '-75px')});
   transition: .3s ease transform;
 
   @media (min-width: 480px) {
