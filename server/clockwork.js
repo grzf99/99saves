@@ -5,16 +5,16 @@ const LastChanceMailer = require('./mailers/last-chance');
 const FeedbackMailer = require('./mailers/feedback');
 
 module.exports = () => {
-  schedule.scheduleJob('* 13 * * *', () => {
+  schedule.scheduleJob('1 18 * * *', () => {
     VotationStartMailer.verify();
   });
-  schedule.scheduleJob('1 13 * * *', () => {
+  schedule.scheduleJob('2 18 * * *', () => {
     CheckoutStartMailer.verify();
   });
-  schedule.scheduleJob('2 13 * * *', () => {
+  schedule.scheduleJob('3 18 * * *', () => {
     LastChanceMailer.verify();
   });
-  schedule.scheduleJob('3 13 * * *', () => {
+  schedule.scheduleJob('4 18 * * *', () => {
     FeedbackMailer.verify();
   });
   schedule.scheduleJob('* 15 * * *', () => {
