@@ -36,6 +36,10 @@ const MenuLinks = styled.div`
   display: flex;
   justify-content: space-between;
   min-width: 220px;
+
+  @media (max-width: 480px) {
+    min-width: 175px;
+  }
 `;
 
 const LinkAllSaves = styled.a`
