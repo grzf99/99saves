@@ -2,7 +2,7 @@ const queue = require('../delayed-jobs');
 
 module.exports = {
   mail(user) {
-    queue
+    global.queue
       .create('email', {
         to: user.email,
         subject: 'Pedido de redefinição de senha',
