@@ -33,6 +33,12 @@ const CloseButton = styled(Text)`
 `;
 
 const ModalContent = styled.div`
+  > * {
+    @media (max-width: 480px) {
+      max-width: 88%;
+    }
+  }
+
   > * + * {
     position: relative;
     height: auto;
