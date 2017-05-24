@@ -294,6 +294,10 @@ const WeAreNotSubtitle = styled.span`
   text-align: center;
   text-transform: uppercase;
   position: relative;
+
+  @media (max-width: 480px) {
+    bottom: -10px;
+  }
 `;
 
 const WeAreNotTitle = styled.h5`
@@ -306,6 +310,10 @@ const WeAreNotTitle = styled.h5`
   padding: 0;
   text-align: center;
   text-transform: uppercase;
+
+  @media (max-width: 480px) {
+    line-height: 1;
+  }
 `;
 
 const WeAreNotDescription = styled.p`
@@ -327,6 +335,10 @@ const ItWorkSection = styled(Container)`
   margin-top: 50px;
   @media (max-width: 728px) {
   }
+
+  @media (max-width: 480px) {
+    padding: 0 10px;
+  }
 `;
 
 const ItWorkContainer = styled.div`
@@ -342,10 +354,19 @@ const ItWorkContainer = styled.div`
     @media (max-width: 500px) {
       margin-left: 10px;
     }
+
+    @media (max-width: 480px) {
+      margin-left: 0;
+    }
   }
   &.center {
     justify-content: center;
     align-items: center;
+  }
+
+  @media (max-width: 480px) {
+    display: block;
+    text-align: center;
   }
 `;
 
@@ -357,10 +378,17 @@ const ItWorkImage = styled.img`
     margin-right: 20px;
   }
 
+  @media (max-width: 480px) {
+    width: 60%;
+  }
+
 `;
 
 const ItWorkInfos = styled.div`
   max-width: 380px;
+  @media (max-width: 480px) {
+    max-width: 100%;
+  }
 `;
 
 const ItWorktTitle = styled.h4`
@@ -371,6 +399,10 @@ const ItWorktTitle = styled.h4`
   margin: 0;
   text-align: left;
   text-transform: uppercase;
+
+  @media (max-width: 480px) {
+    text-align: center;
+  }
 `;
 
 const ItWorkDescription = styled.p`
@@ -379,6 +411,10 @@ const ItWorkDescription = styled.p`
   font-size: 18px;
   line-height: 1.56;
   text-align: left;
+
+  @media (max-width: 480px) {
+    text-align: center;
+  }
 `;
 
 const SaveSection = styled.section`
