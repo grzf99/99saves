@@ -18,6 +18,7 @@ const createModalStyles = styleProps => ({
     transform: 'translateY(-50%)',
     borderRadius: '0',
     margin: '0 auto',
+    maxWidth: '400px',
     padding: '36px',
     ...styleProps
   }
@@ -33,12 +34,6 @@ const CloseButton = styled(Text)`
 `;
 
 const ModalContent = styled.div`
-  > * {
-    @media (max-width: 480px) {
-      max-width: 88%;
-    }
-  }
-
   > * + * {
     position: relative;
     height: auto;
