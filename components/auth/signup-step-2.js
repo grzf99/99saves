@@ -32,11 +32,23 @@ const BackButton = styled(Button)`
     color: ${colors.white};
     transition: .2s ease color;
   }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 9px 18px;
+    width:46%;
+  }
 `;
 
 const ConfirmButton = styled(Button)`
   width: 50%;
   margin-left: 5px;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 12px 24px;
+    width: 50%;
+  }
 `;
 
 class SignupStep2 extends Component {
