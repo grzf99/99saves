@@ -5,7 +5,7 @@ const LastChanceMailer = require('./mailers/last-chance');
 const FeedbackMailer = require('./mailers/feedback');
 
 module.exports = () => {
-  schedule.scheduleJob('0 22 * * *', () => {
+  schedule.scheduleJob('0 23 * * *', () => {
     VotationStartMailer.verify();
     CheckoutStartMailer.verify();
     LastChanceMailer.verify();
