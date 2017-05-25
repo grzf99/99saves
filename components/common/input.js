@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import hexRgb from 'hex-rgb';
-import MaskedInput from 'react-maskedinput';
+import MaskedInput from 'react-input-mask';
 import { colors } from '../styles/variables';
 import { Text } from './typography';
 import validatable from '../hoc/validatable';

@@ -58,6 +58,7 @@ class SignupStep2 extends Component {
   }
 
   handleChange({ target }) {
+    console.log(target);
     this.setState({ [target.name]: target.value });
   }
 
@@ -100,7 +101,7 @@ class SignupStep2 extends Component {
             name="cpf"
             label="CPF"
             placeholder="000.000.000-00"
-            mask="111.111.111-11"
+            mask="999.999.999-99"
             hint="Fique tranquilo, não usaremos seu CPF sem sua autorização"
             onChange={this.handleChange}
             value={this.state.cpf}
