@@ -3,7 +3,7 @@ import Modal from '../common/modal';
 import LoginForm from './login-form';
 
 export default ({ isAdmin, submitText, onForgotPassword, ...cleanedProps }) => (
-  <Modal {...cleanedProps}>
+  <Modal {...cleanedProps} width="88%">
     <LoginForm
       isAdmin={isAdmin}
       submitText={submitText}
