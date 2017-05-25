@@ -53,6 +53,7 @@ const ImageWrapper = styled.div`
 const CardImage = styled(Image)`
   position: absolute;
   left: 50%;
+  max-width: auto;
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
 `;

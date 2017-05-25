@@ -70,6 +70,10 @@ const TextLinks = styled.div`
       top: 0;
       width: 1px;
     }
+
+    @media (max-width: 480px) {
+      margin-left: 25px;
+    }
   }
 
   > div:nth-last-child(1) {

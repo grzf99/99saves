@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import UserAdmin from './user-admin';
 
 class Nav extends Component {
 
@@ -13,12 +14,7 @@ class Nav extends Component {
             </button>
             <a className="navbar-brand" href="#/">99saves</a>
           </div>
-          <div className="navbar-collapse pull-right col-sm-4">
-            <p className="navbar-text navbar-right">
-              <i className="glyphicon glyphicon-user" /> { this.props.currentUser.name } - { this.props.currentUser.email }
-              ( <a href="#/" className="navbar-link" onClick={this.props.onLogout}>Sair</a> )
-            </p>
-          </div>
+          <UserAdmin name={this.props.currentUser.name} email= {this.props.currentUser.email} />
         </div>
       </div>
     );

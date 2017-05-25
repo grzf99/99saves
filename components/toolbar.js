@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import withApi from '../components/hoc/withApi';
 import { colors } from './styles/variables';
 import RenderIf from './common/render-if';
 import Button from './common/button';
@@ -36,6 +37,10 @@ const MenuLinks = styled.div`
   display: flex;
   justify-content: space-between;
   min-width: 220px;
+
+  @media (max-width: 480px) {
+    min-width: 175px;
+  }
 `;
 
 const LinkAllSaves = styled.a`
@@ -139,4 +144,4 @@ class Toolbars extends React.Component {
   }
 }
 
-export default Toolbars;
+export default withApi()(Toolbars);

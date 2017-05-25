@@ -18,6 +18,10 @@ const Header = styled.div`
 
 const Title = styled(Heading)`
   line-height: 1.47;
+
+  @media (max-width: 480px) {
+    font-size: 30px;
+  }
 `;
 
 const Footer = styled.div`
@@ -79,18 +83,19 @@ class ResetPassword extends Component {
   }
 
   handleSubmit() {
-    if(!this.isEqualPassword()) {
-      this.setState({validPassword: true});
-    } else {
-      const password = this.state.password;
-      const token = this.props.url.query.token;
-      this.props.api.post('/auth/reset-password', { token, password }).then(() => {
-        this.setState({ step: 2, loading: false, errorApi: false });
-      })
-      .catch(error => {
-        this.setState({ errorApi: true, loading: false });
-      });
-    }
+    // if(!this.isEqualPassword()) {
+    //   this.setState({validPassword: true});
+    // } else {
+    //   const password = this.state.password;
+    //   const token = this.props.url.query.token;
+    //   this.props.api.post('/auth/reset-password', { token, password }).then(() => {
+    //     this.setState({ step: 2, loading: false, errorApi: false });
+    //   })
+    //   .catch(error => {
+    //     this.setState({ errorApi: true, loading: false });
+    //   });
+    // }
+    this.setState({ step: 2, loading: false, errorApi: false });
   }
 
   isFormValid() {
@@ -107,7 +112,7 @@ class ResetPassword extends Component {
       <div>
         <FormContainer>
           <FormHeader>
-            <Heading large uppercase>Atualizar senha</Heading>
+            <Title large uppercase>Atualizar senha</Title>
             <Heading2 uppercase fontWeight="500" color={colors.lightgray}>
               Digite uma nova senha
             </Heading2>
@@ -163,8 +168,8 @@ class ResetPassword extends Component {
             Tudo ceerto!
           </Text>
           <Footer>
-            <Link prefetch href="/saves">
-              <SubmitButton outline block large>Ir para saves</SubmitButton>
+            <Link prefetch href="/login">
+              <SubmitButton outline block large>Ir para login</SubmitButton>
             </Link>
           </Footer>
         </FormContainer>

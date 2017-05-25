@@ -21,6 +21,10 @@ const Header = styled.div`
 const Title = styled(Heading)`
   line-height: 1.47;
   margin-bottom: 30px;
+
+  @media (max-width: 480px) {
+    font-size: 22px;
+  }
 `;
 
 const InputButton = styled.div`
@@ -29,6 +33,10 @@ const InputButton = styled.div`
   align-content: flex-start;
   margin-bottom: 30px;
   width: 100%;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
 `;
 
 
@@ -44,6 +52,10 @@ const InputCopy = styled.div`
   padding: 9px;
   text-align: center;
   width: 198px;
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
 `;
 
 const MessageCopied = styled.div`
@@ -56,6 +68,14 @@ const MessageCopied = styled.div`
 
 const ContentButton = styled.div`
   margin-top: 30px;
+`;
+
+const ButtonCopy = styled(Button)`
+
+  @media (max-width: 480px) {
+    margin-top: 20px;
+    width: 100%;
+  }
 `;
 
 class CheckoutContent extends Component {
@@ -89,7 +109,7 @@ class CheckoutContent extends Component {
             text={this.state.value}
             onCopy={() => this.setState({copied: true})}
           >
-            <Button block>copiar cupom</Button>
+            <ButtonCopy block>copiar cupom</ButtonCopy>
           </CopyToClipboard>
         </InputButton>
 

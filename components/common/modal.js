@@ -6,7 +6,8 @@ import { Text } from './typography';
 
 const createModalStyles = styleProps => ({
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    zIndex: 99
   },
   content: {
     top: '50%',
@@ -17,6 +18,7 @@ const createModalStyles = styleProps => ({
     transform: 'translateY(-50%)',
     borderRadius: '0',
     margin: '0 auto',
+    maxWidth: '400px',
     padding: '36px',
     ...styleProps
   }
@@ -35,7 +37,12 @@ const ModalContent = styled.div`
   > * + * {
     position: relative;
     height: auto;
+    min-height: 300px;
     width: auto;
+
+    @media (max-width: 568px) {
+      min-height: 200px;
+    }
   }
 `;
 

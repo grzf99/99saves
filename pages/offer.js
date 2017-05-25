@@ -82,6 +82,10 @@ const ItemHeader = styled.div`
   justify-content: space-between;
   margin-bottom: 20px;
   padding: 20px 0;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
 `;
 
 const GrayText = styled(Text)`
@@ -95,6 +99,10 @@ const Tag = styled(Heading2)`
   font-size: 24px;
   padding: 2px 10px;
   text-transform: uppercase;
+
+  @media (max-width: 480px) {
+    margin-bottom: 30px;
+  }
 `;
 
 const Price = styled.div`
@@ -268,6 +276,12 @@ const MethodPayment = styled.span`
   text-align: right;
 `;
 
+const HeadingCoutDown = styled(Headline)`
+  @media (max-width: 480px) {
+    font-size: 15px;
+  }
+`;
+
 class Offer extends React.Component {
   static async getInitialProps(ctx) {
     const save = (await ctx.api.get(`/saves/${ctx.query.saveId}`)).data;
@@ -404,7 +418,7 @@ class Offer extends React.Component {
         <RenderIf
           expr={this.props.save.checkoutOpen || this.props.save.votationOpen}
         >
-          <Headline spotlight large>
+          <HeadingCoutDown spotlight large>
             A
             {' '}
             {this.props.save.checkoutOpen ? 'oferta' : 'votação'}
@@ -412,7 +426,7 @@ class Offer extends React.Component {
             acaba em
             {' '}
             <CountDown {...this.props.save} />
-          </Headline>
+          </HeadingCoutDown>
         </RenderIf>
 
         <RenderIf expr={this.props.save.finished}>
