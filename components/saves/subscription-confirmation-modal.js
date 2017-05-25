@@ -7,17 +7,29 @@ import Button from '../common/button';
 
 const Title = styled(Heading)`
   padding: 8.5px 0;
+
+  @media (max-width: 568px) {
+   font-size: 19px;
+  }
 `;
 
 const Subtitle = styled(Heading2)`
   padding: 8.5px 0;
   color: ${colors.lightgray};
+
+  @media (max-width: 568px) {
+   font-size: 13px;
+  }
 `;
 
 const Content = styled(Text)`
   padding: 8.5px 0 35px 0;
   font-size: 14px;
   color: ${colors.lightgray};
+
+  @media (max-width: 568px) {
+   font-size: 12px;
+  }
 `;
 
 export const InvisibleButon = styled(Button)`
@@ -100,7 +112,7 @@ export default class extends Component {
   render() {
     const { onConfirm, subscribeTo, onClose, ...cleanedProps } = this.props;
     return (
-      <Modal {...cleanedProps} onClose={onClose} width="400px">
+      <Modal {...cleanedProps} onClose={onClose} width="88%">
         {this.state.step === 1 ? this.renderStep1() : null}
         {this.state.step === 2 ? this.renderStep2() : null}
       </Modal>
