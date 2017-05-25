@@ -278,7 +278,7 @@ const MethodPayment = styled.span`
 
 const HeadingCoutDown = styled(Headline)`
   @media (max-width: 480px) {
-    font-size: 17px;
+    font-size: 15px;
   }
 `;
 
