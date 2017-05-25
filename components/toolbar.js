@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import withApi from '../components/hoc/withApi';
 import { colors } from './styles/variables';
 import RenderIf from './common/render-if';
 import Button from './common/button';
@@ -143,4 +144,4 @@ class Toolbars extends React.Component {
   }
 }
 
-export default Toolbars;
+export default withApi()(Toolbars);

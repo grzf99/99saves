@@ -16,6 +16,10 @@ const Header = styled.div`
 
 const Title = styled(Heading)`
   line-height: 1.47;
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+  }
 `;
 
 const Footer = styled.div`
@@ -143,7 +147,7 @@ export default class extends Component {
 
   render() {
     return (
-      <Modal {...this.props} width="400px">
+      <Modal {...this.props} width="88%">
         {this.state.step === 1 ? this.renderStep1() : null}
         {this.state.step === 2 ? this.renderStep2() : null}
       </Modal>
