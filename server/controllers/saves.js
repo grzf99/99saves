@@ -136,7 +136,7 @@ function createShowQuery(req, includeVote = true) {
 
 function createListQuery(req) {
   const query = {
-    order: [['date_end', 'ASC']],
+    order: [['checkout_end'], ['votation_end'], ['negotiation_end'], ['date_end']],
     include: [
       {
         model: Product,
