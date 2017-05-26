@@ -12,7 +12,7 @@ describe('title setter', () => {
 
   it('should set the slug', () => {
     const save = Save.build({ title: 'My title' });
-    expect(save.slug).toEqual('my-title');
+    expect(save.slug).toBeNull();
   });
 });
 

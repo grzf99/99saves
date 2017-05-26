@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         set(value) {
           this.setDataValue('title', value);
-          this.setDataValue('slug', slugify(value));
         }
       },
       description: DataTypes.TEXT,
