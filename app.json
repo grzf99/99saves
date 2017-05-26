@@ -38,6 +38,12 @@
     },
     "REDIS_URL": {
       "required": true
+    },
+    "REQUIRE_LOGIN": {
+      "required": true
+    },
+    "REQUIRE_PASSWORD": {
+      "required": true
     }
   }
 }

@@ -50,7 +50,9 @@ app.prepare().then(() => {
   // });
 
   server.use('/api', apiRoutes);
-  server.use(basicAuth('username', 'password'));
+  if(process.env.NODE_ENV === 'production') 
+    server.use(basicAuth(process.env.REQUIRE_LOGIN, process.env.REQUIRE_PASSWORD));
+  
   server.get('/offer/:saveId', (req, res) => {
     const { saveId } = req.params;
     app.render(req, res, '/offer', Object.assign({}, req.query, { saveId }));
