@@ -31,9 +31,12 @@ const PageContainer = styled(Container)`
   background: ${colors.white};
   font-family: 'Roboto';
   font-size: 12px;
-  margin-top: 20px;
-  padding: 60px;
+  padding: 20px 60px 60px;
   text-align: justify;
+
+  @media (max-width: 480px) {
+    padding: 20px;
+  }
 `;
 
 const Title = styled.h1`
@@ -54,6 +57,10 @@ const Subtitle = styled.div`
   margin-bottom: 30px;
   max-width: 670px;
   width: 100%;
+
+  @media (max-width: 500px) {
+    font-size: 14px;
+  }
 `;
 
 export class Index extends React.Component {
