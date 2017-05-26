@@ -162,9 +162,18 @@ export default props => (
       <FooterLinks>
         <FooterTitle>Links</FooterTitle>
         <FooterLink>
-          <a href="/saves">Todos os saves</a>
-          <a href="/politica-privacidade">Política de privacidade</a>
-          <a href="https://www.youtube.com">Termos de uso</a>
+          <Link prefetch href="/saves">
+            <a>Todos os saves</a>
+          </Link>
+          <Link prefetch href="/politica-privacidade">
+            <a>Política de privacidade</a>
+          </Link>
+          <Link prefetch href="/termos-de-uso">
+            <a>Termos de uso</a>
+          </Link>
+          <Link prefetch href="/faq">
+            <a>FAQ</a>
+          </Link>
         </FooterLink>
       </FooterLinks>
     </TextLinks>
