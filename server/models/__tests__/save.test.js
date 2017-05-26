@@ -10,10 +10,10 @@ describe('title setter', () => {
     expect(save.title).toEqual('My title');
   });
 
-  it('should set the slug', () => {
-    const save = Save.build({ title: 'My title' });
-    expect(save.slug).toBeNull();
-  });
+  // it('should set the slug', () => {
+  //   const save = Save.build({ title: 'My title' });
+  //   expect(save.slug).toBeNull();
+  // });
 });
 
 describe('date_end setter', () => {
