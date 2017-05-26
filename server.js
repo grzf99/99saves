@@ -50,6 +50,7 @@ app.prepare().then(() => {
   // server.get('/', (req, res) => {
   //   renderAndCache(app, req, res, '/');
   // });
+  server.options('*', cors());
 
   server.use('/api', apiRoutes);
   if(process.env.NODE_ENV === 'production' && (!!process.env.REQUIRE_LOGIN && !!process.env.REQUIRE_PASSWORD)) 
