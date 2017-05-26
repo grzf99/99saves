@@ -1,4 +1,4 @@
-const { addDays } = require('date-fns');
+const { addDays, startOfDay, endOfDay } = require('date-fns');
 const { Save, Product, Provider } = require('../../models');
 const VotationStartMailer = require('../votation-start');
 
@@ -28,12 +28,12 @@ describe('#verify', () => {
     it('should enqueue that many jobs', () =>
       Save.bulkCreate([
         {
-          date_start: addDays(new Date(), -3),
-          date_end: addDays(new Date(), -2)
+          date_start: addDays(startOfDay(new Date()), -3),
+          date_end: addDays(endOfDay(new Date()), -2)
         },
         {
-          date_start: addDays(new Date(), -3),
-          date_end: addDays(new Date(), -2)
+          date_start: addDays(startOfDay(new Date()), -3),
+          date_end: addDays(endOfDay(new Date()), -2)
         }
       ])
         .then(() => VotationStartMailer.verify())
