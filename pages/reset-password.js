@@ -83,19 +83,18 @@ class ResetPassword extends Component {
   }
 
   handleSubmit() {
-    // if(!this.isEqualPassword()) {
-    //   this.setState({validPassword: true});
-    // } else {
-    //   const password = this.state.password;
-    //   const token = this.props.url.query.token;
-    //   this.props.api.post('/auth/reset-password', { token, password }).then(() => {
-    //     this.setState({ step: 2, loading: false, errorApi: false });
-    //   })
-    //   .catch(error => {
-    //     this.setState({ errorApi: true, loading: false });
-    //   });
-    // }
-    this.setState({ step: 2, loading: false, errorApi: false });
+    if(!this.isEqualPassword()) {
+      this.setState({validPassword: true});
+    } else {
+      const password = this.state.password;
+      const token = this.props.url.query.token;
+      this.props.api.post('/auth/reset-password', { token, password }).then(() => {
+        this.setState({ step: 2, loading: false, errorApi: false });
+      })
+      .catch(error => {
+        this.setState({ errorApi: true, loading: false });
+      });
+    }
   }
 
   isFormValid() {
