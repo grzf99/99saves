@@ -50,7 +50,7 @@ app.prepare().then(() => {
   // });
 
   server.use('/api', apiRoutes);
-  if(process.env.NODE_ENV === 'production') 
+  if(process.env.NODE_ENV === 'production' && (!!process.env.REQUIRE_LOGIN && !!process.env.REQUIRE_PASSWORD)) 
     server.use(basicAuth(process.env.REQUIRE_LOGIN, process.env.REQUIRE_PASSWORD));
   
   server.get('/offer/:saveId', (req, res) => {
