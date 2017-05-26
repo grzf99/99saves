@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const basicAuth = require('basic-auth-connect');
-const cors = require('cors');
 // loading env variables from .env file
 require('dotenv').config();
 
@@ -37,7 +36,6 @@ passport.deserializeUser((id, done) => {
 
 app.prepare().then(() => {
   const server = express();
-  server.use(cors());
   server.use(logger('dev'));
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: true }));
@@ -50,7 +48,6 @@ app.prepare().then(() => {
   // server.get('/', (req, res) => {
   //   renderAndCache(app, req, res, '/');
   // });
-  server.options('*', cors());
 
   server.use('/api', apiRoutes);
   if(process.env.NODE_ENV === 'production' && (!!process.env.REQUIRE_LOGIN && !!process.env.REQUIRE_PASSWORD)) 

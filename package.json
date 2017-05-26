@@ -29,7 +29,6 @@
     "body-parser": "^1.17.1",
     "bootstrap": "3",
     "cookie-parser": "^1.4.3",
-    "cors": "^2.8.3",
     "cpf_cnpj": "^0.2.0",
     "date-fns": "^1.28.3",
     "express": "^4.15.2",
