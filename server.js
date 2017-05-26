@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const basicAuth = require('basic-auth-connect');
+const cors = require('cors');
 // loading env variables from .env file
 require('dotenv').config();
 
@@ -36,6 +37,7 @@ passport.deserializeUser((id, done) => {
 
 app.prepare().then(() => {
   const server = express();
+  server.use(cors());
   server.use(logger('dev'));
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: true }));
