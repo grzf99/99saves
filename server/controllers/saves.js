@@ -1,4 +1,5 @@
 const { Product, Save, Subscription, Vote, Provider, User, Coupon, Profile } = require('../models');
+const sequelize = require('sequelize');
 
 module.exports = {
   show(req, res) {
