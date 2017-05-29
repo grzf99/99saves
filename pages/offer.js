@@ -457,6 +457,7 @@ class Offer extends React.Component {
           index={this.state.activeTab}
           onChangeIndex={this.handleChangeIndex}
           animateHeight
+          disabled={this.props.save.checkoutOpen}
         >
           {this.state.products.map((product, key) => (
             <div key={product.id}>

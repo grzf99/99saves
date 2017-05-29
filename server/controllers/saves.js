@@ -136,7 +136,12 @@ function createShowQuery(req, includeVote = true) {
 
 function createListQuery(req) {
   const query = {
-    order: [['checkout_end'], ['votation_end'], ['negotiation_end'], ['date_end']],
+    order: [
+      [sequelize.literal("CASE WHEN (date_part('epoch',checkout_end)::int >= date_part('epoch',now())::int) THEN 1 ELSE null END ASC")],
+      ['votation_end'],
+      ['negotiation_end'],
+      ['date_end']
+    ],
     include: [
       {
         model: Product,
