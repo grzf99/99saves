@@ -77,8 +77,7 @@ export default class extends Component {
         </Subtitle>
         <Content>
           Não participe apenas por curiosidade, isso enfraquece nossa negociação mas não se preocupe, você não será obrigado a comprar o produto vencedor.
-        </Content>
-        <Content>
+          <br/><br/>
           Junte-se a nós neste Save e receba a melhor oferta do mercado.
         </Content>
         <Button block large onClick={this.handleConfirmation}>
