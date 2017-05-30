@@ -76,15 +76,12 @@ export default class extends Component {
           Só se junte para negociar conosco
         </Subtitle>
         <Content>
-          Não participe apenas por curiosidade, isso enfraquece nossa negociação.
-          Junte-se a nós para tornar nossa negociação mais forte.
+          Não participe apenas por curiosidade, isso enfraquece nossa negociação mas não se preocupe, você não será obrigado a comprar o produto vencedor.
+          Junte-se a nós neste Save e receba a melhor oferta do mercado.
         </Content>
         <Button block large onClick={this.handleConfirmation}>
           Tenho intenção de comprar
         </Button>
-        <InvisibleButon block large negative onClick={this.handleClose}>
-          Não sei se vou comprar
-        </InvisibleButon>
       </div>
     );
   }
