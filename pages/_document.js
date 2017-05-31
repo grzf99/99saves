@@ -25,7 +25,7 @@ export default class MyDocument extends Document {
           <title>99saves</title>
           <meta property="og:locale" content="pt_BR"/>
 
-          <meta property="og:url" content="https://staging.99saves.com"/>
+          <meta property="og:url" content={process.env.APP_URL}/>
 
           <meta property="og:title" content="99saves.com – Juntos pelo melhor preço!"/>
 
