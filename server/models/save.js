@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         set(value) {
           this.setDataValue('title', value);
-          this.setDataValue('slug', slugify(value));
         }
       },
       description: DataTypes.TEXT,
@@ -190,6 +189,15 @@ module.exports = (sequelize, DataTypes) => {
             checkoutOpen: this.checkoutOpen,
             finished: this.finished
           });
+        }
+      },
+      hooks: {
+        afterCreate: (save, options, cb) => {
+          return save.update({
+            slug: `${save.id}-${slugify(save.title)}`
+          })
+            .then(s => cb(null, save))
+            .catch(err => cb(err)); 
         }
       }
     }
