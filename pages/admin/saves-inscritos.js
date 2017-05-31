@@ -84,7 +84,7 @@ class SavesSubscriptions extends React.Component {
               </div>
 
               <div className="panel-body">
-                <RenderIf expr={this.state.winnerProduct}>
+                { this.state.winnerProduct &&
                   <RenderIf expr={this.state.listSave.checkoutOpen || this.state.listSave.finished}>
                     <div>
                       <div className="row">
@@ -97,7 +97,7 @@ class SavesSubscriptions extends React.Component {
                       <div className="form-group"/>
                     </div>
                   </RenderIf>
-                </RenderIf>
+                }
                 <RenderIf expr={this.state.listSave.checkoutOpen || this.state.listSave.finished}>
                   <ListTable
                     list={this.state.list}
