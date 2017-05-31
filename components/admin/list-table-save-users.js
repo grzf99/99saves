@@ -11,7 +11,7 @@ export default (props) => {
         <td>{ item.User.Profile.cpf }</td>
         <td>{ item.User.Profile.state }</td>
         <td>{ item.User.Profile.city }</td>
-        <td>{ item.Coupon.key }</td>
+        <td>{ item.Coupon && item.Coupon.key }</td>
       </tr>
     ));
   };
