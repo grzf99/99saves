@@ -39,7 +39,6 @@ export default (props) => {
             : ''}
         </td>
         <td>
-          {(item.checkoutOpen || item.finished) ?
             <Link prefetch href={`/admin/saves-inscritos?id=${item.id}`}>
               <a className="">Inscritos</a>
             </Link>
