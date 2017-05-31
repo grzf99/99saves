@@ -11,6 +11,12 @@ export default (props) => {
         <td>{ item.User.Profile.cpf }</td>
         <td>{ item.User.Profile.state }</td>
         <td>{ item.User.Profile.city }</td>
+        <td>{ item.User.Profile.city }</td>
+        <td>
+          {item.createdAt
+            ? format(new Date(item.createdAt), 'DD/MM/YYYY HH:mm')
+            : ''}
+        </td>
         <td>{ item.Coupon && item.Coupon.key }</td>
       </tr>
     ));
@@ -26,6 +32,7 @@ export default (props) => {
             <th>CPF</th>
             <th>UF</th>
             <th>Cidade</th>
+            <th>Data da Inscrição</th>
             <th>Cupom</th>
           </tr>
         </thead>
