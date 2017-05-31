@@ -44,6 +44,9 @@
     },
     "REQUIRE_PASSWORD": {
       "required": true
+    },
+    "APP_URL": {
+      "required": true
     }
   }
 }
