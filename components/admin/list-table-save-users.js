@@ -1,5 +1,6 @@
 import moment from 'moment';
 import Link from 'next/link';
+import { format } from 'date-fns';
 
 export default (props) => {
   const renderRows = () => {
