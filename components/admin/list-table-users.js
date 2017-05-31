@@ -7,7 +7,7 @@ export default (props) => {
     return list.map(item => (
       <tr key={item.id}>
         <td>{ item.id }</td>
-        <td>{ item.name }</td>
+        <td>{ item.name == null ? item.profile.name : item.name }</td>
         <td>{ item.email }</td>
         <td>{ item.admin ? 'Administrador' : 'Usuário' }</td>
         <td>
