@@ -12,7 +12,6 @@ export default (props) => {
         <td>{ item.User.Profile.cpf }</td>
         <td>{ item.User.Profile.state }</td>
         <td>{ item.User.Profile.city }</td>
-        <td>{ item.User.Profile.city }</td>
         <td>
           {item.createdAt
             ? format(new Date(item.createdAt), 'DD/MM/YYYY HH:mm')
