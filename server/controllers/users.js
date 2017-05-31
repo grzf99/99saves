@@ -6,6 +6,10 @@ const SignupWelcomeMailer = require('../mailers/signup-welcome');
 module.exports = {
   list(req, res) {
     return User.findAndCountAll({
+      include: [{
+        model: Profile,
+        attributes: ['id', 'name']
+      }],
       order: [['createdAt', 'DESC']],
       offset: req.query.offset,
       limit: req.query.limit
