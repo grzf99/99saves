@@ -31,7 +31,7 @@ export default class MyDocument extends Document {
 
           <meta property="og:description" content="A primeira plataforma de negociação direta entre consumidores e fabricantes."/>
 
-          <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg"/>
+          <meta property="og:image" content=""/>
 
 
           <meta property="fb:app_id"                 content={process.env.FACEBOOK_APP_ID} />
