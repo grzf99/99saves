@@ -98,11 +98,9 @@ class SavesSubscriptions extends React.Component {
                     </div>
                   </RenderIf>
                 }
-                <RenderIf expr={this.state.listSave.checkoutOpen || this.state.listSave.finished}>
-                  <ListTable
-                    list={this.state.list}
-                  />
-                </RenderIf>
+                <ListTable
+                  list={this.state.list}
+                />
               </div>
             </div>
           </div>
