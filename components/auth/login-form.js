@@ -28,24 +28,26 @@ const Title = styled(Heading)`
 `;
 
 const Footer = styled.div`
-  display: flex;
-  padding-top: 42px;
+  display: block;
 `;
 
-const ForgotPasswordButton = styled(Button)`
-  background: transparent;
-  text-align: left;
-  padding: 0;
-  flex: 1;
-  font-size: 14px;
-  font-weight: 500;
-  color: ${colors.lightgray};
-  text-transform: uppercase;
-  cursor: pointer;
+const ButtonContainer = styled.div`
+  display: block;
+  width: 250px;
+  margin: auto;
+`;
 
-  &:hover {
-    background: transparent;
-  }
+const ForgotPasswordButton = styled.a`
+  text-align: right;
+  padding: 0;
+  margin: 2px 0 25px 0;
+  color: ${colors.lightgray};
+  text-transform: lowercase;
+  font-family: 'Roboto';
+  font-size: 14px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
 `;
 
 const CreateAccountText = styled(Text)`
@@ -66,7 +68,7 @@ class LoginForm extends Component {
   };
 
   static defaultProps = {
-    submitText: 'Login com email',
+    submitText: 'Entrar',
     isAdmin: false,
     onForgotPassword: () => {}
   };
@@ -121,7 +123,7 @@ class LoginForm extends Component {
           <Header>
             <Title large uppercase>Entre agora</Title>
             <Heading2 uppercase fontWeight="500" color={colors.lightgray}>
-              Compre por preço de custo no 99saves.com
+              Compre pelo melhor preço no 99saves.com
             </Heading2>
           </Header>
         </RenderIf>
@@ -152,31 +154,33 @@ class LoginForm extends Component {
             validation={minLength(8)}
           />
         </Form>
-        <Button
-          block
-          large
-          disabled={this.props.loading || !this.isFormValid()}
-          onClick={this.handleSubmit}
-          type="submit"
-        >
-          {this.props.submitText}
-        </Button>
-        <RenderIf expr={false}>
-          <div>
-            <SeparatorText>ou</SeparatorText>
-            <FacebookButton block>Login com facebook</FacebookButton>
-          </div>
-        </RenderIf>
-        <RenderIf expr={!this.props.isAdmin}>
-          <Footer>
-            <ForgotPasswordButton onClick={this.props.onForgotPassword}>
-              Esqueci a senha
-            </ForgotPasswordButton>
-            <Link prefetch href="/signup">
-              <CreateAccountText>Criar nova conta</CreateAccountText>
-            </Link>
-          </Footer>
-        </RenderIf>
+        <ButtonContainer>
+          <Button
+            block
+            large
+            disabled={this.props.loading || !this.isFormValid()}
+            onClick={this.handleSubmit}
+            type="submit"
+          >
+            {this.props.submitText}
+          </Button>
+          <RenderIf expr={false}>
+            <div>
+              <SeparatorText>ou</SeparatorText>
+              <FacebookButton block>Login com facebook</FacebookButton>
+            </div>
+          </RenderIf>
+          <RenderIf expr={!this.props.isAdmin}>
+            <Footer>
+              <ForgotPasswordButton onClick={this.props.onForgotPassword}>
+                Esqueci a senha
+              </ForgotPasswordButton>
+              <Button block large href="/signup">
+                Criar nova conta
+              </Button>
+            </Footer>
+          </RenderIf>
+        </ButtonContainer>
       </div>
     );
   }
