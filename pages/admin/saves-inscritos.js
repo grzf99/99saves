@@ -80,29 +80,27 @@ class SavesSubscriptions extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <RenderIf expr={this.state.listSave.checkoutOpen || this.state.listSave.finished}>
                   <span className="panel-title">Lista de Inscritos no save - (<b>{this.state.listSave.title}</b>)</span>
-                </RenderIf>
               </div>
 
               <div className="panel-body">
-                <RenderIf expr={this.state.listSave.checkoutOpen || this.state.listSave.finished}>
-                  <div>
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <img src={this.state.listSave.image_default} width="80"/>
-                        <span className="panel-title">  Produto Vencedor - <b>{this.state.winnerProduct.title}</b></span>
-                        <span/>
+                { this.state.winnerProduct &&
+                  <RenderIf expr={this.state.listSave.checkoutOpen || this.state.listSave.finished}>
+                    <div>
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <img src={this.state.listSave.image_default} width="80"/>
+                          <span className="panel-title">  Produto Vencedor - <b>{this.state.winnerProduct.title}</b></span>
+                          <span/>
+                        </div>
                       </div>
+                      <div className="form-group"/>
                     </div>
-                    <div className="form-group"/>
-                  </div>
-                </RenderIf>
-                <RenderIf expr={this.state.listSave.checkoutOpen || this.state.listSave.finished}>
-                  <ListTable
-                    list={this.state.list}
-                  />
-                </RenderIf>
+                  </RenderIf>
+                }
+                <ListTable
+                  list={this.state.list}
+                />
               </div>
             </div>
           </div>

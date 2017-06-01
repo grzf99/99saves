@@ -56,7 +56,7 @@ module.exports = {
   listUsers(req, res) {
     return Save.findById(req.params.saveId, {
       include: [
-        { 
+        {
           model: Subscription,
           include: [Coupon, {
             model: User,
@@ -75,7 +75,7 @@ module.exports = {
   showSave(req, res) {
     return Save.findById(req.params.saveId, {
       include: [
-        { 
+        {
           model: Product
         }
       ]

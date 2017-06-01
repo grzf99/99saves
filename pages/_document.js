@@ -23,6 +23,20 @@ export default class MyDocument extends Document {
       <html lang="pt-BR">
         <Head>
           <title>99saves</title>
+          <meta property="og:locale" content="pt_BR"/>
+
+          <meta property="og:url" content={process.env.APP_URL}/>
+
+          <meta property="og:title" content="99saves.com – Juntos pelo melhor preço!"/>
+
+          <meta property="og:description" content="A primeira plataforma de negociação direta entre consumidores e fabricantes."/>
+
+          <meta property="og:image" content={process.env.APP_URL + '/static/images/og-image.png'}/>
+
+
+          <meta property="fb:app_id"                 content={process.env.FACEBOOK_APP_ID} />
+
+          <meta property="og:type" content="website" />
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
@@ -63,7 +77,6 @@ export default class MyDocument extends Document {
             `
             }}
           />
-
         </Head>
         <body>
           <Main />
