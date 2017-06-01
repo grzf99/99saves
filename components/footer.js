@@ -11,7 +11,7 @@ const Footer = styled.footer`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  
+
   ${props => props.marginTop && 'margin-top: 80px;'};
   width: 100%;
 `;
@@ -132,7 +132,7 @@ const FooterLogo = styled.img`
 export default props => (
   <Footer {...props}>
     <SocialMedia>
-      <a href="https://medium.com/@99saves">
+      <a href="https://journal.99saves.com">
         <Medium />
       </a>
       <a href="https://www.facebook.com/99saves/">
@@ -162,6 +162,9 @@ export default props => (
       <FooterLinks>
         <FooterTitle>Links</FooterTitle>
         <FooterLink>
+          <Link prefetch href="https://journal.99saves.com/o-que-%C3%A9-o-99saves-com-ea9fbc2f8dc4">
+            <a>Quem Somos</a>
+          </Link>
           <Link prefetch href="/saves">
             <a>Todos os saves</a>
           </Link>
@@ -180,6 +183,6 @@ export default props => (
     <Link prefetch href="/">
       <FooterLogo src="/static/images/logo-99-saves.svg" alt="99saves"  />
     </Link>
-    
+
   </Footer>
 );

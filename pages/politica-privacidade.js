@@ -79,7 +79,7 @@ export class Index extends React.Component {
             logged={this.props.isSignedIn}
             onLogout={this.props.onLogout}
           />
-        
+
         <PageContainer>
           <Title>Política de Privacidade</Title>
           <Subtitle>Última atualização em 02 de maio de 2017</Subtitle>
@@ -97,16 +97,7 @@ feitas alterações substanciais a esta política, nós lhe notificaremos por e-
 especificado em sua conta) ou pelo Site antes da alteração entrar em vigor. Você pode verificar
 quando esta Política de Privacidade foi revisada pela última vez verificando a data indicada no
 início desta Política.</p>
-          <p>1. Nós coletamos Dados Pessoais e outros Dados Não Pessoalmente Identificáveis pelo Site e
-quando você interage conosco, incluindo quando você se cadastra no Site, cria uma conta com o
-99saves.com, abre ou responde nossos e-mails, inscreve-se para receber nossa newsletter, entra
-em contato com nosso serviço de atendimento ao cliente, adquire produtos ou serviços pelo Site,
-posta comentários em nossas páginas e Comunidades Online, fornece informações a nossos
-Parceiros ou Fornecedores, fornece dados para participar de programas de Parceiros, visita
-qualquer página online que exiba nossos anúncios ou conteúdos ou conecta-se ao Site diretamente
-ou por meio de redes sociais. Os Dados Pessoais que coletamos incluem ,mas sem limitação, seu
-nome, seus Dados de Contato, seus Dados de Relacionamento, Dados de Transação e Dados
-Financeiros.</p>
+          <p>1.Nós coletamos Dados Pessoais e outros Dados Não Pessoalmente Identificáveis pelo Site e quando você interage conosco, incluindo quando você se cadastra no Site, cria uma conta com o 99saves.com, abre ou responde nossos e-mails, inscreve-se para receber nossa newsletter, entra em contato com nosso serviço de atendimento ao cliente, adquire produtos ou serviços pelo Site, posta comentários em nossas páginas e Comunidades Online, fornece informações a nossos Parceiros ou Fornecedores, fornece dados para participar de programas de Parceiros, visita qualquer página online que exiba nossos anúncios ou conteúdos ou conecta-se ao Site diretamente ou por meio de redes sociais. Os Dados Pessoais que coletamos incluem ,mas sem limitação, seu nome e Dados de Contato.</p>
 
           <p>2. Utilizamos e processamos seus Dados Pessoais para fins de viabilizar seu uso do Site, sua
 aquisição de produtos e serviços pelo Site, para envio de publicidade do 99saves.com para você,
@@ -127,29 +118,9 @@ para nos ajudar a entender melhor a sua necessidade para direcionarmos ofertas.<
 PESSOAIS CONFORME INDICADO ACIMA, PARA PROCESSAMENTO E USO PARA AS FINALIDADES
 ACIMA INDICADAS, INCLUSIVE PARA FINS DE ENVIO DE PUBLICIDADE DO 99SAVES.COM.</p>
 
-<p>3. Nós poderemos compartilhar e transferir seus Dados Pessoais a terceiros nas seguintes
-hipóteses: (i) para qualquer Afiliada da 99saves.com ou outra empresa do grupo, para as
-finalidades indicadas na cláusula 2 acima; (ii) para os nossos Fornecedores, para que nos prestem 
-serviços ou forneçam produtos, e sempre sujeitos à obrigação de sigilo; (iii) para reportar ou cobrar
-débitos ou dívidas conosco ou com nossos Parceiros; (iv) para os nossos Parceiros relevantes, para
-a oferta de produtos ou serviços no Site, para facilitar um relacionamento direto com você,
-viabilizar a comunicação com você, uma oferta, um concurso ou programa que você escolha
-participar, ou na medida em que você tenha comprado um produto ou serviço ou tenha um cupom
-do 99saves.com para utilizar com esse Parceiro; (v) com um terceiro que adquira ou pretenda
-adquirir o 99saves.com ou o todo ou parte de seus ativos; (vi) para cumprimento da legislação
-aplicável, de ordem judicial ou ordem de qualquer autoridade administrativa ou policial, ou
-conforme necessário para dar suporte a auditorias ou investigações de compliance ou corporativas,
-ou para a defesa judicial ou administrativa do 99saves.com; (vii) para combater fraudes ou
-atividades criminais, e para proteger nossos direitos ou os direitos de nossas Afiliadas e Parceiros; e
-(viii) para qualquer outra finalidade mediante seu consentimento.</p>
+<p>3. Nós poderemos compartilhar e transferir seus Dados Pessoais a terceiros nas seguintes hipóteses: (i) para os nossos Fornecedores, para que nos prestem serviços ou forneçam produtos, e sempre sujeitos à obrigação de sigilo; (ii) para os nossos Parceiros relevantes, para a oferta de produtos ou serviços no Site, para facilitar um relacionamento direto com você, viabilizar a comunicação com você, uma oferta, um concurso ou programa que você escolha participar, ou na medida em que você tenha comprado um produto ou serviço ou tenha um cupom do 99saves.com para utilizar com esse Parceiro; (v) com um terceiro que adquira ou pretenda adquirir o 99saves.com ou o todo ou parte de seus ativos; (iii) para cumprimento da legislação aplicável, de ordem judicial ou ordem de qualquer autoridade administrativa ou policial, ou conforme necessário para dar suporte a auditorias ou investigações de compliance ou corporativas, ou para a defesa judicial ou administrativa do 99saves.com; (iv) para combater fraudes ou atividades criminais, e para proteger nossos direitos ou os direitos de Parceiros; e (v) para qualquer outra finalidade mediante seu consentimento.</p>
 
-<p>3.1. Transferências de Negócios ou Mudanças Societárias. O 99saves.com e nossas Afiliadas
-reservam-se o direito de divulgar, transferir ou licenciar todas e quaisquer informações relativas ao
-Site, incluindo Dados Pessoais: para um proprietário, co-proprietário ou operador subsequente de
-um ou mais dos Sites ou de qualquer porção ou operação relativa a parte de um ou mais dos Sites;
-ou em relação a uma fusão, consolidação, ou restruturação, venda de substancialmente todas as
-nossas ações ou ativos, ou outra mudança societária, incluindo, mas sem limitação, durante o curso
-de qualquer procedimento de auditoria (due diligence).</p>
+<p>3.1. Transferências de Negócios ou Mudanças Societárias. O 99saves.com reserva-se o direito de divulgar, transferir ou licenciar todas e quaisquer informações relativas ao Site, incluindo Dados Pessoais: para um proprietário, co-proprietário ou operador subsequente de um ou mais dos Sites ou de qualquer porção ou operação relativa a parte de um ou mais dos Sites; ou em relação a uma fusão, consolidação, ou restruturação, venda de substancialmente todas as nossas ações ou ativos, ou outra mudança societária, incluindo, mas sem limitação, durante o curso de qualquer procedimento de auditoria (due diligence).</p>
 
 <p>VOCÊ NESTE ATO EXPRESSAMENTE AUTORIZA E CONSENTE COM A TRANSFERÊNCIA,
 PROCESSAMENTO E USO DE SEUS DADOS PESSOAIS PELOS TERCEIROS CONFORME INDICADO
@@ -182,7 +153,7 @@ UTILIZAÇÃO DE SEUS DADOS PESSOAIS PARA FINS DE PUBLICIDADE DO 99SAVES.COM. Voc
 cancelar o seu consentimento para recebimento de publicidade a qualquer tempo através de
 solicitação pelo atendimento@99saves.com. Não disponibilizaremos seus dados para fins de
 publicidade a terceiros, a menos que você nos autorize expressamente no Site. Ao se registrar para
-receber a newsletter de uma cidade, seu endereço de e-mail será utilizado para fins de publicidade 
+receber a newsletter de uma cidade, seu endereço de e-mail será utilizado para fins de publicidade
 até o momento de cancelamento desta newsletter. O cancelamento da newsletter é possível a
 qualquer tempo através do link que acompanha seu e-mail contendo a newsletter.</p>
 
@@ -206,10 +177,6 @@ Ajuda no Atendimento ao Cliente, dentro de sua área de cadastro no Site ou atra
 atendimento@99saves.com.</p>
 
 <p>9. Quando utilizados nesta Política de Privacidade, os termos abaixo definidos terão o significado aqui atribuídos:</p>
-
-<p>Afiliada: significa qualquer entidade de propriedade ou controlada, direta ou indiretamente, pelo
-99saves.com ou que esteja sob o controle comum do 99saves.com e também inclui joint ventures
-celebradas pelo 99saves.com ou por suas Afiliadas.</p>
 
 <p>Comunidade Online: significa, coletivamente, nossas páginas ou contas em redes sociais, fóruns,
 plataformas, grupos de discussão, salas de chat ou outros métodos de comunicação que possam
