@@ -90,6 +90,15 @@ const FooterTexts = styled.div`
   > * {
     max-width: 300px;
   }
+
+  a {
+    color: ${colors.gray};
+
+    &:hover
+    {
+      text-decoration: underline;
+    }
+  }
 `;
 
 const FooterTitle = styled.h3`
@@ -156,6 +165,9 @@ export default props => (
         </FooterText>
         <FooterText>
           <small>&reg; 2017 | Todos os direitos reservados</small>
+        </FooterText>
+        <FooterText>
+          <small>Fale conosco<br/><a href="mailto:atendimento@99saves.com" target="_blank">atendimento@99saves.com</a></small>
         </FooterText>
       </FooterTexts>
 
