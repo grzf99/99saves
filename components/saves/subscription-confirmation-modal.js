@@ -26,6 +26,7 @@ const Content = styled(Text)`
   padding: 8.5px 0 35px 0;
   font-size: 14px;
   color: ${colors.lightgray};
+  text-align: ${props => (props.align ? props.align : 'left')};
 
   @media (max-width: 568px) {
    font-size: 12px;
@@ -36,6 +37,10 @@ export const InvisibleButon = styled(Button)`
   padding: 0;
   padding-top: 28px;
   margin-bottom: -7px;
+`;
+
+export const MailLink = styled.a`
+  color: ${colors.green};
 `;
 
 export default class extends Component {
@@ -83,6 +88,10 @@ export default class extends Component {
         <Button block large onClick={this.handleConfirmation}>
           Tenho intenção de comprar
         </Button>
+        <br/>
+        <Content align="center">
+          Dúvidas? <MailLink href="mailto:atendimento@99saves.com" target="_blank">atendimento@99saves.com</MailLink>
+        </Content>
       </div>
     );
   }
