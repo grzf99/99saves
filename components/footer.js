@@ -132,19 +132,19 @@ const FooterLogo = styled.img`
 export default props => (
   <Footer {...props}>
     <SocialMedia>
-      <a href="https://journal.99saves.com">
+      <a href="https://journal.99saves.com" target="_blank">
         <Medium />
       </a>
-      <a href="https://www.facebook.com/99saves/">
+      <a href="https://www.facebook.com/99saves/" target="_blank">
         <Facebook />
       </a>
-      <a href="https://www.youtube.com/channel/UCVaiNqY6WhW9PqJeUbaLwbw">
+      <a href="https://www.youtube.com/channel/UCVaiNqY6WhW9PqJeUbaLwbw" target="_blank">
         <Youtube />
       </a>
-      <a href="https://www.instagram.com/99saves/">
+      <a href="https://www.instagram.com/99saves/" target="_blank">
         <Instagram />
       </a>
-      <a href="https://www.linkedin.com/company-beta/16232043/">
+      <a href="https://www.linkedin.com/company-beta/16232043/" target="_blank">
         <Linkedin />
       </a>
     </SocialMedia>
@@ -162,7 +162,7 @@ export default props => (
       <FooterLinks>
         <FooterTitle>Links</FooterTitle>
         <FooterLink>
-          <Link prefetch href="https://journal.99saves.com/o-que-%C3%A9-o-99saves-com-ea9fbc2f8dc4">
+          <Link prefetch href="https://journal.99saves.com/o-que-%C3%A9-o-99saves-com-ea9fbc2f8dc4" target="_blank">
             <a>Quem Somos</a>
           </Link>
           <Link prefetch href="/saves">
