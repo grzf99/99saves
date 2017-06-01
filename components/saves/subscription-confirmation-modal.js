@@ -89,6 +89,9 @@ export default class extends Component {
           Tenho intenção de comprar
         </Button>
         <br/>
+        <Content align="center">
+          Dúvidas? <MailLink href="mailto:atendimento@99saves.com" target="_blank">atendimento@99saves.com</MailLink>
+        </Content>
       </div>
     );
   }
@@ -109,6 +112,7 @@ export default class extends Component {
         <Button block large onClick={this.handleClose}>
           Entendi
         </Button>
+        <br/>
         <Content align="center">
           Dúvidas? <MailLink href="mailto:atendimento@99saves.com" target="_blank">atendimento@99saves.com</MailLink>
         </Content>
