@@ -174,9 +174,9 @@ export default props => (
       <FooterLinks>
         <FooterTitle>Links</FooterTitle>
         <FooterLink>
-          <Link prefetch href="https://journal.99saves.com/o-que-%C3%A9-o-99saves-com-ea9fbc2f8dc4" target="_blank">
-            <a>Quem Somos</a>
-          </Link>
+          <a href="https://journal.99saves.com/o-que-%C3%A9-o-99saves-com-ea9fbc2f8dc4" target="_blank">
+            Quem Somos
+          </a>
           <Link prefetch href="/saves">
             <a>Todos os saves</a>
           </Link>
