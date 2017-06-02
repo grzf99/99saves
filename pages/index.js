@@ -666,6 +666,7 @@ export class Index extends React.Component {
             background="transparent"
             onLogout={this.props.onLogout}
             api={this.props.api}
+            hasSearch="false"
           />
 
           <BannerContainer>

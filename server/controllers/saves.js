@@ -149,7 +149,8 @@ function createListQuery(req) {
         model: Product,
         include: [Vote]
       }
-    ]
+    ],
+    where: []
   };
 
   if (req.query.offset) query.offset = req.query.offset;
@@ -160,10 +161,25 @@ function createListQuery(req) {
      * TODO: O ideal é verificar se o admin tá logado e só exibir os inativos pra ele.
      */
     if (req.query.filters.active) {
-      query.where = {
-        date_end: { $gt: new Date() },
-        date_start: { $lt: new Date() }
-      };
+      query.where = [
+        ...query.where,
+        {
+          date_end: { $gt: new Date() },
+          date_start: { $lt: new Date() }
+        }
+      ];
+    }
+  }
+
+  if (req.query.q) {
+    if (req.query.q != '') {
+      console.log('search', req.query.q)
+      query.where = [
+        ...query.where,
+        {
+          title: { ilike: `%${req.query.q}%` }
+        }
+      ];
     }
   }
 
@@ -193,5 +209,6 @@ function createListQuery(req) {
       }
     }
   }
+
   return query;
 }

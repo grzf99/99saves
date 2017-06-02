@@ -5,6 +5,7 @@ import withApi from '../components/hoc/withApi';
 import { colors } from './styles/variables';
 import RenderIf from './common/render-if';
 import Button from './common/button';
+import Input from './common/input';
 import Container from './common/container';
 import LoginModal from './auth/login-modal';
 import ForgotPasswordModal from './auth/forgot-password-modal';
@@ -36,10 +37,36 @@ const MenuLinks = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  min-width: 220px;
+  min-width: 200px;
 
   @media (max-width: 480px) {
     min-width: 175px;
+  }
+`;
+
+const SearchInput = styled(Input)`
+  background: transparent;
+  border-radius: 5px;
+  border: solid 1px ${colors.green};
+  width: 200px;
+  color: ${colors.white};
+  padding: 3px 0 3px 5px;
+
+  &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: ${colors.white};
+  }
+  &::-moz-placeholder { /* Firefox 19+ */
+    color: ${colors.white};
+  }
+  &:-ms-input-placeholder { /* IE 10+ */
+    color: ${colors.white};
+  }
+  &:-moz-placeholder { /* Firefox 18- */
+    color: ${colors.white};
+  }
+
+  @media (max-width: 480px) {
+    display: none;
   }
 `;
 
@@ -99,6 +126,16 @@ class Toolbars extends React.Component {
     this.setState({ forgotPasswordModalIsOpen: false });
   }
 
+  handleSearchChange = ({ target }) => {
+    this.setState({ [target.name]: target.value }, () => this.props.onSearch(this.state.q));
+  }
+
+  keyHandle = (e) => {
+    if (e.key === 'Enter' || e.target.value === '') {
+      this.props.onSearch(this.state.q)
+    }
+  };
+
   render() {
     return (
       <Toolbar className={this.props.background}>
@@ -109,7 +146,18 @@ class Toolbars extends React.Component {
             </LinkLogo>
           </Link>
 
+
           <MenuLinks>
+            {this.props.onSearch &&
+              <SearchInput
+                name="q"
+                type='search'
+                placeholder="Busca"
+                onKeyUp={this.keyHandle}
+                onChange={this.handleSearchChange}
+                value={this.state.q}
+              />
+            }
             <Link prefetch href="/saves">
               <LinkAllSaves>
                 todos os saves

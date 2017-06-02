@@ -100,7 +100,8 @@ export class Saves extends React.Component {
       subscribeTo: undefined,
       showToast: false,
       subscriptionConfirmationModalIsOpen: false,
-      currentSubscribeTarget: null
+      currentSubscribeTarget: null,
+      search: ''
     };
 
     this.openModal = this.openModal.bind(this);
@@ -111,6 +112,7 @@ export class Saves extends React.Component {
     this.handleSubscribe = this.handleSubscribe.bind(this);
     this.handleSubscribeConfirm = this.handleSubscribeConfirm.bind(this);
     this.handleSubscribeCancel = this.handleSubscribeCancel.bind(this);
+    this.search = this.search.bind(this);
   }
 
   componentDidMount() {
@@ -184,12 +186,17 @@ export class Saves extends React.Component {
 
   loadSaves() {
     return this.props.api
-      .get('/saves?filters[active]=true')
+      .get(`/saves?filters[active]=true&q=${this.state.search}`)
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((saves) => {
         this.setState({ saves });
       });
+  }
+
+  search(q) {
+    console.log(q)
+    this.setState({ search: q }, () => this.loadSaves());
   }
 
   loadSubscriptions() {
@@ -245,6 +252,7 @@ export class Saves extends React.Component {
         <Toolbar
           logged={this.props.isSignedIn}
           onLogout={this.props.onLogout}
+          onSearch={this.search}
         />
 
         {this.props.isSignedIn &&
