@@ -136,9 +136,11 @@ module.exports = (sequelize, DataTypes) => {
       scopes: {
         negotiationStartToday: {
           where: {
+            date_end: {
+              $lt: addHours(startOfDay(new Date()), 3)
+            },
             negotiation_end: {
-              $lt: addHours(endOfDay(new Date()), 4),
-              $gt: addHours(startOfDay(new Date()), 3)
+              $gt: addHours(endOfDay(new Date()), 3)
             }
           }
         },
