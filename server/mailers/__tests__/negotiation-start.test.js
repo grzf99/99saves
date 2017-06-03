@@ -24,12 +24,12 @@ describe('#verify', () => {
     it('should enqueue that many jobs', () =>
       Save.bulkCreate([
         {
-          date_start: addDays(startOfDay(new Date()), -3),
-          date_end: addDays(endOfDay(new Date()), -2)
+          date_start: addDays(startOfDay(new Date()), -2),
+          date_end: addDays(endOfDay(new Date()), -1)
         },
         {
-          date_start: addDays(startOfDay(new Date()), -3),
-          date_end: addDays(endOfDay(new Date()), -2)
+          date_start: addDays(startOfDay(new Date()), -2),
+          date_end: addDays(endOfDay(new Date()), -1)
         }
       ])
         .then(() => NegotiationStartMailer.verify())
