@@ -134,6 +134,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       scopes: {
+        negotiationStartToday: {
+          where: {
+            negotiation_end: {
+              $lt: addHours(endOfDay(new Date()), 4),
+              $gt: addHours(startOfDay(new Date()), 3)
+            }
+          }
+        },
         votable: {
           where: {
             votation_end: {
@@ -197,7 +205,7 @@ module.exports = (sequelize, DataTypes) => {
             slug: `${save.id}-${slugify(save.title)}`
           })
             .then(s => cb(null, save))
-            .catch(err => cb(err)); 
+            .catch(err => cb(err));
         }
       }
     }
