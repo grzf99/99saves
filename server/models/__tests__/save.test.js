@@ -219,8 +219,8 @@ describe('checkoutOpen getter', () => {
   describe('when today is after checkout_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: startOfDay(addDays(new Date(), -6)),
-        date_end: endOfDay(addDays(new Date(), -5))
+        date_start: startOfDay(addDays(new Date(), -7)),
+        date_end: endOfDay(addDays(new Date(), -6))
       });
       expect(save.checkoutOpen).toEqual(false);
     });
