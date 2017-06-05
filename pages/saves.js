@@ -20,6 +20,7 @@ import LoginModal from '../components/auth/login-modal';
 import SubscriptionConfirmationModal
   from '../components/saves/subscription-confirmation-modal';
 import { colors } from '../components/styles/variables';
+import FeedbackModal from '../components/common/feedback-modal';
 
 const CardsList = styled(Container)`
   align-items: stretch;
@@ -288,6 +289,11 @@ export class Saves extends React.Component {
           isOpen={this.state.loginModalIsOpen}
           onClose={this.closeModal}
         />
+
+        <FeedbackModal
+          title="Estamos apenas começando..."
+          subtitle="Estes são apenas os primeiros saves cadastrados em nossa plataforma, aos poucos também teremos novos tipos de produtos. <br/><br/> Fique de olho!"
+          ref={instance => {this.feedback = instance}}/>
 
         <SubscriptionConfirmationModal
           isOpen={this.state.subscriptionConfirmationModalIsOpen}

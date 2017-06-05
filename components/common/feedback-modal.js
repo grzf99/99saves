@@ -4,6 +4,7 @@ import Modal from '../common/modal';
 import { colors } from '../styles/variables';
 import { Heading, Heading2, Text } from '../common/typography';
 import Button from '../common/button';
+import Input from '../common/input';
 
 const Title = styled(Heading)`
   padding: 8.5px 0;
@@ -54,10 +55,11 @@ export default class extends Component {
     super(props);
     this.state = {
       feedback: '',
-      isOpen: true,
+      isOpen: false,
     };
     this.sendFeedback = this.sendFeedback.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onClose = this.onClose.bind(this);
   }
 
   keyHandle = (e) => {
@@ -82,6 +84,10 @@ export default class extends Component {
     this.setState({ isOpen: false })
   }
 
+  open() {
+    this.setState({ isOpen: true })
+  }
+
   render() {
     return (
       <Modal isOpen={this.state.isOpen} onClose={this.onClose} width="88%">
@@ -90,13 +96,18 @@ export default class extends Component {
           <Subtitle uppercase dangerouslySetInnerHTML={{__html: this.props.subtitle}}/>
           <Content>
             Conte para gente sua sugestao!
-            <TextArea
-              maxLength='500'
-              name="feedback"
+            <Input
+              name="email"
+              placeholder="E-mail"
               onChange={this.handleChange}
               value={this.state.email}
-              onKeyUp={this.keyHandle}
-              value={this.state.feedback}/>
+              onKeyUp={this.keyHandle}/>
+            <Input
+              name="feedback"
+              placeholder="Dica"
+              onChange={this.handleChange}
+              value={this.state.feedbacik}
+              onKeyUp={this.keyHandle}/>
 
           </Content>
           <Button block large disabled={!this.isFormValid()} onClick={this.sendFeedback}>
