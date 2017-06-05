@@ -30,9 +30,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         set(value) {
           this.setDataValue('date_end', value);
-          this.setDataValue('negotiation_end', addDays(value, 1).toISOString());
-          this.setDataValue('votation_end', addDays(value, 2).toISOString());
-          this.setDataValue('checkout_end', addDays(value, 4).toISOString());
+          this.setDataValue('negotiation_end', addDays(value, 2).toISOString());
+          this.setDataValue('votation_end', addDays(value, 3).toISOString());
+          this.setDataValue('checkout_end', addDays(value, 5).toISOString());
         }
       },
       checkout_end: DataTypes.DATE,
@@ -197,7 +197,7 @@ module.exports = (sequelize, DataTypes) => {
             slug: `${save.id}-${slugify(save.title)}`
           })
             .then(s => cb(null, save))
-            .catch(err => cb(err)); 
+            .catch(err => cb(err));
         }
       }
     }

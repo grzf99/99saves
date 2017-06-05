@@ -28,16 +28,16 @@ describe('#verify', () => {
     it('should enqueue that many jobs', () =>
       Save.bulkCreate([
         {
+          date_start: addDays(new Date(), -6),
+          date_end: endOfDay(addDays(new Date(), -5))
+        },
+        {
           date_start: addDays(new Date(), -5),
           date_end: endOfDay(addDays(new Date(), -4))
         },
         {
-          date_start: addDays(new Date(), -4),
-          date_end: endOfDay(addDays(new Date(), -3))
-        },
-        {
-          date_start: addDays(new Date(), -4),
-          date_end: endOfDay(addDays(new Date(), -3))
+          date_start: addDays(new Date(), -5),
+          date_end: endOfDay(addDays(new Date(), -4))
         }
       ])
         .then(saves => CheckoutStartMailer.verify())
