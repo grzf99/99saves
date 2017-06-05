@@ -134,16 +134,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       scopes: {
-        negotiationStartToday: {
-          where: {
-            date_end: {
-              $lt: addHours(startOfDay(new Date()), 3)
-            },
-            negotiation_end: {
-              $gt: addHours(endOfDay(new Date()), 3)
-            }
-          }
-        },
         votable: {
           where: {
             votation_end: {
