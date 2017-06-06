@@ -14,7 +14,7 @@
     "test": "NODE_ENV=test jest --watch --forceExit -i",
     "test-ci": "NODE_ENV=test-ci jest",
     "sequelize": "sequelize",
-    "heroku-postbuild": "heroku-nextjs-build"
+    "heroku-postbuild": "sequelize db:migrate && heroku-nextjs-build"
   },
   "cacheDirectories": [
     "nextjs/node_modules"
