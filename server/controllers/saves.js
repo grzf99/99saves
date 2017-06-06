@@ -171,7 +171,7 @@ function createListQuery(req) {
             where: {
               UserId: req.user.id
             },
-            required: true)
+            required: true
           }
         ];
 

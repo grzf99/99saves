@@ -240,7 +240,9 @@ export default class extends React.Component {
   render() {
     return (
       <Card {...this.props}>
-        <CountDown {...this.props} className="card" />
+        <RenderIf expr={!this.props.negotiationOpen}>
+          <CountDown {...this.props} className="card" />
+        </RenderIf>
         <RenderIf expr={this.props.finished}>
           <Status>Oferta encerrada</Status>
         </RenderIf>
@@ -297,11 +299,11 @@ export default class extends React.Component {
               block
               target="_blank"
               onClick={() => this.openCheckoutModal()}
-              
+
             >
               Comprar agora
             </Button>
-            <CheckoutModal 
+            <CheckoutModal
               isOpen={this.state.checkoutModalIsOpen}
               onClose={() => this.closeModal()}
               save={this.props}
