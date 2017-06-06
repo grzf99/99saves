@@ -163,6 +163,13 @@ function createListQuery(req) {
         date_start: { $lt: new Date() }
       };
     }
+
+    if (req.query.filters.negotiation) {
+      query.where = {
+        negotiation_end: { $gt: new Date() },
+        date_end: { $lt: new Date() }
+      };
+    }
   }
 
   if (!req.user || (req.user && !req.user.admin))
