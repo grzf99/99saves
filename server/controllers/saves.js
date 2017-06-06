@@ -155,33 +155,39 @@ function createListQuery(req) {
   if (req.query.offset) query.offset = req.query.offset;
   if (req.query.limit) query.limit = req.query.limit;
 
-  query.where = {
-    date_end: { $gt: new Date() },
-    date_start: { $lt: new Date() }
-  };
+  if (req.query.filters) {
+    if (req.query.filters.active === 'true') {
+      query.where = {
+        date_end: { $gt: new Date() },
+        date_start: { $lt: new Date() }
+      };
+    }
+  }
 
   if (req.user) {
-    if (req.query.filters) {
-      if (req.query.filters.subscribed === 'true') {
-        query.include = [
-          ...query.include,
-          {
-            model: Subscription,
-            include: [Vote, Coupon],
-            where: {
-              UserId: req.user.id
-            },
-            required: true
-          }
-        ];
+    if (!req.user.admin) {
+      if (req.query.filters) {
+        if (req.query.filters.subscribed === 'true') {
+          query.include = [
+            ...query.include,
+            {
+              model: Subscription,
+              include: [Vote, Coupon],
+              where: {
+                UserId: req.user.id
+              },
+              required: true
+            }
+          ];
 
-        query.where = {};
-      }
+          query.where = {};
+        }
 
-      if (req.query.filters.votable === "true") {
-        query.where = {
-          date_end: { $lt: new Date() }
-        };
+        if (req.query.filters.votable === "true") {
+          query.where = {
+            date_end: { $lt: new Date() }
+          };
+        }
       }
     }
   }
