@@ -166,6 +166,13 @@ function createListQuery(req) {
 
   if (req.user) {
     if (!req.user.admin) {
+
+      // Usuários não administradores não podem visualizar listas não ativas 
+      query.where = {
+        date_end: { $gt: new Date() },
+        date_start: { $lt: new Date() }
+      };
+
       if (req.query.filters) {
         if (req.query.filters.subscribed === 'true') {
           query.include = [
