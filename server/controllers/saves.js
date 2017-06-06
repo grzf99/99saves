@@ -155,6 +155,7 @@ function createListQuery(req) {
   if (req.query.offset) query.offset = req.query.offset;
   if (req.query.limit) query.limit = req.query.limit;
 
+
   if (req.query.filters) {
     if (req.query.filters.active === 'true') {
       query.where = {
@@ -164,15 +165,16 @@ function createListQuery(req) {
     }
   }
 
+  if (!req.user || (req.user && !req.user.admin))
+  {
+    query.where = {
+      date_end: { $gt: new Date() },
+      date_start: { $lt: new Date() }
+    };
+  }
+
   if (req.user) {
     if (!req.user.admin) {
-
-      // Usuários não administradores não podem visualizar listas não ativas 
-      query.where = {
-        date_end: { $gt: new Date() },
-        date_start: { $lt: new Date() }
-      };
-
       if (req.query.filters) {
         if (req.query.filters.subscribed === 'true') {
           query.include = [
