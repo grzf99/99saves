@@ -16,7 +16,7 @@ const Card = styled.div`
   border: 1px solid ${rgba(255, 255, 255, 0.1)};
   display: flex;
   flex-direction: column;
-  height: 400px;
+  height: 390px;
   justify-content: space-between;
   min-height: 333px;
   padding-bottom: 24px;
@@ -33,7 +33,7 @@ const Tag = styled(Text)`
   font-weight: 400;
   padding: 5px 14px;
   position: absolute;
-  top: 42px;
+  top: 22px;
   z-index: 3;
   ${props => props.gray ? `background-color: ${colors.gray}` : ''}
 `;
@@ -62,10 +62,9 @@ const Header = styled.div`
   background: ${colors.white};
   display: flex;
   flex-direction: column;
-  height: 230px;
   justify-content: center;
-  margin-top: 27px;
-  padding-top: 24px;
+  padding-top: ${(props) => props.noCountdown ? '51px' : '24px'};
+  height: ${(props) => props.noCountdown ? '263px' : '230px'};
   position: relative;
 `;
 
@@ -89,11 +88,7 @@ const Info = styled.div`
   height: 100px;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0 16px;
-
-  > * + * {
-    margin-top: 16px;
-  }
+  padding: 16px 16px 0 16px;
 `;
 
 const CustomText = styled(Text)`
@@ -246,13 +241,13 @@ export default class extends React.Component {
         <RenderIf expr={this.props.finished}>
           <Status>Oferta encerrada</Status>
         </RenderIf>
-        <RenderIf expr={this.props.votationOpen}>
-          <Tag uppercase>Votação</Tag>
-        </RenderIf>
-        <RenderIf expr={this.props.negotiationOpen}>
-          <Tag uppercase gray>Negociação</Tag>
-        </RenderIf>
-        <Header>
+        <Header noCountdown={this.props.negotiationOpen}>
+          <RenderIf expr={this.props.votationOpen}>
+            <Tag uppercase>Votação</Tag>
+          </RenderIf>
+          <RenderIf expr={this.props.negotiationOpen}>
+            <Tag uppercase gray>Negociação</Tag>
+          </RenderIf>
           {this.renderImages()}
           <Gradient>
             <RenderIf
