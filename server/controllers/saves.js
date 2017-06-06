@@ -155,9 +155,11 @@ function createListQuery(req) {
   if (req.query.offset) query.offset = req.query.offset;
   if (req.query.limit) query.limit = req.query.limit;
 
-
   if (req.query.filters) {
-    if (req.query.filters.active === 'true') {
+    /**
+     * TODO: O ideal é verificar se o admin tá logado e só exibir os inativos pra ele.
+     */
+    if (req.query.filters.active) {
       query.where = {
         date_end: { $gt: new Date() },
         date_start: { $lt: new Date() }
@@ -165,38 +167,29 @@ function createListQuery(req) {
     }
   }
 
-  if (!req.user || (req.user && !req.user.admin))
-  {
-    query.where = {
-      date_end: { $gt: new Date() },
-      date_start: { $lt: new Date() }
-    };
-  }
-
   if (req.user) {
-    if (!req.user.admin) {
-      if (req.query.filters) {
-        if (req.query.filters.subscribed === 'true') {
-          query.include = [
-            ...query.include,
-            {
-              model: Subscription,
-              include: [Vote, Coupon],
-              where: {
-                UserId: req.user.id
-              },
-              required: true
-            }
-          ];
+    query.include = [
+      ...query.include,
+      {
+        model: Subscription,
+        include: [Vote, Coupon],
+        where: {
+          UserId: req.user.id
+        },
+        required: !!(req.query.filters &&
+          req.query.filters.subscribed === 'true')
+      }
+    ];
 
-          query.where = {};
-        }
+    if (req.query.filters) {
+      if (req.query.filters.subscribed) {
+        query.where = {};
+      }
 
-        if (req.query.filters.votable === "true") {
-          query.where = {
-            date_end: { $lt: new Date() }
-          };
-        }
+      if (req.query.filters.votable) {
+        query.where = {
+          date_end: { $lt: new Date() }
+        };
       }
     }
   }
