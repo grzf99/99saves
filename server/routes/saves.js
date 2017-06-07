@@ -39,6 +39,6 @@ router.get(
   saves.listUsers
 );
 
-router.get('/getScope/:scope', clientAuthentication(true), saves.getScope);
+router.get('/getScope/:scope', adminAuthentication(), saves.getScope);
 
 module.exports = router;
