@@ -5,16 +5,19 @@ jest.mock('../mailers/votation-start');
 jest.mock('../mailers/checkout-start');
 jest.mock('../mailers/last-chance');
 jest.mock('../mailers/feedback');
+jest.mock('../mailers/negotiation-start');
 const VotationStartMailer = require('../mailers/votation-start');
 const CheckoutStartMailer = require('../mailers/checkout-start');
 const LastChanceMailer = require('../mailers/last-chance');
 const FeedbackMailer = require('../mailers/feedback');
+const NegotiationStartMailer = require('../mailers/negotiation-start');
 
 afterEach(() => {
   VotationStartMailer.verify.mockClear();
   CheckoutStartMailer.verify.mockClear();
   LastChanceMailer.verify.mockClear();
   FeedbackMailer.verify.mockClear();
+  NegotiationStartMailer.verify.mockClear();
 });
 
 jest.useFakeTimers();
@@ -49,4 +52,12 @@ test('should run FeedbackMailer#verify everyday', () => {
 
   jest.runTimersToTime(oneDayTimeout);
   expect(FeedbackMailer.verify).toHaveBeenCalledTimes(1);
+});
+
+test('should run NegotiationStartMailer#verify everyday', () => {
+  const oneDayTimeout = ms('1 day');
+  startClockwork();
+
+  jest.runTimersToTime(oneDayTimeout);
+  expect(NegotiationStartMailer.verify).toHaveBeenCalledTimes(1);
 });

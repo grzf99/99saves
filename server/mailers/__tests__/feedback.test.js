@@ -28,12 +28,12 @@ describe('#verify', () => {
     it('should enqueue that many jobs', () =>
       Save.bulkCreate([
         {
-          date_start: addDays(new Date(), -15),
-          date_end: endOfDay(addDays(new Date(), -13))
+          date_start: addDays(new Date(), -16),
+          date_end: endOfDay(addDays(new Date(), -14))
         },
         {
-          date_start: addDays(new Date(), -15),
-          date_end: endOfDay(addDays(new Date(), -13))
+          date_start: addDays(new Date(), -16),
+          date_end: endOfDay(addDays(new Date(), -14))
         },
         {
           date_start: addDays(new Date(), -3),

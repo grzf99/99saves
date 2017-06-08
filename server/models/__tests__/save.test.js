@@ -24,25 +24,25 @@ describe('date_end setter', () => {
     expect(save.date_end).toEqual(now);
   });
 
-  it('should set the negotiation_end to 1 day after date_end', () => {
+  it('should set the negotiation_end to 2 day after date_end', () => {
     const save = Save.build({ date_end: now });
     expect(
       differenceInDays(new Date(save.date_end), new Date(save.negotiation_end))
-    ).toEqual(-1);
-  });
-
-  it('should set the votation_end to 2 days after date_end', () => {
-    const save = Save.build({ date_end: now });
-    expect(
-      differenceInDays(new Date(save.date_end), new Date(save.votation_end))
     ).toEqual(-2);
   });
 
-  it('should set the checkout_end to 4 days after date_end', () => {
+  it('should set the votation_end to 3 days after date_end', () => {
+    const save = Save.build({ date_end: now });
+    expect(
+      differenceInDays(new Date(save.date_end), new Date(save.votation_end))
+    ).toEqual(-3);
+  });
+
+  it('should set the checkout_end to 5 days after date_end', () => {
     const save = Save.build({ date_end: now });
     expect(
       differenceInDays(new Date(save.date_end), new Date(save.checkout_end))
-    ).toEqual(-4);
+    ).toEqual(-5);
   });
 });
 
@@ -145,8 +145,8 @@ describe('negotiationOpen getter', () => {
   describe('when today is after negotiation_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: startOfDay(addDays(new Date(), -3)),
-        date_end: endOfDay(addDays(new Date(), -2))
+        date_start: startOfDay(addDays(new Date(), -4)),
+        date_end: endOfDay(addDays(new Date(), -3))
       });
       expect(save.negotiationOpen).toEqual(false);
     });
@@ -167,8 +167,8 @@ describe('votationOpen getter', () => {
   describe('when today is the same day as votation_end', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: startOfDay(addDays(new Date(), -2)),
-        date_end: endOfDay(addDays(new Date(), -2))
+        date_start: startOfDay(addDays(new Date(), -3)),
+        date_end: endOfDay(addDays(new Date(), -3))
       });
       expect(save.votationOpen).toEqual(true);
     });
@@ -177,8 +177,8 @@ describe('votationOpen getter', () => {
   describe('when today is after votation_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: startOfDay(addDays(new Date(), -3)),
-        date_end: endOfDay(addDays(new Date(), -3))
+        date_start: startOfDay(addDays(new Date(), -4)),
+        date_end: endOfDay(addDays(new Date(), -4))
       });
       expect(save.votationOpen).toEqual(false);
     });
@@ -199,8 +199,8 @@ describe('checkoutOpen getter', () => {
   describe('when today is between votation_end + 1 and checkout_end', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: startOfDay(addDays(new Date(), -4)),
-        date_end: endOfDay(addDays(new Date(), -3))
+        date_start: startOfDay(addDays(new Date(), -5)),
+        date_end: endOfDay(addDays(new Date(), -4))
       });
       expect(save.checkoutOpen).toEqual(true);
     });
@@ -219,8 +219,8 @@ describe('checkoutOpen getter', () => {
   describe('when today is after checkout_end', () => {
     it('should be false', () => {
       const save = Save.build({
-        date_start: startOfDay(addDays(new Date(), -6)),
-        date_end: endOfDay(addDays(new Date(), -5))
+        date_start: startOfDay(addDays(new Date(), -7)),
+        date_end: endOfDay(addDays(new Date(), -6))
       });
       expect(save.checkoutOpen).toEqual(false);
     });
@@ -251,8 +251,8 @@ describe('finished getter', () => {
   describe('when today is after checkout_end', () => {
     it('should be true', () => {
       const save = Save.build({
-        date_start: startOfDay(addDays(new Date(), -6)),
-        date_end: endOfDay(addDays(new Date(), -5))
+        date_start: startOfDay(addDays(new Date(), -7)),
+        date_end: endOfDay(addDays(new Date(), -6))
       });
       expect(save.finished).toEqual(true);
     });

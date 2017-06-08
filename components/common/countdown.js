@@ -10,11 +10,11 @@ const CountDown = styled.div`
   font-family: 'Oswald', sans-serif;
   font-weight: 500;
   text-align: center;
-  
+
   &.card {
     font-size: 14px;
-    position: absolute;
-    top: 3px;
+    margin-top: 3px;
+    height: 21px;
     width: 100%;
     z-index: 3;
 `;
@@ -67,7 +67,7 @@ export default class extends React.Component {
 
       let now = new Date();
       let distance = Math.abs(end - now);
-      
+
       let days = Math.floor(distance / _day);
       let hours = Math.floor((distance % _day) / _hour);
       let minutes = Math.floor((distance % _hour) / _minute);
