@@ -184,6 +184,10 @@ function createListQuery(req) {
         };
       }
     }
+
+    if (req.user.admin) {
+      query.where = {};
+    }
   }
   return query;
 }
