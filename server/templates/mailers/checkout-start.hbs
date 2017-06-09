@@ -13,7 +13,7 @@
       <tr>
         <th style="min-width: 58px;"></th>
         <th class="mail__header-width">
-          <h1 class="mail__title">Você tem até {{ formatDate save.checkout_end 'DD/MM' }} para comprar</h1>
+          <h1 class="mail__title">Você tem até {{ formatDate (addHours save.checkout_end -3) 'DD/MM' }} para comprar</h1>
         </th>
         <th style="min-width: 58px;"></th>
       </tr>

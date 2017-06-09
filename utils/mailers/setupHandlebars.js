@@ -6,6 +6,7 @@ const formatCurrency = require('../formatCurrency');
 
 Handlebars.registerHelper('currency', formatCurrency);
 Handlebars.registerHelper('formatDate', dateFns.format);
+Handlebars.registerHelper('addHours', dateFns.addHours);
 
 const partialsDir = path.join(
   __dirname,
