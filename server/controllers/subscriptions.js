@@ -1,4 +1,4 @@
-const { Subscription } = require('../models');
+const { Save, Subscription } = require('../models');
 const ParticipationStartMailer = require('../mailers/participation-start');
 
 module.exports = {
@@ -9,7 +9,9 @@ module.exports = {
     })
       .then(subscription => {
 
-        ParticipationStartMailer.mail(req.user.email, { user: req.user, subscription });
+        save = await Save.findById(subscription.SaveId);
+
+        ParticipationStartMailer.mail(req.user.email, { user: req.user, save });
 
         return res.status(201).send(subscription);
       })
