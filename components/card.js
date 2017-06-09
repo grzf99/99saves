@@ -191,12 +191,12 @@ export default class extends React.Component {
         <Button block outline onClick={this.goToOffers}>Sobre o produto</Button>
       );
     }
-
-    return (
-      <Button block disabled onClick={this.handleSave}>
-        Participando: Aguarde o encerramento
-      </Button>
-    );
+    if (!(this.props.winnerProduct && this.props.winnerProduct.price > 0))
+      return (
+        <Button block disabled onClick={this.handleSave}>
+          Participando: Aguarde o encerramento
+        </Button>
+      );
   }
 
   renderImages() {
