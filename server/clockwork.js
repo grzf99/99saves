@@ -6,7 +6,7 @@ const FeedbackMailer = require('./mailers/feedback');
 const NegotiationStartMailer = require('./mailers/negotiation-start');
 
 module.exports = () => {
-  schedule.scheduleJob('0 21 * * *', () => {
+  schedule.scheduleJob('0 4 * * *', () => {
     VotationStartMailer.verify();
     CheckoutStartMailer.verify();
     LastChanceMailer.verify();
