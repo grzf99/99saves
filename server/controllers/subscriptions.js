@@ -3,19 +3,20 @@ const ParticipationStartMailer = require('../mailers/participation-start');
 
 module.exports = {
   async create(req, res) {
-    return Subscription.create({
-      SaveId: parseInt(req.params.saveId, 10),
-      UserId: req.user.id
-    })
-      .then(subscription => {
+    try {
+      const subscription = await Subscription.create({
+        SaveId: parseInt(req.params.saveId, 10),
+        UserId: req.user.id
+      });
 
-        save = await Save.findById(subscription.SaveId);
+      const save = await Save.findById(subscription.SaveId);
 
-        ParticipationStartMailer.mail(req.user.email, { user: req.user, save });
+      ParticipationStartMailer.mail(req.user.email, { user: req.user, save });
 
-        return res.status(201).send(subscription);
-      })
-      .catch(error => res.status(400).send(error));
+      return res.status(201).send(subscription);
+    } catch (err) {
+      return res.status(400).send(error);
+    }
   },
 
   async update(req, res) {
