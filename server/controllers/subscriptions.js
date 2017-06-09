@@ -2,16 +2,16 @@ const { Subscription } = require('../models');
 const ParticipationStartMailer = require('../mailers/participation-start');
 
 module.exports = {
-  create(req, res) {
+  async create(req, res) {
     return Subscription.create({
       SaveId: parseInt(req.params.saveId, 10),
       UserId: req.user.id
     })
       .then(subscription => {
 
-        ParticipationStartMailer.mail(req.user.email, { user, subscription });
+        ParticipationStartMailer.mail(req.user.email, { user: req.user, subscription });
 
-        res.status(201).send(subscription)
+        return res.status(201).send(subscription);
       })
       .catch(error => res.status(400).send(error));
   },
