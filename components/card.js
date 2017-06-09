@@ -186,7 +186,7 @@ export default class extends React.Component {
       );
     } else if (this.props.checkoutOpen) {
       return <Button block onClick={this.goToOffers}>Comprar agora</Button>;
-    } else if (this.props.finished || (this.props.winnerProduct && this.props.winnerProduct.price > 0)) {
+    } else if (this.props.finished && (this.props.winnerProduct && this.props.winnerProduct.price > 0)) {
       return (
         <Button block outline onClick={this.goToOffers}>Sobre o produto</Button>
       );
