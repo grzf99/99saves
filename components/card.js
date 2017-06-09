@@ -259,7 +259,7 @@ export default class extends React.Component {
           </Gradient>
         </Header>
 
-        <RenderIf expr={this.props.checkoutOpen || this.props.finished}>
+        <RenderIf expr={(this.props.checkoutOpen || this.props.finished) && (this.props.winnerProduct && this.props.winnerProduct.price > 0)}>
           <Headline
             spotlight={!this.props.finished}
             disabled={this.props.finished}
@@ -316,6 +316,12 @@ export default class extends React.Component {
               <CustomText>Escolha a melhor oferta</CustomText>
             </RenderIf>
             {this.renderButton()}
+          </Info>
+        </RenderIf>
+
+        <RenderIf expr={!(this.props.winnerProduct && this.props.winnerProduct.price > 0)}>
+          <Info>
+            <CustomText>Este foi um Save que os fabricantes não conseguiram superar a melhor oferta encontrada no mercado.</CustomText>
           </Info>
         </RenderIf>
       </Card>
