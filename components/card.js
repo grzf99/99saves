@@ -186,17 +186,17 @@ export default class extends React.Component {
       );
     } else if (this.props.checkoutOpen) {
       return <Button block onClick={this.goToOffers}>Comprar agora</Button>;
-    } else if (this.props.finished && (this.props.winnerProduct && this.props.winnerProduct.price > 0)) {
+    } else if (this.props.finished) {
       return (
         <Button block outline onClick={this.goToOffers}>Sobre o produto</Button>
       );
     }
-    if (!(this.props.winnerProduct && this.props.winnerProduct.price > 0))
-      return (
-        <Button block disabled onClick={this.handleSave}>
-          Participando: Aguarde o encerramento
-        </Button>
-      );
+
+    return (
+      <Button block disabled onClick={this.handleSave}>
+        Participando: Aguarde o encerramento
+      </Button>
+    );
   }
 
   renderImages() {
@@ -259,7 +259,7 @@ export default class extends React.Component {
           </Gradient>
         </Header>
 
-        <RenderIf expr={(this.props.checkoutOpen || this.props.finished) && (this.props.winnerProduct && this.props.winnerProduct.price > 0)}>
+        <RenderIf expr={this.props.checkoutOpen || this.props.finished}>
           <Headline
             spotlight={!this.props.finished}
             disabled={this.props.finished}
@@ -316,12 +316,6 @@ export default class extends React.Component {
               <CustomText>Escolha a melhor oferta</CustomText>
             </RenderIf>
             {this.renderButton()}
-          </Info>
-        </RenderIf>
-
-        <RenderIf expr={!(this.props.winnerProduct && this.props.winnerProduct.price > 0)}>
-          <Info>
-            <CustomText>Este foi um Save que os fabricantes não conseguiram superar a melhor oferta encontrada no mercado.</CustomText>
           </Info>
         </RenderIf>
       </Card>
