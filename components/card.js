@@ -192,11 +192,12 @@ export default class extends React.Component {
       );
     }
 
-    return (
-      <Button block disabled onClick={this.handleSave}>
-        Participando: Aguarde o encerramento
-      </Button>
-    );
+    if (!this.props.endedWithoutOffers)
+      return (
+        <Button block disabled onClick={this.handleSave}>
+          Participando: Aguarde o encerramento
+        </Button>
+      );
   }
 
   renderImages() {
@@ -235,10 +236,10 @@ export default class extends React.Component {
   render() {
     return (
       <Card {...this.props}>
-        <RenderIf expr={!this.props.negotiationOpen}>
+        <RenderIf expr={!this.props.negotiationOpen && !this.props.endedWithoutOffers}>
           <CountDown {...this.props} className="card" />
         </RenderIf>
-        <RenderIf expr={this.props.finished}>
+        <RenderIf expr={this.props.finished || this.props.endedWithoutOffers}>
           <Status>Oferta encerrada</Status>
         </RenderIf>
         <Header noCountdown={this.props.negotiationOpen}>
@@ -285,26 +286,28 @@ export default class extends React.Component {
           </Buscape>
         </RenderIf>
 
-        <RenderIf expr={this.props.checkoutOpen}>
-          <ButtonGroup>
-            <Button block outline onClick={this.goToOffers}>
-              Sobre o produto
-            </Button>
-            <Button
-              block
-              target="_blank"
-              onClick={() => this.openCheckoutModal()}
+        <RenderIf expr={!this.props.endedWithoutOffers}>
+          <RenderIf expr={this.props.checkoutOpen}>
+            <ButtonGroup>
+              <Button block outline onClick={this.goToOffers}>
+                Sobre o produto
+              </Button>
+              <Button
+                block
+                target="_blank"
+                onClick={() => this.openCheckoutModal()}
 
-            >
-              Comprar agora
-            </Button>
-            <CheckoutModal
-              isOpen={this.state.checkoutModalIsOpen}
-              onClose={() => this.closeModal()}
-              save={this.props}
-              width="400px"
-            />
-          </ButtonGroup>
+              >
+                Comprar agora
+              </Button>
+              <CheckoutModal
+                isOpen={this.state.checkoutModalIsOpen}
+                onClose={() => this.closeModal()}
+                save={this.props}
+                width="400px"
+              />
+            </ButtonGroup>
+          </RenderIf>
         </RenderIf>
 
         <RenderIf expr={!this.props.checkoutOpen}>
@@ -316,6 +319,12 @@ export default class extends React.Component {
               <CustomText>Escolha a melhor oferta</CustomText>
             </RenderIf>
             {this.renderButton()}
+          </Info>
+        </RenderIf>
+
+        <RenderIf expr={this.props.endedWithoutOffers}>
+          <Info>
+            <CustomText>Este foi um Save que os fabricantes não conseguiram superar a melhor oferta encontrada no mercado.</CustomText>
           </Info>
         </RenderIf>
       </Card>
