@@ -9,6 +9,14 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
+  getScope(req, res) {
+    Save.scope(req.params.scope).findAll({
+      include: [{ model: Product, include: [Provider] }]
+    })
+    .then(saves => res.status(200).send(saves))
+    .catch(error => res.status(400).send(error));
+  },
+
   create(req, res) {
     return Save.create(req.body)
       .then(save => res.status(201).send(save))
@@ -174,6 +182,7 @@ function createListQuery(req) {
             required: !!(req.query.filters &&
               req.query.filters.subscribed === 'true')
           }
+        ];
 
         query.where = {};
       }

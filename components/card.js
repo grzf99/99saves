@@ -16,7 +16,7 @@ const Card = styled.div`
   border: 1px solid ${rgba(255, 255, 255, 0.1)};
   display: flex;
   flex-direction: column;
-  height: 400px;
+  height: 390px;
   justify-content: space-between;
   min-height: 333px;
   padding-bottom: 24px;
@@ -33,7 +33,7 @@ const Tag = styled(Text)`
   font-weight: 400;
   padding: 5px 14px;
   position: absolute;
-  top: 42px;
+  top: 22px;
   z-index: 3;
   ${props => props.gray ? `background-color: ${colors.gray}` : ''}
 `;
@@ -62,10 +62,9 @@ const Header = styled.div`
   background: ${colors.white};
   display: flex;
   flex-direction: column;
-  height: 230px;
   justify-content: center;
-  margin-top: 27px;
-  padding-top: 24px;
+  padding-top: ${(props) => props.noCountdown ? '51px' : '24px'};
+  height: ${(props) => props.noCountdown ? '263px' : '230px'};
   position: relative;
 `;
 
@@ -89,11 +88,7 @@ const Info = styled.div`
   height: 100px;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0 16px;
-
-  > * + * {
-    margin-top: 16px;
-  }
+  padding: 16px 16px 0 16px;
 `;
 
 const CustomText = styled(Text)`
@@ -197,11 +192,12 @@ export default class extends React.Component {
       );
     }
 
-    return (
-      <Button block disabled onClick={this.handleSave}>
-        Participando: Aguarde o encerramento
-      </Button>
-    );
+    if (!this.props.endedWithoutOffers)
+      return (
+        <Button block disabled onClick={this.handleSave}>
+          Participando: Aguarde o encerramento
+        </Button>
+      );
   }
 
   renderImages() {
@@ -240,17 +236,19 @@ export default class extends React.Component {
   render() {
     return (
       <Card {...this.props}>
-        <CountDown {...this.props} className="card" />
-        <RenderIf expr={this.props.finished}>
+        <RenderIf expr={!this.props.negotiationOpen && !this.props.endedWithoutOffers}>
+          <CountDown {...this.props} className="card" />
+        </RenderIf>
+        <RenderIf expr={this.props.finished || this.props.endedWithoutOffers}>
           <Status>Oferta encerrada</Status>
         </RenderIf>
-        <RenderIf expr={this.props.votationOpen}>
-          <Tag uppercase>Votação</Tag>
-        </RenderIf>
-        <RenderIf expr={this.props.negotiationOpen}>
-          <Tag uppercase gray>Negociação</Tag>
-        </RenderIf>
-        <Header>
+        <Header noCountdown={this.props.negotiationOpen}>
+          <RenderIf expr={this.props.votationOpen}>
+            <Tag uppercase>Votação</Tag>
+          </RenderIf>
+          <RenderIf expr={this.props.negotiationOpen}>
+            <Tag uppercase gray>Negociação</Tag>
+          </RenderIf>
           {this.renderImages()}
           <Gradient>
             <RenderIf
@@ -288,26 +286,28 @@ export default class extends React.Component {
           </Buscape>
         </RenderIf>
 
-        <RenderIf expr={this.props.checkoutOpen}>
-          <ButtonGroup>
-            <Button block outline onClick={this.goToOffers}>
-              Sobre o produto
-            </Button>
-            <Button
-              block
-              target="_blank"
-              onClick={() => this.openCheckoutModal()}
-              
-            >
-              Comprar agora
-            </Button>
-            <CheckoutModal 
-              isOpen={this.state.checkoutModalIsOpen}
-              onClose={() => this.closeModal()}
-              save={this.props}
-              width="400px"
-            />
-          </ButtonGroup>
+        <RenderIf expr={!this.props.endedWithoutOffers}>
+          <RenderIf expr={this.props.checkoutOpen}>
+            <ButtonGroup>
+              <Button block outline onClick={this.goToOffers}>
+                Sobre o produto
+              </Button>
+              <Button
+                block
+                target="_blank"
+                onClick={() => this.openCheckoutModal()}
+
+              >
+                Comprar agora
+              </Button>
+              <CheckoutModal
+                isOpen={this.state.checkoutModalIsOpen}
+                onClose={() => this.closeModal()}
+                save={this.props}
+                width="400px"
+              />
+            </ButtonGroup>
+          </RenderIf>
         </RenderIf>
 
         <RenderIf expr={!this.props.checkoutOpen}>
@@ -319,6 +319,12 @@ export default class extends React.Component {
               <CustomText>Escolha a melhor oferta</CustomText>
             </RenderIf>
             {this.renderButton()}
+          </Info>
+        </RenderIf>
+
+        <RenderIf expr={this.props.endedWithoutOffers}>
+          <Info>
+            <CustomText>Este foi um Save que os fabricantes não conseguiram superar a melhor oferta encontrada no mercado.</CustomText>
           </Info>
         </RenderIf>
       </Card>

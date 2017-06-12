@@ -75,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
             new Date(),
             new Date(this.negotiation_end),
             new Date(this.votation_end)
-          );
+          ) && !this.endedWithoutOffers;
         }
       },
       checkoutOpen: {
@@ -85,13 +85,19 @@ module.exports = (sequelize, DataTypes) => {
             new Date(),
             new Date(this.votation_end),
             new Date(this.checkout_end)
-          );
+          ) && !this.endedWithoutOffers;
         }
       },
       finished: {
         type: DataTypes.VIRTUAL,
         get() {
-          return isAfter(new Date(), new Date(this.checkout_end));
+          return isAfter(new Date(), new Date(this.checkout_end)) && !this.endedWithoutOffers;
+        }
+      },
+      endedWithoutOffers: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return isAfter(new Date(), new Date(this.negotiation_end)) && !this.hasOffers;
         }
       },
       status: {
@@ -103,6 +109,8 @@ module.exports = (sequelize, DataTypes) => {
             return 'subscription';
           } else if (this.negotiationOpen) {
             return 'negotiation';
+          } else if (this.endedWithoutOffers) {
+            return 'no-offers';
           } else if (this.votationOpen) {
             return 'votation';
           } else if (this.checkoutOpen) {
@@ -130,10 +138,26 @@ module.exports = (sequelize, DataTypes) => {
               : acc;
           }, productWithBestPrice);
         }
+      },
+      hasOffers: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return this.Products && this.Products.length > 0;
+        }
       }
     },
     {
       scopes: {
+        negotiationStartToday: {
+          where: {
+            date_end: {
+              $lt: addHours(startOfDay(new Date()), 4)
+            },
+            negotiation_end: {
+              $gt: addHours(endOfDay(new Date()), 3)
+            }
+          }
+        },
         votable: {
           where: {
             votation_end: {
@@ -187,7 +211,8 @@ module.exports = (sequelize, DataTypes) => {
             negotiationOpen: this.negotiationOpen,
             votationOpen: this.votationOpen,
             checkoutOpen: this.checkoutOpen,
-            finished: this.finished
+            finished: this.finished,
+            endedWithoutOffers: this.endedWithoutOffers,
           });
         }
       },

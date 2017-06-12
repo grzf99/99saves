@@ -13,16 +13,13 @@
       <tr>
         <th style="min-width: 58px;"></th>
         <th class="mail__header-width">
-          <h1 class="mail__title">Qual a melhor oferta?</h1>
+          <h1 class="mail__title">Vamos brigar por você em:</h1>
         </th>
         <th style="min-width: 58px;"></th>
       </tr>
       <tr>
         <th style="min-width: 58px;"></th>
         <th class="mail__header-width">
-          <p class="mail__subtitle">
-            Os fabricantes fizeram a proposta do save de {{ save.title }}, selecionamos as melhores e agora você vota!
-          </p>
         </th>
         <th style="min-width: 58px;"></th>
       </tr>
@@ -34,56 +31,22 @@
         <td class="mail__content-wrapper">
           <table class="mail__content">
             <tbody>
-              <tr style="height: 32px;"></tr>
-              {{#each save.Products}}
+              <tr style="height: 21px;"></tr>
               <tr>
-                <td style="width: 28px;"></td>
                 <td>
-                  <table class="mail__product">
-                    <tbody>
-                      <tr>
-                        <td rowspan="7">
-                          <img class="product__image" src="{{ image_default }}" alt="{{ title }}">
-                        </td>
-                        <td rowspan="7" style="width: 29px;"></td>
-                        <td style="height: 1px;">
-                          <p class="product__text product__text--provider">Ofertado por {{ Provider.name }}</p>
-                        </td>
-                      </tr>
-                      <tr style="height: 7px;"></tr>
-                      <tr>
-                        <td style="height: 1px;">
-                          <p class="product__title">{{ title }}</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="height: 1px;">
-                          <p class="product__price">R$ {{ currency price }}</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="height: 1px;">
-                          <p class="product__text product__text--method">
-                            {{ method_payment }}
-                          </p>
-                        </td>
-                      </tr>
-                      <tr style="height: 26px;"></tr>
-                      <tr>
-                        <td>
-                          <a class="product__button" target="_blank" href="{{ ../appUrl }}/offer/{{ ../save.slug }}">
-                            Votar na oferta
-                          </a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <img class="product__image" src="{{save.image_default }}" alt="{{save.title }}">
                 </td>
-                <td style="width: 28px;"></td>
               </tr>
-              <tr style="height: 32px;"></tr>
-              {{/each}}
-              <tr></tr>
+              <tr>
+                <td>
+                  <p class="small_text">Imagem meramente ilustrativa</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h1 class="heading">{{save.title }}</h1>
+                </td>
+              </tr>
             </tbody>
           </table>
         </td>
@@ -93,7 +56,9 @@
           <td style="min-width: 28px;"></td>
           <td style="min-width: 28px;">
             <p class='footer_message'>
-              Lembre-se: a 99saves.com acaba de chegar ao mercado e estes são apenas nossos primeiros Saves. Juntos vamos crescer e brigaremos por produtos e preços cada vez melhores! #tamojunto 👊🏻
+              Deixe com a gente! Juntamos você com outras pessoas que tem este mesmo interesse.
+              <br>
+              Em breve fecharemos o grupo, enviaremos aos fornecedoires e só aceitaremos ofertas que cumprirem o propósito de serem a melhor do mercado. #TamoJuntoNessa.
             </p>
           </td>
           <td style="min-width: 28px;"></td>
@@ -132,28 +97,78 @@
       margin: 0;
     }
 
-    .mail__content-wrapper {
+    .heading {
+      color: #FFF;
+      text-align: center;
+      font-family: 'Oswald', sans-serif;
+      font-size: '26px';
+      font-weight: '500';
+      margin: 0;
+    }
+
+    .small_text {
+      text-align: center;
+      color: #FFF;
+      font-family: 'Roboto', sans-serif;
+      font-size: 8px;
+      margin: 0;
+    }
+
+    .description {
+      text-align: center;
+      align-items: center;
+      color: #acb2c0;
+      display: -webkit-box;
+      height: 50px;
+      overflow: hidden;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      font-family: "Oswald", sans-serif;
+    }
+
+    .mail__product-wrapper {
       width: 600px;
+      border: 1px solid #253e4f;
     }
 
-    .mail__content {
-      width: 100%;
+    .product__logo-wrapper {
+      height: 57px;
+      width: 57px;
       background: #fff;
-      border-radius: 2px;
     }
 
-    .product__image {
-      width: 200px;
+    .product__logo {
+      width: 100%;
     }
 
     .product__text {
       font-family: 'Roboto', sans-serif;
       font-size: 12px;
-      color: #1d2028;
+      color: #acb2c0;
       margin: 0;
     }
 
+    .product__text--label {
+      width: 194px;
+      color: #1d2028;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
     .product__text--method {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+    }
+
+    .product__text--label-buscape {
+      color: #1d2028;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .product__text--date-buscape {
+      font-size: 8px;
       font-weight: 500;
     }
 
@@ -161,16 +176,26 @@
       text-align: left;
       font-family: 'Oswald', sans-serif;
       font-size: 16px;
+      color: #fff;
       margin: 0;
+    }
+
+    .product__image {
+      height: 250px;
     }
 
     .product__price {
       text-align: left;
       font-family: 'Oswald', sans-serif;
-      font-size: 24px;
+      font-size: 36px;
       font-weight: bold;
       color: #1d2028;
       margin: 0;
+    }
+
+    .product__price--buscape {
+      font-size: 18px;
+      font-weight: 500;
     }
 
     .product__button,
@@ -192,11 +217,25 @@
       box-shadow: inset 0 -2px 0 0 rgba(0, 0, 0, 0.1);
     }
 
+    .product__buscape-container {
+      background: #f1f1f1;
+    }
+
+    .mail__content-wrapper {
+      width: 600px;
+    }
+
+    .mail__content {
+      width: 100%;
+      text-align: center;
+      border-radius: 2px;
+      color: #FFF;
+    }
 
     .footer_message
     {
       color: #FFF;
-      text-align: center;
+      text-align: left;
       padding: 20px;
       font-family: 'Roboto', sans-serif;
       font-weight: 400;
