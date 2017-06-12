@@ -250,6 +250,7 @@ describe('finished getter', () => {
       expect(save.finished).toEqual(false);
     });
   });
+});
 
 // TODO: REESCREVER ESSE TESTE POIS O MESMO ESTÁ QUEBRADO DEPOIS DA PROPRIEDADE endedWithoutOffers
   // describe('when today is after checkout_end', () => {
