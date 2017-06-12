@@ -94,24 +94,8 @@ export default class extends Component {
         <div>
           <Title uppercase>{this.props.title}</Title>
           <Subtitle uppercase dangerouslySetInnerHTML={{__html: this.props.subtitle}}/>
-          <Content>
-            Conte para gente sua sugestao!
-            <Input
-              name="email"
-              placeholder="E-mail"
-              onChange={this.handleChange}
-              value={this.state.email}
-              onKeyUp={this.keyHandle}/>
-            <Input
-              name="feedback"
-              placeholder="Dica"
-              onChange={this.handleChange}
-              value={this.state.feedbacik}
-              onKeyUp={this.keyHandle}/>
-
-          </Content>
-          <Button block large disabled={!this.isFormValid()} onClick={this.sendFeedback}>
-            Enviar
+          <Button block large onClick={this.onClose}>
+            OK
           </Button>
         </div>
       </Modal>
