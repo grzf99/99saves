@@ -42,11 +42,11 @@ export default class MyDocument extends Document {
             content="initial-scale=1.0, width=device-width"
           />
 
-          <META NAME="Title" CONTENT="99saves">
-          <META NAME="Keywords" CONTENT="compras, 99saves, preço baixo, melhor preço, produtos, ofertas">
-          <META NAME="Description" CONTENT="A primeira plataforma de negociação direta entre consumidores e fabricantes.">
-          <META NAME="Subject" CONTENT="A primeira plataforma de negociação direta entre consumidores e fabricantes.">
-          <META NAME="Language" CONTENT="Brasil">
+          <meta name="Title" content="99saves"/>
+          <meta name="Keywords" content="compras, 99saves, preço baixo, melhor preço, produtos, ofertas"/>
+          <meta name="Description" content="A primeira plataforma de negociação direta entre consumidores e fabricantes."/>
+          <meta name="Subject" content="A primeira plataforma de negociação direta entre consumidores e fabricantes."/>
+          <meta name="Language" content="Brasil"/>
 
           <link
             rel="shortcut icon"
