@@ -182,22 +182,26 @@ function createListQuery(req) {
     }
   }
 
-  if (req.user) {
-    query.include = [
-      ...query.include,
-      {
-        model: Subscription,
-        include: [Vote, Coupon],
-        where: {
-          UserId: req.user.id
-        },
-        required: !!(req.query.filters &&
-          req.query.filters.subscribed === 'true')
-      }
-    ];
+  query.where = {
+    date_end: { $gt: new Date() },
+    date_start: { $lt: new Date() }
+  };
 
+  if (req.user) {
     if (req.query.filters) {
       if (req.query.filters.subscribed) {
+        query.include = [
+          ...query.include,
+          {
+            model: Subscription,
+            include: [Vote, Coupon],
+            where: {
+              UserId: req.user.id
+            },
+            required: !!(req.query.filters &&
+              req.query.filters.subscribed === 'true')
+          }
+
         query.where = {};
       }
 
@@ -206,6 +210,11 @@ function createListQuery(req) {
           date_end: { $lt: new Date() }
         };
       }
+    }
+
+    if (req.user.admin)
+    {
+      query.where = {};
     }
   }
   return query;
