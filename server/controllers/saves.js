@@ -162,7 +162,7 @@ function createListQuery(req) {
 
   if (req.user) {
     if (req.query.filters) {
-      if (req.query.filters.subscribed === 'true') {
+      if (req.query.filters.subscribed) {
         query.include = [
           ...query.include,
           {
@@ -171,9 +171,9 @@ function createListQuery(req) {
             where: {
               UserId: req.user.id
             },
-            required: true
+            required: !!(req.query.filters &&
+              req.query.filters.subscribed === 'true')
           }
-        ];
 
         query.where = {};
       }
