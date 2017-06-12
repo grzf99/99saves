@@ -174,6 +174,7 @@ function createListQuery(req) {
             required: !!(req.query.filters &&
               req.query.filters.subscribed === 'true')
           }
+        ];
 
         query.where = {};
       }
