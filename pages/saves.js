@@ -119,6 +119,7 @@ export class Saves extends React.Component {
       this.loadSaves();
       this.loadSubscriptions();
     }
+    this.feedbackmodal.open();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -291,9 +292,9 @@ export class Saves extends React.Component {
         />
 
         <FeedbackModal
+          ref={instance => { this.feedbackmodal = instance; }}
           title="Estamos apenas começando..."
-          subtitle="Estes são apenas os primeiros saves cadastrados em nossa plataforma, aos poucos também teremos novos tipos de produtos. <br/><br/> Fique de olho!"
-          ref={instance => {this.feedback = instance}}/>
+          subtitle="Estes são apenas os primeiros saves cadastrados em nossa plataforma, aos poucos também teremos novos tipos de produtos. <br/><br/> Fique de olho!"/>
 
         <SubscriptionConfirmationModal
           isOpen={this.state.subscriptionConfirmationModalIsOpen}

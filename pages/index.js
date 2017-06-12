@@ -539,8 +539,6 @@ export class Index extends React.Component {
       this.loadSaves();
       this.loadSubscriptions();
     }
-
-    this.feedbackmodal.open();
   }
 
   componentWillReceiveProps(nextProps) {
