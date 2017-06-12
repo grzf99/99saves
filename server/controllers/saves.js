@@ -182,20 +182,19 @@ function createListQuery(req) {
             required: !!(req.query.filters &&
               req.query.filters.subscribed === 'true')
           }
-        ]
+        ];
 
         query.where = {};
       }
 
-      if (req.query.filters.votable) {
+      if (req.query.filters.votable === "true") {
         query.where = {
           date_end: { $lt: new Date() }
         };
       }
     }
 
-    if (req.user.admin)
-    {
+    if (req.user.admin) {
       query.where = {};
     }
   }

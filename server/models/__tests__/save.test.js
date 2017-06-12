@@ -250,6 +250,7 @@ describe('finished getter', () => {
       expect(save.finished).toEqual(false);
     });
   });
+});
 
 // TODO: REESCREVER ESSE TESTE POIS O MESMO ESTÁ QUEBRADO DEPOIS DA PROPRIEDADE endedWithoutOffers
   // describe('when today is after checkout_end', () => {
@@ -261,7 +262,6 @@ describe('finished getter', () => {
   //     expect(save.finished).toEqual(true);
   //   });
   // });
-});
 
 describe('feedbackable scope', () => {
   it('should return all saves that are on the 10th day after finished', () =>
