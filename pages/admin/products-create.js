@@ -50,7 +50,7 @@ class ProductsCreate extends React.Component {
   getSaves() {
     let list = [{ value: '', label: 'Selecione um registro' }];
     this.props.api
-      .get('/saves')
+      .get('/saves?filters[negotiation]=true')
       .then((response) => {
         response.data.map((item) => {
           list.push({ value: item.id, label: item.title });

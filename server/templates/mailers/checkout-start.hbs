@@ -13,7 +13,7 @@
       <tr>
         <th style="min-width: 58px;"></th>
         <th class="mail__header-width">
-          <h1 class="mail__title">Você tem até {{ formatDate save.checkout_end 'DD/MM' }}</h1>
+          <h1 class="mail__title">Você tem até {{ formatDate (addHours save.checkout_end -3) 'DD/MM' }} para comprar</h1>
         </th>
         <th style="min-width: 58px;"></th>
       </tr>
@@ -139,6 +139,15 @@
           </table>
         </td>
         <td style="min-width: 28px;"></td>
+      </tr>
+      <tr>
+          <td style="min-width: 28px;"></td>
+          <td style="min-width: 28px;">
+            <p class='footer_message'>
+              Lembre-se: a 99saves.com acaba de chegar ao mercado e estes são apenas nossos primeiros Saves. Juntos vamos crescer e brigaremos por produtos e preços cada vez melhores! #tamojunto 👊🏻
+            </p>
+          </td>
+          <td style="min-width: 28px;"></td>
       </tr>
       {{> mail-footer}}
     </tbody>
@@ -277,6 +286,16 @@
       width: 100%;
       background: #fff;
       border-radius: 2px;
+    }
+
+    .footer_message
+    {
+      color: #FFF;
+      text-align: center;
+      padding: 20px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
     }
   </style>
 </body>

@@ -17,8 +17,8 @@ import LoginModal from '../components/auth/login-modal';
 import ForgotPasswordModal from '../components/auth/forgot-password-modal';
 import Modal from '../components/common/modal';
 import RenderIf from '../components/common/render-if';
-import SubscriptionConfirmationModal
-  from '../components/saves/subscription-confirmation-modal';
+import SubscriptionConfirmationModal from '../components/saves/subscription-confirmation-modal';
+import FeedbackModal from '../components/common/feedback-modal';
 
 const Page = styled.div`
   background: ${colors.black};
@@ -869,6 +869,11 @@ export class Index extends React.Component {
           onConfirm={this.handleSubscribeConfirm}
           onClose={this.handleSubscribeCancel}
         />
+
+        <FeedbackModal
+          ref={instance => { this.feedbackmodal = instance; }}
+          title="Estamos apenas começando..."
+          subtitle="Estes são apenas os primeiros saves cadastrados em nossa plataforma, aos poucos também teremos novos tipos de produtos. <br/><br/> Fique de olho!"/>
 
         <Modal
           isOpen={this.state.modalVideoIsOpen}

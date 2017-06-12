@@ -51,11 +51,11 @@ app.prepare().then(() => {
   //   renderAndCache(app, req, res, '/');
   // });
   server.options('*', cors());
-  
+
   server.use('/api', apiRoutes);
-  if(process.env.NODE_ENV === 'production' && (!!process.env.REQUIRE_LOGIN && !!process.env.REQUIRE_PASSWORD)) 
+  if(process.env.NODE_ENV === 'production' && (!!process.env.REQUIRE_LOGIN && !!process.env.REQUIRE_PASSWORD))
     server.use(basicAuth(process.env.REQUIRE_LOGIN, process.env.REQUIRE_PASSWORD));
-  
+
   server.get('/offer/:saveId', (req, res) => {
     const { saveId } = req.params;
     app.render(req, res, '/offer', Object.assign({}, req.query, { saveId }));
