@@ -163,25 +163,6 @@ function createListQuery(req) {
   if (req.query.offset) query.offset = req.query.offset;
   if (req.query.limit) query.limit = req.query.limit;
 
-  if (req.query.filters) {
-    /**
-     * TODO: O ideal é verificar se o admin tá logado e só exibir os inativos pra ele.
-     */
-    if (req.query.filters.active) {
-      query.where = {
-        date_end: { $gt: new Date() },
-        date_start: { $lt: new Date() }
-      };
-    }
-
-    if (req.query.filters.negotiation) {
-      query.where = {
-        negotiation_end: { $gt: new Date() },
-        date_end: { $lt: new Date() }
-      };
-    }
-  }
-
   query.where = {
     date_end: { $gt: new Date() },
     date_start: { $lt: new Date() }
