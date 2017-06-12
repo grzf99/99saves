@@ -1,5 +1,6 @@
 import React from 'react';
 import Router from 'next/router';
+import Cookies from 'next-cookies';
 import styled from 'styled-components';
 import SwipeableViews from 'react-swipeable-views';
 import some from 'lodash/some';
@@ -20,6 +21,7 @@ import LoginModal from '../components/auth/login-modal';
 import SubscriptionConfirmationModal
   from '../components/saves/subscription-confirmation-modal';
 import { colors } from '../components/styles/variables';
+import FeedbackModal from '../components/common/feedback-modal';
 
 const CardsList = styled(Container)`
   align-items: stretch;
@@ -82,7 +84,8 @@ export class Saves extends React.Component {
   static async getInitialProps(ctx) {
     const items = await ctx.api.get('/saves?filters[active]=true');
     const saves = savesMapper(items.data);
-    return { saves };
+    const { modalFeedbackShow } = Cookies(ctx);
+    return { saves, modalFeedbackShow };
   }
 
   constructor(props) {
@@ -118,6 +121,17 @@ export class Saves extends React.Component {
       this.loadSaves();
       this.loadSubscriptions();
     }
+    if (!this.props.modalFeedbackShow) {
+      this.feedbackmodal.open();
+      document.cookie = 'modalFeedbackShow=true'
+    }
+  }
+
+  handleSubscribe(subscribeTo) {
+    this.setState({
+      subscriptionConfirmationModalIsOpen: true,
+      currentSubscribeTarget: subscribeTo
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -228,7 +242,7 @@ export class Saves extends React.Component {
         ))
       : <BlankState>
         <Heading color={colors.white}>Ainda não tem nenhum save???</Heading>
-        <Text color={colors.white}>
+          <Text color={colors.white}>
             O que você está esperando? Escolha os produtos que te interessam e participe do grupo que conseguirá os melhores descontos do mercado!
           </Text>
         <div>
@@ -288,6 +302,11 @@ export class Saves extends React.Component {
           isOpen={this.state.loginModalIsOpen}
           onClose={this.closeModal}
         />
+
+        <FeedbackModal
+          ref={instance => { this.feedbackmodal = instance; }}
+          title="Estamos apenas começando..."
+          subtitle="A <span style='color:#28ba64'>99saves.com</span> acaba de ser lançada e estes são apenas os primeiros Saves cadastrados em nossa plataforma. Aos poucos vamos incluindo novas categorias de produtos e você será informado. <br/><br/> Fique de olho!"/>
 
         <SubscriptionConfirmationModal
           isOpen={this.state.subscriptionConfirmationModalIsOpen}
