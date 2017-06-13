@@ -16,7 +16,7 @@ module.exports = async (job, done) => {
     return done();
   }
   console.log(
-    `running votation start job for save ${save.id} with ${subscriptions.length} subscriptions`
+    `running votation start job for save ${save.id} - ${save.title} with ${subscriptions.length} subscriptions`
   );
 
   return Promise.all(
