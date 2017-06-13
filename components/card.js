@@ -235,7 +235,7 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Card {...this.props}>
+      <Card {...this.props} data-status={this.props.status}>
         <RenderIf expr={!this.props.negotiationOpen}>
           <CountDown {...this.props} className="card" />
         </RenderIf>
@@ -315,16 +315,13 @@ export default class extends React.Component {
             <RenderIf expr={!this.props.votationOpen}>
               <CustomText>{this.props.description}</CustomText>
             </RenderIf>
+            <RenderIf expr={this.props.endedWithoutOffers}>
+              <CustomText>Este foi um Save que os fabricantes não conseguiram superar a melhor oferta encontrada no mercado.</CustomText>
+            </RenderIf>
             <RenderIf expr={this.props.votationOpen}>
               <CustomText>Escolha a melhor oferta</CustomText>
             </RenderIf>
             {this.renderButton()}
-          </Info>
-        </RenderIf>
-
-        <RenderIf expr={this.props.endedWithoutOffers}>
-          <Info>
-            <CustomText>Este foi um Save que os fabricantes não conseguiram superar a melhor oferta encontrada no mercado.</CustomText>
           </Info>
         </RenderIf>
       </Card>
