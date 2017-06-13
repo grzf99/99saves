@@ -75,13 +75,16 @@ module.exports = {
           ['title']
         ],
         include: [{
-          model: Subscription,
-          include: [Vote, Coupon],
-          where: {
-            UserId: req.user.id
-          },
-          required: true
-        }]
+            model: Subscription,
+            include: [Vote, Coupon],
+            where: {
+              UserId: req.user.id
+            },
+            required: true
+          }, {
+            model: Product,
+            include: [Vote]
+          }]
       };
 
     if (req.query.offset) query.offset = req.query.offset;
@@ -96,7 +99,15 @@ module.exports = {
   },
 
   listAll(req, res) {
-    const query = {};
+    const query = {
+      include: [{
+          model: Subscription,
+          include: [Vote, Coupon],
+        }, {
+          model: Product,
+          include: [Vote],
+        }]};
+
     if (req.query.offset) query.offset = req.query.offset;
     if (req.query.limit) query.limit = req.query.limit;
 
