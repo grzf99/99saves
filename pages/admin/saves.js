@@ -28,7 +28,7 @@ class Saves extends React.Component {
 
   refresh() {
     this.props.api
-      .get('/saves')
+      .get('/saves/all')
       .then((response) => {
         this.setState({ ...this.state, list: response.data });
       })

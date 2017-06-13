@@ -496,7 +496,7 @@ const SaveInfo = styled.span`
 
 export class Index extends React.Component {
   static async getInitialProps(ctx) {
-    const items = await ctx.api.get('/saves?filters[active]=true&limit=3');
+    const items = await ctx.api.get('/saves/active?limit=3');
     const saves = savesMapper(items.data);
     return { saves };
   }
@@ -636,7 +636,7 @@ export class Index extends React.Component {
 
   loadSaves() {
     return this.props.api
-      .get('/saves?filters[active]=true&limit=3')
+      .get('/saves/active?limit=3')
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((saves) => {
@@ -648,7 +648,7 @@ export class Index extends React.Component {
 
   loadSubscriptions() {
     return this.props.api
-      .get('/saves?filters[subscribed]=true')
+      .get('/saves/subscribed')
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((subscriptions) => {

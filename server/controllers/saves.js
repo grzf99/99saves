@@ -33,8 +33,62 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
-  list(req, res) {
-    const query = createListQuery(req);
+  listActive(req, res) {
+    const query = {
+      where: {
+        date_end: { $gt: new Date() },
+        date_start: { $lt: new Date() }
+      },
+    };
+
+    query.include = req.user && [{
+      model: Subscription,
+      include: [Vote, Coupon],
+      where: {
+        UserId: req.user.id
+      },
+      required: false
+    }];
+
+    if (req.query.offset) query.offset = req.query.offset;
+    if (req.query.limit) query.limit = req.query.limit;
+
+    return Save.findAndCountAll(query)
+      .then(({ rows }) => {
+        const saves = rows.map(save => save.toJSON());
+        res.status(200).send(saves);
+      })
+      .catch(error => res.status(400).send(error));
+  },
+
+  listSubscribed(req, res) {
+    const query = {
+        include: [{
+          model: Subscription,
+          include: [Vote, Coupon],
+          where: {
+            UserId: req.user.id
+          },
+          required: true
+        }]
+      };
+
+    if (req.query.offset) query.offset = req.query.offset;
+    if (req.query.limit) query.limit = req.query.limit;
+
+    return Save.findAndCountAll(query)
+      .then(({ rows }) => {
+        const saves = rows.map(save => save.toJSON());
+        res.status(200).send(saves);
+      })
+      .catch(error => res.status(400).send(error));
+  },
+
+  listAll(req, res) {
+    const query = {};
+    if (req.query.offset) query.offset = req.query.offset;
+    if (req.query.limit) query.limit = req.query.limit;
+
     return Save.findAndCountAll(query)
       .then(({ rows }) => {
         const saves = rows.map(save => save.toJSON());
