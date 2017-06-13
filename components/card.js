@@ -64,7 +64,7 @@ const Header = styled.div`
   flex-direction: column;
   justify-content: center;
   padding-top: ${(props) => props.noCountdown ? '51px' : '24px'};
-  height: ${(props) => props.noCountdown ? '263px' : '230px'};
+  height: ${(props) => props.noCountdown ? '263px' : '235px'};
   position: relative;
 `;
 
