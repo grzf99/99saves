@@ -236,7 +236,7 @@ export default class extends React.Component {
   render() {
     return (
       <Card {...this.props}>
-        <RenderIf expr={!this.props.negotiationOpen && !this.props.endedWithoutOffers}>
+        <RenderIf expr={!this.props.negotiationOpen}>
           <CountDown {...this.props} className="card" />
         </RenderIf>
         <RenderIf expr={this.props.finished || this.props.endedWithoutOffers}>
