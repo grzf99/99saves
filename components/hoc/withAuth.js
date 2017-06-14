@@ -19,8 +19,7 @@ export default function withAuth(
       static getInitialProps(ctx) {
         let token;
         if (ctx.req !== undefined) {
-          const cookies = getCookies(ctx);
-          token = cookies[TOKEN_COOKIE_KEY];
+          token = getCookies(ctx)[TOKEN_COOKIE_KEY];
           ctx.store.dispatch(setToken(token));
         }
 

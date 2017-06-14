@@ -1,8 +1,9 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import createApiMiddleware from './middleware/api'
 import createApiClient from '../utils/apiClient'
-import auth, { USER_LOCALSTORAGE_KEY } from './auth'
+import auth, { USER_LOCALSTORAGE_KEY, TOKEN_COOKIE_KEY } from './auth'
 import currentUser from './currentUser'
+import getCookies from 'next-cookies';
 
 const rootReducer = combineReducers({
   auth,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
 function getLoggedInUser () {
   let user
   try {
-    user = JSON.parse(window.localStorage.getItem(USER_LOCALSTORAGE_KEY))
+    token = getCookies(ctx)[TOKEN_COOKIE_KEY];
+    user = {token}
   } catch (e) {}
   return user
 }
