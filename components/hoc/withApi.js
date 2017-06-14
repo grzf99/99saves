@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
 import withStore from 'next-redux-wrapper';
-import getCookies from 'next-cookies';
+import Cookies from 'js-cookie';
 import createStore from '../../store';
 import { noop } from '../../utils';
 import createAPIClient from '../../utils/apiClient';
@@ -12,14 +12,8 @@ export default function withApi(mapStateToProps = noop, mapDispatchToProps) {
   return (Page) => {
     class ApiComponent extends Component {
       static getInitialProps(ctx) {
-        let token;
-        if (ctx.req !== undefined) {
-          const cookies = getCookies(ctx);
-          token = cookies[TOKEN_COOKIE_KEY];
-          ctx.store.dispatch(setToken(token));
-        }
+        const api = createAPIClient();
 
-        const api = createAPIClient(token);
         return (
           Page.getInitialProps &&
           Page.getInitialProps(Object.assign({}, ctx, { api }))

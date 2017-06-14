@@ -102,7 +102,6 @@ export default (state = defaultState, action) => {
 };
 
 function handleAuthSuccess(payload) {
-  window.localStorage.setItem(USER_LOCALSTORAGE_KEY, JSON.stringify(payload));
   Cookies.set(TOKEN_COOKIE_KEY, payload.token);
 }
 
@@ -131,7 +130,6 @@ export function signup(user) {
 }
 
 export function logout() {
-  window.localStorage.removeItem(USER_LOCALSTORAGE_KEY);
   Cookies.remove(TOKEN_COOKIE_KEY);
   return { type: LOGOUT };
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
 import withStore from 'next-redux-wrapper';
-import getCookies from 'next-cookies';
+import Cookies from 'js-cookie';
 import RenderIf from '../common/render-if';
 import createStore from '../../store';
 import { noop } from '../../utils';
@@ -17,14 +17,7 @@ export default function withAuth(
   return (Page) => {
     class Authenticated extends Component {
       static getInitialProps(ctx) {
-        let token;
-        if (ctx.req !== undefined) {
-          const cookies = getCookies(ctx);
-          token = cookies[TOKEN_COOKIE_KEY];
-          ctx.store.dispatch(setToken(token));
-        }
-
-        const api = createAPIClient(token);
+        const api = createAPIClient();
 
         return (
           Page.getInitialProps &&
@@ -53,7 +46,7 @@ export default function withAuth(
           }
         }
 
-        this.client = createAPIClient(this.props.token);
+        this.client = createAPIClient();
       }
 
       handleLogout() {
