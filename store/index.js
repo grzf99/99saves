@@ -3,7 +3,7 @@ import createApiMiddleware from './middleware/api'
 import createApiClient from '../utils/apiClient'
 import auth, { USER_LOCALSTORAGE_KEY, TOKEN_COOKIE_KEY } from './auth'
 import currentUser from './currentUser'
-import Cookies from 'js-cookie';
+import getCookies from 'next-cookies';
 
 const rootReducer = combineReducers({
   auth,
@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
 function getLoggedInUser () {
   let user
   try {
-    token = Cookies.get(TOKEN_COOKIE_KEY);
+    token = getCookies(ctx)[TOKEN_COOKIE_KEY];
     user = {token}
   } catch (e) {}
   return user
