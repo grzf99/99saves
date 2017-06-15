@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get('/active', clientAuthentication(true), saves.listActive);
 router.get('/subscribed', clientAuthentication(), saves.listSubscribed);
-router.get('/all', adminAuthentication(), saves.listAll);
+router.get('/all', saves.listAll);
 
 // client
 router.get('/:id', clientAuthentication(true), saves.show);
