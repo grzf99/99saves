@@ -111,6 +111,7 @@ module.exports = {
     if (req.query.offset) query.offset = req.query.offset;
     if (req.query.limit) query.limit = req.query.limit;
 
+    if (req.query.negotiation) query.where = {negotiation_end: {$gt:new Date()}, date_end: {$lt: new Date()}};
     return Save.findAndCountAll(query)
       .then(({ rows }) => {
         const saves = rows.map(save => save.toJSON());
