@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import createApiMiddleware from './middleware/api'
 import createApiClient from '../utils/apiClient'
-import auth, { USER_LOCALSTORAGE_KEY, TOKEN_COOKIE_KEY } from './auth'
+import auth, { TOKEN_COOKIE_KEY } from './auth'
 import currentUser from './currentUser'
 import getCookies from 'next-cookies';
 
