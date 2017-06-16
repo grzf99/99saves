@@ -4,7 +4,6 @@ import createApiClient from '../utils/apiClient'
 import auth, { USER_LOCALSTORAGE_KEY, TOKEN_COOKIE_KEY } from './auth'
 import currentUser from './currentUser'
 import getCookies from 'next-cookies';
-import jwtDecode from 'jwt-decode';
 
 const rootReducer = combineReducers({
   auth,
@@ -15,7 +14,7 @@ function getLoggedInUser () {
   let user
   try {
     token = getCookies(ctx)[TOKEN_COOKIE_KEY];
-    user = jwtDecode(token, process.env.JWT_SECRET);
+    user = token
   } catch (e) {}
   return user
 }

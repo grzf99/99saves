@@ -102,7 +102,7 @@ export default (state = defaultState, action) => {
 };
 
 function handleAuthSuccess(payload) {
-  Cookies.set(TOKEN_COOKIE_KEY, payload.token);
+  Cookies.set(TOKEN_COOKIE_KEY, payload);
 }
 
 export function login(email, password, admin = false) {
