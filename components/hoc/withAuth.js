@@ -37,20 +37,20 @@ export default function withAuth(
       }
 
       componentWillMount() {
-        // if (typeof window !== 'undefined') {
-        //   let url;
-        //   if (!this.props.isSignedIn) {
-        //     url = isAdminPage ? '/admin/login' : '/login';
-        //   } else if (isAdminPage && !this.props.isAdmin) {
-        //     url = '/admin/login';
-        //   }
-        //
-        //   if (url) {
-        //     Router.replace(
-        //       `${url}?as=${Router.router.asPath}&pathname=${Router.router.pathname}&query=${JSON.stringify(Router.router.query)}`
-        //     );
-        //   }
-        // }
+        if (typeof window !== 'undefined') {
+          let url;
+          if (!this.props.isSignedIn) {
+            url = isAdminPage ? '/admin/login' : '/login';
+          } else if (isAdminPage && !this.props.isAdmin) {
+            url = '/admin/login';
+          }
+
+          if (url) {
+            Router.replace(
+              `${url}?as=${Router.router.asPath}&pathname=${Router.router.pathname}&query=${JSON.stringify(Router.router.query)}`
+            );
+          }
+        }
 
         this.client = createAPIClient(this.props.token);
       }
