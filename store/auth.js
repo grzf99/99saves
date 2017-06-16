@@ -11,8 +11,7 @@ export const IS_EMAIL_AVAILABLE_REQUEST = 'IS_EMAIL_AVAILABLE_REQUEST';
 export const IS_EMAIL_AVAILABLE_SUCCESS = 'IS_EMAIL_AVAILABLE_SUCCESS';
 export const IS_EMAIL_AVAILABLE_ERROR = 'IS_EMAIL_AVAILABLE_ERROR';
 
-export const USER_LOCALSTORAGE_KEY = '99-user';
-export const TOKEN_COOKIE_KEY = '99-token';
+export const TOKEN_COOKIE_KEY = '99-saves-token';
 
 export const defaultState = {
   login: {
@@ -102,7 +101,7 @@ export default (state = defaultState, action) => {
 };
 
 function handleAuthSuccess(payload) {
-  Cookies.set(TOKEN_COOKIE_KEY, payload.token);
+  Cookies.set(TOKEN_COOKIE_KEY, payload);
 }
 
 export function login(email, password, admin = false) {
