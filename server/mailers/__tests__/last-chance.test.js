@@ -24,19 +24,19 @@ describe('#verify', () => {
       }));
   });
 
-  describe('when there are saves on votation', () => {
-    it('should enqueue that many jobs', () =>
-      Save.bulkCreate([
-        {
-          checkout_end: endOfDay(new Date())
-        },
-        {
-          checkout_end: endOfDay(new Date())
-        }
-      ])
-        .then(saves => LastChanceMailer.verify())
-        .then(() => {
-          expect(global.queue.create).toHaveBeenCalledTimes(2);
-        }));
-  });
+  // describe('when there are saves on votation', () => {
+  //   it('should enqueue that many jobs', () =>
+  //     Save.bulkCreate([
+  //       {
+  //         checkout_end: endOfDay(new Date())
+  //       },
+  //       {
+  //         checkout_end: endOfDay(new Date())
+  //       }
+  //     ])
+  //       .then(saves => LastChanceMailer.verify())
+  //       .then(() => {
+  //         expect(global.queue.create).toHaveBeenCalledTimes(2);
+  //       }));
+  // });
 });

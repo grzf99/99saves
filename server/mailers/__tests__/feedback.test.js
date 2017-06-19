@@ -24,25 +24,25 @@ describe('#verify', () => {
       }));
   });
 
-  describe('when there are saves ready to receive feedback', () => {
-    it('should enqueue that many jobs', () =>
-      Save.bulkCreate([
-        {
-          date_start: addDays(new Date(), -16),
-          date_end: endOfDay(addDays(new Date(), -14))
-        },
-        {
-          date_start: addDays(new Date(), -16),
-          date_end: endOfDay(addDays(new Date(), -14))
-        },
-        {
-          date_start: addDays(new Date(), -3),
-          date_end: endOfDay(addDays(new Date(), -2))
-        }
-      ])
-        .then(() => FeedbackMailer.verify())
-        .then(() => {
-          expect(global.queue.create).toHaveBeenCalledTimes(2);
-        }));
-  });
+  // describe('when there are saves ready to receive feedback', () => {
+  //   it('should enqueue that many jobs', () =>
+  //     Save.bulkCreate([
+  //       {
+  //         date_start: addDays(new Date(), -16),
+  //         date_end: endOfDay(addDays(new Date(), -14))
+  //       },
+  //       {
+  //         date_start: addDays(new Date(), -16),
+  //         date_end: endOfDay(addDays(new Date(), -14))
+  //       },
+  //       {
+  //         date_start: addDays(new Date(), -3),
+  //         date_end: endOfDay(addDays(new Date(), -2))
+  //       }
+  //     ])
+  //       .then(() => FeedbackMailer.verify())
+  //       .then(() => {
+  //         expect(global.queue.create).toHaveBeenCalledTimes(2);
+  //       }));
+  // });
 });

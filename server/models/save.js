@@ -71,21 +71,35 @@ module.exports = (sequelize, DataTypes) => {
       votationOpen: {
         type: DataTypes.VIRTUAL,
         get() {
+          // Consider a save in votation if it in votation period and has more than 1 product (if it has only 1 product set this save as checkout start)
           return isDateBetween(
             new Date(),
             new Date(this.negotiation_end),
             new Date(this.votation_end)
-          ) && !this.endedWithoutOffers;
+          ) && !this.endedWithoutOffers && this.Products.length > 1;
         }
       },
       checkoutOpen: {
         type: DataTypes.VIRTUAL,
         get() {
-          return isDateBetween(
-            new Date(),
-            new Date(this.votation_end),
-            new Date(this.checkout_end)
-          ) && !this.endedWithoutOffers;
+          return
+            // Check if save has a least one product
+            !this.endedWithoutOffers &&
+            // Check if save is inside checkout period
+            (
+              isDateBetween(
+                new Date(),
+                new Date(this.votation_end),
+                new Date(this.checkout_end)
+              ) ||
+              // or is inside votation period but and has only one product
+              (isDateBetween(
+               new Date(),
+               new Date(this.negotiation_end),
+               new Date(this.votation_end)
+              ) && this.Products.length == 1)
+            )
+          ;
         }
       },
       finished: {
@@ -147,7 +161,9 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
+      // Scopes are used to filter saves to mail send, but only makes a simple validation by date, the validation about product quantity is inside the respective mailer
       scopes: {
+        // Saves when date end is bellow actual date and negotiation end is above actual date
         negotiationStartToday: {
           where: {
             date_end: {
@@ -158,6 +174,7 @@ module.exports = (sequelize, DataTypes) => {
             }
           }
         },
+        // Saves when votation_end is above the start of today and bellow the end of today (saves that votation end at todays final hour)
         votable: {
           where: {
             votation_end: {
@@ -166,6 +183,7 @@ module.exports = (sequelize, DataTypes) => {
             }
           }
         },
+        // Saves when votation_end is bellow the start of today and checkout_end is above the end of today (check if is checkout first day)
         startedCheckoutToday: {
           where: {
             votation_end: {
@@ -176,6 +194,7 @@ module.exports = (sequelize, DataTypes) => {
             }
           }
         },
+        // Saves when checkout_end is above the start of today and bellow the end of today (check if is checkout last day)
         lastChance: {
           where: {
             checkout_end: {
