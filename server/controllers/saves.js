@@ -68,11 +68,7 @@ module.exports = {
   listSubscribed(req, res) {
     const query = {
         order: [
-          [sequelize.literal("CASE WHEN (date_part('epoch',checkout_end)::int >= date_part('epoch',now())::int) THEN 1 ELSE null END ASC")],
-          ['votation_end'],
-          ['negotiation_end'],
-          ['date_end'],
-          ['title']
+          [ Subscription, 'createdAt', 'DESC' ]
         ],
         include: [{
             model: Subscription,
