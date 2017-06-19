@@ -6,7 +6,6 @@ import nl2br from 'react-nl2br';
 import format from 'date-fns/format';
 import { formatCurrency } from '../utils';
 
-import { USER_LOCALSTORAGE_KEY } from '../store/auth';
 import withAuth from '../components/hoc/withAuth';
 import { colors } from '../components/styles/variables';
 import Toolbar from '../components/toolbar';
@@ -324,8 +323,7 @@ class Offer extends React.Component {
   }
 
   componentDidMount() {
-    const accessToken = window.localStorage.getItem(USER_LOCALSTORAGE_KEY);
-    if (accessToken) this.loadVote();
+    if (this.props.isSignedIn) this.loadVote();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -562,7 +560,7 @@ class Offer extends React.Component {
                   </Column>
                 </Row>
               </MarginContainer>
-              <CheckoutModal 
+              <CheckoutModal
                 isOpen={this.state.checkoutModalIsOpen}
                 onClose={() => this.closeModal()}
                 save={this.props.save}

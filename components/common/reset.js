@@ -1,3 +1,5 @@
+import { colors } from '../styles/variables';
+
 export default `
   body {
     -webkit-font-smoothing: antialiased;
@@ -17,5 +19,12 @@ export default `
 
   a {
     text-decoration: none;
+  }
+
+  ::selection {
+    background: ${colors.green}
+  }
+  ::-moz-selection {
+    background: ${colors.green}
   }
 `;
