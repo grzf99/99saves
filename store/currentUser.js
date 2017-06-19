@@ -1,6 +1,6 @@
 import { LOGIN_SUCCESS, SIGNUP_SUCCESS, LOGOUT } from './auth';
 
-export const SET_TOKEN = 'SET_TOKEN';
+export const SET_USER = 'SET_USER';
 
 export const defaultState = {};
 
@@ -8,7 +8,7 @@ export default (state = defaultState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
     case SIGNUP_SUCCESS:
-    case SET_TOKEN:
+    case SET_USER:
       return action.payload;
     case LOGOUT:
       return defaultState;
@@ -17,9 +17,9 @@ export default (state = defaultState, action) => {
   }
 };
 
-export function setToken(token) {
+export function setUser(user) {
   return {
-    type: SET_TOKEN,
-    payload: { token }
+    type: SET_USER,
+    payload: user
   };
 }

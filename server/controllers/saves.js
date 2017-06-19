@@ -33,8 +33,86 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
-  list(req, res) {
-    const query = createListQuery(req);
+  listActive(req, res) {
+    const query = {
+      order: [
+        ['date_end'],
+        ['title']
+      ],
+      where: {
+        date_end: { $gt: new Date() },
+        date_start: { $lt: new Date() }
+      },
+    };
+
+    query.include = req.user && [{
+      model: Subscription,
+      include: [Vote, Coupon],
+      where: {
+        UserId: req.user.id
+      },
+      required: false
+    }];
+
+    if (req.query.offset) query.offset = req.query.offset;
+    if (req.query.limit) query.limit = req.query.limit;
+
+    return Save.findAndCountAll(query)
+      .then(({ rows }) => {
+        const saves = rows.map(save => save.toJSON());
+        res.status(200).send(saves);
+      })
+      .catch(error => res.status(400).send(error));
+  },
+
+  listSubscribed(req, res) {
+    const query = {
+        order: [
+          [sequelize.literal("CASE WHEN (date_part('epoch',checkout_end)::int >= date_part('epoch',now())::int) THEN 1 ELSE null END ASC")],
+          ['votation_end'],
+          ['negotiation_end'],
+          ['date_end'],
+          ['title']
+        ],
+        include: [{
+            model: Subscription,
+            include: [Vote, Coupon],
+            where: {
+              UserId: req.user.id
+            },
+            required: true
+          }, {
+            model: Product,
+            include: [Vote]
+          }]
+      };
+
+    if (req.query.offset) query.offset = req.query.offset;
+    if (req.query.limit) query.limit = req.query.limit;
+
+    return Save.findAndCountAll(query)
+      .then(({ rows }) => {
+        const saves = rows.map(save => save.toJSON());
+        res.status(200).send(saves);
+      })
+      .catch(error => res.status(400).send(error));
+  },
+
+  listAll(req, res) {
+    const query = {
+      include: [{
+          model: Subscription,
+          include: [Vote, Coupon],
+        }, {
+          model: Product,
+          include: [Vote],
+        }]};
+
+    if (req.query.offset) query.offset = req.query.offset;
+    if (req.query.limit) query.limit = req.query.limit;
+
+    if (req.query.negotiation) query.where = {negotiation_end: {$gt:new Date()}, date_end: {$lt: new Date()}};
+
     return Save.findAndCountAll(query)
       .then(({ rows }) => {
         const saves = rows.map(save => save.toJSON());
@@ -139,60 +217,6 @@ function createShowQuery(req, includeVote = true) {
         },
       }
     ];
-  }
-  return query;
-}
-
-function createListQuery(req) {
-  const query = {
-    order: [
-      [sequelize.literal("CASE WHEN (date_part('epoch',checkout_end)::int >= date_part('epoch',now())::int) THEN 1 ELSE null END ASC")],
-      ['votation_end'],
-      ['negotiation_end'],
-      ['date_end'],
-      ['title']
-    ],
-    include: [
-      {
-        model: Product,
-        include: [Vote]
-      }
-    ]
-  };
-
-  if (req.query.offset) query.offset = req.query.offset;
-  if (req.query.limit) query.limit = req.query.limit;
-
-  query.where = {
-    date_end: { $gt: new Date() },
-    date_start: { $lt: new Date() }
-  };
-
-  if (req.user) {
-    if (req.query.filters) {
-      if (req.query.filters.subscribed) {
-        query.include = [
-          ...query.include,
-          {
-            model: Subscription,
-            include: [Vote, Coupon],
-            where: {
-              UserId: req.user.id
-            },
-            required: !!(req.query.filters &&
-              req.query.filters.subscribed === 'true')
-          }
-        ];
-
-        query.where = {};
-      }
-
-      if (req.query.filters.votable === "true") {
-        query.where = {
-          date_end: { $lt: new Date() }
-        };
-      }
-    }
   }
   return query;
 }

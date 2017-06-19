@@ -3,7 +3,6 @@ import Router from 'next/router';
 import styled from 'styled-components';
 
 import { savesMapper } from '../utils';
-import { USER_LOCALSTORAGE_KEY } from '../store/auth';
 import withApi from '../components/hoc/withApi';
 import { colors } from '../components/styles/variables';
 import { Heading } from '../components/common/typography';

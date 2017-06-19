@@ -3,7 +3,6 @@ import Router from 'next/router';
 import styled from 'styled-components';
 
 import { savesMapper } from '../utils';
-import { USER_LOCALSTORAGE_KEY } from '../store/auth';
 import withApi from '../components/hoc/withApi';
 import { colors } from '../components/styles/variables';
 import { Heading } from '../components/common/typography';
@@ -79,7 +78,7 @@ export class Index extends React.Component {
             logged={this.props.isSignedIn}
             onLogout={this.props.onLogout}
           />
-        
+
         <PageContainer>
           <Title>99SAVES.COM LTDA</Title>
           <Subtitle>POLÍTICA DE CONSUMO 99SAVES</Subtitle>
@@ -94,7 +93,7 @@ export class Index extends React.Component {
           <p>Uma dica: antes de realizar qualquer participação, leia também as regras específicas aplicáveis a cada oferta, principalmente com relação aos prazos e condições de utilização. Lembramos que, mesmo tendo um departamento de qualidade (que analisa e avalia cada Anunciante que divulga ofertas no 99saves.com), é importante que você o conheça, afinal, você fará um negócio com essa empresa também. Em caso de dúvidas, nosso Sistema de Atendimento ao Consumidor – SAC terá o prazer de atendê-lo, prontamente, nos telefones (11) 3042-1099 ou no e-mail atendimento@99saves.com.</p>
 
           <p>Boa leitura!</p>
-          
+
           <p></p>
 
           <p>I. ESCLARECIMENTOS GERAIS:</p>
@@ -189,7 +188,7 @@ export class Index extends React.Component {
           a) 30 (trinta) dias, tratando-se de fornecimento de serviço e de produtos não duráveis; e
           b) 90 (noventa) dias, tratando-se de fornecimento de serviço e de produtos duráveis.
           V. DOS DIREITOS DO 99SAVES.COM</p>
-          
+
           <p>14. VI QUE TENHO DIVERSOS DIREITOS ASSEGURADOS, PORÉM, QUAIS SÃO MINHAS OBRIGAÇÕES PERANTE O 99SAVES.COM?</p>
 
           <p>Como não poderia deixar de ser, o seu relacionamento conosco lhe ressalva alguns direitos, mas também lhe impõe algumas obrigações, a saber:
@@ -228,7 +227,7 @@ export class Index extends React.Component {
           <p>VI. LI E ENTENDI. MAS QUERO RECLAMAR</p>
 
           <p>20. APESAR DAS DISPOSIÇÕES AQUI DESTACADAS, ME SINTO LESADO. COM QUEM POSSO RECLAMAR?</p>
-          
+
           <p>Possuímos SAC através dos telefones (11) 3042-1099 ou pelo e-mail atendimento@99saves.com. Nossa equipe está orientada e treinada para te auxiliar, e procederá com a resposta de seu pedido em, no máximo, 05 (cinco) dias.
           Portanto, toda reclamação, sugestão ou elogio é bem-vindo e servirá como forma de incrementar e/ou aperfeiçoar, ainda mais, as nossas atividades.</p>
 

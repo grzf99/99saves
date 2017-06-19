@@ -18,7 +18,6 @@ const disabled = css`
 const spotlight = css`
   background-color: ${colors.blue};
   color: ${colors.white};
-  margin: 0;
 `;
 
 const Headline = styled.div`

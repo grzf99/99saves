@@ -7,9 +7,14 @@ const {
 
 const router = express.Router();
 
+
+router.get('/active', clientAuthentication(true), saves.listActive);
+router.get('/subscribed', clientAuthentication(), saves.listSubscribed);
+router.get('/all', adminAuthentication(), saves.listAll);
+
 // client
 router.get('/:id', clientAuthentication(true), saves.show);
-router.get('/', clientAuthentication(true), saves.list);
+// router.get('/', clientAuthentication(true), saves.list);
 router.get(
   '/:id/my-subscription',
   clientAuthentication(),

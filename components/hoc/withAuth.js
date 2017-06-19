@@ -7,7 +7,7 @@ import createStore from '../../store';
 import { noop } from '../../utils';
 import createAPIClient from '../../utils/apiClient';
 import { TOKEN_COOKIE_KEY, logout } from '../../store/auth';
-import { setToken } from '../../store/currentUser';
+import { setUser } from '../../store/currentUser';
 
 export default function withAuth(
   { isAdminPage = false } = {},
@@ -17,14 +17,14 @@ export default function withAuth(
   return (Page) => {
     class Authenticated extends Component {
       static getInitialProps(ctx) {
-        let token;
+        let user;
         if (ctx.req !== undefined) {
-          const cookies = getCookies(ctx);
-          token = cookies[TOKEN_COOKIE_KEY];
-          ctx.store.dispatch(setToken(token));
+          user = getCookies(ctx)[TOKEN_COOKIE_KEY];
+          if (user)
+            ctx.store.dispatch(setUser(JSON.parse(user)));
         }
 
-        const api = createAPIClient(token);
+        const api = createAPIClient();
 
         return (
           Page.getInitialProps &&
@@ -53,7 +53,7 @@ export default function withAuth(
           }
         }
 
-        this.client = createAPIClient(this.props.token);
+        this.client = createAPIClient();
       }
 
       handleLogout() {

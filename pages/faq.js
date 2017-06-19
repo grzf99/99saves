@@ -3,7 +3,6 @@ import Router from 'next/router';
 import styled from 'styled-components';
 
 import { savesMapper } from '../utils';
-import { USER_LOCALSTORAGE_KEY } from '../store/auth';
 import withApi from '../components/hoc/withApi';
 import { colors } from '../components/styles/variables';
 import { Heading } from '../components/common/typography';
@@ -79,11 +78,11 @@ export class Index extends React.Component {
             logged={this.props.isSignedIn}
             onLogout={this.props.onLogout}
           />
-        
+
         <PageContainer>
           <Title>FAQ</Title>
 
-          <p>1. O QUE É O 99SAVES.COM?</p> 
+          <p>1. O QUE É O 99SAVES.COM?</p>
 
           <p>R. Se você for em uma loja negociar a compra de um produto, você conseguirá uma condição específica. Se você for e negociar a compra de 2 produtos similares, você conseguirá uma negociação melhor. Nós comprovamos isso (Assista: ). Agora imagine isso em um volume gigantesco. O 99saves.com é a 1ª plataforma de negociação direta entre consumidores e fabricantes. Não somos uma loja virtual, não somos um varejista, muito menos um site de compra coletiva. Representamos a união de consumidores em busca de produtos e serviços similares, barganhando melhores condições de compra diretamente com o fabricante/fornecedor através da compra em volume. </p>
 
@@ -113,7 +112,7 @@ export class Index extends React.Component {
           <p>R. Nós incentivamos que você pesquise! Da mesma forma que o fabricante sabe que para ganhar um Save e a possibilidade de vender de uma só vez para todos nós, nós queremos que você pesquise o produto vencedor e comprove você mesmo que não existe no mercado aquele produto por um preço menor do que aqui! Faça esta analise você também.</p>
 
           <p>8. EU SOU OBRIGADO A COMPRAR UM PRODUTO DE UM SAVE QUE ESTOU PARTICIPANDO?</p>
-          
+
           <p>R. Não! Ninguém é obrigado a comprar um produto que ainda não sabe qual será. Se você gostar da oferta (que garantimos que será o melhor custo benefício do mercado), excelente. Se você não gostar, não precisa comprar.</p>
 
           <p>9. COMO O 99SAVES.COM SELECIONA AS MELHORES OFERTAS?</p>
@@ -125,15 +124,15 @@ export class Index extends React.Component {
           <p>R. Sim, após entrar em um Save, você estará habilitado para participar de todo o processo, até a compra do produto. Assim que o Save encerrar (parar de receber interessados), o sistema dispara a ordem de oferta aos fabricantes e começa a recebê-las. Após esta etapa, a equipe do 99saves.com realizará a análise das melhores ofertas e as disponibilizará para votação entre os participantes daquele Save (não obrigatória a participação). Encerrada a votação, o produto é automaticamente disponibilizado para compra.</p>
 
           <p>11. QUANTO TEMPO DURA TODO O PROCESSO, DA MINHA ENTRADA EM UM SAVE ATÉ A COMPRA?</p>
-          
+
           <p>R. No máximo, 8 dias. Cada Save(dependendo do produto) fica no máximo durante 5 dias aberto para entrada de consumidores. Após este período, o sistema libera a ordem de compra aos fabricantes que tem 48 horas para enviar sua melhor oferta. Encerrado este tempo, a equipe do 99saves.com disponibiliza em até 24 horas os melhores produtos para votação dos consumidores, que tem 24 horas para votar e automaticamente o produto vencedor é liberado para compra através de um link exclusivo no site do fabricante.</p>
 
           <p>12. QUANTO TEMPO TENHO PARA COMPRAR O PRODUTO VENCEDOR?</p>
 
           <p>R. Após produto vencedor ser anunciado, o consumidor é comunicado e tem 48 horas para finalizar sua compra ou o link é invalidado. </p>
-          
+
           <p>13. OS PRODUTOS OU SERVIÇOS POSSUEM A MESMA QUALIDADE DAQUELES COMERCIALIZADOS NO MERCADO, FORA DO 99SAVES.COM?</p>
-          
+
           <p>R. Definitivamente sim. Ao fechar um acordo conosco, os fabricantes se comprometem, por contrato, a oferecerem produtos e serviços na mesma qualidade daqueles já praticados por eles no mercado. Se comprometem, também, a somente oferecer e entregar produtos e serviços originais, lícitos e permitidos pelas autoridades competentes e devidamente de acordo com as leis vigentes no Brasil.</p>
 
           <p>14. POR QUE O SISTEME PEDE PARA EU AVALIAR O FABRICANTE E O PRODUTO APÓS REALIZAR UMA COMPRA?</p>
