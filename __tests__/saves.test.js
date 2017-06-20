@@ -14,9 +14,13 @@ describe('<SavesPage />', () => {
     ]
   };
 
+  const url = {
+    query: {}
+  };
+
   describe('when subscriptionConfirmationModalIsOpen is true', () => {
     it('should render the subscription confirmation modal', () => {
-      const wrapper = shallow(<Saves saves={saves} />);
+      const wrapper = shallow(<Saves saves={saves} url={url} />);
       wrapper.setState({ subscriptionConfirmationModalIsOpen: true });
       const modal = wrapper.find(SubscriptionConfirmationModal);
 
@@ -26,7 +30,7 @@ describe('<SavesPage />', () => {
 
   describe('when subscriptionConfirmationModalIsOpen is false', () => {
     it('should render the subscription confirmation modal', () => {
-      const wrapper = shallow(<Saves saves={saves} />);
+      const wrapper = shallow(<Saves saves={saves} url={url} />);
       wrapper.setState({ subscriptionConfirmationModalIsOpen: false });
       const modal = wrapper.find(SubscriptionConfirmationModal);
 
@@ -36,7 +40,7 @@ describe('<SavesPage />', () => {
 
   describe('when user clicks to subscribe', () => {
     it('should set subscriptionConfirmationModalIsOpen to true', () => {
-      const wrapper = shallow(<Saves saves={saves} />);
+      const wrapper = shallow(<Saves saves={saves} url={url} />);
       const card = wrapper.find(StyledCard);
       card.prop('handleSubscribe')();
 
@@ -44,7 +48,7 @@ describe('<SavesPage />', () => {
     });
 
     it('should set currentSubscribeTarget to the clicked save id', () => {
-      const wrapper = shallow(<Saves saves={saves} />);
+      const wrapper = shallow(<Saves saves={saves} url={url} />);
       const card = wrapper.find(StyledCard);
       card.prop('handleSubscribe')();
 
@@ -54,7 +58,7 @@ describe('<SavesPage />', () => {
 
   describe('when subscription confirmation modal is closed', () => {
     it('should set subscriptionConfirmationModalIsOpen to false', () => {
-      const wrapper = shallow(<Saves saves={saves} />);
+      const wrapper = shallow(<Saves saves={saves} url={url} />);
       wrapper.find(SubscriptionConfirmationModal).simulate('close');
 
       expect(wrapper.state().subscriptionConfirmationModalIsOpen).toEqual(
@@ -63,7 +67,7 @@ describe('<SavesPage />', () => {
     });
 
     it('should set currentSubscribeTarget to null', () => {
-      const wrapper = shallow(<Saves saves={saves} />);
+      const wrapper = shallow(<Saves saves={saves} url={url} />);
       wrapper.find(SubscriptionConfirmationModal).simulate('close');
 
       expect(wrapper.state().currentSubscribeTarget).toEqual(null);
@@ -76,7 +80,7 @@ describe('<SavesPage />', () => {
     };
 
     it('should post the subscription to the api', () => {
-      const wrapper = shallow(<Saves saves={saves} api={api} />);
+      const wrapper = shallow(<Saves saves={saves} url={url} api={api} />);
       wrapper.find(SubscriptionConfirmationModal).simulate('confirm', 1);
 
       expect(api.post).toHaveBeenCalledWith('/saves/1/subscriptions');
