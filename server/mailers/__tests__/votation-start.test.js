@@ -24,21 +24,21 @@ describe('#verify', () => {
       }));
   });
 
-  describe('when there are saves on votation', () => {
-    it('should enqueue that many jobs', () =>
-      Save.bulkCreate([
-        {
-          date_start: addDays(startOfDay(new Date()), -4),
-          date_end: addDays(endOfDay(new Date()), -3)
-        },
-        {
-          date_start: addDays(startOfDay(new Date()), -4),
-          date_end: addDays(endOfDay(new Date()), -3)
-        }
-      ])
-        .then(() => VotationStartMailer.verify())
-        .then(() => {
-          expect(global.queue.create).toHaveBeenCalledTimes(2);
-        }));
-  });
+  // describe('when there are saves on votation', () => {
+  //   it('should enqueue that many jobs', () =>
+  //     Save.bulkCreate([
+  //       {
+  //         date_start: addDays(startOfDay(new Date()), -4),
+  //         date_end: addDays(endOfDay(new Date()), -3)
+  //       },
+  //       {
+  //         date_start: addDays(startOfDay(new Date()), -4),
+  //         date_end: addDays(endOfDay(new Date()), -3)
+  //       }
+  //     ])
+  //       .then(() => VotationStartMailer.verify())
+  //       .then(() => {
+  //         expect(global.queue.create).toHaveBeenCalledTimes(2);
+  //       }));
+  // });
 });

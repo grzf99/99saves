@@ -8,11 +8,11 @@ const NegotiationStartMailer = require('./mailers/negotiation-start');
 module.exports = () => {
   console.log('schedule run');
   // TODO: Disabilitando envio de emails até conclusão dos testes
-  // schedule.scheduleJob('0 11 * * *', () => {
-  //   VotationStartMailer.verify();
-  //   CheckoutStartMailer.verify();
-  //   LastChanceMailer.verify();
-  //   FeedbackMailer.verify();
-  //   NegotiationStartMailer.verify();
-  // });
+  schedule.scheduleJob('0 23 * * *', () => {
+    VotationStartMailer.verify();
+    CheckoutStartMailer.verify();
+    LastChanceMailer.verify();
+    FeedbackMailer.verify();
+    NegotiationStartMailer.verify();
+  });
 };

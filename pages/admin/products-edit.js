@@ -67,7 +67,7 @@ class ProductsCreate extends React.Component {
 
   getSaves() {
     let list = [{ value: '', label: 'Selecione um registro' }];
-    this.props.api.get('/saves')
+    this.props.api.get('/saves/all')
         .then((response) => {
           response.data.map( (item) => {
             list.push({ value: item.id, label: item.title});
@@ -310,11 +310,11 @@ class ProductsCreate extends React.Component {
                       >Imagem de destaque *</label>
                       <div className="controls">
                         <input type="file" name="image_default" onChange={this.handleSave} />
-                        <RenderIf expr={(!!this.state.list.image_default && !this.state.image_default)}> 
+                        <RenderIf expr={(!!this.state.list.image_default && !this.state.image_default)}>
                           <img className="col-md-3" src={this.state.list.image_default} alt="image" />
                         </RenderIf>
 
-                        <RenderIf expr={(!!this.state.image_default)}> 
+                        <RenderIf expr={(!!this.state.image_default)}>
                           <img className="col-md-3" src={this.state.image_default} alt="image" />
                         </RenderIf>
                       </div>
@@ -323,11 +323,11 @@ class ProductsCreate extends React.Component {
                       <label className="control-label" htmlFor="image2">Outra imagem</label>
                       <div className="controls">
                         <input type="file" name="image2" onChange={this.handleSave} />
-                        <RenderIf expr={(!!this.state.list.image2 && !this.state.image2)}> 
+                        <RenderIf expr={(!!this.state.list.image2 && !this.state.image2)}>
                           <img className="col-md-3" src={this.state.list.image2} alt="image" />
                         </RenderIf>
 
-                        <RenderIf expr={(!!this.state.image2)}> 
+                        <RenderIf expr={(!!this.state.image2)}>
                           <img className="col-md-3" src={this.state.image2} alt="image" />
                         </RenderIf>
                       </div>
@@ -336,11 +336,11 @@ class ProductsCreate extends React.Component {
                       <label className="control-label" htmlFor="image3">Outra imagem</label>
                       <div className="controls">
                         <input type="file" name="image3" onChange={this.handleSave} />
-                        <RenderIf expr={(!!this.state.list.image3 && !this.state.image3)}> 
+                        <RenderIf expr={(!!this.state.list.image3 && !this.state.image3)}>
                           <img className="col-md-3" src={this.state.list.image3} alt="image" />
                         </RenderIf>
 
-                        <RenderIf expr={(!!this.state.image3)}> 
+                        <RenderIf expr={(!!this.state.image3)}>
                           <img className="col-md-3" src={this.state.image3} alt="image" />
                         </RenderIf>
                       </div>

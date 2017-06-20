@@ -68,11 +68,7 @@ module.exports = {
   listSubscribed(req, res) {
     const query = {
         order: [
-          [sequelize.literal("CASE WHEN (date_part('epoch',checkout_end)::int >= date_part('epoch',now())::int) THEN 1 ELSE null END ASC")],
-          ['votation_end'],
-          ['negotiation_end'],
-          ['date_end'],
-          ['title']
+          [ Subscription, 'createdAt', 'DESC' ]
         ],
         include: [{
             model: Subscription,
@@ -112,7 +108,7 @@ module.exports = {
     if (req.query.limit) query.limit = req.query.limit;
 
     if (req.query.negotiation) query.where = {negotiation_end: {$gt:new Date()}, date_end: {$lt: new Date()}};
-    
+
     return Save.findAndCountAll(query)
       .then(({ rows }) => {
         const saves = rows.map(save => save.toJSON());
