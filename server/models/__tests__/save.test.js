@@ -276,8 +276,8 @@ describe('feedbackable scope', () => {
         date_end: endOfDay(addDays(new Date(), -13))
       },
       {
-        date_start: addDays(new Date(), -8),
-        date_end: endOfDay(addDays(new Date(), -5))
+        date_start: addDays(new Date(), -9),
+        date_end: endOfDay(addDays(new Date(), -6))
       }
     ])
       .then(() => Save.scope('feedbackable').findAll())
