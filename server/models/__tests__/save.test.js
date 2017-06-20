@@ -265,7 +265,7 @@ describe('finished getter', () => {
   // });
 
 describe('feedbackable scope', () => {
-  it('should return all saves that are on the 10th day after finished', () =>
+  it('should return all saves that are on the 1th day after finished', () =>
     Save.bulkCreate([
       {
         date_start: addDays(new Date(), -5),
@@ -276,8 +276,8 @@ describe('feedbackable scope', () => {
         date_end: endOfDay(addDays(new Date(), -13))
       },
       {
-        date_start: addDays(new Date(), -16),
-        date_end: endOfDay(addDays(new Date(), -14))
+        date_start: addDays(new Date(), -8),
+        date_end: endOfDay(addDays(new Date(), -5))
       }
     ])
       .then(() => Save.scope('feedbackable').findAll())
