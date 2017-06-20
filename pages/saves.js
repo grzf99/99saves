@@ -94,7 +94,7 @@ export class Saves extends React.Component {
     this.state = {
       user: {},
       loginModalIsOpen: false,
-      activeTab: 0,
+      activeTab: this.props.url.query.t ? parseInt(this.props.url.query.t) : 0,
       saves: props.saves,
       subscriptions: {
         count: 0,
@@ -193,6 +193,7 @@ export class Saves extends React.Component {
   }
 
   handleChangeIndex(tabIndex) {
+    window.history.pushState({}, '', `?t=${tabIndex}`);
     this.setState({ activeTab: tabIndex });
   }
 

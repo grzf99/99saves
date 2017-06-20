@@ -10,6 +10,7 @@ import { Heading, Text, SmallText } from './common/typography';
 import { formatCurrency } from '../utils';
 import CountDown from '../components/common/countdown';
 import CheckoutModal from '../components/common/checkout-modal';
+import moment from 'moment';
 
 const Card = styled.div`
   background: ${colors.black};
@@ -101,6 +102,17 @@ const CustomText = styled(Text)`
   -webkit-box-orient: vertical;
 `;
 
+const DateStart = styled(Text)`
+  align-items: center;
+  color: ${colors.gray};
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 10px;
+  margin-top: 10px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+`;
+
 const Status = styled.div`
   background: ${colors.gray};
   color: ${colors.white};
@@ -136,6 +148,7 @@ const ButtonGroup = styled.div`
 export default class extends React.Component {
   constructor(props) {
     super(props);
+    moment.locale('pt-BR');
 
     this.state = {
       checkoutModalIsOpen: false
@@ -296,7 +309,6 @@ export default class extends React.Component {
                 block
                 target="_blank"
                 onClick={() => this.openCheckoutModal()}
-
               >
                 Comprar agora
               </Button>
@@ -324,6 +336,7 @@ export default class extends React.Component {
             {this.renderButton()}
           </Info>
         </RenderIf>
+        <DateStart title={moment(this.props.date_start).format('DD/MM/YYYY')}>iniciado à {moment(this.props.date_start).fromNow()}</DateStart>
       </Card>
     );
   }

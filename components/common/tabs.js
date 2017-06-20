@@ -18,7 +18,7 @@ const Tabs = styled.div`
 export default class extends React.Component {
   constructor(props) {
     super(props);
-
+    
     this.state = { index: props.index || 0 };
 
     this.labels = this.labels.bind(this);
