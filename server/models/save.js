@@ -82,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
       checkoutOpen: {
         type: DataTypes.VIRTUAL,
         get() {
-          return
+          return (
             // Check if save has a least one product
             !this.endedWithoutOffers &&
             // Check if save is inside checkout period
@@ -99,7 +99,7 @@ module.exports = (sequelize, DataTypes) => {
                new Date(this.votation_end)
               ) && this.Products.length == 1)
             )
-          ;
+          );
         }
       },
       finished: {
