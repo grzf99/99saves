@@ -82,7 +82,6 @@ class CheckoutContent extends Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.save);
     this.state = {
       value: this.getCupon(),
       copied: false
@@ -91,6 +90,8 @@ class CheckoutContent extends Component {
 
   getCupon() {
     const [coupon] = this.props.save.winnerProduct.Coupon;
+    console.log(this.props.save.winnerProduct.Coupon)
+    console.log(coupon)
     return coupon.key;
   }
 
