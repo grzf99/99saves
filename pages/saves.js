@@ -162,18 +162,10 @@ export class Saves extends React.Component {
     return this.props.api
       .post(`/saves/${subscribeTo}/subscriptions`)
       .then(() => {
-        const item = this.state.saves.rows.find(
-          save => save.id === subscribeTo
-        );
-        item.hasSubscribed = true;
-
-        const subscriptionsRows = [...this.state.subscriptions.rows, item];
+        this.loadSaves();
+        this.loadSubscriptions();
 
         this.setState({
-          subscriptions: {
-            count: subscriptionsRows.length,
-            rows: subscriptionsRows
-          },
           showToast: true
         });
 

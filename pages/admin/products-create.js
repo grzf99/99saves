@@ -191,7 +191,7 @@ class ProductsCreate extends React.Component {
         this.setState({
           showToast: true,
           typeToast: 'success',
-          messageToast: 'Registro cadsdtrado com Sucesso'
+          messageToast: 'Registro cadastrado com Sucesso'
         });
         setTimeout(() => Router.push('/admin/products'), 2000);
       })
