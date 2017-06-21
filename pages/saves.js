@@ -94,7 +94,7 @@ export class Saves extends React.Component {
     this.state = {
       user: {},
       loginModalIsOpen: false,
-      activeTab: this.props.url.query.t ? parseInt(this.props.url.query.t) : 0,
+      activeTab: this.props.url.query.t && this.props.isSignedIn ? parseInt(this.props.url.query.t) : 0,
       saves: props.saves,
       subscriptions: {
         count: 0,

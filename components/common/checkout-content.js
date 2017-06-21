@@ -82,6 +82,7 @@ class CheckoutContent extends Component {
 
   constructor(props) {
     super(props);
+    console.log(this.props.save);
     this.state = {
       value: this.getCupon(),
       copied: false
