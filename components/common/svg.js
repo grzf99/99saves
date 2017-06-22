@@ -102,7 +102,7 @@ export const Buscape = () => (
 );
 
 export const ArrowBack = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style={{marginTop: '10px'}}>
     <path
       fill="#28BA64"
       fillRule="evenodd"
