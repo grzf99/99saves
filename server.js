@@ -53,6 +53,7 @@ app.prepare().then(() => {
   server.options('*', cors());
 
   server.use('/api', apiRoutes);
+
   if(process.env.NODE_ENV === 'production' && (!!process.env.REQUIRE_LOGIN && !!process.env.REQUIRE_PASSWORD))
     server.use(basicAuth(process.env.REQUIRE_LOGIN, process.env.REQUIRE_PASSWORD));
 

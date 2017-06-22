@@ -3,21 +3,20 @@ import Cookies from 'js-cookie';
 import config from '../config';
 import { TOKEN_COOKIE_KEY } from '../store/auth';
 
-export default function createAPIClient() {
+export default function createAPIClient(token) {
   const client = axios.create({
     baseURL: config.API_URL
   });
 
   client.interceptors.request.use((config) => {
-    let user;
     if (typeof window !== 'undefined') {
-      user = Cookies.get(TOKEN_COOKIE_KEY);
+      let user = Cookies.get(TOKEN_COOKIE_KEY);
+      if (user)
+        token = JSON.parse(Cookies.get(TOKEN_COOKIE_KEY)).token;
     }
-
-    if (user)
-      config.headers = {
-        Authorization: `JWT ${JSON.parse(user).token}`
-      };
+    config.headers = {
+      Authorization: `JWT ${token}`
+    };
     return config;
   });
 

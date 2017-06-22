@@ -94,7 +94,7 @@ export class Saves extends React.Component {
     this.state = {
       user: {},
       loginModalIsOpen: false,
-      activeTab: this.props.url.query.t ? parseInt(this.props.url.query.t) : 0,
+      activeTab: this.props.url.query.t && this.props.isSignedIn ? parseInt(this.props.url.query.t) : 0,
       saves: props.saves,
       subscriptions: {
         count: 0,
@@ -162,18 +162,10 @@ export class Saves extends React.Component {
     return this.props.api
       .post(`/saves/${subscribeTo}/subscriptions`)
       .then(() => {
-        const item = this.state.saves.rows.find(
-          save => save.id === subscribeTo
-        );
-        item.hasSubscribed = true;
-
-        const subscriptionsRows = [...this.state.subscriptions.rows, item];
+        this.loadSaves();
+        this.loadSubscriptions();
 
         this.setState({
-          subscriptions: {
-            count: subscriptionsRows.length,
-            rows: subscriptionsRows
-          },
           showToast: true
         });
 

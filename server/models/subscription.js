@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
           Subscription.belongsTo(models.Save);
           Subscription.belongsTo(models.User);
           Subscription.hasMany(models.Vote);
-          Subscription.belongsTo(models.Coupon);
+          Subscription.hasMany(models.Coupon);
         }
       }
     }

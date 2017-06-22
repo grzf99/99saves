@@ -79,7 +79,18 @@ module.exports = {
             required: true
           }, {
             model: Product,
-            include: [Vote]
+            include: [Vote, {
+              model: Coupon,
+              required: false,
+              include: {
+                model: Subscription,
+                required: false,
+                where: {
+                  UserId: req.user.id
+                }
+              }
+            }],
+            required: false
           }]
       };
 
@@ -203,14 +214,15 @@ function createShowQuery(req, includeVote = true) {
     query.include = [
       {
         model: Product,
-        include: [Vote, Provider]
-      },
-      {
-        model: Subscription,
-        include: [Vote, Coupon],
-        where: {
-          UserId: req.user.id
-        },
+        include: [Provider, {
+          model: Coupon,
+          include: [{
+            model: Subscription,
+            where: {
+              UserId: req.user.id
+            }
+          }]
+        }]
       }
     ];
   }

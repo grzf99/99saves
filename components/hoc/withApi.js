@@ -13,13 +13,15 @@ export default function withApi(mapStateToProps = noop, mapDispatchToProps) {
     class ApiComponent extends Component {
       static getInitialProps(ctx) {
         let user;
+        let token;
         if (ctx.req !== undefined) {
           user = getCookies(ctx)[TOKEN_COOKIE_KEY];
-          if (user)
+          if (user) {
             ctx.store.dispatch(setUser(JSON.parse(user)));
+            token = JSON.parse(user).token
+          }
         }
-
-        const api = createAPIClient();
+        const api = createAPIClient(token);
         return (
           Page.getInitialProps &&
           Page.getInitialProps(Object.assign({}, ctx, { api }))
@@ -32,7 +34,7 @@ export default function withApi(mapStateToProps = noop, mapDispatchToProps) {
       }
 
       componentWillMount() {
-        this.client = createAPIClient();
+         this.client = createAPIClient(this.props.token);
       }
 
       handleLogout() {
