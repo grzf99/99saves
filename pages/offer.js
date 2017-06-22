@@ -293,7 +293,6 @@ class Offer extends React.Component {
     this.state = {
       activeTab: this.getWinnerProductIndex(props.save),
       save: props.save,
-      products: props.save.Products,
       vote: 0,
       showToastVotation: false,
       checkoutModalIsOpen: false
@@ -440,7 +439,7 @@ class Offer extends React.Component {
                 index={this.state.activeTab}
                 onChange={this.handleChangeIndex}
               >
-                {this.state.products.map((product, key) => (
+                {this.props.save.Products.map((product, key) => (
                   <CustomTab key={product.id}>
                     <Heading2 color={colors.white}>Oferta {key + 1}</Heading2>
                     <Text color={colors.white}>R$ {formatCurrency(product.price)}</Text>
@@ -457,7 +456,7 @@ class Offer extends React.Component {
           animateHeight
           disabled={this.props.save.checkoutOpen}
         >
-          {this.state.products.map((product, key) => (
+          {this.props.save.Products.map((product, key) => (
             <div key={product.id}>
               <Section white>
                 <Gallery
@@ -584,7 +583,7 @@ class Offer extends React.Component {
         <RenderIf
           expr={
             this.props.save.votationOpen &&
-              this.state.activeTab !== this.state.products.length - 1
+              this.state.activeTab !== this.props.save.Products.length - 1
           }
         >
           <RightArrow

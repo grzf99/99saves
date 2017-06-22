@@ -79,7 +79,18 @@ module.exports = {
             required: true
           }, {
             model: Product,
-            include: [Vote]
+            include: [Vote, {
+              model: Coupon,
+              required: false,
+              include: {
+                model: Subscription,
+                required: false,
+                where: {
+                  UserId: req.user.id
+                }
+              }
+            }],
+            required: false
           }]
       };
 
