@@ -13,7 +13,7 @@ router.get('/subscribed', clientAuthentication(), saves.listSubscribed);
 router.get('/all', adminAuthentication(), saves.listAll);
 
 // client
-router.get('/:id', clientAuthentication(), saves.show);
+router.get('/:id', clientAuthentication(true), saves.show);
 router.get(
   '/:id/my-subscription',
   clientAuthentication(),

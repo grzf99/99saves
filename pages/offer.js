@@ -284,6 +284,7 @@ const HeadingCoutDown = styled(Headline)`
 class Offer extends React.Component {
   static async getInitialProps(ctx) {
     const save = (await ctx.api.get(`/saves/${ctx.query.saveId}`)).data;
+    console.log('save', typeof save == 'undefined' );
     return { save };
   }
 
