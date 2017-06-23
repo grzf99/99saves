@@ -14,7 +14,7 @@ const CountDown = styled.div`
   &.card {
     font-size: 14px;
     margin-top: 3px;
-    height: 30px;
+    height: 28px;
     width: 100%;
     z-index: 3;
 `;
