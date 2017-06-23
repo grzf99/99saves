@@ -6,7 +6,7 @@ import RenderIf from './common/render-if';
 import Image from '../components/common/image';
 
 const Gallery = styled(Container)`
-  height: ${props => props.hasMultipleChildrens ? '344px' : '280px'};
+  height: ${props => props.hasMultipleChildrens ? '420px' : '360px'};
   padding: 20px 0;
 `;
 
@@ -60,7 +60,7 @@ export default class extends React.Component {
         <Slide active={index === this.state.active}>
           <Image
             src={image}
-            size={'240px'}
+            size={'300px'}
             alt={this.props.alt}
           />
         </Slide>

@@ -122,6 +122,7 @@ const Status = styled.div`
   position: absolute;
   text-transform: uppercase;
   top: 0;
+  height: 30px;
   width: 100%;
   z-index: 3;
 `;
