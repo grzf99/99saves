@@ -26,7 +26,7 @@ const Headline = styled.div`
   font-family: 'Oswald', sans-serif;
   font-size: ${props => props.large ? '22px' : '16px'};
   line-height: ${props => props.large ? '48px' : '32px'};
-  margin: 20px 0;
+  margin: 20px 0 0 0;
   text-align: center;
   ${props => props.uppercase && 'text-transform: uppercase'};
 
