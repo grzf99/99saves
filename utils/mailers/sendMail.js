@@ -5,7 +5,7 @@ const { EMAIL_SENDER } = require('../../config');
 const sg = Sendgrid(process.env.SENDGRID_API_KEY);
 
 function createMail(subject, to, contentType, contentString) {
-  const fromEmail = new mail.Email(EMAIL_SENDER);
+  const fromEmail = new mail.Email(EMAIL_SENDER, '99saves');
   const toEmail = new mail.Email(to);
   const content = new mail.Content(contentType, contentString);
 
