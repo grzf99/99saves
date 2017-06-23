@@ -83,14 +83,14 @@ class CheckoutContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: this.getCupon(),
       copied: false
     };
   }
 
-  getCupon() {
-    const [coupon] = this.props.save.winnerProduct.Coupons;
-    return coupon.key;
+  async componentDidMount() {
+    const coupon = (await this.props.api.get(`/saves/getCoupon/${this.props.save.id}`)).data;
+    console.log(coupon);
+    this.setState({ coupon })
   }
 
   render() {
@@ -104,9 +104,9 @@ class CheckoutContent extends Component {
         </Header>
 
         <InputButton>
-          <InputCopy>{this.state.value}</InputCopy>
+          <InputCopy>{this.state.coupon && this.state.coupon.key}</InputCopy>
           <CopyToClipboard
-            text={this.state.value}
+            text={this.state.coupon && this.state.coupon.key}
             onCopy={() => this.setState({copied: true})}
           >
             <ButtonCopy block>copiar cupom</ButtonCopy>

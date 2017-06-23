@@ -316,6 +316,7 @@ export default class extends React.Component {
                 isOpen={this.state.checkoutModalIsOpen}
                 onClose={() => this.closeModal()}
                 save={this.props}
+                api={this.props.api}
                 width="400px"
               />
             </ButtonGroup>

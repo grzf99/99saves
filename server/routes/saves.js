@@ -11,6 +11,7 @@ const router = express.Router();
 router.get('/active', clientAuthentication(true), saves.listActive);
 router.get('/subscribed', clientAuthentication(), saves.listSubscribed);
 router.get('/all', adminAuthentication(), saves.listAll);
+router.get('/getCoupon/:id', clientAuthentication(), saves.getCoupon);
 
 // client
 router.get('/:id', clientAuthentication(true), saves.show);

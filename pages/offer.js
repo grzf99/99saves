@@ -565,6 +565,7 @@ class Offer extends React.Component {
                 onClose={() => this.closeModal()}
                 save={this.props.save}
                 width="400px"
+                api={this.props.api}
               />
             </div>
           ))}

@@ -231,6 +231,7 @@ export class Saves extends React.Component {
           handleSubscribe={() => this.handleSubscribe(save.id)}
           goToOffers={() => this.goToOffers(save.slug)}
           winnerProduct={save.winnerProduct}
+          api={this.props.api}
         />
         ))
       : <BlankState>

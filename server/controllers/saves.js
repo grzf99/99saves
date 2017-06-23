@@ -65,31 +65,23 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
-  listSubscribed(req, res) {
-    const query = {
+  async listSubscribed(req, res) {
+
+    // Finding subscribed saves with coupons
+    let query = {
         order: [
           [ Subscription, 'createdAt', 'DESC' ]
         ],
         include: [{
             model: Subscription,
-            include: [Vote, Coupon],
+            include: [Vote],
             where: {
               UserId: req.user.id
             },
             required: true
           }, {
             model: Product,
-            include: [Vote, {
-              model: Coupon,
-              required: false,
-              include: {
-                model: Subscription,
-                required: false,
-                where: {
-                  UserId: req.user.id
-                }
-              }
-            }],
+            include: [Vote],
             required: false
           }]
       };
@@ -97,12 +89,11 @@ module.exports = {
     if (req.query.offset) query.offset = req.query.offset;
     if (req.query.limit) query.limit = req.query.limit;
 
-    return Save.findAndCountAll(query)
-      .then(({ rows }) => {
-        const saves = rows.map(save => save.toJSON());
-        res.status(200).send(saves);
-      })
-      .catch(error => res.status(400).send(error));
+    saves = await Save.findAll(query);
+
+    saves = saves.map(save => save.toJSON());
+
+    res.status(200).send(saves);
   },
 
   listAll(req, res) {
@@ -165,6 +156,34 @@ module.exports = {
       .catch(err => res.status(400).json(err));
   },
 
+  async getCoupon(req, res) {
+    const save = await Save.find({
+      where: {
+        id: req.params.id
+      },
+      include: [{
+        model: Product,
+        include: [Vote]
+      }]
+    });
+
+    const coupon = await Coupon.find({
+      where: {
+        ProductId: save.winnerProduct.id
+      },
+      include: [
+        {
+          model: Subscription,
+          where: {
+            UserId: req.user.id
+          }
+        }
+      ]
+    });
+
+    res.status(200).send(coupon);
+  },
+
   showSave(req, res) {
     return Save.findById(req.params.saveId, {
       include: [
@@ -214,15 +233,14 @@ function createShowQuery(req, includeVote = true) {
     query.include = [
       {
         model: Product,
-        include: [Provider, {
-          model: Coupon,
-          include: [{
-            model: Subscription,
-            where: {
-              UserId: req.user.id
-            }
-          }]
-        }]
+        include: [Vote, Provider]
+      },
+      {
+        model: Subscription,
+        include: [Vote],
+        where: {
+          UserId: req.user.id
+        },
       }
     ];
   }
