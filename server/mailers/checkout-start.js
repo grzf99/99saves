@@ -3,7 +3,7 @@ const { Save, Product, Provider } = require('../models');
 module.exports = {
   async verify() {
     const saves = await Save.scope('startedCheckoutToday').findAll({
-      include: [{ model: Product, required: true, include: [Provider] }]
+      include: [{ model: Product, required: true, include: [Vote, Provider] }]
     });
     return saves.map(save => {
         // Check if save has more than 1 product (saves with only one product must go direct to checkout) so send the checkout start email
