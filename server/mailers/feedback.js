@@ -1,4 +1,4 @@
-const { Save, Product } = require('../models');
+const { Save, Product, Vote, Provider } = require('../models');
 
 module.exports = {
   async verify() {
