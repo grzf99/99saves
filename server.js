@@ -21,6 +21,9 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const port = process.env.PORT || 3000;
 
+console.log('port ', process.env.PORT);
+console.log('app url ', process.env.APP_URL);
+
 Object.keys(passportStrategies).forEach((strategy) => {
   passport.use(strategy, passportStrategies[strategy]);
 });
