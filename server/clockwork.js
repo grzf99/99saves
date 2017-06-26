@@ -8,8 +8,8 @@ const NegotiationStartMailer = require('./mailers/negotiation-start');
 module.exports = () => {
   console.log('schedule run');
   // REMEMBER: Server hour is -0 GMT (is 3 hours greater than brazil, consider the difference)
-  // Running at 19:05
-  schedule.scheduleJob('05 22 * * *', () => {
+  // Running at 12:50
+  schedule.scheduleJob('50 15 * * *', () => {
     VotationStartMailer.verify();
     CheckoutStartMailer.verify();
     LastChanceMailer.verify();
