@@ -6,6 +6,7 @@ const EMAIL_SENDER = process.env.EMAIL_SENDER;
 const APP_URL = (function apiUrl(env) {
   switch (env) {
     case 'production':
+      return `${process.env.APP_URL}`;
     case 'staging':
       return `${HEROKU_URL}`;
     default:
