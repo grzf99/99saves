@@ -232,6 +232,15 @@ export default class extends React.Component {
           />
         </ImageWrapper>
       );
+    } else if (this.props.finished && this.props.winnerProduct) {
+      images = (
+        <ImageWrapper>
+          <CardImage
+            src={this.props.winnerProduct.image_default}
+            alt={this.props.winnerProduct.title}
+          />
+        </ImageWrapper>
+      );
     } else {
       images = (
         <ImageWrapper>

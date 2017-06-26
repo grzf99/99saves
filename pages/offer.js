@@ -404,7 +404,7 @@ class Offer extends React.Component {
         />
 
         <Header>
-          <Link prefetch href="/saves"><a><ArrowBack /></a></Link>
+          <Link prefetch href="/saves?t=1"><a><ArrowBack /></a></Link>
           <div>
             <RenderIf expr={this.props.save.votationOpen}>
               <GrayText>Vote na melhor oferta de</GrayText>
