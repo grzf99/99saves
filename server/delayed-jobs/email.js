@@ -6,7 +6,8 @@ module.exports = async (job, done) => {
   console.log(`sending ${template} email to ${to}`);
   try {
     const content = await compileTemplate(template, context);
-    await sendMail(subject, to, juice(content));
+    if (['amourapflorentino@gmail.com', 'greysonrzf@yahoo.com'].includes(to))
+      await sendMail(subject, to, juice(content));
     done();
   } catch (err) {
     console.log(err);
