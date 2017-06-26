@@ -12,6 +12,9 @@ module.exports = {
         ),
         'process.env.CLOUDINARY_UPLOAD_URL': JSON.stringify(
           process.env.CLOUDINARY_UPLOAD_URL
+        ),
+        'process.env.APP_URL': JSON.stringify(
+          process.env.APP_URL
         )
       })
     );
