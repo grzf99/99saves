@@ -122,7 +122,7 @@ class SavesCreate extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Alterar Save</span>
+                <span className="panel-title">Cadastrar Save</span>
               </div>
 
               <div className="panel-body">
