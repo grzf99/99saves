@@ -41,7 +41,11 @@ module.exports = (sequelize, DataTypes) => {
           }).then(p =>
             Promise.all(
               p.Save.Subscriptions.map((sub, index) => {
-                const coupon = p.Coupons[index];
+                if (p.Coupons.length > 1)
+                  const coupon = p.Coupons[index];
+                else
+                  const coupon = p.Coupons[0];
+
                 return coupon.update({ SubscriptionId: sub.id });
               })
             )
