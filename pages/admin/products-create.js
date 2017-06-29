@@ -167,6 +167,20 @@ class ProductsCreate extends React.Component {
       return;
     }
 
+    const { subscriptionCount } = this.state;
+    if (subscriptionCount > values.Coupons.length) {
+      this.setState({
+        showToast: true,
+        typeToast: 'warning',
+        messageToast: `
+          A quantidade de cupons é menor que a de usuários inscritos.
+          Insira ${subscriptionCount} ${pluralize(subscriptionCount, { 1: 'cupom', 2: 'cupons' })}.
+        `
+      });
+      setTimeout(() => this.setState({ showToast: false }), 4500);
+      return;
+    }
+
     if (!values.image_default) delete values.image_default;
     if (!values.image2) delete values.image2;
     if (!values.image3) delete values.image3;
