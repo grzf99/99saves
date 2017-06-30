@@ -1,4 +1,4 @@
-const { APP_URL } = require('../../config');
+const APP_URL = process.env.APP_URL || `http://localhost:${PORT}`;
 
 const defaultContext = {
   appUrl: APP_URL
