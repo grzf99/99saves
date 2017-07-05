@@ -102,6 +102,7 @@ export default class MyDocument extends Document {
             }}
           />
 
+          { process.env.HEROKU_APP_NAME == 'saves99' && 
           <script
              dangerouslySetInnerHTML={{
                __html: `
@@ -113,7 +114,7 @@ export default class MyDocument extends Document {
                 smartlook('init', 'ce162a2d2c27e594528af1976a5e73cd36870eee');
              `
              }}
-           />
+           />}
 
         </body>
       </html>
