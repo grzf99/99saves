@@ -1,6 +1,6 @@
 {
   "development": {
-    "database": "99saves-dev",
+    "database": "99saves-dev-v2",
     "dialect": "postgres"
   },
   "test": {
