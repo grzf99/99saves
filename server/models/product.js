@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
       image2: DataTypes.STRING,
       image3: DataTypes.STRING,
       link_buy: DataTypes.STRING,
-      SaveId: DataTypes.INTEGER,
+      CicleId: DataTypes.INTEGER,
       ProviderId: DataTypes.INTEGER
     },
     {
       classMethods: {
         associate(models) {
-          Product.belongsTo(models.Save);
+          Product.belongsTo(models.Cicle);
           Product.belongsTo(models.Provider);
           Product.hasMany(models.Vote);
           Product.hasMany(models.Coupon, { hooks: true });

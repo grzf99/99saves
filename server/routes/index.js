@@ -1,5 +1,6 @@
 const express = require('express');
 const savesRouter = require('./saves');
+const ciclesRouter = require('./cicles');
 const usersRouter = require('./users');
 const authRouter = require('./auth');
 const providersRouter = require('./providers');
@@ -16,6 +17,7 @@ router.get('/', (req, res) =>
 );
 
 router.use('/saves', savesRouter);
+router.use('/cicles', ciclesRouter);
 router.use('/users', usersRouter);
 router.use('/auth', authRouter);
 router.use('/providers', providersRouter);

@@ -3,13 +3,13 @@ module.exports = (sequelize, DataTypes) => {
     'Subscription',
     {
       UserId: DataTypes.INTEGER,
-      SaveId: DataTypes.INTEGER,
+      CicleId: DataTypes.INTEGER,
       rate: DataTypes.INTEGER
     },
     {
       classMethods: {
         associate(models) {
-          Subscription.belongsTo(models.Save);
+          Subscription.belongsTo(models.Cicle);
           Subscription.belongsTo(models.User);
           Subscription.hasMany(models.Vote);
           Subscription.hasMany(models.Coupon);
