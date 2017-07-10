@@ -347,7 +347,7 @@ export default class extends React.Component {
             {this.renderButton()}
           </Info>
         </RenderIf>
-        <DateStart title={moment(this.props.date_start).format('DD/MM/YYYY')}>iniciado há {moment(this.props.date_start).fromNow()}</DateStart>
+        <DateStart title={moment(this.props.date_start).format('DD/MM/YYYY')}>iniciado há {moment(this.props.date_start).fromNow(true)}</DateStart>
       </Card>
     );
   }
