@@ -40,7 +40,7 @@ module.exports = {
       }],
       order: [
         ['date_end'],
-        ['title']
+        [ Save, 'title', 'ASC']
       ],
       where: {
         date_end: { $gt: new Date() },

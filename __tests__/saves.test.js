@@ -83,7 +83,7 @@ describe('<SavesPage />', () => {
       const wrapper = shallow(<Saves saves={saves} url={url} api={api} />);
       wrapper.find(SubscriptionConfirmationModal).simulate('confirm', 1);
 
-      expect(api.post).toHaveBeenCalledWith('/saves/1/subscriptions');
+      expect(api.post).toHaveBeenCalledWith('/cicles/1/subscriptions');
     });
   });
 });

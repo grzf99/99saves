@@ -9,12 +9,12 @@ const sendMail = require('../../../utils/mailers/sendMail');
 
 describe('when template compilation and mail request succeeds', () => {
   it('should have called juice to inline email styles', () =>
-    ParticipationStartMailer.mail('user@asd.com', {save:{title:'Save'}}).then(() => {
+    ParticipationStartMailer.mail('user@asd.com', {cicle: {Save:{title:'Save'}}}).then(() => {
       expect(juice).toHaveBeenCalled();
     }));
 
   it('should return a 200 status code', () =>
-    ParticipationStartMailer.mail('user@asd.com', {save:{title:'Save'}}).then((result) => {
+    ParticipationStartMailer.mail('user@asd.com', {cicle: {Save:{title:'Save'}}}).then((result) => {
       expect(result.statusCode).toEqual(200);
     }));
 });
@@ -26,7 +26,7 @@ describe('when template compilation fails', () => {
   });
 
   it('should log the error', () => {
-    ParticipationStartMailer.mail('user@asd.com', {save:{title:'Save'}});
+    ParticipationStartMailer.mail('user@asd.com', {cicle: {Save:{title:'Save'}}});
     expect(console.log).toHaveBeenCalled();
   });
 });
@@ -38,7 +38,7 @@ describe('when template compilation succeeds, but mail request is rejected', () 
   });
 
   it('should log the error', () => {
-    ParticipationStartMailer.mail('user@asd.com', {save:{title:'Save'}});
+    ParticipationStartMailer.mail('user@asd.com', {cicle: {Save:{title:'Save'}}});
     expect(console.log).toHaveBeenCalled();
   });
 });

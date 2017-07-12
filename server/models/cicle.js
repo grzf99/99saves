@@ -232,7 +232,7 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         afterCreate: (cicle, options, cb) => {
           return cicle.update({
-            slug: `${cicle.id}-${slugify(cicle.title)}`
+            slug: `${cicle.id}-${slugify(cicle.Save.title)}`
           })
             .then(s => cb(null, cicle))
             .catch(err => cb(err));

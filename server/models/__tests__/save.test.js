@@ -1,8 +1,11 @@
 import { differenceInDays, addDays, endOfDay, startOfDay } from 'date-fns';
-import { Save, Product } from '../';
+import { Cicle, Save, Product } from '../';
 
 beforeEach(() => Save.sync({ force: true }));
 afterEach(() => Save.sync({ force: true }));
+
+beforeEach(() => Cicle.sync({ force: true }));
+afterEach(() => Cicle.sync({ force: true }));
 
 describe('title setter', () => {
   it('should set the title', () => {
@@ -20,26 +23,26 @@ describe('date_end setter', () => {
   const now = new Date().toJSON();
 
   it('should set date_end', () => {
-    const save = Save.build({ date_end: now });
+    const save = Cicle.build({ date_end: now });
     expect(save.date_end).toEqual(now);
   });
 
   it('should set the negotiation_end to 2 day after date_end', () => {
-    const save = Save.build({ date_end: now });
+    const save = Cicle.build({ date_end: now });
     expect(
       differenceInDays(new Date(save.date_end), new Date(save.negotiation_end))
     ).toEqual(-2);
   });
 
   it('should set the votation_end to 3 days after date_end', () => {
-    const save = Save.build({ date_end: now });
+    const save = Cicle.build({ date_end: now });
     expect(
       differenceInDays(new Date(save.date_end), new Date(save.votation_end))
     ).toEqual(-3);
   });
 
   it('should set the checkout_end to 5 days after date_end', () => {
-    const save = Save.build({ date_end: now });
+    const save = Cicle.build({ date_end: now });
     expect(
       differenceInDays(new Date(save.date_end), new Date(save.checkout_end))
     ).toEqual(-5);
@@ -49,21 +52,21 @@ describe('date_end setter', () => {
 describe('preSubscription getter', () => {
   describe('when today is before date_start', () => {
     it('should be true', () => {
-      const save = Save.build({ date_start: addDays(new Date(), 2) });
+      const save = Cicle.build({ date_start: addDays(new Date(), 2) });
       expect(save.preSubscription).toEqual(true);
     });
   });
 
   describe('when today is the same day as date_start', () => {
     it('should be false', () => {
-      const save = Save.build({ date_start: new Date() });
+      const save = Cicle.build({ date_start: new Date() });
       expect(save.preSubscription).toEqual(false);
     });
   });
 
   describe('when today is after date_start', () => {
     it('should be false', () => {
-      const save = Save.build({ date_start: addDays(new Date(), -1) });
+      const save = Cicle.build({ date_start: addDays(new Date(), -1) });
       expect(save.preSubscription).toEqual(false);
     });
   });
@@ -72,7 +75,7 @@ describe('preSubscription getter', () => {
 describe('subscriptionOpen getter', () => {
   describe('when today is before date_start', () => {
     it('should be false', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), 1)),
         date_end: endOfDay(addDays(new Date(), 2))
       });
@@ -82,7 +85,7 @@ describe('subscriptionOpen getter', () => {
 
   describe('when today is the same day as date_start', () => {
     it('should be true', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(new Date()),
         date_end: endOfDay(addDays(new Date(), 2))
       });
@@ -92,7 +95,7 @@ describe('subscriptionOpen getter', () => {
 
   describe('when today is between date_start and date_end', () => {
     it('should be true', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), -1)),
         date_end: endOfDay(addDays(new Date(), 2))
       });
@@ -102,7 +105,7 @@ describe('subscriptionOpen getter', () => {
 
   describe('when today is the same day as date_end', () => {
     it('should be true', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), -1)),
         date_end: endOfDay(new Date())
       });
@@ -112,7 +115,7 @@ describe('subscriptionOpen getter', () => {
 
   describe('when today is after date_end', () => {
     it('should be false', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), -2)),
         date_end: endOfDay(addDays(new Date(), -1))
       });
@@ -124,7 +127,7 @@ describe('subscriptionOpen getter', () => {
 describe('negotiationOpen getter', () => {
   describe('when today is before negotiation_end', () => {
     it('should be false', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), -3)),
         date_end: endOfDay(new Date())
       });
@@ -134,7 +137,7 @@ describe('negotiationOpen getter', () => {
 
   describe('when today is the same day as negotiaton_end', () => {
     it('should be true', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), -2)),
         date_end: endOfDay(addDays(new Date(), -1))
       });
@@ -144,7 +147,7 @@ describe('negotiationOpen getter', () => {
 
   describe('when today is after negotiation_end', () => {
     it('should be false', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), -4)),
         date_end: endOfDay(addDays(new Date(), -3))
       });
@@ -156,7 +159,7 @@ describe('negotiationOpen getter', () => {
 describe('votationOpen getter', () => {
   describe('when today is before votation_end', () => {
     it('should be false', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), -4)),
         date_end: endOfDay(addDays(new Date(), -1))
       });
@@ -177,7 +180,7 @@ describe('votationOpen getter', () => {
 
   describe('when today is after votation_end', () => {
     it('should be false', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), -4)),
         date_end: endOfDay(addDays(new Date(), -4))
       });
@@ -234,7 +237,7 @@ describe('votationOpen getter', () => {
 describe('finished getter', () => {
   describe('when today is before checkout_end', () => {
     it('should be false', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), -4)),
         date_end: endOfDay(addDays(new Date(), -3))
       });
@@ -244,7 +247,7 @@ describe('finished getter', () => {
 
   describe('when today is the same day as checkout_end', () => {
     it('should be false', () => {
-      const save = Save.build({
+      const save = Cicle.build({
         date_start: startOfDay(addDays(new Date(), -5)),
         date_end: endOfDay(addDays(new Date(), -4))
       });
@@ -266,7 +269,7 @@ describe('finished getter', () => {
 
 describe('feedbackable scope', () => {
   it('should return all saves that are on the 1th day after finished', () =>
-    Save.bulkCreate([
+    Cicle.bulkCreate([
       {
         date_start: addDays(new Date(), -5),
         date_end: endOfDay(addDays(new Date(), -3))
@@ -280,7 +283,7 @@ describe('feedbackable scope', () => {
         date_end: endOfDay(addDays(new Date(), -6))
       }
     ])
-      .then(() => Save.scope('feedbackable').findAll())
+      .then(() => Cicle.scope('feedbackable').findAll())
       .then((saves) => {
         expect(saves.length).toEqual(1);
       }));
