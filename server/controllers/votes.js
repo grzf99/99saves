@@ -4,7 +4,7 @@ module.exports = {
   show(req, res) {
     return Subscription.findOne({
       where: {
-        SaveId: req.params.saveId,
+        CicleId: req.params.cicleId,
         UserId: req.user.id
       }
     })
@@ -23,7 +23,7 @@ module.exports = {
   create(req, res) {
     return Subscription.findOne({
       where: {
-        SaveId: req.params.saveId,
+        CicleId: req.params.cicleId,
         UserId: req.user.id
       }
     })

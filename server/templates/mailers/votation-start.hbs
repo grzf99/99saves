@@ -21,7 +21,7 @@
         <th style="min-width: 58px;"></th>
         <th class="mail__header-width">
           <p class="mail__subtitle">
-            Os fabricantes fizeram a proposta do save de {{ save.title }}, selecionamos as melhores e agora você vota!
+            Os fabricantes fizeram a proposta do save de {{ cicle.Save.title }}, selecionamos as melhores e agora você vota!
           </p>
         </th>
         <th style="min-width: 58px;"></th>
@@ -35,7 +35,7 @@
           <table class="mail__content">
             <tbody>
               <tr style="height: 32px;"></tr>
-              {{#each save.Products}}
+              {{#each cicle.Products}}
               <tr>
                 <td style="width: 28px;"></td>
                 <td>
@@ -71,7 +71,7 @@
                       <tr style="height: 26px;"></tr>
                       <tr>
                         <td>
-                          <a class="product__button" target="_blank" href="{{ ../appUrl }}/offer/{{ ../save.slug }}">
+                          <a class="product__button" target="_blank" href="{{ ../appUrl }}/offer/{{ ../cicle.slug }}">
                             Votar na oferta
                           </a>
                         </td>

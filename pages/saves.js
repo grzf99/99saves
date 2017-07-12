@@ -82,7 +82,7 @@ const BlankState = styled.div`
 
 export class Saves extends React.Component {
   static async getInitialProps(ctx) {
-    const items = await ctx.api.get('/saves/active');
+    const items = await ctx.api.get('/cicles/active');
     const saves = savesMapper(items.data);
     const { modalFeedbackShow } = Cookies(ctx);
     return { saves, modalFeedbackShow };
@@ -160,7 +160,7 @@ export class Saves extends React.Component {
 
   handleSubscribeConfirm(subscribeTo) {
     return this.props.api
-      .post(`/saves/${subscribeTo}/subscriptions`)
+      .post(`/cicles/${subscribeTo}/subscriptions`)
       .then(() => {
         this.loadSaves();
         this.loadSubscriptions();
@@ -191,7 +191,7 @@ export class Saves extends React.Component {
 
   loadSaves() {
     return this.props.api
-      .get('/saves/active')
+      .get('/cicles/active')
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((saves) => {
@@ -201,7 +201,7 @@ export class Saves extends React.Component {
 
   loadSubscriptions() {
     return this.props.api
-      .get('/saves/subscribed')
+      .get('/cicles/subscribed')
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((subscriptions) => {

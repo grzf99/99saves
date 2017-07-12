@@ -8,7 +8,7 @@ module.exports = {
         'mailers/participation-start.hbs',
         context
       );
-      return await sendMail(`Você está participando do save ${context.save.title}!`, to, juice(content));
+      return await sendMail(`Você está participando do save ${context.cicle.Save.title}!`, to, juice(content));
     } catch (err) {
       console.log(err);
     }

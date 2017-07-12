@@ -244,7 +244,7 @@ export default class extends React.Component {
     } else {
       images = (
         <ImageWrapper>
-          <CardImage src={this.props.image_default} alt={this.props.title} />
+          <CardImage src={this.props.Save.image_default} alt={this.props.Save.title} />
         </ImageWrapper>
       );
     }
@@ -279,7 +279,7 @@ export default class extends React.Component {
             >
               <SmallText>imagem meramente ilustrativa</SmallText>
             </RenderIf>
-            <Heading color={colors.white}>{this.props.title}</Heading>
+            <Heading color={colors.white}>{this.props.Save.title}</Heading>
           </Gradient>
         </Header>
 
@@ -336,7 +336,7 @@ export default class extends React.Component {
         <RenderIf expr={!this.props.checkoutOpen}>
           <Info>
             <RenderIf expr={!this.props.votationOpen}>
-              <CustomText>{this.props.description}</CustomText>
+              <CustomText>{this.props.Save.description}</CustomText>
             </RenderIf>
             <RenderIf expr={this.props.endedWithoutOffers}>
               <CustomText>Este foi um Save que os fabricantes não conseguiram superar a melhor oferta encontrada no mercado.</CustomText>

@@ -3,20 +3,20 @@ const { User, Subscription } = require('../models');
 
 function getSaveSubscriptions(id) {
   return Subscription.findAll({
-    where: { SaveId: id },
+    where: { CicleId: id },
     include: [User]
   });
 }
 
 module.exports = async (job, done) => {
-  const { save } = job.data;
-  const subscriptions = await getSaveSubscriptions(save.id);
+  const { cicle } = job.data;
+  const subscriptions = await getSaveSubscriptions(cicle.id);
 
   if (subscriptions.length === 0) {
     return done();
   }
   console.log(
-    `running negotiation start job for save ${save.id} - ${save.title} with ${subscriptions.length} subscriptions`
+    `running negotiation start job for save cicle ${cicle.id} - ${cicle.Save.title} with ${subscriptions.length} subscriptions`
   );
 
   return Promise.all(
@@ -24,10 +24,10 @@ module.exports = async (job, done) => {
       if (s.User && s.User.email) {
         return global.queue
           .create('email', {
-            subject: `O save ${save.title} está encerrado. Em breve você receberá as melhores ofertas!`,
+            subject: `O save ${cicle.Save.title} está encerrado. Em breve você receberá as melhores ofertas!`,
             to: s.User.email,
             template: 'mailers/negotiation-start.hbs',
-            context: { save }
+            context: { cicle }
           })
           .removeOnComplete(true)
           .save();

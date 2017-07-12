@@ -3,7 +3,7 @@ const { User, Subscription, Product, Provider } = require('../models');
 
 function getSaveSubscriptions(id) {
   return Subscription.findAll({
-    where: { SaveId: id },
+    where: { CicleId: id },
     include: [User]
   });
 }
@@ -14,15 +14,15 @@ function getWinnerProductDetails(id) {
 
 module.exports = async (job, done) => {
   const queue = require('./index');
-  const { save } = job.data;
-  const subscriptions = await getSaveSubscriptions(save.id);
-  const product = await getWinnerProductDetails(save.winnerProduct.id);
+  const { cicle } = job.data;
+  const subscriptions = await getSaveSubscriptions(cicle.id);
+  const product = await getWinnerProductDetails(cicle.winnerProduct.id);
 
   if (subscriptions.length === 0) {
     return done();
   }
   console.log(
-    `running last chance start job for save ${save.id} - ${save.title} with ${subscriptions.length} subscriptions`
+    `running last chance start job for save cicle ${save.id} - ${cicle.Save.title} with ${subscriptions.length} subscriptions`
   );
 
   return Promise.all(
@@ -33,7 +33,7 @@ module.exports = async (job, done) => {
             subject: 'O seu tempo tá acabando. Corra.',
             to: s.User.email,
             template: 'mailers/last-chance.hbs',
-            context: { save, product }
+            context: { cicle, product }
           })
           .removeOnComplete(true)
           .save();

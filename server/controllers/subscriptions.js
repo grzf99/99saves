@@ -1,17 +1,17 @@
-const { Save, Subscription } = require('../models');
+const { Save, Cicle, Subscription } = require('../models');
 const ParticipationStartMailer = require('../mailers/participation-start');
 
 module.exports = {
   async create(req, res) {
     try {
       const subscription = await Subscription.create({
-        SaveId: parseInt(req.params.saveId, 10),
+        CicleId: parseInt(req.params.cicleId, 10),
         UserId: req.user.id
       });
 
-      const save = await Save.findById(subscription.SaveId);
+      const cicle = await Cicle.findById(subscription.CicleId);
 
-      ParticipationStartMailer.mail(req.user.email, { user: req.user, save });
+      ParticipationStartMailer.mail(req.user.email, { user: req.user, cicle });
 
       return res.status(201).send(subscription);
     } catch (err) {

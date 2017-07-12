@@ -1,11 +1,11 @@
-const { Save } = require('../models');
+const { Save, Cicle } = require('../models');
 
 module.exports = {
   async verify() {
-    const saves = await Save.scope('negotiationStartToday').findAll();
-    return saves.map(save =>
+    const cicles = await Cicle.scope('negotiationStartToday').findAll();
+    return cicles.map(cicle =>
       global.queue
-        .create('negotiation-start', { save })
+        .create('negotiation-start', { cicle })
         .removeOnComplete(true)
         .save()
     );

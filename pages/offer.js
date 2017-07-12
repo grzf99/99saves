@@ -283,7 +283,7 @@ const HeadingCoutDown = styled(Headline)`
 
 class Offer extends React.Component {
   static async getInitialProps(ctx) {
-    const save = (await ctx.api.get(`/saves/${ctx.query.saveId}`)).data;
+    const save = (await ctx.api.get(`/cicles/${ctx.query.saveId}`)).data;
     console.log('save', typeof save == 'undefined' );
     return { save };
   }
@@ -342,7 +342,7 @@ class Offer extends React.Component {
 
   loadVote() {
     return this.props.api
-      .get(`/saves/${this.state.save.id}/votes`)
+      .get(`/cicles/${this.state.save.id}/votes`)
       .then(res => res.data)
       .then((vote) => {
         if (vote) this.setState({ vote: vote.ProductId });
@@ -356,7 +356,7 @@ class Offer extends React.Component {
   handleVote(productId) {
     if (this.state.vote !== productId) {
       this.props.api
-        .post(`/saves/${this.state.save.id}/votes`, {
+        .post(`/cicles/${this.state.save.id}/votes`, {
           ProductId: productId
         })
         .then(({ data }) => {
@@ -409,7 +409,7 @@ class Offer extends React.Component {
             <RenderIf expr={this.props.save.votationOpen}>
               <GrayText>Vote na melhor oferta de</GrayText>
             </RenderIf>
-            <Heading color={colors.white} uppercase>{this.state.save.title}</Heading>
+            <Heading color={colors.white} uppercase>{this.state.save.Save.title}</Heading>
           </div>
         </Header>
 

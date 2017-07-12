@@ -3,7 +3,7 @@ const { User, Subscription, Product, Provider } = require('../models');
 
 function getSaveSubscriptions(id) {
   return Subscription.findAll({
-    where: { SaveId: id },
+    where: { CicleId: id },
     include: [User]
   });
 }
@@ -13,15 +13,15 @@ function getWinnerProductDetails(id) {
 }
 
 module.exports = async (job, done) => {
-  const { save } = job.data;
-  const subscriptions = await getSaveSubscriptions(save.id);
-  const product = await getWinnerProductDetails(save.winnerProduct.id);
+  const { cicle } = job.data;
+  const subscriptions = await getSaveSubscriptions(cicle.id);
+  const product = await getWinnerProductDetails(cicle.winnerProduct.id);
 
   if (subscriptions.length === 0) {
     return done();
   }
   console.log(
-    `running checkout start job for save ${save.id} - ${save.title} with ${subscriptions.length} subscriptions`
+    `running checkout start job for save cicle ${cicle.id} - ${cicle.Save.title} with ${subscriptions.length} subscriptions`
   );
 
   return Promise.all(
@@ -29,10 +29,10 @@ module.exports = async (job, done) => {
       if (s.User && s.User.email) {
         return global.queue
           .create('email', {
-            subject: `O melhor preço de ${save.title} chegou. Compre até ${format(addHours(save.checkout_end, -3), 'DD/MM')}!`,
+            subject: `O melhor preço de ${cicle.Save.title} chegou. Compre até ${format(addHours(cicle.checkout_end, -3), 'DD/MM')}!`,
             to: s.User.email,
             template: 'mailers/checkout-start.hbs',
-            context: { save, product }
+            context: { cicle, product }
           })
           .removeOnComplete(true)
           .save();

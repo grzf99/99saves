@@ -216,18 +216,17 @@ module.exports = (sequelize, DataTypes) => {
             this.dataValues.winnerProduct = this.winnerProduct.toJSON();
           }
 
-          return this.dataValues;
-          // return Object.assign({}, this.dataValues, {
-          //   save: this.Save.toJSON(),
-          //   status: this.status,
-          //   preSubscription: this.preSubscription,
-          //   subscriptionOpen: this.subscriptionOpen,
-          //   negotiationOpen: this.negotiationOpen,
-          //   votationOpen: this.votationOpen,
-          //   checkoutOpen: this.checkoutOpen,
-          //   finished: this.finished,
-          //   endedWithoutOffers: this.endedWithoutOffers,
-          // });
+          return Object.assign({}, this.dataValues, {
+            save: this.Save.toJSON(),
+            status: this.status,
+            preSubscription: this.preSubscription,
+            subscriptionOpen: this.subscriptionOpen,
+            negotiationOpen: this.negotiationOpen,
+            votationOpen: this.votationOpen,
+            checkoutOpen: this.checkoutOpen,
+            finished: this.finished,
+            endedWithoutOffers: this.endedWithoutOffers,
+          });
         }
       },
       hooks: {
