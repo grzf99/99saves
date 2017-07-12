@@ -35,9 +35,6 @@ module.exports = {
 
   listActive(req, res) {
     const query = {
-      include: [{
-        model: Save
-      }],
       order: [
         ['date_end'],
         [ Save, 'title', 'ASC']
@@ -48,7 +45,7 @@ module.exports = {
       },
     };
 
-    query.include = req.user && [{
+    query.include = req.user ? [{
       model: Subscription,
       include: [Vote, Coupon],
       where: {
@@ -56,6 +53,8 @@ module.exports = {
       },
       required: false
     },{
+      model: Save
+    }] : [{
       model: Save
     }];
 
