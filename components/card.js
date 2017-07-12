@@ -298,7 +298,7 @@ export default class extends React.Component {
           </Headline>
         </RenderIf>
 
-        <RenderIf expr={this.props.checkoutOpen}>
+        <RenderIf expr={this.props.checkoutOpen || this.props.finished}>
           <Buscape>
             menor preço no Buscapé: R$
             {' '}
