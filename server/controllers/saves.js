@@ -98,6 +98,9 @@ module.exports = {
 
   listAll(req, res) {
     const query = {
+      order: [
+        [ 'id', 'DESC' ]
+      ],
       include: [{
           model: Subscription,
           include: [Vote, Coupon],
