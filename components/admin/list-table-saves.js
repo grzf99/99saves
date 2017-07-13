@@ -43,13 +43,6 @@ export default (props) => {
             <th>#</th>
             <th />
             <th>Title</th>
-            <th>status</th>
-            <th>Início</th>
-            <th>Tér. Adessão</th>
-            <th>Tér. Negociação</th>
-            <th>Tér. Votação</th>
-            <th>Tér. Compra</th>
-            <th />
             <th />
             <th />
           </tr>
