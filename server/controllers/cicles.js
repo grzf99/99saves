@@ -109,12 +109,6 @@ module.exports = {
       ],
       include: [{
           model: Save
-        },{
-          model: Subscription,
-          include: [Vote, Coupon],
-        }, {
-          model: Product,
-          include: [Vote],
         }]};
 
     if (req.query.offset) query.offset = req.query.offset;
