@@ -9,6 +9,7 @@
   "scripts": {
     "build": "next build",
     "dev": "nodemon --watch server --watch server.js server.js",
+    "dev2": "node server.js",
     "lint": "eslint .",
     "start": "NODE_ENV=production node server.js",
     "test": "NODE_ENV=test jest --watch --forceExit -i",
