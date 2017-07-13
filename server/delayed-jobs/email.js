@@ -7,8 +7,8 @@ module.exports = async (job, done) => {
   try {
     const content = await compileTemplate(template, context);
     // Limit email sent only to Adriano and Greyson (asd is there because of email.js test)
-    if (['amourapflorentino@gmail.com', 'greysonrzf@yahoo.com', 'asd@asd.com'].includes(to))
-      await sendMail(subject, to, juice(content));
+    // if (['amourapflorentino@gmail.com', 'greysonrzf@yahoo.com', 'asd@asd.com'].includes(to))
+    await sendMail(subject, to, juice(content));
     done();
   } catch (err) {
     console.log(err);
