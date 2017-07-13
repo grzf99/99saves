@@ -105,14 +105,15 @@ module.exports = {
   listAll(req, res) {
     const query = {
       include: [{
+          model: Save
+        }, {
           model: Subscription,
           include: [Vote, Coupon],
         }, {
           model: Product,
           include: [Vote],
-        },{
-          model: Save
-        }]};
+        }]
+      };
 
     if (req.query.offset) query.offset = req.query.offset;
     if (req.query.limit) query.limit = req.query.limit;

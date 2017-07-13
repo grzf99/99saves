@@ -9,7 +9,10 @@ module.exports = {
 
   list(req, res) {
     return Save.findAndCountAll()
-      .then(save => res.status(201).send(save))
+      .then(({ rows }) => {
+        const saves = rows.map(save => save.toJSON());
+        res.status(200).send(saves);
+      })
       .catch(error => res.status(400).send(error));
   },
 
