@@ -13,7 +13,7 @@ export default (props) => {
             ? <img alt={item.Save.title} src={item.Save.image_default} width="25" />
             : ''}
         </td>
-        <td>{item.Save.title}</td>
+        <td><a href={`/admin/saves-edit?id=${item.id}`}>{item.Save.title}</a></td>
         <td>{getSaveStatus(item.status)}</td>
         <td>
           {item.date_start
@@ -71,7 +71,7 @@ export default (props) => {
           <tr>
             <th>#</th>
             <th />
-            <th>Title</th>
+            <th>Save</th>
             <th>status</th>
             <th>Início</th>
             <th>Tér. Adessão</th>

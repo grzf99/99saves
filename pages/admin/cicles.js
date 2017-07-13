@@ -7,7 +7,7 @@ import Layout from '../../components/admin/layout';
 import ListTable from '../../components/admin/list-table-cicles';
 import AlertMessage from '../../components/common/alert-message';
 
-class Saves extends React.Component {
+class Cicles extends React.Component {
   constructor(props) {
     super(props);
 
