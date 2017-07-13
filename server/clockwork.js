@@ -10,10 +10,10 @@ module.exports = () => {
   // REMEMBER: Server hour is -0 GMT (is 3 hours greater than brazil, consider the difference)
   // Running at 1:00
   schedule.scheduleJob('0 4 * * *', () => {
-    VotationStartMailer.verify();
-    CheckoutStartMailer.verify();
-    LastChanceMailer.verify();
-    FeedbackMailer.verify();
-    NegotiationStartMailer.verify();
+    // VotationStartMailer.verify();
+    // CheckoutStartMailer.verify();
+    // LastChanceMailer.verify();
+    // FeedbackMailer.verify();
+    // NegotiationStartMailer.verify();
   });
 };
