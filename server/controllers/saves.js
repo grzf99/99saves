@@ -1,4 +1,4 @@
-const { Product, Cicle, Save, Subscription, Vote, Provider, User, Coupon, Profile } = require('../models');
+const { Save, Subscription, Vote, Provider, User, Coupon, Profile } = require('../models');
 const sequelize = require('sequelize');
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
       .catch(err => res.status(400).json(err));  },
 
   list(req, res) {
-    return Save.Product.findAndCountAll()
+    return Save.findAndCountAll()
       .then(save => res.status(201).send(save))
       .catch(error => res.status(400).send(error));
   },

@@ -9,13 +9,42 @@ export default (props) => {
       <tr key={item.id}>
         <td>{item.id}</td>
         <td width="30">
-          {item.image_default
-            ? <img alt={item.title} src={item.image_default} width="25" />
+          {item.Save.image_default
+            ? <img alt={item.Save.title} src={item.Save.image_default} width="25" />
             : ''}
         </td>
-        <td>{item.title}</td>
+        <td>{item.Save.title}</td>
+        <td>{getSaveStatus(item.status)}</td>
         <td>
-          <Link prefetch href={`/admin/saves-edit?id=${item.id}`}>
+          {item.date_start
+            ? format(new Date(item.date_start), 'DD/MM/YYYY')
+            : ''}
+        </td>
+        <td>
+          {item.date_end ? format(new Date(item.date_end), 'DD/MM/YYYY') : ''}
+        </td>
+        <td>
+          {item.negotiation_end
+            ? format(new Date(item.negotiation_end), 'DD/MM/YYYY')
+            : ''}
+        </td>
+        <td>
+          {item.votation_end
+            ? format(new Date(item.votation_end), 'DD/MM/YYYY')
+            : ''}
+        </td>
+        <td>
+          {item.checkout_end
+            ? format(new Date(item.checkout_end), 'DD/MM/YYYY')
+            : ''}
+        </td>
+        <td>
+            <Link prefetch href={`/admin/cicles-inscritos?id=${item.id}`}>
+              <a className="">Inscritos</a>
+            </Link>
+        </td>
+        <td>
+          <Link prefetch href={`/admin/cicles-edit?id=${item.id}`}>
             <a className="">Editar</a>
           </Link>
         </td>

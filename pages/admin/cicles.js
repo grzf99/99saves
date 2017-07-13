@@ -4,7 +4,7 @@ import Link from 'next/link';
 import withAuth from '../../components/hoc/withAuth';
 import config from '../../config';
 import Layout from '../../components/admin/layout';
-import ListTable from '../../components/admin/list-table-saves';
+import ListTable from '../../components/admin/list-table-cicles';
 import AlertMessage from '../../components/common/alert-message';
 
 class Saves extends React.Component {
@@ -28,7 +28,7 @@ class Saves extends React.Component {
 
   refresh() {
     this.props.api
-      .get('/saves')
+      .get('/cicles/all')
       .then((response) => {
         this.setState({ ...this.state, list: response.data });
       })
@@ -44,7 +44,7 @@ class Saves extends React.Component {
 
   handleDelete(save) {
     this.props.api
-      .delete(`/saves/${save.id}`)
+      .delete(`/cicles/${save.id}`)
       .then(() => {
         this.setState({
           showToast: true,
@@ -71,8 +71,8 @@ class Saves extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Lista de Saves</span>
-                <Link prefetch href="/admin/saves-create">
+                <span className="panel-title">Lista de Ciclos</span>
+                <Link prefetch href="/admin/cicles-create">
                   <a className="btn btn-xs btn-primary pull-right">Novo</a>
                 </Link>
               </div>
