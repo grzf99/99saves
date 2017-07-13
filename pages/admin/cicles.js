@@ -94,4 +94,4 @@ class Cicles extends React.Component {
   }
 }
 
-export default withAuth({ isAdminPage: true })(Saves);
+export default withAuth({ isAdminPage: true })(Cicles);
