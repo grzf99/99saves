@@ -13,7 +13,7 @@ export default (props) => {
             ? <img alt={item.Save.title} src={item.Save.image_default} width="25" />
             : ''}
         </td>
-        <td><a href={`/admin/saves-edit?id=${item.id}`}>{item.Save.title}</a></td>
+        <td><a href={`/admin/cicles-edit?id=${item.id}`}>{item.Save.title}</a></td>
         <td>{getSaveStatus(item.status)}</td>
         <td>
           {item.date_start
