@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       instanceMethods: {
         toJSON() {
-          return Object.assign({}, this.dataValues, {});
+          return this.dataValues;
         }
       }
     }

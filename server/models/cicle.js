@@ -217,7 +217,6 @@ module.exports = (sequelize, DataTypes) => {
           }
 
           return Object.assign({}, this.dataValues, {
-            save: this.Save.toJSON(),
             status: this.status,
             preSubscription: this.preSubscription,
             subscriptionOpen: this.subscriptionOpen,
