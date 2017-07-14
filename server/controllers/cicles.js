@@ -109,9 +109,7 @@ module.exports = {
       ],
       include: [{
           model: Save
-        },{
-          model: Product
-        },]};
+        }]};
 
     if (req.query.offset) query.offset = req.query.offset;
     if (req.query.limit) query.limit = req.query.limit;
