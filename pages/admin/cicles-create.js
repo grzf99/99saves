@@ -88,8 +88,7 @@ class CiclesCreate extends React.Component {
 
   isFormValid(values) {
     return (
-      values.title &&
-      values.image_default &&
+      values.SaveId &&
       values.date_start &&
       values.date_end
     );
