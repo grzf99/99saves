@@ -29,12 +29,12 @@ module.exports = {
                 where: {
                   id: cicle.id
                 }
-              }
+              })
+                .then(cicle => res.status(200).send(cicle))
+                .catch(error => res.status(400).send(error));
+              )
             )
-            .then(cicle => res.status(200).send(cicle))
-            .catch(err => res.status(400).json(err));
-          )
-        )
+          .catch(error => res.status(400).send(error));
         .catch(error => res.status(400).send(error));
   },
 
