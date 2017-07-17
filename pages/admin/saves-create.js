@@ -76,9 +76,7 @@ class SavesCreate extends React.Component {
 
   submitForm(data) {
     const values = Object.assign({}, data, {
-      image_default: this.state.image_default,
-      date_start: startOfDay(data.date_start).toJSON(),
-      date_end: endOfDay(data.date_end).toJSON()
+      image_default: this.state.image_default
     });
 
     if (!this.isFormValid(values)) {
@@ -143,22 +141,6 @@ class SavesCreate extends React.Component {
                       placeholder="Título do save"
                       required
                       rowClassName="col-sm-12"
-                    />
-                    <Input
-                      name="date_start"
-                      value=""
-                      label="Abertura do save"
-                      type="date"
-                      required
-                      rowClassName="col-sm-6"
-                    />
-                    <Input
-                      name="date_end"
-                      value=""
-                      label="Fechamento para envio de ofertas"
-                      type="date"
-                      required
-                      rowClassName="col-sm-6"
                     />
                     <Textarea
                       rows={3}

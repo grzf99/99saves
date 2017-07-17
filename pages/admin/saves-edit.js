@@ -41,7 +41,7 @@ class SavesEdit extends React.Component {
 
   getSaves(id) {
     this.props.api
-      .get(`/saves/${id}/save`)
+      .get(`/saves/${id}`)
       .then((response) => {
         this.setState({
           ...this.state,
@@ -92,8 +92,7 @@ class SavesEdit extends React.Component {
 
   submitForm(data) {
     const values = Object.assign({}, data, {
-      image_default: this.state.image_default,
-      date_start: startOfDay(data.date_start).toJSON()
+      image_default: this.state.image_default
     });
 
     if (!values.title || !values.date_start) {
@@ -154,17 +153,6 @@ class SavesEdit extends React.Component {
                       label="Título do save"
                       type="text"
                       placeholder="Título do save"
-                      required
-                      rowClassName="col-sm-12"
-                    />
-                    <Input
-                      name="date_start"
-                      value={
-                        formatDate(this.state.list.date_start, 'YYYY-MM-DD') ||
-                          ''
-                      }
-                      label="Data início do save"
-                      type="date"
                       required
                       rowClassName="col-sm-12"
                     />
