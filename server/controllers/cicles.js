@@ -1,5 +1,6 @@
 const { Product, Cicle, Save, Subscription, Vote, Provider, User, Coupon, Profile } = require('../models');
 const sequelize = require('sequelize');
+const { slugify } = require('../../utils');
 
 module.exports = {
   show(req, res) {
@@ -19,8 +20,20 @@ module.exports = {
 
   create(req, res) {
     return Cicle.create(req.body)
-      .then(cicle => res.status(201).send(cicle))
-      .catch(error => res.status(400).send(error));
+      .then(cicle =>
+        Save.findById(req.body.SaveId)
+          .then(save =>
+            Cicle.update({
+                slug: `${cicle.id}-${slugify(save.title)}`
+              }, {
+                where: {
+                  id: cicle.id
+                }
+              }
+            ))
+            .catch(err => res.status(400).json(err));
+        )
+        .catch(error => res.status(400).send(error));
   },
 
   update(req, res) {

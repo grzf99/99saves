@@ -5,7 +5,8 @@ module.exports = {
   show(req, res) {
     return Save.findById(req.params.id)
       .then(save => res.status(200).send(save.toJSON()))
-      .catch(err => res.status(400).json(err));  },
+      .catch(err => res.status(400).json(err));
+  },
 
   list(req, res) {
     return Save.findAndCountAll()
