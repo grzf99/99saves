@@ -31,11 +31,11 @@ module.exports = {
                 }
               })
                 .then(cicle => res.status(200).send(cicle))
-                .catch(error => res.status(400).send(error));
-              )
-            )
-          .catch(error => res.status(400).send(error));
-        .catch(error => res.status(400).send(error));
+                .catch(error => res.status(400).send(error))
+          )
+          .catch(error => res.status(400).send(error))
+      )
+      .catch(error => res.status(400).send(error))
   },
 
   update(req, res) {
