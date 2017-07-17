@@ -31,6 +31,7 @@ module.exports = {
                 }
               }
             ))
+            .then(cicle => res.status(200).send(cicle))
             .catch(err => res.status(400).json(err));
         )
         .catch(error => res.status(400).send(error));
