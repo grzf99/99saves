@@ -30,7 +30,6 @@ class Cicles extends React.Component {
     this.props.api
       .get('/cicles/all')
       .then((response) => {
-        console.log(response);
         this.setState({ ...this.state, list: response.data });
       })
       .catch((error) => {

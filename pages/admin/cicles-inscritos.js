@@ -40,6 +40,7 @@ class SavesSubscriptions extends React.Component {
     this.props.api
       .get(`/cicles/${id}/cicle`)
       .then((response) => {
+        console.log(response.data)
         this.setState({
           ...this.state,
           listSave: response.data,
