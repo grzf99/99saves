@@ -5,7 +5,6 @@ import { getSaveStatus } from '../../utils';
 export default (props) => {
   const renderRows = () => {
     const list = props.list || [];
-    console.log(list);
     return list.map(item => (
       <tr key={item.id}>
         <td>{item.id}</td>

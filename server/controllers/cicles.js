@@ -213,6 +213,9 @@ module.exports = {
     return Cicle.findById(req.params.cicleId, {
       include: [
         {
+          model: Save
+        },
+        {
           model: Product
         }
       ]
