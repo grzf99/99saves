@@ -32,8 +32,6 @@ class CiclesEdit extends React.Component {
     this.getSaves = this.getSaves.bind(this);
     this.getCicle = this.getCicle.bind(this);
     this.submitForm = this.submitForm.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleImageUpload = this.handleImageUpload.bind(this);
   }
 
   componentDidMount() {
@@ -79,11 +77,6 @@ class CiclesEdit extends React.Component {
         });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       });
-  }
-
-  handleSave(event) {
-    this.setState({ btnEnabled: true });
-    this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
   submitForm(data) {
