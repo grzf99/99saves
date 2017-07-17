@@ -84,11 +84,9 @@ class CiclesEdit extends React.Component {
       date_start: startOfDay(data.date_start).toJSON()
     });
 
-    if (!values.title || !values.date_start) {
+    if (!values.date_start) {
       return alert('Preencha todos os campos obrigatórios'); // eslint-disable-line
     }
-
-    if (!values.image_default) delete values.image_default;
 
     const rest = this.props.api
       .put(`/cicles/${values.id}`, values)

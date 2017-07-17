@@ -230,11 +230,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       hooks: {
         afterCreate: (cicle, options, cb) => {
-          return cicle.update({
-            slug: `${cicle.id}-${slugify(cicle.Save.title)}`
-          })
-            .then(s => cb(null, cicle))
-            .catch(err => cb(err));
+          Save.findById(cicle.SaveId)
+            .then(s =>
+              cicle.update({
+                slug: `${cicle.id}-${slugify(s.title)}`
+              })
+                .then(s => cb(null, cicle))
+                .catch(err => cb(err));
+          );
         }
       }
     }
