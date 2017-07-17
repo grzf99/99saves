@@ -62,9 +62,9 @@ class CiclesEdit extends React.Component {
   getSaves() {
     let list = [{ value: '', label: 'Selecione um save' }];
     this.props.api
-      .get(`/saves/`)
+      .get(`/saves`)
       .then((response) => {
-        response.data.rows.map( (item) => {
+        response.data.map( (item) => {
           list.push({ value: item.id, label: item.title});
         });
         this.setState({ selectSaves: list });

@@ -36,14 +36,14 @@ class CiclesCreate extends React.Component {
   }
 
   getSaves() {
+    let list = [{ value: '', label: 'Selecione um save' }];
     this.props.api
-      .get(`/saves/`)
+      .get(`/saves`)
       .then((response) => {
-        this.setState({
-          ...this.state,
-          selectSaves: response.data
+        response.data.map( (item) => {
+          list.push({ value: item.id, label: item.title});
         });
-        setTimeout(() => this.setState({ loading: false }), 1500);
+        this.setState({ selectSaves: list });
       })
       .catch((error) => {
         this.setState({
