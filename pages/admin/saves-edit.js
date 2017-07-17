@@ -95,7 +95,7 @@ class SavesEdit extends React.Component {
       image_default: this.state.image_default
     });
 
-    if (!values.title || !values.date_start) {
+    if (!values.title) {
       return alert('Preencha todos os campos obrigatórios'); // eslint-disable-line
     }
 
