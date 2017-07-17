@@ -29,7 +29,7 @@ router.get('/:cicleId/votes', clientAuthentication(), votes.show);
 router.post('/:cicleId/votes', clientAuthentication(), votes.create);
 
 // admin
-router.get('/:cicleId/save', adminAuthentication(), cicles.showCicle);
+router.get('/:cicleId/cicle', adminAuthentication(), cicles.showCicle);
 router.post('/', adminAuthentication(), cicles.create);
 router.put('/:id', adminAuthentication(), cicles.update);
 router.delete('/:id', adminAuthentication(), cicles.delete);

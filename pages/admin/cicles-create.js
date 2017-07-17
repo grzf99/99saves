@@ -12,7 +12,7 @@ import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
 import RenderIf from '../../components/common/render-if';
 
-class SavesCreate extends React.Component {
+class CiclesCreate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +31,28 @@ class SavesCreate extends React.Component {
   }
 
   componentDidMount() {
+    this.getSaves();
     setTimeout(() => this.setState({ loading: false }), 1500);
+  }
+
+  getSaves() {
+    this.props.api
+      .get(`/saves/`)
+      .then((response) => {
+        this.setState({
+          ...this.state,
+          selectSaves: response.data
+        });
+        setTimeout(() => this.setState({ loading: false }), 1500);
+      })
+      .catch((error) => {
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Problemas ao se comunicar com API: ${error.message}`
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
+      });
   }
 
   handleSave(event) {
@@ -76,7 +97,6 @@ class SavesCreate extends React.Component {
 
   submitForm(data) {
     const values = Object.assign({}, data, {
-      image_default: this.state.image_default,
       date_start: startOfDay(data.date_start).toJSON(),
       date_end: endOfDay(data.date_end).toJSON()
     });
@@ -91,17 +111,15 @@ class SavesCreate extends React.Component {
       return;
     }
 
-    if (!values.image_default) delete values.image_default;
-
     const rest = this.props.api
-      .post('/saves', values)
+      .post('/cicles', values)
       .then(() => {
         this.setState({
           showToast: true,
           typeToast: 'success',
           messageToast: 'Registro cadsatrado com Sucesso'
         });
-        setTimeout(() => Router.push('/admin/saves'), 2000);
+        setTimeout(() => Router.push('/admin/cicles'), 2000);
       })
       .catch(() => {
         this.setState({
@@ -122,7 +140,7 @@ class SavesCreate extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Cadastrar Save</span>
+                <span className="panel-title">Cadastrar Ciclo</span>
               </div>
 
               <div className="panel-body">
@@ -134,13 +152,13 @@ class SavesCreate extends React.Component {
                 <RenderIf expr={!this.state.loading}>
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input name="id" type="hidden" />
-                    <Input
-                      name="title"
-                      value=""
-                      id="title"
-                      label="Título do save"
-                      type="text"
-                      placeholder="Título do save"
+                    <Select
+                      name="SaveId"
+                      value={this.state.list.SaveId || ''}
+                      label="Save"
+                      id="save"
+                      help="Campo obriagatório"
+                      options={this.state.selectSaves}
                       required
                       rowClassName="col-sm-12"
                     />
@@ -160,41 +178,7 @@ class SavesCreate extends React.Component {
                       required
                       rowClassName="col-sm-6"
                     />
-                    <Textarea
-                      rows={3}
-                      cols={40}
-                      name="description"
-                      value=""
-                      label="Descrição do save"
-                      placeholder="Descrição"
-                      rowClassName="col-sm-12"
-                    />
-                    <div className="form-group col-sm-12">
-                      <label className="control-label" htmlFor="image_default">
-                        Imagem de destaque *
-                      </label>
-                      <div className="controls">
-                        <input
-                          type="file"
-                          name="image_default"
-                          required
-                          onChange={this.handleSave}
-                        />
-                      </div>
-                      <RenderIf expr={this.state.btnEnabled}>
-                        <Loading type="bars" color="#000000" />
-                      </RenderIf>
 
-                      <RenderIf expr={!!this.state.image_default}>
-                        <div className="controls">
-                          <img
-                            className="col-md-3"
-                            src={this.state.image_default}
-                            alt="image"
-                          />
-                        </div>
-                      </RenderIf>
-                    </div>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
                         <input
@@ -219,4 +203,4 @@ class SavesCreate extends React.Component {
   }
 }
 
-export default withAuth({ isAdminPage: true })(SavesCreate);
+export default withAuth({ isAdminPage: true })(CiclesCreate);
