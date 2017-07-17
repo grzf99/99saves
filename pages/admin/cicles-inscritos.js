@@ -28,7 +28,7 @@ class SavesSubscriptions extends React.Component {
     };
 
     this.refresh = this.refresh.bind(this);
-    this.getSave = this.getSave.bind(this);
+    this.getCicle = this.getCicle.bind(this);
   }
 
   componentWillMount() {
@@ -48,7 +48,6 @@ class SavesSubscriptions extends React.Component {
         setTimeout(() => this.setState({ loading: false }), 1500);
       })
       .catch((error) => {
-        console.log(error);
         this.setState({
           showToast: true,
           typeToast: 'warning',

@@ -116,7 +116,7 @@ class CiclesCreate extends React.Component {
         this.setState({
           showToast: true,
           typeToast: 'success',
-          messageToast: 'Registro cadsatrado com Sucesso'
+          messageToast: 'Registro cadastrado com Sucesso'
         });
         setTimeout(() => Router.push('/admin/cicles'), 2000);
       })
