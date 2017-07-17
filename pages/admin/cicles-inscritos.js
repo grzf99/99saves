@@ -8,6 +8,8 @@ import ListTable from '../../components/admin/list-table-save-users';
 import AlertMessage from '../../components/common/alert-message';
 import RenderIf from '../../components/common/render-if';
 
+import moment from 'moment';
+
 class SavesSubscriptions extends React.Component {
   static getInitialProps({ query }) {
     return { query };
@@ -31,12 +33,12 @@ class SavesSubscriptions extends React.Component {
 
   componentWillMount() {
     this.refresh();
-    this.getSave(this.props.query.id);
+    this.getCicle(this.props.query.id);
   }
 
-  getSave(id) {
+  getCicle(id) {
     this.props.api
-      .get(`/saves/${id}/save`)
+      .get(`/cicles/${id}/cicle`)
       .then((response) => {
         this.setState({
           ...this.state,
@@ -58,7 +60,7 @@ class SavesSubscriptions extends React.Component {
 
   refresh() {
     this.props.api
-      .get(`/saves/${this.props.query.id}/users`)
+      .get(`/cicles/${this.props.query.id}/users`)
       .then((response) => {
         this.setState({ ...this.state, list: response.data.subscriptions });
       })
@@ -80,7 +82,7 @@ class SavesSubscriptions extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                  <span className="panel-title">Lista de Inscritos no save - (<b>{this.state.listSave.title}</b>)</span>
+                  <span className="panel-title">Lista de Inscritos no Save - (<b>{this.state.listSave.Save.title}</b>) do Ciclo <b>{moment(this.state.listSave.date_start).format('DD/MM/YYYY')}</b></span>
               </div>
 
               <div className="panel-body">
@@ -89,7 +91,7 @@ class SavesSubscriptions extends React.Component {
                     <div>
                       <div className="row">
                         <div className="col-lg-12">
-                          <img src={this.state.listSave.image_default} width="80"/>
+                          <img src={this.state.listSave.Save.image_default} width="80"/>
                           <span className="panel-title">  Produto Vencedor - <b>{this.state.winnerProduct.title}</b></span>
                           <span/>
                         </div>
