@@ -92,7 +92,7 @@ class SavesSubscriptions extends React.Component {
                     <div>
                       <div className="row">
                         <div className="col-lg-12">
-                          <img src={this.state.listSave.Save.image_default} width="80"/>
+                          <img src={this.state.winnerProduct.image_default} width="80"/>
                           <span className="panel-title">  Produto Vencedor - <b>{this.state.winnerProduct.title}</b></span>
                           <span/>
                         </div>
