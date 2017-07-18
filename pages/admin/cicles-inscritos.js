@@ -83,7 +83,7 @@ class SavesSubscriptions extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                  <span className="panel-title">Lista de Inscritos no Save - (<b>{this.state.listSave.Save && this.state.listSave.Save.title}</b>) do Ciclo <b>{moment(this.state.listSave.date_start).format('DD/MM/YYYY')}</b></span>
+                  <span className="panel-title">Lista de Inscritos no Save - (<b>{this.state.listSave.Save && this.state.listSave.Save.title}</b>) do Ciclo <b>{this.state.listSave.date_start && moment(this.state.listSave.date_start).format('DD/MM/YYYY')}</b></span>
               </div>
 
               <div className="panel-body">
