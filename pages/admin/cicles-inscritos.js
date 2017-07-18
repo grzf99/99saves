@@ -32,14 +32,15 @@ class SavesSubscriptions extends React.Component {
   }
 
   componentDidMount() {
-    this.refresh();
     this.getCicle(this.props.query.id);
+    this.refresh();
   }
 
   getCicle(id) {
     this.props.api
       .get(`/cicles/${id}/cicle`)
       .then((response) => {
+        console.log('cicle', response)
         this.setState({
           ...this.state,
           listSave: response.data,
@@ -61,6 +62,7 @@ class SavesSubscriptions extends React.Component {
     this.props.api
       .get(`/cicles/${this.props.query.id}/users`)
       .then((response) => {
+        console.log('users', response)
         this.setState({ ...this.state, list: response.data.subscriptions });
       })
       .catch((error) => {
@@ -81,7 +83,7 @@ class SavesSubscriptions extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                  <span className="panel-title">Lista de Inscritos no Save - (<b>{this.state.listSave.Save.title}</b>) do Ciclo <b>{moment(this.state.listSave.date_start).format('DD/MM/YYYY')}</b></span>
+                  {/* <span className="panel-title">Lista de Inscritos no Save - (<b>{this.state.listSave.Save.title}</b>) do Ciclo <b>{moment(this.state.listSave.date_start).format('DD/MM/YYYY')}</b></span> */}
               </div>
 
               <div className="panel-body">
