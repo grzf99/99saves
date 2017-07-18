@@ -31,7 +31,7 @@ class SavesSubscriptions extends React.Component {
     this.getCicle = this.getCicle.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.refresh();
     this.getCicle(this.props.query.id);
   }
@@ -40,7 +40,6 @@ class SavesSubscriptions extends React.Component {
     this.props.api
       .get(`/cicles/${id}/cicle`)
       .then((response) => {
-        console.log(response.data)
         this.setState({
           ...this.state,
           listSave: response.data,
