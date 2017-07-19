@@ -39,7 +39,7 @@ class CiclesEdit extends React.Component {
 
   getCategory(id) {
     this.props.api
-      .get(`/category/${id}`)
+      .get(`/categories/${id}`)
       .then((response) => {
         this.setState({
           ...this.state,
@@ -147,7 +147,7 @@ class CiclesEdit extends React.Component {
                     />
                     <Input
                       name="title"
-                      value=""
+                      value={this.state.list.title}
                       id="title"
                       label="Título da categoria"
                       type="text"
