@@ -3,7 +3,7 @@ import request from 'superagent';
 import Router from 'next/router';
 import startOfDay from 'date-fns/start_of_day';
 import formatDate from 'date-fns/format';
-import FRC, { Input, Row, Textarea } from 'formsy-react-components';
+import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
 
 import withAuth from '../../components/hoc/withAuth';
@@ -12,7 +12,7 @@ import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
 import RenderIf from '../../components/common/render-if';
 
-class SavesEdit extends React.Component {
+class CiclesEdit extends React.Component {
   static getInitialProps({ query }) {
     return { query };
   }
@@ -20,8 +20,6 @@ class SavesEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image_default: '',
-      startDate: '',
       list: [],
       btnEnabled: false,
       loading: true,
@@ -30,19 +28,18 @@ class SavesEdit extends React.Component {
       typeToast: ''
     };
     this.getSaves = this.getSaves.bind(this);
+    this.getCicle = this.getCicle.bind(this);
     this.submitForm = this.submitForm.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleImageUpload = this.handleImageUpload.bind(this);
   }
 
   componentDidMount() {
-    this.getSaves(this.props.query.id);
+    this.getCategory(this.props.query.id);
     this.getCategories();
   }
 
-  getSaves(id) {
+  getCategory(id) {
     this.props.api
-      .get(`/saves/${id}`)
+      .get(`/category/${id}`)
       .then((response) => {
         this.setState({
           ...this.state,
@@ -80,63 +77,34 @@ class SavesEdit extends React.Component {
       });
   }
 
-  handleSave(event) {
-    this.setState({ btnEnabled: true });
-    this.handleImageUpload(event.target.files[0], event.target.name);
-  }
-
-  handleImageUpload(file, name) {
-    const imageChange = {};
-    const upload = request
-      .post(config.CLOUDINARY_UPLOAD_URL)
-      .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
-      .field('file', file);
-
-    upload.end((err, response) => {
-      if (err) {
-        this.setState({
-          showToast: true,
-          typeToast: 'warning',
-          messageToast: `Problemas ao se comunicar com API: ${err}`
-        });
-        this.setState({ btnEnabled: false });
-        setTimeout(() => this.setState({ showToast: false }), 2500);
-      }
-
-      if (response.body.secure_url !== '') {
-        imageChange[name] = response.body.secure_url;
-        this.setState({ btnEnabled: false });
-        this.setState(imageChange);
-      }
-    });
+  isFormValid(values) {
+    return (
+      values.title
+    );
   }
 
   submitForm(data) {
-    const values = Object.assign({}, data, {
-      image_default: this.state.image_default
-    });
+    const values = Object.assign({}, data, {});
 
-    if (!values.title, !values.CategoryId) {
+    if (!this.isFormValid(values)) {
       return alert('Preencha todos os campos obrigatórios'); // eslint-disable-line
     }
 
-    if (!values.image_default) delete values.image_default;
-
     const rest = this.props.api
-      .put(`/saves/${values.id}`, values)
+      .put(`/categories/${values.id}`, values)
       .then(() => {
         this.setState({
           showToast: true,
           typeToast: 'success',
           messageToast: 'Registro alterado com Sucesso'
         });
-        setTimeout(() => Router.push('/admin/saves'), 2500);
+        setTimeout(() => Router.push('/admin/categories'), 2500);
       })
       .catch((error) => {
         this.setState({
           showToast: true,
           typeToast: 'warning',
-          messageToast: `Err ao alterar o registro ${error.message}`
+          messageToast: `Erro ao alterar o registro ${error.message}`
         });
         setTimeout(() => this.setState({ showToast: false }), 2500);
       });
@@ -151,7 +119,7 @@ class SavesEdit extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Alterar Save</span>
+                <span className="panel-title">Alterar Ciclo</span>
               </div>
 
               <div className="panel-body">
@@ -167,62 +135,25 @@ class SavesEdit extends React.Component {
                       value={this.state.list.id || ''}
                       type="hidden"
                     />
+                    <Select
+                      name="CategoryId"
+                      value={this.state.list.CategoryId || ''}
+                      label="Categoria Mãe"
+                      id="category"
+                      options={this.state.selectCategories}
+                      required
+                      rowClassName="col-sm-12"
+                    />
                     <Input
                       name="title"
+                      value=""
                       id="title"
-                      value={this.state.list.title || ''}
-                      label="Título do save"
+                      label="Título da categoria"
                       type="text"
                       placeholder="Título do save"
                       required
                       rowClassName="col-sm-12"
                     />
-                    <Textarea
-                      rows={3}
-                      cols={40}
-                      name="description"
-                      value={this.state.list.description || ''}
-                      label="Descrição do save"
-                      placeholder="Descrição"
-                      rowClassName="col-sm-12"
-                    />
-                    <div className="form-group col-sm-12">
-                      <label className="control-label" htmlFor="image_default">
-                        Imagem de destaque
-                      </label>
-                      <div className="controls">
-                        <input
-                          type="file"
-                          name="image_default"
-                          onChange={this.handleSave}
-                        />
-                      </div>
-                      <RenderIf
-                        expr={
-                          !!this.state.list.image_default &&
-                            !this.state.image_default
-                        }
-                      >
-                        <img
-                          className="col-md-3"
-                          src={this.state.list.image_default}
-                          alt="image"
-                        />
-                      </RenderIf>
-
-                      <RenderIf expr={!!this.state.image_default}>
-                        <img
-                          className="col-md-3"
-                          src={this.state.image_default}
-                          alt="save"
-                        />
-                      </RenderIf>
-                    </div>
-                    <RenderIf expr={this.state.btnEnabled}>
-                      <div className="form-group col-sm-12">
-                        <Loading type="bars" color="#000000" />
-                      </div>
-                    </RenderIf>
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
                         <input
@@ -247,4 +178,4 @@ class SavesEdit extends React.Component {
   }
 }
 
-export default withAuth({ isAdminPage: true })(SavesEdit);
+export default withAuth({ isAdminPage: true })(CiclesEdit);

@@ -31,7 +31,28 @@ class SavesCreate extends React.Component {
   }
 
   componentDidMount() {
+    this.getCategories();
     setTimeout(() => this.setState({ loading: false }), 1500);
+  }
+
+  getCategories() {
+    let list = [{ value: '', label: 'Selecione uma categoria' }];
+    this.props.api
+      .get(`/categories/all`)
+      .then((response) => {
+        response.data.map( (item) => {
+          list.push({ value: item.id, label: item.title});
+        });
+        this.setState({ selectCategories: list });
+      })
+      .catch((error) => {
+        this.setState({
+          showToast: true,
+          typeToast: 'warning',
+          messageToast: `Problemas ao se comunicar com API: ${error.message}`
+        });
+        setTimeout(() => this.setState({ showToast: false }), 2500);
+      });
   }
 
   handleSave(event) {
@@ -68,7 +89,8 @@ class SavesCreate extends React.Component {
   isFormValid(values) {
     return (
       values.title &&
-      values.image_default
+      values.image_default &&
+      values.CategoryId
     );
   }
 
@@ -130,6 +152,15 @@ class SavesCreate extends React.Component {
                 <RenderIf expr={!this.state.loading}>
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input name="id" type="hidden" />
+                    <Select
+                      name="CategoryId"
+                      value={this.state.list.CategoryId || ''}
+                      label="Categoria"
+                      id="category"
+                      options={this.state.selectCategories}
+                      required
+                      rowClassName="col-sm-12"
+                    />
                     <Input
                       name="title"
                       value=""

@@ -3,7 +3,7 @@ import request from 'superagent';
 import Router from 'next/router';
 import startOfDay from 'date-fns/start_of_day';
 import endOfDay from 'date-fns/end_of_day';
-import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
+import FRC, { Input, Row, Textarea } from 'formsy-react-components';
 import Loading from 'react-loading';
 
 import withAuth from '../../components/hoc/withAuth';
@@ -12,12 +12,10 @@ import Layout from '../../components/admin/layout';
 import AlertMessage from '../../components/common/alert-message';
 import RenderIf from '../../components/common/render-if';
 
-class CiclesCreate extends React.Component {
+class CategoryCreate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image_default: '',
-      startDate: '',
       list: [],
       btnEnabled: false,
       loading: true,
@@ -26,24 +24,22 @@ class CiclesCreate extends React.Component {
       typeToast: ''
     };
     this.submitForm = this.submitForm.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleImageUpload = this.handleImageUpload.bind(this);
   }
 
   componentDidMount() {
-    this.getSaves();
+    this.getCategories();
     setTimeout(() => this.setState({ loading: false }), 1500);
   }
 
-  getSaves() {
-    let list = [{ value: '', label: 'Selecione um save' }];
+  getCategories() {
+    let list = [{ value: '', label: 'Selecione uma categoria' }];
     this.props.api
-      .get(`/saves`)
+      .get(`/categories/all`)
       .then((response) => {
         response.data.map( (item) => {
           list.push({ value: item.id, label: item.title});
         });
-        this.setState({ selectSaves: list });
+        this.setState({ selectCategories: list });
       })
       .catch((error) => {
         this.setState({
@@ -60,45 +56,14 @@ class CiclesCreate extends React.Component {
     this.handleImageUpload(event.target.files[0], event.target.name);
   }
 
-  handleImageUpload(file, name) {
-    const imageChange = {};
-    const upload = request
-      .post(config.CLOUDINARY_UPLOAD_URL)
-      .field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
-      .field('file', file);
-
-    upload.end((err, response) => {
-      if (err) {
-        this.setState({
-          showToast: true,
-          typeToast: 'warning',
-          messageToast: `Problemas ao se comunicar com API: ${err}`
-        });
-        this.setState({ btnEnabled: false });
-        setTimeout(() => this.setState({ showToast: false }), 2500);
-      }
-
-      if (response.body.secure_url !== '') {
-        imageChange[name] = response.body.secure_url;
-        this.setState({ btnEnabled: false });
-        this.setState(imageChange);
-      }
-    });
-  }
-
   isFormValid(values) {
     return (
-      values.SaveId &&
-      values.date_start &&
-      values.date_end
+      values.title
     );
   }
 
   submitForm(data) {
-    const values = Object.assign({}, data, {
-      date_start: startOfDay(data.date_start).toJSON(),
-      date_end: endOfDay(data.date_end).toJSON()
-    });
+    const values = Object.assign({}, data, {});
 
     if (!this.isFormValid(values)) {
       this.setState({
@@ -111,14 +76,14 @@ class CiclesCreate extends React.Component {
     }
 
     const rest = this.props.api
-      .post('/cicles', values)
+      .post('/categories', values)
       .then(() => {
         this.setState({
           showToast: true,
           typeToast: 'success',
           messageToast: 'Registro cadastrado com Sucesso'
         });
-        setTimeout(() => Router.push('/admin/cicles'), 2000);
+        setTimeout(() => Router.push('/admin/categories'), 2000);
       })
       .catch(() => {
         this.setState({
@@ -139,7 +104,7 @@ class CiclesCreate extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Cadastrar Ciclo</span>
+                <span className="panel-title">Cadastrar Categoria</span>
               </div>
 
               <div className="panel-body">
@@ -152,31 +117,24 @@ class CiclesCreate extends React.Component {
                   <FRC.Form onSubmit={this.submitForm} layout="vertical">
                     <Input name="id" type="hidden" />
                     <Select
-                      name="SaveId"
-                      value={this.state.list.SaveId || ''}
-                      label="Save"
-                      id="save"
-                      options={this.state.selectSaves}
+                      name="CategoryId"
+                      value={this.state.list.CategoryId || ''}
+                      label="Categoria Mãe"
+                      id="category"
+                      options={this.state.selectCategories}
                       required
                       rowClassName="col-sm-12"
                     />
                     <Input
-                      name="date_start"
+                      name="title"
                       value=""
-                      label="Abertura do save"
-                      type="date"
+                      id="title"
+                      label="Título da categoria"
+                      type="text"
+                      placeholder="Título do save"
                       required
-                      rowClassName="col-sm-6"
+                      rowClassName="col-sm-12"
                     />
-                    <Input
-                      name="date_end"
-                      value=""
-                      label="Fechamento para envio de ofertas"
-                      type="date"
-                      required
-                      rowClassName="col-sm-6"
-                    />
-
                     <Row layout="vertical" rowClassName="col-sm-12">
                       <div className="text-left">
                         <input
@@ -201,4 +159,4 @@ class CiclesCreate extends React.Component {
   }
 }
 
-export default withAuth({ isAdminPage: true })(CiclesCreate);
+export default withAuth({ isAdminPage: true })(CategoryCreate);
