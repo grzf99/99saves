@@ -86,6 +86,8 @@ class CiclesEdit extends React.Component {
   submitForm(data) {
     const values = Object.assign({}, data, {});
 
+    values.CategoryId == '' && (delete values.CategoryId);
+
     if (!this.isFormValid(values)) {
       return alert('Preencha todos os campos obrigatórios'); // eslint-disable-line
     }

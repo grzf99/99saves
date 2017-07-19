@@ -65,6 +65,8 @@ class CategoryCreate extends React.Component {
   submitForm(data) {
     const values = Object.assign({}, data, {});
 
+    values.CategoryId == '' && (delete values.CategoryId);
+
     if (!this.isFormValid(values)) {
       this.setState({
         showToast: true,
