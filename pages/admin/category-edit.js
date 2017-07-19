@@ -27,8 +27,8 @@ class CiclesEdit extends React.Component {
       messageToast: '',
       typeToast: ''
     };
-    this.getSaves = this.getSaves.bind(this);
-    this.getCicle = this.getCicle.bind(this);
+    this.getCategory = this.getCategory.bind(this);
+    this.getCategories = this.getCategories.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
 
