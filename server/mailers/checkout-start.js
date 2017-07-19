@@ -1,4 +1,4 @@
-const { Cicle, Save, Product, Provider, Vote } = require('../models');
+const { Category, Cicle, Save, Product, Provider, Vote } = require('../models');
 
 module.exports = {
   async verify() {
