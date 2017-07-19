@@ -227,16 +227,7 @@ module.exports = (sequelize, DataTypes) => {
             endedWithoutOffers: this.endedWithoutOffers,
           });
         }
-      },
-      // hooks: {
-      //   afterCreate: (cicle, options, cb) => {
-      //     return cicle.update({
-      //       slug: `${cicle.id}-${slugify(cicle.Save.title)}`
-      //     })
-      //       .then(s => cb(null, cicle))
-      //       .catch(err => cb(err));
-      //   }
-      // }
+      }
     }
   );
 

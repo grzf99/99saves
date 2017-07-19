@@ -13,10 +13,6 @@ module.exports = {
         title: {
           type: Sequelize.STRING
         },
-        SaveId: {
-          type: Sequelize.INTEGER,
-          references: { model: 'Saves', key: 'id' }
-        },
         CategoryId: {
           allowNull: true,
           type: Sequelize.INTEGER,

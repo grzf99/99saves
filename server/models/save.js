@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue('title', value);
         }
       },
+      // CategoryId: DataTypes.INTEGER,
       description: DataTypes.TEXT,
       image_default: DataTypes.STRING,
       image2: DataTypes.STRING,
@@ -29,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       classMethods: {
         associate(models) {
           Save.hasMany(models.Cicle);
+          // Save.belongsTo(models.Category);
         }
       },
       instanceMethods: {
