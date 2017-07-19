@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       classMethods: {
         associate(models) {
           Category.hasMany(models.Category);
-          // Category.hasMany(models.Save);
+          Category.hasMany(models.Save);
         }
       },
       instanceMethods: {
