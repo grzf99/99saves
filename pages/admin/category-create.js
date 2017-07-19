@@ -122,7 +122,6 @@ class CategoryCreate extends React.Component {
                       label="Categoria Mãe"
                       id="category"
                       options={this.state.selectCategories}
-                      required
                       rowClassName="col-sm-12"
                     />
                     <Input
@@ -131,7 +130,7 @@ class CategoryCreate extends React.Component {
                       id="title"
                       label="Título da categoria"
                       type="text"
-                      placeholder="Título do save"
+                      placeholder="Título da categoria"
                       required
                       rowClassName="col-sm-12"
                     />
