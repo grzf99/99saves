@@ -3,7 +3,7 @@ import request from 'superagent';
 import Router from 'next/router';
 import startOfDay from 'date-fns/start_of_day';
 import formatDate from 'date-fns/format';
-import FRC, { Input, Row, Textarea } from 'formsy-react-components';
+import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
 
 import withAuth from '../../components/hoc/withAuth';
@@ -166,6 +166,15 @@ class SavesEdit extends React.Component {
                       name="id"
                       value={this.state.list.id || ''}
                       type="hidden"
+                    />
+                    <Select
+                      name="CategoryId"
+                      value={this.state.list.CategoryId || ''}
+                      label="Categoria"
+                      id="category"
+                      options={this.state.selectCategories}
+                      required
+                      rowClassName="col-sm-12"
                     />
                     <Input
                       name="title"

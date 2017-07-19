@@ -3,7 +3,7 @@ import request from 'superagent';
 import Router from 'next/router';
 import startOfDay from 'date-fns/start_of_day';
 import endOfDay from 'date-fns/end_of_day';
-import FRC, { Input, Row, Textarea } from 'formsy-react-components';
+import FRC, { Input, Row, Textarea, Select } from 'formsy-react-components';
 import Loading from 'react-loading';
 
 import withAuth from '../../components/hoc/withAuth';
