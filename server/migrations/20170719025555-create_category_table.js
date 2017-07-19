@@ -3,7 +3,7 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
 
-      return queryInterface.createTable('Category', {
+      return queryInterface.createTable('Categories', {
         id: {
           allowNull: false,
           autoIncrement: true,
@@ -14,9 +14,9 @@ module.exports = {
           type: Sequelize.STRING
         },
         CategoryId: {
-          allowNull: true,
           type: Sequelize.INTEGER,
-          references: { model: 'Category', key: 'id' }
+          references: { model: 'Categories', key: 'id' },
+          onDelete: 'CASCADE'
         },
         createdAt: {
           allowNull: false,
@@ -30,6 +30,6 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    return queryInterface.dropTable('Category');
+    return queryInterface.dropTable('Categories');
   }
 };

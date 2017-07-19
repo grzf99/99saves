@@ -4,7 +4,7 @@ module.exports = {
   up: function (queryInterface, Sequelize) {
     return queryInterface.addColumn('Saves', 'CategoryId', {
       type: Sequelize.INTEGER,
-      references: { model: 'Category', key: 'id' }
+      references: { model: 'Categories', key: 'id' }
     });
   },
 

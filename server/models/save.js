@@ -14,13 +14,8 @@ module.exports = (sequelize, DataTypes) => {
   const Save = sequelize.define(
     'Save',
     {
-      title: {
-        type: DataTypes.STRING,
-        set(value) {
-          this.setDataValue('title', value);
-        }
-      },
-      // CategoryId: DataTypes.INTEGER,
+      title: DataTypes.STRING,
+      CategoryId: DataTypes.INTEGER,
       description: DataTypes.TEXT,
       image_default: DataTypes.STRING,
       image2: DataTypes.STRING,
@@ -30,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       classMethods: {
         associate(models) {
           Save.hasMany(models.Cicle);
-          // Save.belongsTo(models.Category);
+          Save.belongsTo(models.Category);
         }
       },
       instanceMethods: {

@@ -2,12 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define(
     'Category',
     {
-      title: {
-        type: DataTypes.STRING,
-        set(value) {
-          this.setDataValue('title', value);
-        }
-      },
+      title: DataTypes.STRING,
       CategoryId: DataTypes.INTEGER
     },
     {
