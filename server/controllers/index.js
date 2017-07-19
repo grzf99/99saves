@@ -1,3 +1,4 @@
+const category = require('./category');
 const saves = require('./saves');
 const cicles = require('./cicles');
 const users = require('./users');
@@ -9,6 +10,7 @@ const auth = require('./auth');
 const coupons = require('./coupons');
 
 module.exports = {
+  category,
   saves,
   cicles,
   users,
