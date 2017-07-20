@@ -15,6 +15,7 @@ import Footer from '../components/footer';
 import Page from '../components/common/page';
 import Tabs from '../components/common/tabs';
 import Tab from '../components/common/tab';
+import CategoryMenu from '../components/common/category_menu';
 import Toast from '../components/common/toast';
 import Container from '../components/common/container';
 import LoginModal from '../components/auth/login-modal';
@@ -114,6 +115,7 @@ export class Saves extends React.Component {
     this.handleSubscribe = this.handleSubscribe.bind(this);
     this.handleSubscribeConfirm = this.handleSubscribeConfirm.bind(this);
     this.handleSubscribeCancel = this.handleSubscribeCancel.bind(this);
+    this.clickCategory = this.clickCategory.bind(this);
   }
 
   componentDidMount() {
@@ -189,9 +191,9 @@ export class Saves extends React.Component {
     this.setState({ activeTab: tabIndex });
   }
 
-  loadSaves() {
+  loadSaves(categoryId = null) {
     return this.props.api
-      .get('/cicles/active')
+      .get(`/cicles/active${categoryId ? `?cid=${categoryId}`: ""} `)
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((saves) => {
@@ -199,14 +201,20 @@ export class Saves extends React.Component {
       });
   }
 
-  loadSubscriptions() {
+  loadSubscriptions(categoryId = null) {
     return this.props.api
-      .get('/cicles/subscribed')
+      .get(`/cicles/subscribed${categoryId ? `?cid=${categoryId}`: ""} `)
       .then(res => res.data)
       .then(saves => savesMapper(saves))
       .then((subscriptions) => {
         this.setState({ subscriptions });
       });
+  }
+
+  clickCategory(category = false)
+  {
+    this.loadSaves(category && category.id);
+    this.loadSubscriptions(category && category.id);
   }
 
   openModal(subscribeTo) {
@@ -261,6 +269,7 @@ export class Saves extends React.Component {
             index={this.state.activeTab}
             onChange={this.handleChangeIndex}
           >
+            <CategoryMenu handleClick={this.clickCategory} api={this.props.api}/>
             <Tab>Saves Abertos</Tab>
             <Tab>Meus Saves</Tab>
           </Tabs>}

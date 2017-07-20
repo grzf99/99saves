@@ -58,20 +58,30 @@ module.exports = {
         date_end: { $gt: new Date() },
         date_start: { $lt: new Date() }
       },
+      include: []
     };
 
-    query.include = req.user ? [{
-      model: Subscription,
-      include: [Vote, Coupon],
-      where: {
-        UserId: req.user.id
-      },
-      required: false
-    },{
-      model: Save
-    }] : [{
-      model: Save
-    }];
+    if (req.query.cid)
+      query.include.push({
+        model: Save,
+        where: {
+          CategoryId: req.query.cid
+        }
+      })
+    else
+      query.include.push({
+        model: Save
+      })
+
+    if (req.user)
+      query.include.push({
+        model: Subscription,
+        include: [Vote, Coupon],
+        where: {
+          UserId: req.user.id
+        },
+        required: false
+      })
 
     if (req.query.offset) query.offset = req.query.offset;
     if (req.query.limit) query.limit = req.query.limit;
@@ -102,10 +112,20 @@ module.exports = {
             model: Product,
             include: [Vote],
             required: false
-          }, {
-            model: Save
           }]
       };
+
+    if (req.query.cid)
+      query.include.push({
+        model: Save,
+        where: {
+          CategoryId: req.query.cid
+        }
+      })
+    else
+      query.include.push({
+        model: Save
+      })
 
     if (req.query.offset) query.offset = req.query.offset;
     if (req.query.limit) query.limit = req.query.limit;

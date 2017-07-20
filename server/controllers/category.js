@@ -20,16 +20,11 @@ module.exports = {
   listActive(req, res) {
     return Category.findAndCountAll({
       include: [{
-        model: Save,
-        include: {
-          model: Cicle,
-          where: {
-            date_end: { $gt: new Date() },
-            date_start: { $lt: new Date() }
-          }
-        },
-        required: true
-      }]
+        model: Category
+      }],
+      where: {
+        CategoryId: null
+      }
     })
       .then(({ rows }) => {
         const categories = rows.map(category => category.toJSON());
