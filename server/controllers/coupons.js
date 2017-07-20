@@ -16,8 +16,7 @@ module.exports = {
         { model: Product },
         {
           model: Subscription,
-          include: [User, Save],
-          where: { CouponId: { $not: null } }
+          include: [User, Save]
         }
       ],
       order: [['id', 'DESC']]
