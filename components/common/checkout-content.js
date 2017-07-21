@@ -27,6 +27,15 @@ const Title = styled(Heading)`
   }
 `;
 
+const SpecialLink = styled.a`
+  color: ${colors.green}
+`;
+
+
+const LoginData = styled.span`
+  color: ${colors.green}
+`;
+
 const InputButton = styled.div`
   display: flex;
   align-items: center;
@@ -117,9 +126,23 @@ class CheckoutContent extends Component {
           <MessageCopied>Cupom copiado para área de transferência</MessageCopied>
         </RenderIf>
 
-        <Heading2 fontWeight="500" color={colors.lightgray}>
-          2º passo - Vá para o site do fabricante e compre usando seu cupom do 99saves
-        </Heading2>
+        { this.props.save.winnerProduct.ProviderId != 10 &&
+            <Heading2 fontWeight="500" color={colors.lightgray}>
+              2º passo - Vá para o site do fabricante e compre usando seu cupom do 99saves
+            </Heading2> }
+
+          { this.props.save.winnerProduct.ProviderId == 10 &&
+            <Heading2 fontWeight="500" color={colors.lightgray}>
+              2º passo - <SpecialLink href='https://checkout.suggar.com.br/Parceiro/LoginFechado?p=HZ523h5puX71DQj9KdQwHA==' target='_blank'> Clique aqui </SpecialLink> para acessar a área exclusiva utilizando o seguinte Usuário e Senha<br/>
+              <p>
+                &nbsp;&nbsp;- Usuário: <LoginData>99saves</LoginData><br/>
+                &nbsp;&nbsp;- Senha: <LoginData>99saves2017</LoginData>
+              </p>
+            </Heading2> }
+          { this.props.save.winnerProduct.ProviderId == 10 &&
+            <Heading2 fontWeight="500" color={colors.lightgray}>
+              3º passo - Pronto você está na área exclusiva 99saves, basta clicar no botão abaixo e ir direto para o produto e aproveitar seu desconto.
+            </Heading2> }
 
         <ContentButton>
           <Button

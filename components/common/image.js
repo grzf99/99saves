@@ -2,7 +2,10 @@ import styled from 'styled-components';
 
 export default styled.img`
   max-height: ${props => props.size ? props.size : '100%'};
-  max-width: 300px;
   width: auto;
-  height: 100%;
+  @media (max-width: 480px) {
+    max-width: ${props => props.size ? props.size : '100%'};
+    width: auto;
+    height: auto;
+  }
 `;
