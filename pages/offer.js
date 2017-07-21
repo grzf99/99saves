@@ -162,7 +162,7 @@ const BuscapeBadge = styled.a`
 `;
 
 const BuscapeDate = styled(SmallText)`
-  color: ${colors.gray};
+  color: ${colors.white};
   display: inline-block;
   padding: 0 30px;
   text-align: center;

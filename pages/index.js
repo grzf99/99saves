@@ -86,6 +86,14 @@ const ModalHeading = styled(Heading)`
   margin: 16px 5px 0;
 `;
 
+const Bullet = styled.span`
+  color: ${colors.green};
+  margin: 0 10px;
+  &:after {
+    content: '•'
+  }
+`;
+
 const modalStyles = {
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.8)'
@@ -205,7 +213,7 @@ const BrandContainer = styled.div`
   background: ${colors.white};
   display: flex;
   flex-direction: column;
-  min-height: 590px;
+  min-height: 610px;
   justify-content: flex-start;
   position: relative;
   &:after {
@@ -249,6 +257,51 @@ const BannerSubTitle = styled.p`
   text-transform: uppercase;
   @media (max-width: 500px) {
     font-size: 15px;
+  }
+`;
+
+const BannerSubTitleHash = styled.p`
+  color: ${colors.white};
+  background-color: ${colors.green};
+  font-family: Roboto;
+  padding: 10px 30px;
+  display: block;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  font-style: italic;
+  margin: 65px 0;
+  text-transform: uppercase;
+  position: relative;
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 60px 15px 0 0;
+    border-color: #ffffff transparent transparent transparent;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+  }
+
+  &:after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 60px 15px;
+    border-color: transparent transparent #ffffff transparent;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 1;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 26px;
   }
 `;
 
@@ -702,10 +755,7 @@ export class Index extends React.Component {
             A união de consumidores através de uma plataforma inteligente possibilita a compra direta da fabrica.
           </BannerSubTitle>
           <BannerSubTitle>
-            CONFIANÇA | CONFORTO | CUSTO BENEFÍCIO
-          </BannerSubTitle>
-          <BannerSubTitle>
-            #VEMPROCLUBE E COMPROVE
+            CONFIANÇA <Bullet/> CONFORTO <Bullet/> CUSTO BENEFÍCIO
           </BannerSubTitle>
           <BrandImagesContainer>
             <BrandImage
@@ -718,6 +768,9 @@ export class Index extends React.Component {
               alt="Fabricante"
             />
           </BrandImagesContainer>
+          <BannerSubTitleHash>
+            #VEMPROCLUBE
+          </BannerSubTitleHash>
         </BrandContainer>
 
         <WeAreNotContainer>

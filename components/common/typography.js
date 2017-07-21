@@ -30,7 +30,7 @@ export const Text = styled.p`
 export const SmallText = styled.p`
   color: ${colors.white};
   font-family: 'Roboto', sans-serif;
-  font-size: 8px;
+  font-size: 9px;
   margin: 0;
 `;
 
