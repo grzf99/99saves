@@ -44,7 +44,7 @@
             <path fill="#37DC8D" stroke-width="9" d="M283.093 141.443v50.617l30.807-26.068-26.361-21.007z"/>
         </g>
         <text fill="#FFF" font-family="Oswald-Medium, Oswald" font-size="20" font-weight="400" transform="translate(2 141)">
-            <tspan x="34.456" y="34">sem intermédio do varejo</tspan>
+            <tspan x="65" y="34">sem intermediários</tspan>
         </text>
         <path stroke="#FFF" stroke-opacity=".01" d="M.5.5h319v249H.5z"/>
     </g>

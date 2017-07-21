@@ -205,7 +205,7 @@ const BrandContainer = styled.div`
   background: ${colors.white};
   display: flex;
   flex-direction: column;
-  min-height: 480px;
+  min-height: 590px;
   justify-content: flex-start;
   position: relative;
   &:after {
@@ -669,9 +669,14 @@ export class Index extends React.Component {
           />
 
           <BannerContainer>
-            <Title>Juntos pelo melhor preço</Title>
+            <Title>Juntos pelo melhor</Title>
             <Subtitle>
-              Conectamos consumidores, ganhamos força e brigamos pelos melhores produtos e preços diretamente com a fábrica. Sem intermediários!
+              Conectamos consumidores, unimos demanda e negociamos diretamente com os melhores fabricantes com máxima segurança e condições exclusivas. Sem intermediários!
+              <br/>
+              <br/>
+              #VEMPROCLUBE
+              <br/>
+              <br/>
             </Subtitle>
 
             <BannerActions>
@@ -691,10 +696,16 @@ export class Index extends React.Component {
 
         <BrandContainer>
           <BannerTitle>
-            te conectamos com fabricantes que você confia
+            compre direto na fonte
           </BannerTitle>
           <BannerSubTitle>
-            E negociamos produtos diretamente com eles
+            A união de consumidores através de uma plataforma inteligente possibilita a compra direta da fabrica.
+          </BannerSubTitle>
+          <BannerSubTitle>
+            CONFIANÇA | CONFORTO | CUSTO BENEFÍCIO
+          </BannerSubTitle>
+          <BannerSubTitle>
+            #VEMPROCLUBE E COMPROVE
           </BannerSubTitle>
           <BrandImagesContainer>
             <BrandImage
