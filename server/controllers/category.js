@@ -34,7 +34,14 @@ module.exports = {
   },
 
   create(req, res) {
-    return Category.create(req.body)
+    const categories = req.body.title.split('\n').map((c) => {
+      return {
+        title: c,
+        CategoryId: req.body.CategoryId
+      }
+    });
+
+    return Category.create(categories)
       .then(category => res.status(201).send(category))
       .catch(error => res.status(400).send(error));
   },

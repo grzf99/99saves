@@ -126,13 +126,14 @@ class CategoryCreate extends React.Component {
                       options={this.state.selectCategories}
                       rowClassName="col-sm-12"
                     />
-                    <Input
+                    <Textarea
                       name="title"
                       value=""
+                      rows=20
                       id="title"
                       label="Título da categoria"
                       type="text"
-                      placeholder="Título da categoria"
+                      placeholder="Título da categoria (separado por quebras de linha)"
                       required
                       rowClassName="col-sm-12"
                     />
