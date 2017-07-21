@@ -38,13 +38,14 @@ export default class extends React.Component {
 
   labels(child, index) {
     index--;
-    return (
+
+    return child ? (
       React.cloneElement(child, {
         key: index,
         onClick: () => this.handleChangeIndex(index),
         active: index === this.state.index
       })
-    );
+    ) : null;
   }
 
   render() {

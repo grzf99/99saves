@@ -6,7 +6,7 @@ import Tab from './tab';
 
 const StyledTab = styled(Tab)`
   flex-grow: 0;
-  cursor: inherit;
+  cursor: pointer;
   -ms-flex-positive: 0;
   -webkit-flex-grow: 0;
   min-width: 60px;
@@ -19,38 +19,23 @@ const StyledTab = styled(Tab)`
   z-index: 3;
   position: relative;
 
-  &:hover {
+  ${props => props.show ? `
     background-image: url(/static/images/hamburguer_hover.png);
-    background-color: ${colors.white};
-    border-bottom: 4px solid ${colors.white};
+    background-color: #F8F8F8;
+    border-bottom: 4px solid #F8F8F8;
     border-bottom: none;
-
-    > div {
-      display: block;
-    }
-  }
-`
-
-const BackgroundShadow = styled.div`
-    background-color: rgba(0,0,0,.8);
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top:0px;
-    left:0px;
-    z-index: 1;
-    display: block;
+  ` : ''};
 `
 
 const CategoryList = styled.div`
   min-width: 200px;
-  min-height: 100px;
-  padding: 10px 15px;
+  min-height: 400px;
+  padding: 10px 0;
   position: absolute;
-  background-color: ${colors.white};
+  background-color: #F8F8F8;
   top: 44px;
   left: 0px;
-  display: none;
+  display: ${props => props.show ? `block` : 'none'};
   z-index: 2;
 
   ul {
@@ -61,28 +46,72 @@ const CategoryList = styled.div`
 
     li {
       line-height: 35px;
+      padding: 0 15px;
+      color: ${colors.gray};
+      margin-left: 2px;
+
+      span {
+        text-transform: none;
+        font-size: 12px;
+        font-weight: lighter;
+      }
+
+      &:hover {
+        > div {
+          display: block;
+        }
+
+        color: ${colors.green};
+        background-color: #eeeded;
+      }
+    }
+  }
+`
+
+const CategorySubList = styled.div`
+  min-width: 300px;
+  min-height: 400px;
+  padding: 10px 0;
+  position: absolute;
+  background-color: ${colors.white};
+  top: 0px;
+  left: 170px;
+  display: none;
+  z-index: 1;
+  box-shadow: 2px 0 5px rgba(0,0,0,.2) inset;
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: left;
+
+    li {
+      line-height: 35px;
+      padding: 0 15px;
       position: relative;
+      color: ${colors.gray};
+      margin-left: 2px;
 
       &:after {
         content: '>';
         display: block;
         position: absolute;
-        right: 0px;
+        right: 15px;
         top: 0px;
       }
 
       span {
         cursor: pointer;
         text-transform: none;
-        color: ${colors.gray};
         font-size: 12px;
         font-weight: lighter;
         display: block;
         width: 100%;
+      }
 
-        &:hover {
-          color: ${colors.green};
-        }
+      &:hover {
+        color: ${colors.green};
       }
     }
   }
@@ -97,6 +126,8 @@ export default class extends React.Component {
     }
 
     this.loadCategories();
+    this.showCategory = this.showCategory.bind(this);
+    this.hideCategory = this.hideCategory.bind(this);
   };
 
   loadCategories() {
@@ -109,6 +140,14 @@ export default class extends React.Component {
       });
   };
 
+  showCategory() {
+    this.props.onToggle(true);
+  }
+
+  hideCategory() {
+    setTimeout(() => this.props.onToggle(false), 500);
+  }
+
   renderList = () => {
     return [
       <li>
@@ -116,18 +155,31 @@ export default class extends React.Component {
       </li>,
       ...this.state.categories.map((category) =>
         <li>
-            <span onClick={() => {this.props.handleClick(category)}}>
+            <span>
               {category.title}
             </span>
+            <CategorySubList>
+              <ul>{ this.renderSubList(category.Categories) }</ul>
+            </CategorySubList>
         </li>
       )
     ];
   };
 
+  renderSubList = (subcategories) => {
+    return subcategories.map((category) =>
+        <li>
+            <span onClick={() => {this.props.handleClick(category); this.hideCategory()}}>
+              {category.title}
+            </span>
+        </li>
+      );
+  };
+
   render() {
     return (
-      <StyledTab>
-        <CategoryList>
+      <StyledTab show={this.props.show} onClick={this.showCategory}>
+        <CategoryList show={this.props.show}>
           <ul>{ this.renderList() }</ul>
         </CategoryList>
       </StyledTab>

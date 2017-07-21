@@ -81,6 +81,17 @@ const BlankState = styled.div`
   }
 `;
 
+const BackgroundShadow = styled.div`
+    background-color: rgba(0,0,0,.8);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top:0px;
+    left:0px;
+    z-index: 1;
+    display: ${props => props.show ? `block` : 'none'};
+`
+
 export class Saves extends React.Component {
   static async getInitialProps(ctx) {
     const items = await ctx.api.get('/cicles/active');
@@ -101,6 +112,8 @@ export class Saves extends React.Component {
         count: 0,
         rows: []
       },
+      showBackground: false,
+      showCategory: false,
       subscribeTo: undefined,
       showToast: false,
       subscriptionConfirmationModalIsOpen: false,
@@ -116,6 +129,7 @@ export class Saves extends React.Component {
     this.handleSubscribeConfirm = this.handleSubscribeConfirm.bind(this);
     this.handleSubscribeCancel = this.handleSubscribeCancel.bind(this);
     this.clickCategory = this.clickCategory.bind(this);
+    this.handleToogleCategoryMenu = this.handleToogleCategoryMenu.bind(this);
   }
 
   componentDidMount() {
@@ -228,6 +242,11 @@ export class Saves extends React.Component {
     this.setState({ loginModalIsOpen: false });
   }
 
+  handleToogleCategoryMenu(display) {
+    this.setState({showBackground: display});
+    this.setState({showCategory: display});
+  }
+
   renderUserSaves() {
     return this.state.subscriptions.rows.length > 0
       ? this.state.subscriptions.rows.map(save => (
@@ -258,21 +277,20 @@ export class Saves extends React.Component {
   render() {
     return (
       <Page hasFooter>
+        <BackgroundShadow show={this.state.showBackground} onClick={() => {this.setState({showCategory: false}); this.setState({showBackground: false});}}/>
         <Toolbar
           logged={this.props.isSignedIn}
           onLogout={this.props.onLogout}
         />
-
-        {this.props.isSignedIn &&
           <Tabs
             withBorder
             index={this.state.activeTab}
             onChange={this.handleChangeIndex}
           >
-            <CategoryMenu handleClick={this.clickCategory} api={this.props.api}/>
+            <CategoryMenu handleClick={this.clickCategory} api={this.props.api} onToggle={this.handleToogleCategoryMenu} show={this.state.showCategory}/>
             <Tab>Saves Abertos</Tab>
-            <Tab>Meus Saves</Tab>
-          </Tabs>}
+            { this.props.isSignedIn ? <Tab>Meus Saves</Tab> : null }
+          </Tabs>
 
         <SwipeableViews
           disabled={!this.props.isSignedIn}
@@ -282,16 +300,28 @@ export class Saves extends React.Component {
         >
           <CardsList>
             {this.state.saves.rows &&
-              this.state.saves.rows.map(save => (
-                <StyledCard
-                  {...save}
-                  key={save.id}
-                  logged={this.props.isSignedIn}
-                  openLoginModal={() => this.openModal(save.id)}
-                  handleSubscribe={() => this.handleSubscribe(save.id)}
-                  goToOffers={() => this.goToOffers(save.slug)}
-                />
-              ))}
+              (this.state.saves.rows.length > 0
+                ?
+                this.state.saves.rows.map(save => (
+                  <StyledCard
+                    {...save}
+                    key={save.id}
+                    logged={this.props.isSignedIn}
+                    openLoginModal={() => this.openModal(save.id)}
+                    handleSubscribe={() => this.handleSubscribe(save.id)}
+                    goToOffers={() => this.goToOffers(save.slug)}
+                  />
+                ))
+              : <BlankState>
+                <Heading color={colors.white}>Não encontramos nenhum save???</Heading>
+                  <Text color={colors.white}>
+                    Selecione outra categoria!
+                  </Text>
+                <div>
+                </div>
+              </BlankState>)
+
+              }
           </CardsList>
 
           <CardsList>
