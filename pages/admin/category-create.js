@@ -129,7 +129,7 @@ class CategoryCreate extends React.Component {
                     <Textarea
                       name="title"
                       value=""
-                      rows=20
+                      rows="20"
                       id="title"
                       label="Título da categoria"
                       type="text"
