@@ -9,4 +9,5 @@ router.get('/:id', adminAuthentication(), coupons.show);
 router.put('/:id', adminAuthentication(), coupons.update);
 router.delete('/:id', adminAuthentication(), coupons.delete);
 
+
 module.exports = router;
