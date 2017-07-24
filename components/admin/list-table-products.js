@@ -8,7 +8,7 @@ export default (props) => {
     return list.map(item => (
       <tr key={item.id}>
         <td>{ item.id }</td>
-        <td>{ item.Save.title }</td>
+        <td>{ item.Cicle.Save.title }</td>
         <td>{ item.Provider.name }</td>
         <td>{ item.title }</td>
         <td>R$ { formatCurrency(item.price) }</td>
