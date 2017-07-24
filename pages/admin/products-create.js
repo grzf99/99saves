@@ -32,7 +32,7 @@ class ProductsCreate extends React.Component {
       selectOptions: [],
       selectProvider: [],
       coupons: [],
-      cupom: '';
+      cupom: '',
     };
     this.submitForm = this.submitForm.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
