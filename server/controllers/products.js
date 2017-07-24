@@ -1,4 +1,4 @@
-const { Product, Provider, Save, Coupon } = require('../models');
+const { Product, Cicle, Provider, Save, Coupon } = require('../models');
 
 module.exports = {
   show(req, res) {
@@ -13,7 +13,7 @@ module.exports = {
 
   list(req, res) {
     return Product.findAndCountAll({
-      include: [{ model: Save }, { model: Provider }, { model: Coupon }],
+      include: [{ model: Cicle }, { model: Provider }, { model: Coupon }],
       order: [['id', 'DESC']],
       offset: req.query.offset,
       limit: req.query.limit
