@@ -164,7 +164,7 @@ class ProductsCreate extends React.Component {
       price_buscape: this.state.priceBuscape.replace(".", "").replace(",", ".")
     });
 
-    if (!this.isFormValid(values) && (values.Coupons == '' && values.cupom == '')) {
+    if (!this.isFormValid(values) && (values.Coupons.length = 0 && values.cupom == '')) {
       this.setState({
         showToast: true,
         typeToast: 'warning',
@@ -177,12 +177,10 @@ class ProductsCreate extends React.Component {
     const { subscriptionCount } = this.state;
 
     if (values.cupom != '') {
-      values.Coupons = (() => {
         let arr = []
         for (let i=0; i< subscriptionCount; i++)
           arr.push({ key: values.cupom })
-        return arr;
-      })()
+        values.Coupons = arr;
     }
 
     if (subscriptionCount > values.Coupons.length) {
