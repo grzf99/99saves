@@ -70,6 +70,9 @@ const CategoryList = styled.div`
 
 const CategorySubtitle = styled.h2`
   font-size: 22px;
+  margin: 0 15px;
+  text-transform: initial;
+  font-weight: lighter;
   color: ${colors.gray};
 `
 
