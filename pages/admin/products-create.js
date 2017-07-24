@@ -31,12 +31,14 @@ class ProductsCreate extends React.Component {
       typeToast: '',
       selectOptions: [],
       selectProvider: [],
-      coupons: []
+      coupons: [],
+      cupom: '';
     };
     this.submitForm = this.submitForm.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
     this.handleCouponsChange = this.handleCouponsChange.bind(this);
+    this.handleCoupomChange = this.handleCoupomChange.bind(this);
     this.handleSaveChange = this.handleSaveChange.bind(this);
     this.handlePriceChange = this.handlePriceChange.bind(this);
     this.getSaves();
@@ -96,11 +98,16 @@ class ProductsCreate extends React.Component {
     return (value) => this.setState({ [key]: value })
   }
 
+  handleCoupomChange() {
+    this.setState({ coupons: [] });
+  }
+
   handleCouponsChange(event) {
     const [file] = event.target.files;
     const reader = new FileReader();
     const onLoadFinish = (coupons) => {
       this.setState({ coupons });
+      this.setState({ cupom: '' });
     };
 
     reader.onload = function onload() {
@@ -142,7 +149,7 @@ class ProductsCreate extends React.Component {
 
   isFormValid(values) {
     return every(
-      ['title', 'image_default', 'price', 'link_buy', 'SaveId', 'ProviderId', 'Coupons', 'method_payment'],
+      ['title', 'image_default', 'price', 'link_buy', 'SaveId', 'ProviderId', 'method_payment'],
       key => this.state[key] !== ''
     );
   }
@@ -157,7 +164,7 @@ class ProductsCreate extends React.Component {
       price_buscape: this.state.priceBuscape.replace(".", "").replace(",", ".")
     });
 
-    if (!this.isFormValid(values)) {
+    if (!this.isFormValid(values) && (values.Coupons == '' && values.cupom == '')) {
       this.setState({
         showToast: true,
         typeToast: 'warning',
@@ -168,6 +175,16 @@ class ProductsCreate extends React.Component {
     }
 
     const { subscriptionCount } = this.state;
+
+    if (values.cupom != '') {
+      values.Coupons = (() => {
+        let arr = []
+        for (let i=0; i< subscriptionCount; i++)
+          arr.push({ key: values.cupom })
+        return arr;
+      })()
+    }
+
     if (subscriptionCount > values.Coupons.length) {
       this.setState({
         showToast: true,
@@ -320,6 +337,18 @@ class ProductsCreate extends React.Component {
                         </div>
                       </div>
                     </RenderIf>
+
+                    <Input
+                      name="cupom"
+                      value=""
+                      id="cupom"
+                      label="Cupom único"
+                      value={this.state.cupom}
+                      type="text"
+                      placeholder="Preencha o cupom que será igual para todas as inscrições"
+                      rowClassName="col-sm-12"
+                      onChange={this.handleCoupomChange}
+                    />
                     <div className="form-group col-sm-12">
                       <label className="control-label" htmlFor="coupons">
                           Cupons (um cupom por linha) *
@@ -329,7 +358,6 @@ class ProductsCreate extends React.Component {
                           type="file"
                           accept="text/plain"
                           name="coupons"
-                          required
                           onChange={this.handleCouponsChange}
                         />
                       </div>

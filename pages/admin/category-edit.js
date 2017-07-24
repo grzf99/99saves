@@ -121,7 +121,7 @@ class CiclesEdit extends React.Component {
           <div className="col-lg-12">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <span className="panel-title">Alterar Ciclo</span>
+                <span className="panel-title">Alterar Categoria</span>
               </div>
 
               <div className="panel-body">
