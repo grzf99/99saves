@@ -55,7 +55,7 @@ class ProductsCreate extends React.Component {
       .get('/cicles/all?negotiation=true')
       .then((response) => {
         response.data.map((item) => {
-          list.push({ value: item.id, label: item.title });
+          list.push({ value: item.id, label: item.Save.title });
         });
         this.setState({ selectOptions: list });
       })
@@ -79,19 +79,19 @@ class ProductsCreate extends React.Component {
       });
   }
 
-  fetchSubscriptionsCount(saveId, retry = 0, max = 20) {
+  fetchSubscriptionsCount(cicleId, retry = 0, max = 20) {
     if (retry <= max) {
       this.props.api
-        .get(`/cicles/${saveId}/subscriptions`)
+        .get(`/cicles/${cicleId}/subscriptions`)
         .then(({ data }) => {
           this.setState({ subscriptionCount: data.subscriptions.length });
         })
-        .catch(() => this.fetchSubscriptionsCount(saveId, retry + 1, max));
+        .catch(() => this.fetchSubscriptionsCount(cicleId, retry + 1, max));
     }
   }
 
-  handleSaveChange(fieldName, saveId) {
-    this.fetchSubscriptionsCount(saveId);
+  handleSaveChange(fieldName, cicleId) {
+    this.fetchSubscriptionsCount(cicleId);
   }
 
   handlePriceChange(key) {
@@ -149,7 +149,7 @@ class ProductsCreate extends React.Component {
 
   isFormValid(values) {
     return every(
-      ['title', 'image_default', 'price', 'link_buy', 'SaveId', 'ProviderId', 'method_payment'],
+      ['title', 'image_default', 'price', 'link_buy', 'CicleId', 'ProviderId', 'method_payment'],
       key => this.state[key] !== ''
     );
   }
@@ -320,7 +320,7 @@ class ProductsCreate extends React.Component {
                       rowClassName="col-sm-12"
                     />
                     <Select
-                      name="SaveId"
+                      name="CicleId"
                       label="Save"
                       id="saveid"
                       help="Campo obriagatório"
