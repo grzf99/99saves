@@ -52,7 +52,7 @@ class ProductsCreate extends React.Component {
   getSaves() {
     let list = [{ value: '', label: 'Selecione um registro' }];
     this.props.api
-      .get('/saves/all?negotiation=true')
+      .get('/cicles/all?negotiation=true')
       .then((response) => {
         response.data.map((item) => {
           list.push({ value: item.id, label: item.title });
@@ -82,7 +82,7 @@ class ProductsCreate extends React.Component {
   fetchSubscriptionsCount(saveId, retry = 0, max = 20) {
     if (retry <= max) {
       this.props.api
-        .get(`/saves/${saveId}/subscriptions`)
+        .get(`/cicles/${saveId}/subscriptions`)
         .then(({ data }) => {
           this.setState({ subscriptionCount: data.subscriptions.length });
         })
