@@ -32,15 +32,15 @@ module.exports = (sequelize, DataTypes) => {
           return Product.findById(this.id, { include });
         },
         mapCouponsToSubscriptions() {
-          const { Save, Subscription, Coupon } = sequelize.models;
+          const { Cicle, Subscription, Coupon } = sequelize.models;
           return this.loadAssociations({
             include: [
               { model: Coupon },
-              { model: Save, include: [Subscription] }
+              { model: Cicle, include: [Subscription] }
             ]
           }).then(p =>
             Promise.all(
-              p.Save.Subscriptions.map((sub, index) => {
+              p.Cicle.Subscriptions.map((sub, index) => {
                 const coupon = p.Coupons[index];
                 return coupon.update({ SubscriptionId: sub.id });
               })
