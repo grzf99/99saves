@@ -68,6 +68,11 @@ const CategoryList = styled.div`
   }
 `
 
+const CategorySubtitle = styled.h2`
+  font-size: 22px;
+  color: ${colors.gray};
+`
+
 const CategorySubList = styled.div`
   min-width: 300px;
   min-height: 400px;
@@ -159,6 +164,7 @@ export default class extends React.Component {
               {category.title}
             </span>
             <CategorySubList>
+              <CategorySubtitle>{category.title}</CategorySubtitle>
               <ul>{ this.renderSubList(category.Categories) }</ul>
             </CategorySubList>
         </li>

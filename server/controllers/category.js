@@ -41,9 +41,14 @@ module.exports = {
       }
     });
 
-    return Category.create(categories)
-      .then(category => res.status(201).send(category))
+    Promise.all(
+      categories.map((c) => {
+        return Category.create(c);
+      })
+    )
+      .then(() => res.status(201).send())
       .catch(error => res.status(400).send(error));
+
   },
 
   update(req, res) {
