@@ -197,7 +197,7 @@ class ProductsCreate extends React.Component {
     } else if (subscriptionCount < values.Coupons.length) {
       this.setState({
         showToast: true,
-        typeToast: 'warning',
+        typeToast: 'info',
         messageToast: `
           A quantidade de cupons é maior que a de usuários inscritos.
           Removendo os ${pluralize((values.Coupons.length - subscriptionCount), { 1: 'cupom', 2: 'cupons' })} restantes.
@@ -206,7 +206,7 @@ class ProductsCreate extends React.Component {
       setTimeout(() => this.setState({ showToast: false }), 4500);
 
       let rest = values.Coupons.length - subscriptionCount;
-      values.Coupons.splice(restI*-1, rest);
+      values.Coupons.splice(rest*-1, rest);
     }
 
     if (!values.image_default) delete values.image_default;
