@@ -100,6 +100,7 @@ class ProductsCreate extends React.Component {
 
   handleCoupomChange() {
     this.setState({ coupons: [] });
+    ReactDOM.findDOMNode(this.refs.cupons).value = "";
   }
 
   handleCouponsChange(event) {
@@ -108,6 +109,7 @@ class ProductsCreate extends React.Component {
     const onLoadFinish = (coupons) => {
       this.setState({ coupons });
       this.setState({ cupom: '' });
+      ReactDOM.findDOMNode(this.refs.cupom).value = "";
     };
 
     reader.onload = function onload() {
@@ -354,6 +356,7 @@ class ProductsCreate extends React.Component {
                       value=""
                       id="cupom"
                       label="Cupom único"
+                      ref="cupom"
                       value={this.state.cupom}
                       type="text"
                       placeholder="Preencha o cupom que será igual para todas as inscrições"
@@ -367,6 +370,7 @@ class ProductsCreate extends React.Component {
                       <div className="controls">
                         <input
                           type="file"
+                          ref="cupons"
                           accept="text/plain"
                           name="coupons"
                           onChange={this.handleCouponsChange}
