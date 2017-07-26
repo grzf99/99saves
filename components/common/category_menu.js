@@ -157,11 +157,14 @@ export default class extends React.Component {
   }
 
   renderList = () => {
+
+    const categories = this.state.categories.sort((a,b) => a.title > b.title ? 1 : -1);
+
     return [
       <li>
         <span onClick={() => {this.props.handleClick()}}>Todos</span>
       </li>,
-      ...this.state.categories.map((category) =>
+      ...categories.map((category) =>
         <li>
             <span>
               {category.title}
@@ -176,7 +179,9 @@ export default class extends React.Component {
   };
 
   renderSubList = (subcategories) => {
-    return subcategories.map((category) =>
+    const categories = subcategories.sort((a,b) => a.title > b.title ? 1 : -1);
+
+    return categories.map((category) =>
         <li>
             <span onClick={() => {this.props.handleClick(category); this.hideCategory()}}>
               {category.title}
