@@ -4,7 +4,8 @@ const statuses = {
   negotiation: 'Negociação',
   votation: 'Votação',
   checkout: 'Compra',
-  finished: 'Finalizado'
+  finished: 'Finalizado',
+  'no-offers': 'Sem ofertas'
 };
 
 module.exports = status => statuses[status];
