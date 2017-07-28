@@ -84,7 +84,7 @@ export default class MyDocument extends Document {
             }}
           />
         </Head>
-        <body>
+        <body className="hold-transition skin-black-light sidebar-mini">
           <Main />
           <NextScript />
           <script
@@ -102,7 +102,7 @@ export default class MyDocument extends Document {
             }}
           />
 
-          { process.env.HEROKU_APP_NAME == 'saves99' && 
+          { process.env.HEROKU_APP_NAME == 'saves99' &&
           <script
              dangerouslySetInnerHTML={{
                __html: `

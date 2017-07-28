@@ -10,7 +10,7 @@ import { TOKEN_COOKIE_KEY, logout } from '../../store/auth';
 import { setUser } from '../../store/currentUser';
 
 export default function withAuth(
-  { isAdminPage = false } = {},
+  { isAdminPage = false, isProviderPage = false } = {},
   mapStateToProps = noop,
   mapDispatchToProps
 ) {
@@ -42,10 +42,13 @@ export default function withAuth(
       componentWillMount() {
         if (typeof window !== 'undefined') {
           let url;
+
           if (!this.props.isSignedIn) {
-            url = isAdminPage ? '/admin/login' : '/login';
+            url = isAdminPage ? '/admin/login' : isProviderPage ? '/parceiro/login' : '/login';
           } else if (isAdminPage && !this.props.isAdmin) {
             url = '/admin/login';
+          } else if (isProviderPage && !this.props.isProvider) {
+            url = '/parceiro/login';
           }
 
           if (url) {
@@ -59,7 +62,14 @@ export default function withAuth(
       }
 
       handleLogout() {
-        const url = isAdminPage ? '/admin/login' : '/';
+        let url;
+        if (isAdminPage)
+          url = '/admin/login';
+        else if (isProviderPage)
+          url = '/parceiro/login';
+        else
+          url = '/login';
+
         this.props.logout();
         Router.push(url);
       }
@@ -85,6 +95,7 @@ export default function withAuth(
         token: state.currentUser.token,
         isSignedIn: state.currentUser.token !== undefined,
         isAdmin: state.currentUser.admin,
+        isProvider: state.currentUser.ProviderId != null,
         ...mapStateToProps(state)
       }),
       { logout, ...mapDispatchToProps }

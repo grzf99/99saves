@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
+      ProviderId: DataTypes.INTEGER,
       facebookId: DataTypes.STRING,
       resetPasswordToken: DataTypes.STRING,
       resetPasswordTokenExpires: DataTypes.DATE

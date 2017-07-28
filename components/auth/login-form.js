@@ -64,12 +64,14 @@ class LoginForm extends Component {
   static propTypes = {
     submitText: PropTypes.string,
     isAdmin: PropTypes.bool,
+    isProvider: PropTypes.bool,
     onForgotPassword: PropTypes.func
   };
 
   static defaultProps = {
     submitText: 'Entrar',
     isAdmin: false,
+    isProvider: false,
     onForgotPassword: () => {}
   };
 
@@ -84,9 +86,9 @@ class LoginForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { isAdmin, as, pathname, query } = this.props;
+    const { isAdmin, isProvider, as, pathname, query } = this.props;
     if (nextProps.isSignedIn) {
-      const defaultUrl = isAdmin ? '/admin' : '/saves';
+      const defaultUrl = isAdmin ? '/admin' : isProvider ? '/parceiro' : '/saves';
       Router.replace(
         {
           pathname: pathname || defaultUrl,
@@ -119,7 +121,7 @@ class LoginForm extends Component {
   render() {
     return (
       <div>
-        <RenderIf expr={!this.props.isAdmin}>
+        <RenderIf expr={!this.props.isAdmin && !this.props.isProvider}>
           <Header>
             <Title large uppercase>Entre agora</Title>
             <Heading2 uppercase fontWeight="500" color={colors.lightgray}>
