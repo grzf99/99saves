@@ -75,8 +75,8 @@ export default function withAuth(
       }
 
       render() {
-        const { isSignedIn, isAdmin } = this.props;
-        const shouldRender = isAdminPage ? isSignedIn && isAdmin : isSignedIn;
+        const { isSignedIn, isAdmin, isProvider } = this.props;
+        const shouldRender = isAdminPage ? isSignedIn && isAdmin : isSignedIn || isProvider ? isSignedIn && isProvider : isSignedIn;
         return (
           <RenderIf expr={shouldRender}>
             <Page
