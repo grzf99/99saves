@@ -37,8 +37,10 @@ class UsersCreate extends React.Component {
       return alert('Preencha todos os campos obrigatórios'); // eslint-disable-line
     }
 
+    const user = Object.assign({}, data, {profile: {name: data.name}});
+
     const rest = this.props.api
-      .post('/users', data)
+      .post('/users', { user })
       .then(() => {
         this.setState({
           showToast: true,

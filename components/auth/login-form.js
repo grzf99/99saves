@@ -177,9 +177,10 @@ class LoginForm extends Component {
               <ForgotPasswordButton onClick={this.props.onForgotPassword}>
                 Esqueci a senha
               </ForgotPasswordButton>
-              <Button block large href="/signup">
-                Criar nova conta
-              </Button>
+              { !this.props.isProvider &&
+                <Button block large href="/signup">
+                  Criar nova conta
+                </Button>}
             </Footer>
           </RenderIf>
         </ButtonContainer>
