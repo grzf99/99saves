@@ -23,13 +23,30 @@ class UsersCreate extends React.Component {
       loading: true,
       showToast: false,
       messageToast: '',
-      typeToast: ''
+      typeToast: '',
+      selectProvider: [],
     };
     this.submitForm = this.submitForm.bind(this);
+    this.getProvider();
   }
 
   componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 1500);
+  }
+
+  getProvider() {
+    let list = [{ value: '', label: 'Selecione um registro' }];
+    this.props.api
+      .get('/providers')
+      .then((response) => {
+        response.data.rows.map((item) => {
+          list.push({ value: item.id, label: item.name });
+        });
+        this.setState({ selectProvider: list });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   submitForm(data) {
@@ -103,6 +120,14 @@ class UsersCreate extends React.Component {
                       type="password"
                       placeholder="Senha"
                       require
+                      rowClassName="col-sm-12"
+                    />
+                    <Select
+                      name="ProviderId"
+                      label="É fornecedor?"
+                      id="providerd"
+                      options={this.state.selectProvider}
+                      required
                       rowClassName="col-sm-12"
                     />
                     <Row layout="vertical" rowClassName="col-sm-12">
