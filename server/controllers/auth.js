@@ -71,7 +71,7 @@ function login(req, res, adminAuthentication = false, providerAuthentication = f
   return User.findOne({
     where: {
       email,
-      admin: adminAuthentication
+      admin: adminAuthentication,
       ProviderId: providerAuthentication ? {$not: null} : null;
     },
     include: [Profile]
