@@ -25,7 +25,7 @@ class Login extends Component {
       <Page flex centered>
         <Container maxWidth="400px">
           <FormWrapper>
-            <LoginForm isAdmin submitText="Login" />
+            <LoginForm isProvider submitText="Login" />
           </FormWrapper>
         </Container>
       </Page>

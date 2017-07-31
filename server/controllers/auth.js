@@ -65,12 +65,14 @@ module.exports = {
   }
 };
 
-function login(req, res, adminAuthentication = false) {
+function login(req, res, adminAuthentication = false, providerAuthentication = false) {
   const { email, password } = req.body;
+
   return User.findOne({
     where: {
       email,
       admin: adminAuthentication
+      ProviderId: providerAuthentication ? {$not: null} : null;
     },
     include: [Profile]
   })

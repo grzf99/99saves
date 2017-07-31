@@ -101,7 +101,7 @@ class LoginForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.login(this.state.email, this.state.password, this.props.isAdmin);
+    this.props.login(this.state.email, this.state.password, this.props.isAdmin, this.props.isProvider);
   }
 
   keyHandle = (e) => {
