@@ -72,7 +72,7 @@ function login(req, res, adminAuthentication = false, providerAuthentication = f
     where: {
       email,
       admin: adminAuthentication,
-      ProviderId: providerAuthentication ? {$not: null} : null;
+      ProviderId: providerAuthentication ? {$not: null} : null,
     },
     include: [Profile]
   })
