@@ -104,11 +104,11 @@ function handleAuthSuccess(payload) {
   Cookies.set(TOKEN_COOKIE_KEY, payload);
 }
 
-export function login(email, password, admin = false) {
+export function login(email, password, admin = false, provider = false) {
   return {
     api: {
       types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR],
-      url: admin ? '/auth/login/admin' : '/auth/login',
+      url: admin ? '/auth/login/admin' : provider ? '/auth/login/provider' : '/auth/login',
       method: 'POST',
       data: { email, password },
       onSuccess: payload => handleAuthSuccess(payload)

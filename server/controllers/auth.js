@@ -14,6 +14,10 @@ module.exports = {
     return login(req, res, true);
   },
 
+  providerLogin(req, res) {
+    return login(req, res, false, true);
+  },
+
   async forgotPassword(req, res) {
     const { email } = req.body;
     try {
