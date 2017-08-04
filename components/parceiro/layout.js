@@ -58,15 +58,12 @@ export default function withLayout(
         var jQuery = document.createElement('script');
         jQuery.setAttribute('src', 'https://code.jquery.com/jquery-3.2.1.min.js');
 
-        var bootstrap = document.createElement('script');
-        bootstrap.setAttribute('src', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js');
-
-        var AdminLTE = document.createElement('script');
-        AdminLTE.setAttribute('src', '/static/assets_admin/js/adminlte.min.js');
-
         jQuery.onload = () => {
-          document.body.appendChild(bootstrap);
-          document.body.appendChild(AdminLTE);
+          var bootstrap = document.createElement('script');
+          bootstrap.setAttribute('src', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js');
+
+          var AdminLTE = document.createElement('script');
+          AdminLTE.setAttribute('src', '/static/assets_admin/js/adminlte.min.js');
         }
 
         document.body.appendChild(jQuery);
