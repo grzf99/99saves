@@ -169,4 +169,4 @@ class CustomNav extends Component {
 
 export default connect(state => ({
   currentUser: state.currentUser
-}))(export default withAuth()(CustomNav));
+}))(withAuth()(CustomNav));
