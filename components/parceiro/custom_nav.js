@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import AdminMenu from './admin_menu';
 import withAuth from '../hoc/withApi';
 import moment from 'moment';
 
@@ -8,7 +7,6 @@ class CustomNav extends Component {
   render() {
     return (
       <ul className="nav navbar-nav">
-
           <li className="dropdown messages-menu">
 
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
