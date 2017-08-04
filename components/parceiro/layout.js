@@ -26,8 +26,8 @@ const Nav = styled.nav `
     }
   }
 
-  &>.navbar-custom-menu {
-    &>.navbar-nav {
+  & .navbar-custom-menu {
+    & .navbar-nav {
       &>li {
         &>a {
           color: #FFF !important;
