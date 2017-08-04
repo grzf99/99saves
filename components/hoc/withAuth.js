@@ -78,12 +78,11 @@ export default function withAuth(
         const { isSignedIn, isAdmin, isProvider } = this.props;
         const shouldRender = isAdminPage ? isSignedIn && isAdmin : isSignedIn || isProvider ? isSignedIn && isProvider : isSignedIn;
         return (
-          {shouldRender &&
-            <Page
+          shouldRender && <Page
               {...this.props}
               api={this.client}
               onLogout={this.handleLogout}
-            /> }
+            />
         );
       }
     }
