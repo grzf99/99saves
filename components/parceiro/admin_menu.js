@@ -5,7 +5,8 @@ import moment from 'moment';
 
 class AdminMenu extends Component {
 
-  constructor() {
+  constructor(props) {
+    super(props);
     moment.locale('pt-BR');
   }
 
