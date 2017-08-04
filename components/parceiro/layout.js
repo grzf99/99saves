@@ -56,7 +56,7 @@ export default function withLayout(
 
       componentDidMount() {
         var jQuery = document.createElement('script');
-        jQuery.setAttribute('src', 'https://code.jquery.com/jquery-3.2.1.min.js');
+        jQuery.setAttribute('src', 'http://code.jquery.com/jquery-2.2.4.min.js');
 
         jQuery.onload = () => {
           var bootstrap = document.createElement('script');
