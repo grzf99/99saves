@@ -112,7 +112,50 @@ class CustomNav extends Component {
             </ul>
           </li>
 
-          <AdminMenu currentUser={this.props.currentUser}/>
+          <li className="dropdown user user-menu">
+
+            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+
+              <img src="/static/assets_admin/img/user2-160x160.jpg" className="user-image" alt="User Image"/>
+
+              <span className="hidden-xs">{this.props.currentUser.name}</span>
+            </a>
+            <ul className="dropdown-menu">
+
+              <li className="user-header">
+                <img src="/static/assets_admin/img/user2-160x160.jpg" className="img-circle" alt="User Image"/>
+
+                <p>
+                  {this.props.currentUser.name}
+                  <small>Usuário desde {moment(this.props.currentUser.createdAt).format('MMM YY')}</small>
+                </p>
+              </li>
+
+              <li className="user-body">
+                <div className="row">
+                  <div className="col-xs-4 text-center">
+                    <a href="#">Followers</a>
+                  </div>
+                  <div className="col-xs-4 text-center">
+                    <a href="#">Sales</a>
+                  </div>
+                  <div className="col-xs-4 text-center">
+                    <a href="#">Friends</a>
+                  </div>
+                </div>
+
+              </li>
+
+              <li className="user-footer">
+                <div className="pull-left">
+                  <a href="#" className="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div className="pull-right">
+                  <a href="/parceiro" className="btn btn-default btn-flat" onClick={this.props.onLogout}>Sair</a>
+                </div>
+              </li>
+            </ul>
+          </li>
 
           <li>
             <a href="#" data-toggle="control-sidebar">
@@ -126,4 +169,4 @@ class CustomNav extends Component {
 
 export default connect(state => ({
   currentUser: state.currentUser
-}))(CustomNav);
+}))(export default withAuth()(CustomNav));
