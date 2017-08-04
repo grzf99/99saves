@@ -68,6 +68,10 @@ export default function withLayout(
 
               <link rel="stylesheet" href="/static/assets_admin/css/AdminLTE.min.css"/>
               <link rel="stylesheet" href="/static/assets_admin/css/skins/skin-black-light.min.css"/>
+
+              <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossOrigin="anonymous"></script>
+              <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossOrigin="anonymous"></script>
+              <script src="/static/assets_admin/js/adminlte.min.js"></script>
             </Head>
 
             <div className="wrapper">
@@ -201,9 +205,7 @@ export default function withLayout(
               <div className="control-sidebar-bg"></div>
             </div>
 
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossOrigin="anonymous"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossOrigin="anonymous"></script>
-            <script src="/static/assets_admin/js/adminlte.min.js"></script>
+
 
           </div>
         )
