@@ -64,9 +64,12 @@ export default function withLayout(
         var AdminLTE = document.createElement('script');
         AdminLTE.setAttribute('src', '/static/assets_admin/js/adminlte.min.js');
 
+        jQuery.onload = () => {
+          document.body.appendChild(bootstrap);
+          document.body.appendChild(AdminLTE);
+        }
+
         document.body.appendChild(jQuery);
-        document.body.appendChild(bootstrap);
-        document.body.appendChild(AdminLTE);
       }
 
       render() {
