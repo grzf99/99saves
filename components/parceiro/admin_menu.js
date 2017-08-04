@@ -26,6 +26,8 @@ class AdminMenu extends Component {
             <img src="/static/assets_admin/img/user2-160x160.jpg" className="img-circle" alt="User Image"/>
 
             <p>
+              {this.props.currentUser.name}
+              <small>Usuário desde {moment(this.props.currentUser.createdAt).format('MMM YY')}</small>
             </p>
           </li>
 
