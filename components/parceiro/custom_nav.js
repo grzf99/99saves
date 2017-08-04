@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import AdminMenu from './admin-menu';
+import AdminMenu from './admin_menu';
 
 class CustomNav extends Component {
   render() {
