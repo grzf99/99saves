@@ -6,7 +6,7 @@ import moment from 'moment';
 class AdminMenu extends Component {
 
   constructor() {
-    moment.lang('pt-BR');
+    moment.locale('pt-BR');
   }
 
   render() {
