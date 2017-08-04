@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import withAuth from '../hoc/withApi';
 import moment from 'moment';
+import styled from 'styled-components';
+
+const DropDownMenu = styled.ul `
+  right: 0;
+  left: inherit;
+`
 
 class CustomNav extends Component {
   render() {
@@ -120,7 +126,7 @@ class CustomNav extends Component {
 
               <span className="hidden-xs">{this.props.currentUser.name}</span>
             </a>
-            <ul className="dropdown-menu">
+            <DropDownMenu className="dropdown-menu">
 
               <li className="user-header">
                 <img src="/static/assets_admin/img/user2-160x160.jpg" className="img-circle" alt="User Image"/>
@@ -154,7 +160,7 @@ class CustomNav extends Component {
                   <a href="/parceiro" className="btn btn-default btn-flat" onClick={this.props.onLogout}>Sair</a>
                 </div>
               </li>
-            </ul>
+            </DropDownMenu>
           </li>
 
           <li>
