@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AdminMenu from './admin_menu';
+import withAuth from '../hoc/withApi';
 
 class CustomNav extends Component {
   render() {
