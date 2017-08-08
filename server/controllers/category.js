@@ -20,7 +20,20 @@ module.exports = {
   listActive(req, res) {
     return Category.findAndCountAll({
       include: [{
-        model: Category
+        model: Category,
+        required: true,
+        include: {
+          model: Save,
+          required: true,
+          include: {
+            model: Cicle,
+            required: true,
+            where: {
+              date_end: { $gt: new Date() },
+              date_start: { $lt: new Date() }
+            }
+          }
+        }
       }],
       where: {
         CategoryId: null
