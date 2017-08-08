@@ -22,11 +22,14 @@ module.exports = {
       include: [{
         model: Category,
         required: true,
+        attributes: ['id', 'title']
         include: {
           model: Save,
+          attributes: []
           required: true,
           include: {
             model: Cicle,
+            attributes: []
             required: true,
             where: {
               date_end: { $gt: new Date() },
@@ -37,7 +40,8 @@ module.exports = {
       }],
       where: {
         CategoryId: null
-      }
+      },
+      attributes: ['id', 'title']
     })
       .then(({ rows }) => {
         const categories = rows.map(category => category.toJSON());
