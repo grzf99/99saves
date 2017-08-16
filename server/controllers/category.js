@@ -9,7 +9,11 @@ module.exports = {
   },
 
   list(req, res) {
-    return Category.findAndCountAll()
+    return Category.findAndCountAll({
+      include: [{
+        model: Category
+      }]
+    })
       .then(({ rows }) => {
         const categories = rows.map(category => category.toJSON());
         res.status(200).send(categories);
