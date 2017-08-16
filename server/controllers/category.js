@@ -22,14 +22,14 @@ module.exports = {
       include: [{
         model: Category,
         required: true,
-        attributes: ['id', 'title']
+        attributes: ['id', 'title'],
         include: {
           model: Save,
-          attributes: []
+          attributes: [],
           required: true,
           include: {
             model: Cicle,
-            attributes: []
+            attributes: [],
             required: true,
             where: {
               date_end: { $gt: new Date() },
