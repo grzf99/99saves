@@ -9,7 +9,8 @@ const router = express.Router();
 
 
 router.get('/', clientAuthentication(true), category.listActive);
-router.get('/all', adminAuthentication(), category.list);
+router.get('/all', adminAuthentication(), category.listParent);
+router.get('/parent', adminAuthentication(), category.list);
 router.get('/:id', adminAuthentication(), category.show);
 router.post('/', adminAuthentication(), category.create);
 router.put('/:id', adminAuthentication(), category.update);

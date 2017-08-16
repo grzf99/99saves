@@ -9,6 +9,15 @@ module.exports = {
   },
 
   list(req, res) {
+    return Category.findAndCountAll()
+      .then(({ rows }) => {
+        const categories = rows.map(category => category.toJSON());
+        res.status(200).send(categories);
+      })
+      .catch(error => res.status(400).send(error));
+  },
+
+  listParent(req, res) {
     return Category.findAndCountAll({
       where: {
         CategoryId: null

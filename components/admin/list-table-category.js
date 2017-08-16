@@ -9,6 +9,7 @@ export default (props) => {
       <tr key={item.id}>
         <td>{item.id}</td>
         <td>{item.title}</td>
+        <td>{item.Category && item.Category.title}</td>
         <td>
           <Link prefetch href={`/admin/category-edit?id=${item.id}`}>
             <a className="">Editar</a>
@@ -36,7 +37,8 @@ export default (props) => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Title</th>
+            <th>Titulo</th>
+            <th>Categoria Mãe</th>
             <th />
             <th />
           </tr>

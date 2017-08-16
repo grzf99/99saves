@@ -34,7 +34,7 @@ class CategoryCreate extends React.Component {
   getCategories() {
     let list = [{ value: '', label: 'Selecione uma categoria' }];
     this.props.api
-      .get(`/categories/all`)
+      .get(`/categories/parent`)
       .then((response) => {
         response.data.map( (item) => {
           list.push({ value: item.id, label: item.title});
